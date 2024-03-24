@@ -1,0 +1,11 @@
+{
+  "variants": {
+	"main=true,facing=north":{"model": "green_resurgence:block/rusted_car","uvlock":false},
+	"main=true,facing=up":{"model": "green_resurgence:block/rusted_car","uvlock":false},
+	"main=true,facing=down":{"model": "green_resurgence:block/rusted_car","uvlock":false},
+	"main=true,facing=east":{"model": "green_resurgence:block/rusted_car","uvlock":false,"y":90},
+	"main=true,facing=south":{"model": "green_resurgence:block/rusted_car","uvlock":false,"y":180},
+	"main=true,facing=west":{"model": "green_resurgence:block/rusted_car","uvlock":false,"y":270},
+	"main=false": { "model": "green_resurgence:block/rusted_car_empty" }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "green_resurgence:block/teien/smoker_bottom",
+    "front": "green_resurgence:block/teien/smoker_front",
+    "side": "green_resurgence:block/teien/smoker_side",
+    "top": "green_resurgence:block/teien/smoker_top"
+  }
+}

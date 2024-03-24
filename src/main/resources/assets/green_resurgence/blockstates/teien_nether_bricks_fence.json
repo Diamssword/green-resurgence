@@ -1,0 +1,169 @@
+{
+    "multipart": [
+        {   "apply": { "model": "green_resurgence:block/teien/nether_brick_fence_post" }},
+        {   "when": 
+			{
+				"north": "false" , 
+				"west": "false",
+				"east": "false",
+				"south": "false"
+			},
+            "apply": { "model": "green_resurgence:block/teien/nether_brick_fence_solo" }
+        },
+		
+		
+		
+		{   "when": 
+			{
+				"north": "true" , 
+				"west": "false",
+				"east": "false",
+				"south": "false"
+			},
+			"apply": { "model": "green_resurgence:block/teien/nether_brick_fence_end", "y": 90  }
+        },
+				{   "when": 
+			{
+				"north": "false" , 
+				"west": "false",
+				"east": "true",
+				"south": "false"
+			},
+			"apply": { "model": "green_resurgence:block/teien/nether_brick_fence_end", "y": 180  }
+        },
+				{   "when": 
+			{
+				"north": "false" , 
+				"west": "false",
+				"east": "false",
+				"south": "true"
+			},
+			"apply": { "model": "green_resurgence:block/teien/nether_brick_fence_end", "y": 270  }
+        },
+				{   "when": 
+			{
+				"north": "false" , 
+				"west": "true",
+				"east": "false",
+				"south": "false"
+			},
+			"apply": { "model": "green_resurgence:block/teien/nether_brick_fence_end"}
+        },
+		
+		
+		
+		{   "when": 
+			{
+				"north": "true" , 
+				"west": "false",
+				"east": "false",
+				"south": "true"
+			},
+			"apply": { "model": "green_resurgence:block/teien/nether_brick_fence_double_side", "y": 90  }
+        },
+				{   "when": 
+			{
+				"north": "false" , 
+				"west": "true",
+				"east": "true",
+				"south": "false"
+			},
+			"apply": { "model": "green_resurgence:block/teien/nether_brick_fence_double_side"}
+        },
+		
+		
+		
+				{   "when": 
+			{
+				"north": "true" , 
+				"west": "true",
+				"east": "false",
+				"south": "false"
+			},
+			"apply": { "model": "green_resurgence:block/teien/nether_brick_fence_curve", "y": 90  }
+        },
+				{   "when": 
+			{
+				"north": "true" , 
+				"west": "false",
+				"east": "true",
+				"south": "false"
+			},
+			"apply": { "model": "green_resurgence:block/teien/nether_brick_fence_curve", "y": 180  }
+        },
+				{   "when": 
+			{
+				"north": "false" , 
+				"west": "false",
+				"east": "true",
+				"south": "true"
+			},
+			"apply": { "model": "green_resurgence:block/teien/nether_brick_fence_curve", "y": 270  }
+        },
+				{   "when": 
+			{
+				"north": "false" , 
+				"west": "true",
+				"east": "false",
+				"south": "true"
+			},
+			"apply": { "model": "green_resurgence:block/teien/nether_brick_fence_curve"}
+        },
+		
+		
+		
+		
+		
+						{   "when": 
+			{
+				"north": "true" , 
+				"west": "true",
+				"east": "false",
+				"south": "true"
+			},
+			"apply": { "model": "green_resurgence:block/teien/nether_brick_fence_t", "y": 90  }
+        },
+				{   "when": 
+			{
+				"north": "true" , 
+				"west": "true",
+				"east": "true",
+				"south": "false"
+			},
+			"apply": { "model": "green_resurgence:block/teien/nether_brick_fence_t", "y": 180  }
+        },
+				{   "when": 
+			{
+				"north": "true" , 
+				"west": "false",
+				"east": "true",
+				"south": "true"
+			},
+			"apply": { "model": "green_resurgence:block/teien/nether_brick_fence_t", "y": 270  }
+        },
+				{   "when": 
+			{
+				"north": "false" , 
+				"west": "true",
+				"east": "true",
+				"south": "true"
+			},
+			"apply": { "model": "green_resurgence:block/teien/nether_brick_fence_t"}
+        },
+				
+				
+				
+				
+				
+				
+		{   "when": 
+			{
+				"north": "true" , 
+				"west": "true",
+				"east": "true",
+				"south": "true"
+			},
+			"apply": { "model": "green_resurgence:block/teien/nether_brick_fence_x"}
+        }
+    ]
+}

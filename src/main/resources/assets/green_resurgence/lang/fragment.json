@@ -1,0 +1,14 @@
+{
+	"itemGroup.green_resurgence.generic_group":"Textures Packs",
+	"itemGroup.green_resurgence.generic_group.tab.diams":"Méli-Mélo de Diams",
+	"itemGroup.green_resurgence.generic_group.tab.teien":"TeiEN",
+	"itemGroup.green_resurgence.item_group":"Green Resurgence",
+	"item.green_resurgence.road_droit_placer":"Placeur de route droite",
+	"item.green_resurgence.road_inter_d_placer":"Placeur de route intersection droite",
+	"item.green_resurgence.road_inter_g_placer":"Placeur de route intersection gauche",
+	"item.green_resurgence.road_carrfour_placer":"Placeur de route carrfour",
+	"item.green_resurgence.road_angle_d_placer":"Placeur de route angle droite",
+	"item.green_resurgence.road_angle_g_placer":"Placeur de route angle gauche",
+	"item.green_resurgence.container_placer":"Placeur de containeur",
+	"item.green_resurgence.small_house_placer":"Placeur de petite maison (x16)"
+}

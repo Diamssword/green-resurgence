@@ -1,0 +1,8 @@
+{
+  "parent": "green_resurgence:block/generic/omni_slab",
+  "textures": {
+    "back": "green_resurgence:block/diams/gray_concrete",
+    "front": "green_resurgence:block/diams/gray_concrete",
+    "side": "green_resurgence:block/diams/gray_concrete"
+  }
+}

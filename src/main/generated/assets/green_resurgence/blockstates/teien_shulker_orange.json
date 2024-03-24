@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "green_resurgence:block/teien/shulker_orange",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "green_resurgence:block/teien/shulker_orange"
+    },
+    "facing=south": {
+      "model": "green_resurgence:block/teien/shulker_orange",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "green_resurgence:block/teien/shulker_orange",
+      "y": 270
+    }
+  }
+}

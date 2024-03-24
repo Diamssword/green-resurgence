@@ -1,0 +1,65 @@
+{
+	"credit": "Made with Blockbench (TEiEN pack)",
+	"textures": {
+		"2": "green_resurgence:block/teien/guard_rail",
+		"particle": "green_resurgence:block/teien/guard_rail"
+	},
+	"elements": [
+		{
+			"from": [0, 10, 4],
+			"to": [13, 16, 5],
+			"faces": {
+				"north": {"uv": [3, 10, 16, 16], "texture": "#2"},
+				"east": {"uv": [15, 1, 16, 7], "texture": "#2"},
+				"south": {"uv": [16, 10, 3, 16], "texture": "#2"},
+				"up": {"uv": [3, 9, 16, 10], "rotation": 180, "texture": "#2"},
+				"down": {"uv": [0, 9.5, 13, 10.5], "rotation": 180, "texture": "#2"}
+			}
+		},
+		{
+			"from": [13, 10, 5],
+			"to": [14, 16, 11],
+			"faces": {
+				"north": {"uv": [15, 1, 16, 7], "texture": "#2"},
+				"east": {"uv": [4, 1, 10, 7], "texture": "#2"},
+				"south": {"uv": [15, 1, 16, 7], "texture": "#2"},
+				"west": {"uv": [4, 1, 10, 7], "texture": "#2"},
+				"up": {"uv": [3, 3, 4, 9], "rotation": 180, "texture": "#2"},
+				"down": {"uv": [3, 2, 4, 8], "rotation": 180, "texture": "#2"}
+			}
+		},
+		{
+			"from": [0, 10, 11],
+			"to": [13, 16, 12],
+			"faces": {
+				"north": {"uv": [3, 10, 16, 16], "texture": "#2"},
+				"east": {"uv": [15, 1, 16, 7], "texture": "#2"},
+				"south": {"uv": [16, 10, 3, 16], "texture": "#2"},
+				"up": {"uv": [3, 9, 16, 10], "rotation": 180, "texture": "#2"},
+				"down": {"uv": [3, 9.5, 16, 10.5], "rotation": 180, "texture": "#2"}
+			}
+		},
+		{
+			"from": [7, 12, 5],
+			"to": [9, 14, 11],
+			"faces": {
+				"east": {"uv": [10, 7, 16, 9], "texture": "#2"},
+				"west": {"uv": [9, 7, 15, 9], "texture": "#2"},
+				"up": {"uv": [0, 0, 2, 6], "rotation": 180, "texture": "#2"},
+				"down": {"uv": [0, 0, 2, 6], "rotation": 180, "texture": "#2"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "endstueck",
+			"origin": [8, 8, 8],
+			"children": [0, 1, 2, 3]
+		},
+		{
+			"name": "seite",
+			"origin": [8, 8, 8],
+			"children": []
+		}
+	]
+}

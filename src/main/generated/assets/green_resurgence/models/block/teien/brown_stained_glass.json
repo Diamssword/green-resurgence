@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "green_resurgence:block/teien/brown_stained_glass"
+  }
+}

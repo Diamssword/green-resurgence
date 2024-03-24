@@ -1,0 +1,53 @@
+{
+  "variants": {
+    "facing=east,type=bottom": {
+      "model": "green_resurgence:block/diams/road_slab",
+      "y": 90
+    },
+    "facing=north,type=bottom": {
+      "model": "green_resurgence:block/diams/road_slab"
+    },
+    "facing=south,type=bottom": {
+      "model": "green_resurgence:block/diams/road_slab",
+      "y": 180
+    },
+    "facing=west,type=bottom": {
+      "model": "green_resurgence:block/diams/road_slab",
+      "y": 270
+    },
+	 "facing=east,type=top": {
+      "model": "green_resurgence:block/diams/road_slab_top",
+      "y": 90
+    },
+    "facing=north,type=top": {
+      "model": "green_resurgence:block/diams/road_slab_top"
+    },
+    "facing=south,type=top": {
+      "model": "green_resurgence:block/diams/road_slab_top",
+      "y": 180
+    },
+    "facing=west,type=top": {
+      "model": "green_resurgence:block/diams/road_slab_top",
+      "y": 270
+    },
+	 "facing=west,type=bottom": {
+      "model": "green_resurgence:block/diams/road_slab",
+      "y": 270
+    },
+	 "facing=east,type=double": {
+      "model": "block/gray_glazed_terracotta",
+      "y": 90
+    },
+    "facing=north,type=double": {
+      "model": "block/gray_glazed_terracotta"
+    },
+    "facing=south,type=double": {
+      "model": "block/gray_glazed_terracotta",
+      "y": 180
+    },
+    "facing=west,type=double": {
+      "model": "block/gray_glazed_terracotta",
+      "y": 270
+    }
+  }
+}

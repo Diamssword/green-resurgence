@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "green_resurgence:block/teien/pumpkin",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "green_resurgence:block/teien/pumpkin"
+    },
+    "facing=south": {
+      "model": "green_resurgence:block/teien/pumpkin",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "green_resurgence:block/teien/pumpkin",
+      "y": 270
+    }
+  }
+}

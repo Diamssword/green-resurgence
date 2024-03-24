@@ -1,0 +1,57 @@
+{
+	"credit": "Made with Blockbench (TEiEN pack)",
+	"textures": {
+		"0": "green_resurgence:block/teien/rusty_beam",
+		"particle": "green_resurgence:block/teien/rusty_beam"
+	},
+	"elements": [
+		{
+			"from": [5, 8, 0],
+			"to": [6, 9, 7],
+			"rotation": {"angle": 0, "axis": "x", "origin": [0, 2, 0]},
+			"faces": {
+				"east": {"uv": [3.5, 8.5, 4.5, 15.5], "rotation": 270, "texture": "#0"},
+				"south": {"uv": [3.5, 1.5, 4.5, 2.5], "texture": "#0"},
+				"west": {"uv": [3.5, 0, 4.5, 7], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [3.5, 0.5, 4.5, 7.5], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [3.5, 0.5, 4.5, 7.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [9, 10, 0],
+			"to": [10, 11, 5],
+			"rotation": {"angle": 0, "axis": "x", "origin": [0, 2, 0]},
+			"faces": {
+				"east": {"uv": [3.5, 0.5, 4.5, 5.5], "rotation": 270, "texture": "#0"},
+				"south": {"uv": [4, 3.5, 5, 4.5], "texture": "#0"},
+				"west": {"uv": [11.5, 0.5, 12.5, 5.5], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [5.5, 0.5, 6.5, 5.5], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [3.5, 0.5, 4.5, 5.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [6.97, 5, 0],
+			"to": [8.03, 6.04, 4],
+			"rotation": {"angle": 0, "axis": "y", "origin": [1, -7, 0]},
+			"faces": {
+				"east": {"uv": [11.5, 1, 12.5, 5], "texture": "#0"},
+				"south": {"uv": [3.5, 1.5, 4.5, 5.5], "texture": "#0"},
+				"west": {"uv": [3.5, 0.5, 4.5, 4.5], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [8.5, 4, 9.54, 0], "texture": "#0"},
+				"down": {"uv": [1.5, 0, 2.54, 4], "texture": "#0"}
+			}
+		},
+		{
+			"from": [6.98, 4.95, 4],
+			"to": [8.02, 5.95, 8],
+			"rotation": {"angle": 45, "axis": "x", "origin": [8, 5.95, 4]},
+			"faces": {
+				"east": {"uv": [11.5, 1, 12.5, 5], "texture": "#0"},
+				"south": {"uv": [3.5, 1.5, 4.5, 5.5], "texture": "#0"},
+				"west": {"uv": [3.5, 0.5, 4.5, 4.5], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [8.5, 4, 9.54, 0], "texture": "#0"},
+				"down": {"uv": [1.5, 0, 2.54, 4], "texture": "#0"}
+			}
+		}
+	]
+}

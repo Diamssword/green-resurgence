@@ -1,0 +1,45 @@
+{
+	"schemaVersion": 1,
+	"id": "green_resurgence",
+	"version": "${version}",
+	"name": "Green Resurgence",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Diamssword",
+		"Credits for textures to : garlic(TEiEN), Santiago(TEiEN) "
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/green_resurgence/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.diamssword.greenresurgence.GreenResurgence"
+		],
+		"client": [
+			"com.diamssword.greenresurgence.GreenResurgenceClient"
+		],
+		"fabric-datagen": [
+			"com.diamssword.greenresurgence.GreenResurgenceDataGenerator"
+		]
+	},
+	"mixins": [
+		"green_resurgence.mixins.json",
+		{
+			"config": "green_resurgence.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.6",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

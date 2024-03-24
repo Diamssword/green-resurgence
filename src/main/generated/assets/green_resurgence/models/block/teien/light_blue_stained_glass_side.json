@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_glass_pane_side",
+  "textures": {
+    "edge": "green_resurgence:block/teien/light_blue_stained_glass_pane_top",
+    "pane": "green_resurgence:block/teien/light_blue_stained_glass"
+  }
+}

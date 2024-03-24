@@ -1,0 +1,6 @@
+{
+  "parent": "green_resurgence:block/generic/door_left_open",
+  "textures": {
+    "particle": "green_resurgence:block/teien/birch_door"
+  }
+}

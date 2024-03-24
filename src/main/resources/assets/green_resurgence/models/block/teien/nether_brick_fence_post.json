@@ -1,0 +1,31 @@
+{
+	"credit": "Made with Blockbench (TEiEN pack)",
+	"textures": {
+		"particle": "green_resurgence:block/teien/guard_rail",
+		"texture": "green_resurgence:block/teien/guard_rail"
+	},
+	"elements": [
+		{
+			"from": [7, 0, 7],
+			"to": [9, 12, 9],
+			"faces": {
+				"north": {"uv": [4, 7, 16, 9], "rotation": 90, "texture": "#texture"},
+				"east": {"uv": [16, 9, 4, 7], "rotation": 90, "texture": "#texture"},
+				"south": {"uv": [4, 7, 16, 9], "rotation": 90, "texture": "#texture"},
+				"west": {"uv": [16, 9, 4, 7], "rotation": 90, "texture": "#texture"},
+				"down": {"uv": [10, 3, 12, 5], "texture": "#texture", "cullface": "down"}
+			}
+		},
+		{
+			"from": [7, 14, 7],
+			"to": [9, 16, 9],
+			"faces": {
+				"north": {"uv": [9, 7, 11, 9], "rotation": 90, "texture": "#texture"},
+				"east": {"uv": [11, 9, 9, 7], "rotation": 90, "texture": "#texture"},
+				"south": {"uv": [11, 7, 13, 9], "rotation": 90, "texture": "#texture"},
+				"west": {"uv": [12, 9, 10, 7], "rotation": 90, "texture": "#texture"},
+				"up": {"uv": [0, 0, 2, 2], "texture": "#texture", "cullface": "up"}
+			}
+		}
+	]
+}
