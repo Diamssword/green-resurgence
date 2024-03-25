@@ -1,12 +1,14 @@
 package com.diamssword.greenresurgence;
 
+import com.diamssword.greenresurgence.blockEntities.ConnectorBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
-import com.diamssword.greenresurgence.datagen.BlockTagGenerator;
-import com.diamssword.greenresurgence.datagen.ItemTagGenerator;
 import com.diamssword.greenresurgence.network.AdventureInteract;
 import com.diamssword.greenresurgence.network.Channels;
+import com.diamssword.greenresurgence.render.CableRenderer;
 import com.diamssword.greenresurgence.systems.LootableLogic;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerBlockEntityEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
@@ -63,8 +65,15 @@ public class ClientEvents {
 
             return ActionResult.PASS;
         });
+        ClientBlockEntityEvents.BLOCK_ENTITY_UNLOAD.register((te,w)->{
+            if(te instanceof ConnectorBlockEntity)
+            {
+                ((ConnectorBlockEntity) te).unloadClientCables();
+            }
+        });
         WorldRenderEvents.BEFORE_BLOCK_OUTLINE.register((ctx, hit)->{
-
+            CableRenderer.render(ctx);
+            //CableRenderer.renderLeashFrom(ctx,new Vec3d(10,100,20),new Vec3d(40 ,105,35));
             if(hit.getType()== HitResult.Type.BLOCK)
             {
                 if(hit instanceof BlockHitResult) {

@@ -6,7 +6,6 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -26,7 +25,7 @@ public class LootedBlock extends Block  implements BlockEntityProvider {
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return world.isClient?null: LootedBlock.checkType(type,MBlocks.LOOTED_BLOCK_ENTITY, LootedBlockEntity::tick);
+        return world.isClient?null: LootedBlock.checkType(type,MBlocks.LOOTED_BE, LootedBlockEntity::tick);
     }
     @Nullable
     @Override

@@ -6,16 +6,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
-import net.minecraft.nbt.NbtIo;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -30,7 +26,7 @@ public class LootedBlockEntity extends BlockEntity {
     public int cooldown=200;
     public BlockState block;
     public LootedBlockEntity( BlockPos pos, BlockState state) {
-        super(MBlocks.LOOTED_BLOCK_ENTITY, pos, state);
+        super(MBlocks.LOOTED_BE, pos, state);
     }
     public BlockState getRealBlock()
     {

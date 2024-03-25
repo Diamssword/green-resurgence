@@ -5,11 +5,7 @@ import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.structure.StructurePlacerInstance;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
-import net.fabricmc.fabric.impl.client.rendering.BlockEntityRendererRegistryImpl;
-import net.minecraft.block.BarrierBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 
@@ -25,7 +21,8 @@ public class GreenResurgenceClient implements ClientModInitializer {
 				BlockRenderLayerMap.INSTANCE.putBlock(glass, RenderLayer.getTranslucent());
 			}
 		});
-		BlockEntityRendererFactories.register(MBlocks.LOOTED_BLOCK_ENTITY, LootedBlockEntityRenderer::new);
+		BlockRenderLayerMap.INSTANCE.putBlock(MBlocks.CONNECTOR, RenderLayer.getCutout());
+		BlockEntityRendererFactories.register(MBlocks.LOOTED_BE, LootedBlockEntityRenderer::new);
 		ClientNetwork.initialize();
 		ClientEvents.initialize();
 
