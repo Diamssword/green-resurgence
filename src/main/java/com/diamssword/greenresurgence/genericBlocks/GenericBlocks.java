@@ -49,10 +49,38 @@ public class GenericBlocks {
     }
     static GenericBlockSet diams= new GenericBlockSet("diams");
     static {
-        diams.add("gray_concrete", GenericBlockSet.BlockTypes.OMNI_SLAB).disableGen(GenericBlockSet.BlockTypes.OMNI_SLAB);
-        diams.add("gray_glazed_terracotta", GenericBlockSet.BlockTypes.ROTATABLE_SLAB).disableGen(GenericBlockSet.BlockTypes.ROTATABLE_SLAB);
+        diams.add("gray_concrete", GenericBlockSet.BlockTypes.OMNI_SLAB).disableGen();
+        diams.add("gray_glazed_terracotta", GenericBlockSet.BlockTypes.ROTATABLE_SLAB).disableGen();
         sets.add(diams);
     }
+    static GenericBlockSet last_days= new GenericBlockSet("last_days");
+    static {
+        last_days.add("chiseled_sandstone", GenericBlockSet.BlockTypes.SIMPLE);
+        last_days.add("chest", GenericBlockSet.BlockTypes.SIMPLE).model(GenericBlockSet.ModelType.PILLAR);
+        last_days.add("chest1", GenericBlockSet.BlockTypes.SIMPLE).model(GenericBlockSet.ModelType.PILLAR);
+        last_days.add("glass", GenericBlockSet.BlockTypes.GLASS_BLOCK,GenericBlockSet.BlockTypes.GLASS_PANE);
+        last_days.add("iron_block", GenericBlockSet.BlockTypes.SIMPLE);
+        last_days.add("nether_gold_ore", GenericBlockSet.BlockTypes.FURNACE).model(GenericBlockSet.ModelType.TWO_TEXTURED_MACHINE);
+        last_days.add("bookshelf", GenericBlockSet.BlockTypes.FURNACE).model(GenericBlockSet.ModelType.TWO_TEXTURED_MACHINE);
+        last_days.add("redstone_ore", GenericBlockSet.BlockTypes.SIMPLE);
+        last_days.add("purple_glazed_terracotta", GenericBlockSet.BlockTypes.SIMPLE);
+        last_days.add("furnace", GenericBlockSet.BlockTypes.FURNACE).model(GenericBlockSet.ModelType.BOTOMLESS_MACHINE);
+        last_days.add("smoker", GenericBlockSet.BlockTypes.FURNACE);
+        last_days.add("lectern", GenericBlockSet.BlockTypes.LECTERN);
+        last_days.add("barrel", GenericBlockSet.BlockTypes.FURNACE).model(GenericBlockSet.ModelType.TWO_TEXTURED_MACHINE);
+        last_days.add("oak_door",true, GenericBlockSet.BlockTypes.DOOR);
+        last_days.add("birch_door",true, GenericBlockSet.BlockTypes.DOOR);
+        last_days.add("jungle_door", true,GenericBlockSet.BlockTypes.DOOR);
+        last_days.add("acacia_door", true,GenericBlockSet.BlockTypes.DOOR);
+        last_days.add("dark_oak_door", true,GenericBlockSet.BlockTypes.DOOR);
+        last_days.add("lantern",true, GenericBlockSet.BlockTypes.LANTERN).disableGen();
+        last_days.add("green_bed", GenericBlockSet.BlockTypes.BED);
+        last_days.add("brown_bed", GenericBlockSet.BlockTypes.BED);
+        last_days.add("oak_trapdoor", GenericBlockSet.BlockTypes.TRAPDOOR);
+        sets.add(last_days);
+    }
+
+
     public static void register()
     {
         int tab=0;

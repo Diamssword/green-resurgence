@@ -29,7 +29,7 @@ public class MBlocks implements BlockRegistryContainer {
 
 
     public static final LootedBlock LOOTED_BLOCK = new LootedBlock(AbstractBlock.Settings.create().nonOpaque().dropsNothing().strength(99999,99999).suffocates(Blocks::never));
-    public static final ConnectorBlock CONNECTOR = addToDiamsTab(new ConnectorBlock(AbstractBlock.Settings.create().nonOpaque().dropsNothing().strength(99999,99999).suffocates(Blocks::never)));
+    public static final ConnectorBlock CONNECTOR = addToDiamsTab(new ConnectorBlock(AbstractBlock.Settings.create().nonOpaque().strength(99999,99999).suffocates(Blocks::never)));
     public static final PostBlock ELECTRIC_POST=addToDiamsTab(new PostBlock(AbstractBlock.Settings.create().nonOpaque().sounds(BlockSoundGroup.WOOD),true));
     public static final PostBlock WOOD_POST=addToDiamsTab(new PostBlock(AbstractBlock.Settings.create().nonOpaque().sounds(BlockSoundGroup.WOOD),false));
     public static final BlockEntityType<LootedBlockEntity> LOOTED_BE = Registry.register(

@@ -1,6 +1,0 @@
-{
-  "parent": "green_resurgence:block/generic/omni_carpet",
-  "textures": {
-    "particle": "green_resurgence:block/teien/lily_pad"
-  }
-}

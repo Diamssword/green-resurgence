@@ -44,9 +44,15 @@ public class CableItem extends Item {
                 return ActionResult.SUCCESS;
             if(context.getStack().hasNbt() && context.getStack().getNbt().contains("connector"))
             {
+
                 ConnectorBlockEntity te=  ((ConnectorBlock) st.getBlock()).getBlockEntity(context.getBlockPos(), context.getWorld());
                 BlockPos p=BlockPos.fromLong(context.getStack().getNbt().getLong("connector"));
                 te.addConnection(p);
+                BlockState st1=context.getWorld().getBlockState(p);
+                if(st1.getBlock() instanceof ConnectorBlock)
+                {
+                    ((ConnectorBlock) st1.getBlock()).getBlockEntity(p,context.getWorld()).addConnection(context.getBlockPos());
+                }
                 context.getStack().getNbt().remove("connector");
             }
             else

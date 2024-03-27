@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.datagen;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.genericBlocks.GenericBlockSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.enums.DoorHinge;
 import net.minecraft.block.enums.SlabType;
@@ -18,6 +19,29 @@ public class ModelHelper {
     public ModelHelper(String subdomain) {
         this.subdomain = subdomain;
     }
+    public TexturedModel.Factory getModeleFactoryFor(GenericBlockSet.ModelType type,String name)
+    {
+        switch (type)
+        {
+
+            case SIMPLE -> {
+                return TexturedModel.makeFactory(b1 -> TextureMap.all(this.getBlockModelId(name)),new Model(Optional.of(new Identifier("minecraft", "block/cube_all")), Optional.empty(), TextureKey.ALL));
+            }
+            case PILLAR -> {
+                return TexturedModel.makeFactory(b1 -> this.textureMapPillar(name),new Model(Optional.of(new Identifier("minecraft", "block/cube_column_horizontal")), Optional.empty(), TextureKey.END, TextureKey.SIDE));
+            }
+            case MACHINE -> {
+                return TexturedModel.makeFactory(b1 -> this.textureMapMachine(name,false,false),new Model(Optional.of(new Identifier("minecraft", "block/orientable_with_bottom")), Optional.empty(), TextureKey.TOP, TextureKey.SIDE, TextureKey.FRONT, TextureKey.BOTTOM));
+            }
+            case BOTOMLESS_MACHINE -> {
+                return TexturedModel.makeFactory(b1 -> this.textureMapMachine(name,true,false),new Model(Optional.of(new Identifier("minecraft", "block/orientable")), Optional.empty(), TextureKey.TOP, TextureKey.SIDE, TextureKey.FRONT));
+            }
+            case TWO_TEXTURED_MACHINE -> {
+                return TexturedModel.makeFactory(b1 -> this.textureMapMachine(name,true,true),new Model(Optional.of(new Identifier(GreenResurgence.ID, "block/generic/simple_orientable")), Optional.empty(), TextureKey.SIDE, TextureKey.FRONT));
+            }
+        }
+        return TexturedModel.makeFactory(b1 -> TextureMap.all(this.getBlockModelId(name)),new Model(Optional.of(new Identifier("minecraft", "block/cube_all")), Optional.empty(), TextureKey.ALL));
+    }
 
     public TextureMap textureMapPillar(String name)
     {
@@ -26,13 +50,15 @@ public class ModelHelper {
         map.put(TextureKey.END,getBlockModelId(name).withSuffixedPath("_top"));
         return map;
     }
-    public TextureMap textureMapMachine(String name)
+    public TextureMap textureMapMachine(String name,boolean noBottom,boolean noTop)
     {
         TextureMap map = new TextureMap();
         map.put(TextureKey.SIDE,getBlockModelId(name).withSuffixedPath("_side"));
-        map.put(TextureKey.TOP,getBlockModelId(name).withSuffixedPath("_top"));
+        if(!noTop)
+            map.put(TextureKey.TOP,getBlockModelId(name).withSuffixedPath("_top"));
         map.put(TextureKey.FRONT,getBlockModelId(name).withSuffixedPath("_front"));
-        map.put(TextureKey.BOTTOM,getBlockModelId(name).withSuffixedPath("_bottom"));
+        if(!noBottom)
+            map.put(TextureKey.BOTTOM,getBlockModelId(name).withSuffixedPath("_bottom"));
         return map;
     }
     public TextureMap textureOmniSlab(String name)
@@ -43,7 +69,43 @@ public class ModelHelper {
         map.put(TextureKey.BACK,getBlockModelId(name).withSuffixedPath("_back"));
         return map;
     }
+    public void registerTrapdoor(BlockStateModelGenerator generator,String name,Block trapdoorBlock) {
+        TextureMap textureMap = TextureMap.texture(getBlockModelId(name));
+        Identifier identifier = Models.TEMPLATE_TRAPDOOR_TOP.upload(getBlockModelId(name).withSuffixedPath("_top"), textureMap, generator.modelCollector);
+        Identifier identifier2 = Models.TEMPLATE_TRAPDOOR_BOTTOM.upload(getBlockModelId(name), textureMap, generator.modelCollector);
+        Identifier identifier3 = Models.TEMPLATE_TRAPDOOR_OPEN.upload(getBlockModelId(name).withSuffixedPath("_open"), textureMap, generator.modelCollector);
+        generator.blockStateCollector.accept(BlockStateModelGenerator.createTrapdoorBlockState(trapdoorBlock, identifier, identifier2, identifier3));
+   //     generator.registerParentedItemModel(trapdoorBlock, identifier2);
+    }
+    public final void registerLantern(BlockStateModelGenerator generator, String name, Block lantern) {
 
+        TextureMap textureMap = new TextureMap().put(TextureKey.LANTERN, getBlockModelId(name));
+        TextureMap textureMap_off = new TextureMap().put(TextureKey.LANTERN, getBlockModelId(name).withSuffixedPath("_off"));
+        Identifier identifier1= new Model(Optional.of(new Identifier("minecraft", "block/template_lantern")), Optional.empty(), TextureKey.LANTERN).upload(getBlockModelId(name), textureMap, generator.modelCollector);
+        Identifier identifier2=new Model(Optional.of(new Identifier("minecraft", "block/template_hanging_lantern")), Optional.empty(), TextureKey.LANTERN).upload(getBlockModelId(name).withSuffixedPath("_top"), textureMap, generator.modelCollector);
+        Identifier identifier3=new Model(Optional.of(new Identifier(GreenResurgence.ID, "block/generic/side_lantern")), Optional.empty(), TextureKey.LANTERN).upload(getBlockModelId(name).withSuffixedPath("_side"), textureMap, generator.modelCollector);
+
+        Identifier identifier4=new Model(Optional.of(new Identifier("minecraft", "block/template_lantern")), Optional.empty(), TextureKey.LANTERN).upload(getBlockModelId(name).withSuffixedPath("_off"), textureMap_off, generator.modelCollector);
+        Identifier identifier5=new Model(Optional.of(new Identifier("minecraft", "block/template_hanging_lantern")), Optional.empty(), TextureKey.LANTERN).upload(getBlockModelId(name).withSuffixedPath("_top_off"), textureMap_off, generator.modelCollector);
+        Identifier identifier6=new Model(Optional.of(new Identifier(GreenResurgence.ID, "block/generic/side_lantern")), Optional.empty(), TextureKey.LANTERN).upload(getBlockModelId(name).withSuffixedPath("_side_off"), textureMap_off, generator.modelCollector);
+
+        generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(lantern).coordinate(fillLanternVariantMap(BlockStateVariantMap.create(Properties.FACING, Properties.LIT), identifier1, identifier2, identifier3, identifier4,identifier5,identifier6)));
+
+    }
+    public final void registerBed(BlockStateModelGenerator generator, String name, Block lantern) {
+
+        TextureKey key=TextureKey.of("bed");
+        TextureMap textureMap = new TextureMap().put(key, getBlockModelId(name));
+
+        Identifier identifier1=new Model(Optional.of(new Identifier(GreenResurgence.ID, "block/generic/bed")), Optional.empty(), key).upload(getBlockModelId(name), textureMap, generator.modelCollector);
+        generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(lantern).coordinate(BlockStateVariantMap.create(Properties.HORIZONTAL_FACING)
+                .register(Direction.SOUTH,BlockStateVariant.create().put(VariantSettings.MODEL,identifier1))
+                .register(Direction.WEST,BlockStateVariant.create().put(VariantSettings.MODEL,identifier1).put(VariantSettings.Y,VariantSettings.Rotation.R90))
+                .register(Direction.EAST,BlockStateVariant.create().put(VariantSettings.MODEL,identifier1).put(VariantSettings.Y,VariantSettings.Rotation.R270))
+                .register(Direction.NORTH,BlockStateVariant.create().put(VariantSettings.MODEL,identifier1).put(VariantSettings.Y,VariantSettings.Rotation.R180))
+        ));
+
+    }
     public final void registerGlassPane(BlockStateModelGenerator generator, String name, Block glassPane, boolean isIron) {
 
         TextureMap textureMap = new TextureMap().put(TextureKey.PANE, getBlockModelId(name)).put(TextureKey.EDGE,  isIron? getBlockModelId(name):getBlockModelId(name).withSuffixedPath("_pane_top"));
@@ -97,6 +159,22 @@ public class ModelHelper {
                 .register(Direction.EAST, DoorHinge.LEFT, (Boolean)true, BlockStateVariant.create().put(VariantSettings.MODEL, leftHingeOpenModelId))
                 .register(Direction.SOUTH, DoorHinge.LEFT, (Boolean)false, BlockStateVariant.create().put(VariantSettings.MODEL, leftHingeClosedModelId).put(VariantSettings.Y, VariantSettings.Rotation.R90))
                 .register(Direction.SOUTH, DoorHinge.LEFT, (Boolean)true, BlockStateVariant.create().put(VariantSettings.MODEL, leftHingeOpenModelId).put(VariantSettings.Y, VariantSettings.Rotation.R90));
+    }
+    public static BlockStateVariantMap.DoubleProperty<Direction, Boolean> fillLanternVariantMap(BlockStateVariantMap.DoubleProperty<Direction, Boolean> variantMap, Identifier down, Identifier up, Identifier side, Identifier down_off,Identifier up_off,Identifier side_off) {
+        return variantMap
+                .register(Direction.UP, true, BlockStateVariant.create().put(VariantSettings.MODEL, up))
+                .register(Direction.DOWN, true, BlockStateVariant.create().put(VariantSettings.MODEL, down))
+                .register(Direction.WEST,true, BlockStateVariant.create().put(VariantSettings.MODEL, side).put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                .register(Direction.NORTH, true, BlockStateVariant.create().put(VariantSettings.MODEL, side).put(VariantSettings.Y, VariantSettings.Rotation.R0))
+                .register(Direction.SOUTH,true, BlockStateVariant.create().put(VariantSettings.MODEL, side).put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                .register(Direction.EAST, true, BlockStateVariant.create().put(VariantSettings.MODEL, side).put(VariantSettings.Y, VariantSettings.Rotation.R90))
+
+                .register(Direction.UP, false, BlockStateVariant.create().put(VariantSettings.MODEL, up_off))
+                .register(Direction.DOWN, false, BlockStateVariant.create().put(VariantSettings.MODEL, down_off))
+                .register(Direction.WEST,false, BlockStateVariant.create().put(VariantSettings.MODEL, side_off).put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                .register(Direction.NORTH, false, BlockStateVariant.create().put(VariantSettings.MODEL, side_off).put(VariantSettings.Y, VariantSettings.Rotation.R0))
+                .register(Direction.SOUTH,false, BlockStateVariant.create().put(VariantSettings.MODEL, side_off).put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                .register(Direction.EAST, false, BlockStateVariant.create().put(VariantSettings.MODEL, side_off).put(VariantSettings.Y, VariantSettings.Rotation.R90));
     }
     public Identifier getBlockModelId(String baseID) {
         return new Identifier(GreenResurgence.ID,"block/"+this.subdomain+"/"+baseID);

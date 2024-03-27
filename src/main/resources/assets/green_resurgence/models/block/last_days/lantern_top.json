@@ -1,0 +1,7 @@
+{
+  "parent": "green_resurgence:block/last_days/template_hanging_lantern",
+  "textures": {
+	"2": "green_resurgence:block/last_days/hanging_lantern",
+    "1": "green_resurgence:block/last_days/hanging_lantern_disk"
+  }
+}

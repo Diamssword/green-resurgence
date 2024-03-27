@@ -1,0 +1,6 @@
+{
+  "parent": "green_resurgence:block/generic/side_lantern",
+  "textures": {
+    "lantern": "green_resurgence:block/last_days/lantern_off"
+  }
+}

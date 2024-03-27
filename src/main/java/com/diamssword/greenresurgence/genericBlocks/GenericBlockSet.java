@@ -7,6 +7,7 @@ import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider.FabricTagBuilder;
 import net.minecraft.block.*;
+import net.minecraft.block.enums.BedPart;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.data.client.*;
 import net.minecraft.item.*;
@@ -25,11 +26,12 @@ import java.util.function.Function;
 public class GenericBlockSet {
     public final String subdomain;
     private final ModelHelper helper;
-    private List<GenericBlockInstance> blocks=new ArrayList<>();
-    private List<Block> glassRenderNeeded =new ArrayList<>();
-    private List<GeneratedBlockInstance> generatedBlocks =new ArrayList<>();
-    private List<GeneratedItemInstance> generatedItems =new ArrayList<>();
-    private List<GenExceptionInstance> genExceptions =new ArrayList<>();
+    private final List<GenericBlockInstance> blocks=new ArrayList<>();
+    private final List<Block> glassRenderNeeded =new ArrayList<>();
+    private final List<GeneratedBlockInstance> generatedBlocks =new ArrayList<>();
+    private final List<GeneratedItemInstance> generatedItems =new ArrayList<>();
+    private final List<GenExceptionInstance> genExceptions =new ArrayList<>();
+    private final List<ModelExceptionInstance> modelsExceptions =new ArrayList<>();
     private int tabIndex;
     public GenericBlockSet(String subdomain) {
         this.subdomain = subdomain;
@@ -46,12 +48,12 @@ public class GenericBlockSet {
     public GenericBlockRegisterInstance add(String name,BlockTypes... blocks)
     {
         this.blocks.add(new GenericBlockInstance(name,false,blocks));
-        return new GenericBlockRegisterInstance(this,name);
+        return new GenericBlockRegisterInstance(this,name,blocks);
     }
     public GenericBlockRegisterInstance add(String name,boolean forceTransluscent,BlockTypes... blocks)
     {
         this.blocks.add(new GenericBlockInstance(name,forceTransluscent,blocks));
-        return new GenericBlockRegisterInstance(this,name);
+        return new GenericBlockRegisterInstance(this,name,blocks);
     }
     private boolean canGenerate(String name,BlockTypes type)
     {
@@ -149,6 +151,38 @@ public class GenericBlockSet {
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name+"_slab",b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name+"_slab",i,block));
                     }
+                    case LANTERN -> {
+                        Item i;
+                        Block b=new LanternGeneric(processSettings(entry.forceTransparent,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).solid().strength(3.5f).sounds(BlockSoundGroup.LANTERN).luminance(LanternGeneric::produceLight).nonOpaque().pistonBehavior(PistonBehavior.DESTROY)));
+
+                        Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
+                        Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
+                        if(entry.forceTransparent)
+                            glassRenderNeeded.add(b);
+                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
+                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
+                    }
+                    case BED -> {
+                        Item i;
+                        Block b=new BedGeneric(processSettings(entry.forceTransparent,AbstractBlock.Settings.create().mapColor(MapColor.WHITE_GRAY).sounds(BlockSoundGroup.WOOD).strength(0.2f).nonOpaque().burnable().pistonBehavior(PistonBehavior.DESTROY)));
+
+                        Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
+                        Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
+                        if(entry.forceTransparent)
+                            glassRenderNeeded.add(b);
+                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
+                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
+                    }
+                    case TRAPDOOR -> {
+                        Item i;
+                        Block b=new TrapdoorBlock(AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never), BlockSetType.OAK);
+                        Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
+                        Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new TallBlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
+                        if(entry.forceTransparent)
+                            glassRenderNeeded.add(b);
+                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
+                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
+                    }
                 }
             }
         });
@@ -178,6 +212,10 @@ public class GenericBlockSet {
             builder.add(b.block, LangGenerator.capitalizeString(b.name.replaceAll("_"," ")));
         }
     }
+    public Optional<ModelType> getModelFor(String name,BlockTypes type)
+    {
+        return this.modelsExceptions.stream().filter(f->f.name.equals(name) && f.block==type).map(f->f.model).findFirst();
+    }
     public void modelGenerator(ItemModelGenerator generator){
         for (GeneratedItemInstance b : generatedItems) {
 
@@ -202,22 +240,19 @@ public class GenericBlockSet {
                     case SIMPLE, GLASS_BLOCK -> {
                         generator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(b.block, helper.getBlockModelId(b.name)));
 
-                        TexturedModel.Factory factory = TexturedModel.makeFactory(b1 -> TextureMap.all(helper.getBlockModelId(b.name)),
-                                new Model(Optional.of(new Identifier("minecraft", "block/cube_all")), Optional.empty(), TextureKey.ALL));
+                       TexturedModel.Factory factory = helper.getModeleFactoryFor(getModelFor(b.name,b.type).orElse(ModelType.SIMPLE),b.name);
                         factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
 
                     }
                     case PILLAR -> {
                         generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(b.block, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name))).coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
-                        TexturedModel.Factory factory = TexturedModel.makeFactory(b1 -> helper.textureMapPillar(b.name),
-                                new Model(Optional.of(new Identifier("minecraft", "block/cube_column_horizontal")), Optional.empty(), TextureKey.END, TextureKey.SIDE));
+                        TexturedModel.Factory factory = helper.getModeleFactoryFor(getModelFor(b.name,b.type).orElse(ModelType.PILLAR),b.name);
                         factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
 
                     }
                     case FURNACE -> {
                         generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(b.block, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name))).coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
-                        TexturedModel.Factory factory = TexturedModel.makeFactory(b1 -> helper.textureMapMachine(b.name),
-                                new Model(Optional.of(new Identifier("minecraft", "block/orientable_with_bottom")), Optional.empty(), TextureKey.TOP, TextureKey.SIDE, TextureKey.FRONT, TextureKey.BOTTOM));
+                        TexturedModel.Factory factory = helper.getModeleFactoryFor(getModelFor(b.name,b.type).orElse(ModelType.MACHINE),b.name);
                         factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
 
 
@@ -230,6 +265,9 @@ public class GenericBlockSet {
                     }
                     case DOOR -> {
                         helper.registerDoor(generator, b.name, b.block);
+                    }
+                    case LANTERN -> {
+                        helper.registerLantern(generator,b.name,b.block);
                     }
                     case FENCE -> {
                         helper.registerFence(generator, b.name, b.block);
@@ -246,6 +284,12 @@ public class GenericBlockSet {
                                 new Model(Optional.of(new Identifier(GreenResurgence.ID, "block/generic/omni_slab")), Optional.empty(), TextureKey.FRONT, TextureKey.SIDE, TextureKey.BACK));
                         factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
                     }
+                    case BED -> {
+                        helper.registerBed(generator,b.name,b.block);
+                    }
+                    case TRAPDOOR -> {
+                        helper.registerTrapdoor(generator, b.name, b.block);
+                    }
                 }
             }
         });
@@ -256,14 +300,46 @@ public class GenericBlockSet {
     private record GeneratedBlockInstance(String name, Block block, BlockTypes type){};
     private record GeneratedItemInstance(String name, Item item, BlockTypes type){};
     private record GenExceptionInstance(String name, BlockTypes type){};
+    private record ModelExceptionInstance(String name, BlockTypes block,ModelType model){};
     protected static class GenericBlockRegisterInstance
     {
         private final GenericBlockSet set;
         private final String name;
+        private final BlockTypes[] registeredTypes;
 
-        private GenericBlockRegisterInstance(GenericBlockSet set, String name) {
+        private GenericBlockRegisterInstance(GenericBlockSet set, String name,BlockTypes[] registeredTypes) {
             this.set = set;
             this.name = name;
+            this.registeredTypes=registeredTypes;
+        }
+        public GenericBlockRegisterInstance model(ModelType model)
+        {
+            return this.model(model,this.registeredTypes);
+        }
+        public GenericBlockRegisterInstance model(ModelType model,BlockTypes... types)
+        {
+            for (BlockTypes type : types) {
+                String name=this.name;
+                switch (type)
+                {
+                    case OMNI_SLAB,OMNI_CARPET,OMNI_CARPET_SOLID,ROTATABLE_SLAB ->{
+                        name=name+"_slab";
+                    }
+                    case FENCE -> {
+                        name=name+"_fence";
+                    }
+                    case GLASS_PANE,IRON_BARS -> {
+                        name=name+"_pane";
+                    }
+                }
+                this.set.modelsExceptions.add(new ModelExceptionInstance(name,type,model));
+            }
+            return  this;
+        }
+
+        public GenericBlockRegisterInstance disableGen()
+        {
+            return this.disableGen(this.registeredTypes);
         }
         public GenericBlockRegisterInstance disableGen(BlockTypes... types)
         {
@@ -286,6 +362,15 @@ public class GenericBlockSet {
             return this;
         }
     }
+    public static enum ModelType
+    {
+        SIMPLE,
+        PILLAR,
+        MACHINE,
+        BOTOMLESS_MACHINE,
+        TWO_TEXTURED_MACHINE,
+
+    }
     public static enum BlockTypes
     {
         SIMPLE,
@@ -300,7 +385,9 @@ public class GenericBlockSet {
         FENCE,
         OMNI_SLAB,
         OMNI_CARPET,
-        OMNI_CARPET_SOLID
-
+        OMNI_CARPET_SOLID,
+        LANTERN,
+        BED,
+        TRAPDOOR,
     }
 }

@@ -1,8 +1,0 @@
-{
-  "parent": "green_resurgence:block/generic/omni_slab",
-  "textures": {
-    "back": "green_resurgence:block/teien/shulker_green_back",
-    "front": "green_resurgence:block/teien/shulker_green_front",
-    "side": "green_resurgence:block/teien/shulker_green_side"
-  }
-}

@@ -6,7 +6,9 @@ package com.diamssword.greenresurgence.render;
 import com.diamssword.greenresurgence.blocks.IDisplayOffset;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
@@ -46,6 +48,8 @@ public class CableRenderer {
                 float scale=1f;
                 BlockState st1=ctx.world().getBlockState(k.getLeft());
                 BlockState st2=ctx.world().getBlockState(k.getRight());
+                if(st1.getBlock() == Blocks.AIR && st2.getBlock() == Blocks.AIR)
+                    toRemove.add(k);
                 if(st1.getBlock() instanceof IDisplayOffset)
                 {
                     off1=((IDisplayOffset) st1.getBlock()).getOffset(st1,ctx.world());

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_lantern",
+  "textures": {
+    "lantern": "green_resurgence:block/last_days/lantern"
+  }
+}
