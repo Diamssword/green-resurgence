@@ -79,6 +79,8 @@ public class LootedBlockEntity extends BlockEntity {
         // Save the current value of the number to the nbt
         nbt.putInt("durability", durability);
         nbt.putInt("cooldown", cooldown);
+        if(block ==null)
+            block=Blocks.AIR.getDefaultState();
         nbt.put("block",NbtHelper.fromBlockState(block));
         super.writeNbt(nbt);
     }

@@ -27,11 +27,11 @@ public class ItemTagGenerator  extends FabricTagProvider.ItemTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
-        getOrCreateTagBuilder(looting_tool).add(MItems.WRENCH, MItems.WRENCH_1);
-        getOrCreateTagBuilder(looting_wrench).add(MItems.WRENCH, MItems.WRENCH_1);
+   //     getOrCreateTagBuilder(looting_tool).add(MItems.WRENCH, MItems.WRENCH_1);
+     //   getOrCreateTagBuilder(looting_wrench).add(MItems.WRENCH, MItems.WRENCH_1);
         getOrCreateTagBuilder(looting_hammer).add(MItems.SLEDGEHAMMER);
         getOrCreateTagBuilder(looting_tool_1).add(MItems.WRENCH);
-        getOrCreateTagBuilder(looting_tool_2).add(MItems.WRENCH_1);
+       // getOrCreateTagBuilder(looting_tool_2).add(MItems.WRENCH_1);
 
 
     }

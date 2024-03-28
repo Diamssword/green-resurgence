@@ -21,11 +21,11 @@ public class MItems implements ItemRegistryContainer {
     }).build();
 
     public static final Item WRENCH = new Item(new OwoItemSettings().group(GROUP));
-    public static final Item WRENCH_1 = new Item(new OwoItemSettings().group(GROUP));
+ //   public static final Item WRENCH_1 = new Item(new OwoItemSettings().group(GROUP));
     public static final Item SLEDGEHAMMER = new Item(new OwoItemSettings().group(GROUP));
     public static final Item WIRE_SPOOL = new CableItem(new OwoItemSettings().group(GROUP));
     public static final StructurePlacerInstance[] STRUCTURES_PLACERS=new StructurePlacerInstance[]{
-            new StructurePlacerInstance("rusted_car",null,false,false,true),
+       //     new StructurePlacerInstance("rusted_car",null,false,false,true),
             new StructurePlacerInstance("electric_post",null,true,false,false),
             new StructurePlacerInstance("road_droit",new Identifier("build","roads/droit"),false,true,false),
             new StructurePlacerInstance("road_inter_d",new Identifier("build","roads/intersection_d"),false,true,false),

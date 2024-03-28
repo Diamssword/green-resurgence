@@ -6,23 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="d2280433-581a-4b82-ab53-687b6ee5ff53" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/CableRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/CableRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/generated/.cache/9489ed1897ff7477e2ca84fd2541a0d7b4bdd4e4" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/.cache/9489ed1897ff7477e2ca84fd2541a0d7b4bdd4e4" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/generated/.cache/b8f658f5cc532ce5ebfe808ce654921dd6b8908f" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/.cache/b8f658f5cc532ce5ebfe808ce654921dd6b8908f" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/generated/.cache/dba42dee0796a6321a2288be8ff8b4b0e83dfa07" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/.cache/dba42dee0796a6321a2288be8ff8b4b0e83dfa07" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/generated/.cache/dcfc20bc278718b473f6a3f8bac1dee347d19da8" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/.cache/dcfc20bc278718b473f6a3f8bac1dee347d19da8" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/generated/.cache/edafd8fecc60bb24b23a84ca994cefa95a8f86ce" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/.cache/edafd8fecc60bb24b23a84ca994cefa95a8f86ce" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/generated/assets/green_resurgence/lang/en_us.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/assets/green_resurgence/lang/en_us.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/generated/data/minecraft/tags/blocks/doors.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/data/minecraft/tags/blocks/doors.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MBlocks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MBlocks.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/ConnectorBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/ConnectorBlockEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MItems.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/LootedBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/LootedBlockEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/ConnectorBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/ConnectorBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/datagen/ModelHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/datagen/ModelHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/GenericBlockSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/GenericBlockSet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/GenericBlocks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/GenericBlocks.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/LecternShapedBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/LecternShapedBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/CableItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/CableItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/teien/lectern.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/teien/lectern.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/PostBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/PostBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/datagen/ItemTagGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/datagen/ItemTagGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/lang/fragment.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/lang/fragment.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

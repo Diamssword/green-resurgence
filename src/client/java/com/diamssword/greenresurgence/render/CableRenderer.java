@@ -59,6 +59,8 @@ public class CableRenderer {
                 {
                     off2=((IDisplayOffset) st2.getBlock()).getOffset(st2,ctx.world());
                 }
+                if(k.getLeft().getZ()==k.getRight().getZ() && k.getLeft().getX() ==k.getRight().getX())
+                    off1=off1.add(0.01,0,0);
                 renderLeashFrom(ctx, k.getLeft().toCenterPos().add(off1), k.getRight().toCenterPos().add(off2),scale);
             }
         });
@@ -105,7 +107,7 @@ public class CableRenderer {
         int n = (int)MathHelper.lerp((float)m, (float)leashedEntityBlockLight, (float)holdingEntityBlockLight);
         int o = (int)MathHelper.lerp((float)m, (float)leashedEntitySkyLight, (float)holdingEntitySkyLight);
         int p = LightmapTextureManager.pack(n, o);
-        float q = pieceIndex % 2 == (isLeashKnot ? 1 : 0) ? 1f : 2.0f;
+        float q = 1f;//pieceIndex % 2 == (isLeashKnot ? 1 : 0) ? 1f : 2.0f;
         float r = 0.1f * q;
         float s = 0.1f * q;
         float t = 0.1f * q;
