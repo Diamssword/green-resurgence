@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence;
 
 import com.diamssword.greenresurgence.blockEntityRenderer.LootedBlockEntityRenderer;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
+import com.diamssword.greenresurgence.structure.ItemPlacers;
 import com.diamssword.greenresurgence.structure.StructurePlacerInstance;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -12,8 +13,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 public class GreenResurgenceClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		for (StructurePlacerInstance structuresPlacer : MItems.STRUCTURES_PLACERS) {
-			if(structuresPlacer.block!=null)
+		for (StructurePlacerInstance structuresPlacer : ItemPlacers.multiblocksStructure) {
 				BlockRenderLayerMap.INSTANCE.putBlock(structuresPlacer.block, RenderLayer.getCutout());
 		}
 		GenericBlocks.sets.forEach(set->{

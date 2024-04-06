@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence;
 
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.network.Channels;
+import com.diamssword.greenresurgence.structure.ItemPlacers;
 import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
 import net.fabricmc.api.ModInitializer;
 
@@ -16,6 +17,7 @@ public class GreenResurgence implements ModInitializer {
 	public void onInitialize() {
 		FieldRegistrationHandler.register(MItems.class, ID, false);
 		FieldRegistrationHandler.register(MBlocks.class, ID, false);
+		ItemPlacers.init();
 		MItems.GROUP.initialize();
 		Channels.initialize();
 		GenericBlocks.register();

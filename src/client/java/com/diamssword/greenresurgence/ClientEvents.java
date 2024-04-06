@@ -4,6 +4,7 @@ import com.diamssword.greenresurgence.blockEntities.ConnectorBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.network.AdventureInteract;
 import com.diamssword.greenresurgence.network.Channels;
+import com.diamssword.greenresurgence.render.BoxRenderers;
 import com.diamssword.greenresurgence.render.CableRenderer;
 import com.diamssword.greenresurgence.systems.LootableLogic;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
@@ -27,6 +28,9 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.GameMode;
+
+import static com.diamssword.greenresurgence.render.BoxRenderers.drawStructureItemOverlay;
+import static com.diamssword.greenresurgence.render.BoxRenderers.drawStructureOverlay;
 
 public class ClientEvents {
     static PlayerListEntry playerListEntry;
@@ -71,9 +75,11 @@ public class ClientEvents {
                 ((ConnectorBlockEntity) te).unloadClientCables();
             }
         });
-        WorldRenderEvents.BEFORE_BLOCK_OUTLINE.register((ctx, hit)->{
+        WorldRenderEvents.LAST.register((ctx)->{
+            drawStructureItemOverlay(ctx.matrixStack());
             CableRenderer.render(ctx);
-            //CableRenderer.renderLeashFrom(ctx,new Vec3d(10,100,20),new Vec3d(40 ,105,35));
+        });
+        WorldRenderEvents.BEFORE_BLOCK_OUTLINE.register((ctx, hit)->{
             if(hit.getType()== HitResult.Type.BLOCK)
             {
                 if(hit instanceof BlockHitResult) {
@@ -89,10 +95,10 @@ public class ClientEvents {
                         {
                             LootedBlockEntity ent=MBlocks.LOOTED_BLOCK.getBlockEntity(((BlockHitResult) hit).getBlockPos(),ctx.world());
                             if(st !=null && LootableLogic.isGoodTool(st,ent.getRealBlock()))
-                                drawAdventureOutline(((BlockHitResult) hit).getBlockPos(), ctx);
+                                BoxRenderers.drawAdventureOutline(((BlockHitResult) hit).getBlockPos(), ctx);
                         }
                         else if(st !=null && LootableLogic.isGoodTool(st,ctx.world().getBlockState(((BlockHitResult) hit).getBlockPos())))
-                            drawAdventureOutline(((BlockHitResult) hit).getBlockPos(), ctx);
+                           BoxRenderers.drawAdventureOutline(((BlockHitResult) hit).getBlockPos(), ctx);
                     }
 
                 }
@@ -100,23 +106,5 @@ public class ClientEvents {
             return true;
         });
     }
-    private static void drawAdventureOutline(BlockPos pos, net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext ctx)
-    {
-        BlockState st=ctx.world().getBlockState(pos);
-        VertexConsumerProvider.Immediate store=MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-        MatrixStack matrix=ctx.matrixStack();
-        matrix.push();
-        VoxelShape shape=st.getOutlineShape(ctx.world(),pos, ShapeContext.of(ctx.gameRenderer().getClient().player));
-        Vec3d camPos=ctx.camera().getPos();
-        matrix.translate(-camPos.x,-camPos.y,-camPos.z);
-        if(shape!=null && !shape.isEmpty()) {
-            shape = shape.offset(pos.getX(), pos.getY(), pos.getZ());
-            Box box = shape.getBoundingBox();
-            box = box.expand(0.005);
-            long ticks=MinecraftClient.getInstance().world.getTime();
-            float tot=(float) (Math.sin(2 * Math.PI * ticks / 40) * (0.7f - -0f) / 2 + (0.7f + -0f) / 2); // Math.min(0.5f,(ticks % 20) / 20f);
-            WorldRenderer.drawBox(matrix, store.getBuffer(RenderLayer.LINES), box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, 1, 1, 1, 0.3f+tot);
-        }
-        matrix.pop();
-    }
+
 }
