@@ -27,30 +27,45 @@ public class GenericBlocks {
         teien.add("tinted_glass", GenericBlockSet.BlockTypes.GLASS_BLOCK, GenericBlockSet.BlockTypes.GLASS_PANE);
         teien.add("magenta_stained_glass", GenericBlockSet.BlockTypes.GLASS_BLOCK, GenericBlockSet.BlockTypes.GLASS_PANE);
         teien.add("cyan_stained_glass", GenericBlockSet.BlockTypes.GLASS_BLOCK, GenericBlockSet.BlockTypes.GLASS_PANE);
-        teien.add("brown_stained_glass",true, GenericBlockSet.BlockTypes.GLASS_BLOCK, GenericBlockSet.BlockTypes.GLASS_PANE, GenericBlockSet.BlockTypes.OMNI_CARPET_SOLID).disableGen(GenericBlockSet.BlockTypes.OMNI_CARPET_SOLID);
+        teien.add("brown_stained_glass",true, GenericBlockSet.BlockTypes.GLASS_BLOCK, GenericBlockSet.BlockTypes.GLASS_PANE, GenericBlockSet.BlockTypes.OMNI_CARPET_SOLID).disableGen(false,GenericBlockSet.BlockTypes.OMNI_CARPET_SOLID);
         teien.add("glass", GenericBlockSet.BlockTypes.GLASS_BLOCK, GenericBlockSet.BlockTypes.GLASS_PANE);
         teien.add("blue_stained_glass", GenericBlockSet.BlockTypes.GLASS_BLOCK, GenericBlockSet.BlockTypes.GLASS_PANE);
         teien.add("purple_stained_glass", GenericBlockSet.BlockTypes.GLASS_BLOCK, GenericBlockSet.BlockTypes.GLASS_PANE);
         teien.add("white_stained_glass", GenericBlockSet.BlockTypes.GLASS_BLOCK, GenericBlockSet.BlockTypes.GLASS_PANE);
         teien.add("light_blue_stained_glass", GenericBlockSet.BlockTypes.GLASS_BLOCK, GenericBlockSet.BlockTypes.GLASS_PANE);
+        teien.add("yellow_stained_glass", GenericBlockSet.BlockTypes.GLASS_BLOCK, GenericBlockSet.BlockTypes.GLASS_PANE);
         teien.add("iron_bars", GenericBlockSet.BlockTypes.GLASS_BLOCK, GenericBlockSet.BlockTypes.IRON_BARS);
-        teien.add("nether_bricks", GenericBlockSet.BlockTypes.FENCE).disableGen(GenericBlockSet.BlockTypes.FENCE);
+        teien.add("nether_bricks", GenericBlockSet.BlockTypes.FENCE).disableGen(false,GenericBlockSet.BlockTypes.FENCE);
         teien.add("oak_door",true, GenericBlockSet.BlockTypes.DOOR);
         teien.add("birch_door", GenericBlockSet.BlockTypes.DOOR);
         teien.add("iron_door", GenericBlockSet.BlockTypes.DOOR);
+        teien.add("spruce_door",true, GenericBlockSet.BlockTypes.DOOR);
+        teien.add("crimson_door", GenericBlockSet.BlockTypes.DOOR);
         teien.add("shulker_gray", GenericBlockSet.BlockTypes.OMNI_SLAB);
         teien.add("shulker_green", GenericBlockSet.BlockTypes.OMNI_SLAB);
         teien.add("shulker_orange", GenericBlockSet.BlockTypes.PILLAR);
         teien.add("lily_pad",true, GenericBlockSet.BlockTypes.OMNI_CARPET);
-        teien.add("lectern",false, GenericBlockSet.BlockTypes.LECTERN).disableGen(GenericBlockSet.BlockTypes.LECTERN);
-        teien.add("rusty_beam",true, GenericBlockSet.BlockTypes.OMNI_CARPET,GenericBlockSet.BlockTypes.SIMPLE).disableGen(GenericBlockSet.BlockTypes.OMNI_CARPET);
+        teien.add("lectern",false, GenericBlockSet.BlockTypes.LECTERN);//.disableGen(false,GenericBlockSet.BlockTypes.LECTERN);
+        teien.add("rusty_beam",true, GenericBlockSet.BlockTypes.OMNI_CARPET,GenericBlockSet.BlockTypes.SIMPLE).disableGen(false,GenericBlockSet.BlockTypes.OMNI_CARPET);
 
+        teien.add("purpur_block", GenericBlockSet.BlockTypes.SIMPLE).model(GenericBlockSet.ModelType.PILLAR);
+        teien.add("purpur_pillar", GenericBlockSet.BlockTypes.OMNI_BLOCK).model(GenericBlockSet.ModelType.INVERSED_PILLAR);
+        teien.add("purpur_block_1", GenericBlockSet.BlockTypes.SIMPLE).model(GenericBlockSet.ModelType.PILLAR);
+        teien.add("crimson_stem", GenericBlockSet.BlockTypes.OMNI_BLOCK).model(GenericBlockSet.ModelType.INVERSED_PILLAR);
+        teien.add("oak_trapdoor",true, GenericBlockSet.BlockTypes.TRAPDOOR);
+        teien.add("dead_horn_coral_fan",true, GenericBlockSet.BlockTypes.OMNI_CARPET).disableGen(true);
+        teien.add("composter", GenericBlockSet.BlockTypes.SIMPLE).model(GenericBlockSet.ModelType.COMPOSTER);
+        teien.add("shulker_white",true, GenericBlockSet.BlockTypes.OMNI_BLOCK).disableGen(true);
+        teien.add("blue_bed", GenericBlockSet.BlockTypes.BED);
+        teien.add("bookshelf", GenericBlockSet.BlockTypes.FURNACE).model(GenericBlockSet.ModelType.TWO_TEXTURED_MACHINE);
+        teien.add("chiseled_bookshelf", GenericBlockSet.BlockTypes.FURNACE).model(GenericBlockSet.ModelType.TWO_TEXTURED_MACHINE);
         sets.add(teien);
     }
     static GenericBlockSet diams= new GenericBlockSet("diams");
     static {
-        diams.add("gray_concrete", GenericBlockSet.BlockTypes.OMNI_SLAB).disableGen();
-        diams.add("gray_glazed_terracotta", GenericBlockSet.BlockTypes.ROTATABLE_SLAB).disableGen();
+        diams.add("gray_concrete", GenericBlockSet.BlockTypes.OMNI_SLAB).disableGen(false);
+        diams.add("gray_glazed_terracotta", GenericBlockSet.BlockTypes.ROTATABLE_SLAB).disableGen(false);
+        diams.add("road_barrier",true, GenericBlockSet.BlockTypes.PILLAR).disableGen(false);
         sets.add(diams);
     }
     static GenericBlockSet last_days= new GenericBlockSet("last_days");
@@ -73,7 +88,7 @@ public class GenericBlocks {
         last_days.add("jungle_door", true,GenericBlockSet.BlockTypes.DOOR);
         last_days.add("acacia_door", true,GenericBlockSet.BlockTypes.DOOR);
         last_days.add("dark_oak_door", true,GenericBlockSet.BlockTypes.DOOR);
-        last_days.add("lantern",true, GenericBlockSet.BlockTypes.LANTERN).disableGen();
+        last_days.add("lantern",true, GenericBlockSet.BlockTypes.LANTERN).disableGen(false);
         last_days.add("green_bed", GenericBlockSet.BlockTypes.BED);
         last_days.add("brown_bed", GenericBlockSet.BlockTypes.BED);
         last_days.add("oak_trapdoor", GenericBlockSet.BlockTypes.TRAPDOOR);

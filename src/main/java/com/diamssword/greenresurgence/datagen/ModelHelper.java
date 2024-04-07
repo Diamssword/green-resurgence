@@ -30,6 +30,12 @@ public class ModelHelper {
             case PILLAR -> {
                 return TexturedModel.makeFactory(b1 -> this.textureMapPillar(name),new Model(Optional.of(new Identifier("minecraft", "block/cube_column_horizontal")), Optional.empty(), TextureKey.END, TextureKey.SIDE));
             }
+            case COMPOSTER -> {
+                return TexturedModel.makeFactory(b1 -> this.textureMapComposter(name),new Model(Optional.of(new Identifier( "block/composter")), Optional.empty(), TextureKey.PARTICLE, TextureKey.SIDE,TextureKey.TOP,TextureKey.BOTTOM,TextureKey.INSIDE));
+            }
+            case INVERSED_PILLAR -> {
+                return TexturedModel.makeFactory(b1 -> this.textureMapPillar(name),new Model(Optional.of(new Identifier(GreenResurgence.ID, "block/generic/cube_column_vertical")), Optional.empty(), TextureKey.END, TextureKey.SIDE));
+            }
             case MACHINE -> {
                 return TexturedModel.makeFactory(b1 -> this.textureMapMachine(name,false,false),new Model(Optional.of(new Identifier("minecraft", "block/orientable_with_bottom")), Optional.empty(), TextureKey.TOP, TextureKey.SIDE, TextureKey.FRONT, TextureKey.BOTTOM));
             }
@@ -48,6 +54,16 @@ public class ModelHelper {
         TextureMap map = new TextureMap();
         map.put(TextureKey.SIDE,getBlockModelId(name).withSuffixedPath("_side"));
         map.put(TextureKey.END,getBlockModelId(name).withSuffixedPath("_top"));
+        return map;
+    }
+    public TextureMap textureMapComposter(String name)
+    {
+        TextureMap map = new TextureMap();
+        map.put(TextureKey.SIDE,getBlockModelId(name).withSuffixedPath("_side"));
+        map.put(TextureKey.TOP,getBlockModelId(name).withSuffixedPath("_top"));
+        map.put(TextureKey.PARTICLE,getBlockModelId(name).withSuffixedPath("_side"));
+        map.put(TextureKey.BOTTOM,getBlockModelId(name).withSuffixedPath("_bottom"));
+        map.put(TextureKey.INSIDE,getBlockModelId(name).withSuffixedPath("_bottom"));
         return map;
     }
     public TextureMap textureMapMachine(String name,boolean noBottom,boolean noTop)

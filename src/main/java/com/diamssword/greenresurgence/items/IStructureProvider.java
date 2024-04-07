@@ -4,6 +4,7 @@ import com.diamssword.greenresurgence.network.StructureSizePacket;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -15,7 +16,7 @@ public interface IStructureProvider {
     public Direction getDirection(ItemStack stack, World w);
     public Identifier getStructureName(ItemStack stack, World w);
     public StructureType strutctureType(ItemStack stack, World w);
-    public static enum StructureType{
+    public static enum StructureType implements StringIdentifiable {
         normal(0),
         centered(1),
         jigsaw(2);
@@ -33,6 +34,11 @@ public interface IStructureProvider {
                     return t;
             }
             return StructureType.values()[0];
+        }
+
+        @Override
+        public String asString() {
+            return this.toString();
         }
     }
 }
