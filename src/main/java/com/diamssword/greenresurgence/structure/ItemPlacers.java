@@ -20,7 +20,7 @@ public class ItemPlacers {
 
     private static final Map<String,Item> toRegister=new HashMap<>();
     public static final List<MultiblockInstance> multiblocksStructure=new ArrayList<>();
-  //  public static MultiblockInstance rusted_car=multiblock("rusted_car",false);
+    public static MultiblockInstance rusted_car=multiblock("rusted_car",false);
     public static StructurePlacerItem electric_post=structure("electric_post",true);
     public static JigsawPlacerItem road_droit=jigsaw("road_droit",new Identifier("build","roads/droit"));
     public static JigsawPlacerItem road_inter_d=jigsaw("road_inter_d",new Identifier("build","roads/intersection_d"));

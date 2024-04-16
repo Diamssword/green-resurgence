@@ -24,6 +24,9 @@
 		],
 		"fabric-datagen": [
 			"com.diamssword.greenresurgence.GreenResurgenceDataGenerator"
+		],
+		"cardinal-components": [
+			"com.diamssword.greenresurgence.systems.Components"
 		]
 	},
 	"mixins": [
@@ -41,5 +44,10 @@
 	},
 	"suggests": {
 		"another-mod": "*"
+	},
+	"custom": {
+		"cardinal-components": [
+			"green_resurgence:base_list"
+		]
 	}
 }

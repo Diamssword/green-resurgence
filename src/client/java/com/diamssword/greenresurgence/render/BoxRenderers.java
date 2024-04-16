@@ -2,18 +2,25 @@ package com.diamssword.greenresurgence.render;
 
 import com.diamssword.greenresurgence.items.IStructureProvider;
 import com.diamssword.greenresurgence.structure.StructureInfos;
+import com.diamssword.greenresurgence.systems.Components;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.render.debug.DebugRenderer;
+import net.minecraft.client.render.entity.ArmorStandEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
+
+import java.util.List;
 
 public class BoxRenderers {
     public static void drawAdventureOutline(BlockPos pos, net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext ctx)
@@ -40,17 +47,17 @@ public class BoxRenderers {
         MinecraftClient mc=MinecraftClient.getInstance();
         VertexConsumerProvider.Immediate store= MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
         matrix.push();
-        double h=mc.cameraEntity.getEyeHeight(mc.cameraEntity.getPose());
-        double d4 = oldEntityPos + (h - oldEntityPos) * (double)mc.getTickDelta();
-        double d1 = mc.cameraEntity.prevX + (mc.cameraEntity.getX() - mc.cameraEntity.prevX) * (double)mc.getTickDelta();
-        double d2 = mc.cameraEntity.prevY + (mc.cameraEntity.getY() - mc.cameraEntity.prevY) * (double)mc.getTickDelta();
+        Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
+        if(camera.isReady()) {
 
-        double d3 = mc.cameraEntity.prevZ + (mc.cameraEntity.getZ() - mc.cameraEntity.prevZ) * (double)mc.getTickDelta();
-        matrix.translate(-d1,-d2-d4,-d3);
-        Box box = new Box(pos.x,pos.y,pos.z,pos.x+size.x,pos.y+size.y,pos.z+size.z).expand(0.005);
-        WorldRenderer.drawBox(matrix, store.getBuffer(RenderLayer.LINES), box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, r, g, b, a);
-        oldEntityPos=h;
-        matrix.pop();
+            Vec3d cam=camera.getPos().negate();
+            //matrix.translate(cam.x,cam.y,cam.z);
+            Box box = new Box(pos.x, pos.y, pos.z, pos.x + size.x, pos.y + size.y, pos.z + size.z).expand(0.005);
+            box=box.offset(camera.getPos().negate());
+            WorldRenderer.drawBox(matrix, store.getBuffer(RenderLayer.LINES), box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, r, g, b, a);
+
+            matrix.pop();
+        }
     }
     public static void drawStructureItemOverlay(MatrixStack matrix)
     {
@@ -119,5 +126,32 @@ public class BoxRenderers {
                 drawStructureBox(matrix,new Vec3d(pos.getX(),pos.getY()+1,pos.getZ()),new Vec3d(1,1,1),0.5f,1f,1,1);
                 drawStructureBox(matrix,new Vec3d(pos1.getX(),pos1.getY()+1,pos1.getZ()),new Vec3d(inf.size().getX()+i,inf.size().getY()+j,inf.size().getZ()+k),1,0.5f,1,1);
             }
+    }
+
+    public static void drawBaseOverlays(MatrixStack matrix)
+    {
+        MinecraftClient mc=MinecraftClient.getInstance();
+
+        if(mc.world!=null && mc.getEntityRenderDispatcher().shouldRenderHitboxes()) {
+            List<Pair<String, BlockBox>> ls = mc.world.getComponent(Components.BASE_LIST).getBoxesForClient();
+            ls.forEach(b -> {
+                VertexConsumerProvider.Immediate store= MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
+                VertexConsumerProvider.Immediate store1= MinecraftClient.getInstance().getBufferBuilders().getEffectVertexConsumers();
+
+                int hash= b.getLeft().hashCode();
+                int c1=(hash)&0xFF;
+                int c2= (hash>>8)&0xFF;
+                int c3=(hash>>16)&0xFF;
+                float red=Math.min(Math.max(c1%255f,0f),255f);
+                float green=Math.min(Math.max(c2%255f,0f),255f);
+                float blue=Math.min(Math.max(c3%255f,0f),255f);
+                DebugRenderer.drawBox(matrix,store,new BlockPos(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()),new BlockPos(b.getRight().getMaxX()+1, b.getRight().getMaxY()+1, b.getRight().getMaxZ()+1),red,green,blue,0.2f);
+                BlockPos p1=b.getRight().getCenter();
+                DebugRenderer.drawString(matrix,store1,"Camp: "+b.getLeft(),p1.getX(),p1.getY(),p1.getZ(),0xffffff,0.1f,true,0,true);
+                drawStructureBox(matrix, new Vec3d(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()), Vec3d.of(b.getRight().getDimensions().add(1,1,1)), red, green, blue, 1);
+            });
+        }
+
+
     }
 }

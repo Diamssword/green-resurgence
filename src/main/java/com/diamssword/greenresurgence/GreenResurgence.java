@@ -1,9 +1,11 @@
 package com.diamssword.greenresurgence;
 
+import com.diamssword.greenresurgence.commands.FactionCommand;
 import com.diamssword.greenresurgence.commands.StructureItemCommand;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
+import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
 import net.fabricmc.api.ModInitializer;
@@ -30,6 +32,8 @@ public class GreenResurgence implements ModInitializer {
 		GenericBlocks.register();
 		GenericBlocks.GENERIC_GROUP.initialize();
 		registerCommand("giveStructureItem",StructureItemCommand::register);
+		registerCommand("faction", FactionCommand::register);
+		BaseInteractions.register();
 
 	}
 	public void registerCommand(String name, Consumer<LiteralArgumentBuilder<ServerCommandSource>> builder)

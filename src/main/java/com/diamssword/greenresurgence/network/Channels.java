@@ -22,7 +22,9 @@ public class Channels {
             int z=read.readInt();
             return new Vec3i(x,y,z);
         });
+
         AdventureInteract.init();
         StructureSizePacket.init();
+        CurrentZonePacket.init();
     }
 }

@@ -48,8 +48,6 @@ public class AdventureInteract {
                         ctx.player().getWorld().syncWorldEvent( WorldEvents.BLOCK_BROKEN, msg.pos, Block.getRawIdFromState(state));
                         MBlocks.LOOTED_BLOCK.getBlockEntity(msg.pos,ctx.player().getWorld()).setRealBlock(state);
                         setCooldown(ctx.player());
-
-
                 }
             }
         });

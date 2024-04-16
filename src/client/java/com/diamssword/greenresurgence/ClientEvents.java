@@ -4,33 +4,24 @@ import com.diamssword.greenresurgence.blockEntities.ConnectorBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.network.AdventureInteract;
 import com.diamssword.greenresurgence.network.Channels;
+import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.render.BoxRenderers;
 import com.diamssword.greenresurgence.render.CableRenderer;
 import com.diamssword.greenresurgence.systems.LootableLogic;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerBlockEntityEvents;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.math.BlockBox;
 import net.minecraft.world.GameMode;
 
-import static com.diamssword.greenresurgence.render.BoxRenderers.drawStructureItemOverlay;
-import static com.diamssword.greenresurgence.render.BoxRenderers.drawStructureOverlay;
+import static com.diamssword.greenresurgence.render.BoxRenderers.*;
 
 public class ClientEvents {
     static PlayerListEntry playerListEntry;
@@ -77,12 +68,13 @@ public class ClientEvents {
         });
         WorldRenderEvents.LAST.register((ctx)->{
             drawStructureItemOverlay(ctx.matrixStack());
+            drawBaseOverlays(ctx.matrixStack());
             CableRenderer.render(ctx);
         });
         WorldRenderEvents.BEFORE_BLOCK_OUTLINE.register((ctx, hit)->{
             if(hit.getType()== HitResult.Type.BLOCK)
             {
-                if(hit instanceof BlockHitResult) {
+                if(hit instanceof BlockHitResult hitB) {
                     if(playerListEntry ==null)
                         playerListEntry = MinecraftClient.getInstance().getNetworkHandler().getPlayerListEntry(MinecraftClient.getInstance().player.getUuid());
 
@@ -90,15 +82,24 @@ public class ClientEvents {
                     {
                         ItemStack st=MinecraftClient.getInstance().player.getMainHandStack();
 
-                        BlockState state=ctx.world().getBlockState(((BlockHitResult) hit).getBlockPos());
+                        BlockState state=ctx.world().getBlockState((hitB).getBlockPos());
                         if(state.getBlock()== MBlocks.LOOTED_BLOCK)
                         {
-                            LootedBlockEntity ent=MBlocks.LOOTED_BLOCK.getBlockEntity(((BlockHitResult) hit).getBlockPos(),ctx.world());
+                            LootedBlockEntity ent=MBlocks.LOOTED_BLOCK.getBlockEntity((hitB).getBlockPos(),ctx.world());
                             if(st !=null && LootableLogic.isGoodTool(st,ent.getRealBlock()))
-                                BoxRenderers.drawAdventureOutline(((BlockHitResult) hit).getBlockPos(), ctx);
+                                BoxRenderers.drawAdventureOutline((hitB).getBlockPos(), ctx);
                         }
-                        else if(st !=null && LootableLogic.isGoodTool(st,ctx.world().getBlockState(((BlockHitResult) hit).getBlockPos())))
-                           BoxRenderers.drawAdventureOutline(((BlockHitResult) hit).getBlockPos(), ctx);
+                        else if(st !=null && LootableLogic.isGoodTool(st,ctx.world().getBlockState((hitB).getBlockPos())))
+                           BoxRenderers.drawAdventureOutline((hitB).getBlockPos(), ctx);
+                    }
+                    else if(playerListEntry!=null && playerListEntry.getGameMode()== GameMode.SURVIVAL)
+                    {
+                        for (BlockBox box : CurrentZonePacket.currentZone) {
+                            if(box.contains(hitB.getBlockPos()))
+                                return true;
+                        }
+                        return false;
+
                     }
 
                 }
