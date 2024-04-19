@@ -7,6 +7,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
@@ -173,5 +174,14 @@ public class FactionList implements IFactionList, AutoSyncedComponent {
             ls.add(t);
         });
         tag.put("bases",ls);
+    }
+
+    @Override
+    public void serverTick() {
+        if(provider.getTime()%40==0)
+        {
+            IFactionList list=provider.getComponent(Components.BASE_LIST);
+            list.getAll().forEach(b->b.tick((ServerWorld) provider));
+        }
     }
 }

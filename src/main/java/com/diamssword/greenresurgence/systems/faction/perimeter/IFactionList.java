@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.systems.faction.perimeter;
 
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
+import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockBox;
@@ -9,7 +10,7 @@ import net.minecraft.util.math.Vec3i;
 import java.util.List;
 import java.util.Optional;
 
-public interface IFactionList extends ComponentV3 {
+public interface IFactionList extends ServerTickingComponent, ComponentV3 {
     public List<FactionInstance> getAll();
     public List<String> getNames();
     public Optional<FactionInstance> getAt(Vec3i pos);

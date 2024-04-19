@@ -56,7 +56,7 @@ public class LootedBlockEntityRenderer implements BlockEntityRenderer<LootedBloc
         MatrixStack.Entry entry3 = matrices.peek();
         int tot =(int) (((LootedBlockEntity.MAX-blockEntity.durability)/(float)LootedBlockEntity.MAX)*9);
 
-        OverlayVertexConsumer vertexConsumer2 = new OverlayVertexConsumer(MinecraftClient.getInstance().getBufferBuilders().getEffectVertexConsumers().getBuffer(ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(Math.max(0,Math.min(tot,9)))), entry3.getPositionMatrix(), entry3.getNormalMatrix(), 1.0f);
+        OverlayVertexConsumer vertexConsumer2 = new OverlayVertexConsumer(MinecraftClient.getInstance().getBufferBuilders().getOutlineVertexConsumers().getBuffer(ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(Math.max(0,Math.min(tot,9)))), entry3.getPositionMatrix(), entry3.getNormalMatrix(), 1f);
         this.blockRenderManager.renderDamage(blockEntity.getRealBlock(), blockPos, (BlockRenderView)blockEntity.getWorld(), matrices, vertexConsumer2);
        // matrices.pop();
 

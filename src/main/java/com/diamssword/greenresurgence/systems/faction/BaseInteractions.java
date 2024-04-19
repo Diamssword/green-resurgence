@@ -27,7 +27,7 @@ public class BaseInteractions {
 
     public static void register()
     {
-        ServerTickEvents.START_WORLD_TICK.register(BaseInteractions::playerTick);
+       // ServerTickEvents.START_WORLD_TICK.register(BaseInteractions::playerTick);
         AttackBlockCallback.EVENT.register(BaseInteractions::destroyBlock);
         UseBlockCallback.EVENT.register(BaseInteractions::placeBlock);
         BaseEventCallBack.ENTER.register(BaseInteractions::onEnter);
@@ -93,13 +93,5 @@ public class BaseInteractions {
         }
         return ActionResult.PASS;
     }
-    public static void playerTick(ServerWorld world)
-    {
-        if(world.getTime()%40==0)
-        {
-            IFactionList list=world.getComponent(Components.BASE_LIST);
-            list.getAll().forEach(b->b.tick(world));
-        }
 
-    }
 }

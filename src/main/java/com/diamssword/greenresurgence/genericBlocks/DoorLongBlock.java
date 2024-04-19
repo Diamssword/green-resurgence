@@ -62,8 +62,17 @@ public class DoorLongBlock extends DoorBlock {
                 if (neighborState.isOf(this) && neighborState.get(TOP)) {
                     return (BlockState)((BlockState)((BlockState)((BlockState)state.with(FACING, neighborState.get(FACING))).with(OPEN, neighborState.get(OPEN))).with(HINGE, neighborState.get(HINGE))).with(POWERED, neighborState.get(POWERED));
                 }
-                return Blocks.AIR.getDefaultState();
+                return state;
             }
+        }
+        if (direction.getAxis() == Direction.Axis.Y && doubleBlockHalf == DoubleBlockHalf.LOWER == (direction == Direction.UP)) {
+            if (neighborState.isOf(this) && neighborState.get(HALF) != doubleBlockHalf) {
+                return (BlockState)((BlockState)((BlockState)((BlockState)state.with(FACING, neighborState.get(FACING))).with(OPEN, neighborState.get(OPEN))).with(HINGE, neighborState.get(HINGE))).with(POWERED, neighborState.get(POWERED));
+            }
+            return Blocks.AIR.getDefaultState();
+        }
+        if (doubleBlockHalf == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !state.canPlaceAt(world, pos)) {
+            return Blocks.AIR.getDefaultState();
         }
         return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
     }

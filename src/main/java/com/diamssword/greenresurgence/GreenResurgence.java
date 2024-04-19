@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence;
 
 import com.diamssword.greenresurgence.commands.FactionCommand;
+import com.diamssword.greenresurgence.commands.StructureBlockHelperCommand;
 import com.diamssword.greenresurgence.commands.StructureItemCommand;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.network.Channels;
@@ -33,6 +34,7 @@ public class GreenResurgence implements ModInitializer {
 		GenericBlocks.GENERIC_GROUP.initialize();
 		registerCommand("giveStructureItem",StructureItemCommand::register);
 		registerCommand("faction", FactionCommand::register);
+		registerCommand("structureBlockHelper", StructureBlockHelperCommand::register);
 		BaseInteractions.register();
 
 	}
