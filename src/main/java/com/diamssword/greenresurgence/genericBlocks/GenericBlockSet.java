@@ -206,6 +206,15 @@ public class GenericBlockSet {
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
                     }
+                    case LADDER -> {
+                        Item i;
+                        Block b=new GenericLadder(AbstractBlock.Settings.create().notSolid().strength(0.4f).sounds(BlockSoundGroup.LADDER).nonOpaque().pistonBehavior(PistonBehavior.DESTROY));
+                        Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
+                        Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
+                        glassRenderNeeded.add(b);
+                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
+                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
+                    }
                 }
             }
         });
@@ -226,6 +235,8 @@ public class GenericBlockSet {
                     factory.apply(BlockTags.FENCES).add(b.block);
                 if (b.type == BlockTypes.DOOR)
                     factory.apply(BlockTags.DOORS).add(b.block);
+            if (b.type == BlockTypes.LADDER)
+                factory.apply(BlockTags.CLIMBABLE).add(b.block);
 
         }
     }
@@ -282,6 +293,14 @@ public class GenericBlockSet {
                         factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
 
 
+                    }
+                    case LADDER -> {
+                        TextureMap map = new TextureMap();
+                        map.put(TextureKey.PARTICLE,helper.getBlockModelId(b.name));
+                        generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(b.block, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name))).coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
+                        if(noModel) return;
+                        TexturedModel.Factory factory = TexturedModel.makeFactory(b1 -> map,new Model(Optional.of(new Identifier(GreenResurgence.ID, "block/generic/ladder")), Optional.empty(), TextureKey.PARTICLE));
+                        factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
                     }
                     case GLASS_PANE, IRON_BARS -> {
                         helper.registerGlassPane(generator, b.name.replace("_pane", ""), b.block, b.type == BlockTypes.IRON_BARS);
@@ -423,5 +442,6 @@ public class GenericBlockSet {
         LANTERN,
         BED,
         TRAPDOOR,
+        LADDER
     }
 }

@@ -59,6 +59,7 @@ public class GenericBlocks {
         teien.add("blue_bed", GenericBlockSet.BlockTypes.BED);
         teien.add("bookshelf", GenericBlockSet.BlockTypes.FURNACE).model(GenericBlockSet.ModelType.TWO_TEXTURED_MACHINE);
         teien.add("chiseled_bookshelf", GenericBlockSet.BlockTypes.FURNACE).model(GenericBlockSet.ModelType.TWO_TEXTURED_MACHINE);
+        teien.add("ladder", GenericBlockSet.BlockTypes.LADDER).disableGen(true);
         sets.add(teien);
     }
     static GenericBlockSet diams= new GenericBlockSet("diams");

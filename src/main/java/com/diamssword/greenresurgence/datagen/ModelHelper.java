@@ -33,6 +33,7 @@ public class ModelHelper {
             case COMPOSTER -> {
                 return TexturedModel.makeFactory(b1 -> this.textureMapComposter(name),new Model(Optional.of(new Identifier( "block/composter")), Optional.empty(), TextureKey.PARTICLE, TextureKey.SIDE,TextureKey.TOP,TextureKey.BOTTOM,TextureKey.INSIDE));
             }
+
             case INVERSED_PILLAR -> {
                 return TexturedModel.makeFactory(b1 -> this.textureMapPillar(name),new Model(Optional.of(new Identifier(GreenResurgence.ID, "block/generic/cube_column_vertical")), Optional.empty(), TextureKey.END, TextureKey.SIDE));
             }

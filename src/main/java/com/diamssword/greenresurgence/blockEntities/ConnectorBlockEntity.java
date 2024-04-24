@@ -9,6 +9,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.CampfireBlockEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -20,8 +21,10 @@ import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import org.jetbrains.annotations.Nullable;
@@ -33,6 +36,7 @@ import java.util.List;
 public class ConnectorBlockEntity extends BlockEntity {
     public List<BlockPos> connections = new ArrayList<>();
     public BlockPos basePos;
+    public Direction baseDir;
     public ConnectorBlockEntity(BlockPos pos, BlockState state) {
         super(MBlocks.CONNECTOR_BE, pos, state);
     }
@@ -76,7 +80,17 @@ public class ConnectorBlockEntity extends BlockEntity {
         nbt.putLongArray("connections", this.connections.stream().map(BlockPos::asLong).toList());
         if(this.basePos ==null)
             this.basePos = this.pos.add(0,0,0);
+        if(this.baseDir ==null)
+        {
+            if(this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING))
+            {
+                this.baseDir=this.getCachedState().get(Properties.HORIZONTAL_FACING);
+            }
+
+        }
         nbt.putLong("base",this.basePos.asLong());
+        if(this.baseDir!=null)
+            nbt.putInt("baseDir",this.baseDir.getId());
         super.writeNbt(nbt);
     }
     @Override
@@ -87,6 +101,15 @@ public class ConnectorBlockEntity extends BlockEntity {
         else {
             this.basePos = this.pos.add(0,0,0);
             this.markDirty();
+        }
+        if(nbt.contains("baseDir"))
+            this.baseDir=Direction.byId(nbt.getInt("baseDir"));
+        else {
+            if(this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING))
+            {
+                this.baseDir=this.getCachedState().get(Properties.HORIZONTAL_FACING);
+                this.markDirty();
+            }
         }
         this.connections= new ArrayList<>( Arrays.stream(nbt.getLongArray("connections")).mapToObj(BlockPos::fromLong).toList());
         if(this.world !=null)
@@ -131,10 +154,33 @@ public class ConnectorBlockEntity extends BlockEntity {
         if(!this.pos.equals(this.basePos))
         {
             BlockPos off=this.pos.subtract(this.basePos);
-            this.connections = new ArrayList<>(this.connections.stream().map(v->v.add(off)).toList());
+            this.connections = new ArrayList<>(this.connections.stream().map(v->this.pos.add(rotateConnections(v.add(off)))).toList());
             this.basePos=pos.add(0,0,0);
+
+            if(this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
+                this.baseDir = this.getCachedState().get(Properties.HORIZONTAL_FACING);
+            }
             this.markDirty();
             this.world.updateListeners(this.pos,this.getCachedState(),this.getCachedState(), Block.NOTIFY_ALL);
         }
+    }
+    private BlockPos rotateConnections(BlockPos pos)
+    {
+        BlockPos v=pos.subtract(this.pos);
+        if(this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
+            Direction newDir=this.getCachedState().get(Properties.HORIZONTAL_FACING);
+            if(this.baseDir.getOpposite()==newDir) {
+                    return new BlockPos(-v.getX(), v.getY(), -v.getZ());
+            }
+            else if(this.baseDir.rotateYClockwise()==newDir)
+            {
+                return  new BlockPos(-v.getZ(),v.getY(),v.getX());
+            }
+            else if(this.baseDir.rotateYCounterclockwise()==newDir)
+            {
+                return  new BlockPos(v.getZ(),v.getY(),-v.getX());
+            }
+        }
+            return v;
     }
 }
