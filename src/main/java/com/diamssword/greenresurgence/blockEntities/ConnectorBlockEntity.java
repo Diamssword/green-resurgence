@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.blockEntities;
 
+import com.diamssword.greenresurgence.MBlockEntities;
 import com.diamssword.greenresurgence.MBlocks;
 import com.diamssword.greenresurgence.blocks.ConnectorBlock;
 import com.diamssword.greenresurgence.systems.CableNetwork;
@@ -38,7 +39,7 @@ public class ConnectorBlockEntity extends BlockEntity {
     public BlockPos basePos;
     public Direction baseDir;
     public ConnectorBlockEntity(BlockPos pos, BlockState state) {
-        super(MBlocks.CONNECTOR_BE, pos, state);
+        super(MBlockEntities.CONNECTOR_BLOCK, pos, state);
     }
 
     public void addConnection(BlockPos from)
@@ -104,13 +105,12 @@ public class ConnectorBlockEntity extends BlockEntity {
         }
         if(nbt.contains("baseDir"))
             this.baseDir=Direction.byId(nbt.getInt("baseDir"));
-        else {
-            if(this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING))
-            {
-                this.baseDir=this.getCachedState().get(Properties.HORIZONTAL_FACING);
-                this.markDirty();
-            }
+        else  if(this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING))
+        {
+            this.baseDir=this.getCachedState().get(Properties.HORIZONTAL_FACING);
+            this.markDirty();
         }
+
         this.connections= new ArrayList<>( Arrays.stream(nbt.getLongArray("connections")).mapToObj(BlockPos::fromLong).toList());
         if(this.world !=null)
             calculateNewConnections();

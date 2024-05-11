@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.blockEntities;
 
+import com.diamssword.greenresurgence.MBlockEntities;
 import com.diamssword.greenresurgence.MBlocks;
 import com.diamssword.greenresurgence.systems.LootableLogic;
 import net.minecraft.block.Block;
@@ -26,7 +27,7 @@ public class LootedBlockEntity extends BlockEntity {
     public int cooldown=200;
     public BlockState block;
     public LootedBlockEntity( BlockPos pos, BlockState state) {
-        super(MBlocks.LOOTED_BE, pos, state);
+        super(MBlockEntities.LOOTED_BLOCk, pos, state);
     }
     public BlockState getRealBlock()
     {

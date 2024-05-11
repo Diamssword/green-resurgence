@@ -13,5 +13,6 @@ public class GreenResurgenceDataGenerator implements DataGeneratorEntrypoint {
 				pack.addProvider(LootTableGenerator::new);
 				pack.addProvider(ModelGenerator::new);
 				pack.addProvider(LangGenerator::new);
+
 	}
 }

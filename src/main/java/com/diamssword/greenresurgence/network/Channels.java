@@ -1,9 +1,9 @@
 package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import io.wispforest.owo.network.OwoNetChannel;
 import io.wispforest.owo.network.serialization.PacketBufSerializer;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3i;
 
@@ -22,9 +22,10 @@ public class Channels {
             int z=read.readInt();
             return new Vec3i(x,y,z);
         });
-
+        PacketBufSerializer.register(MultiInvScreenHandler.Props.class, MultiInvScreenHandler.Props::serializer, MultiInvScreenHandler.Props::unserializer);
         AdventureInteract.init();
         StructureSizePacket.init();
         CurrentZonePacket.init();
+        GuiPackets.init();
     }
 }

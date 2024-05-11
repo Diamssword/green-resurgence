@@ -1,0 +1,21 @@
+package com.diamssword.greenresurgence;
+
+import com.diamssword.greenresurgence.blockEntities.ConnectorBlockEntity;
+import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
+import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
+import io.wispforest.owo.registration.reflect.BlockEntityRegistryContainer;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.block.entity.StructureBlockBlockEntity;
+
+import static com.diamssword.greenresurgence.MBlocks.*;
+
+public class MBlockEntities implements BlockEntityRegistryContainer {
+
+    public static final BlockEntityType<LootedBlockEntity> LOOTED_BLOCk= FabricBlockEntityTypeBuilder.create(LootedBlockEntity::new, LOOTED_BLOCK).build();
+    public static final BlockEntityType<ConnectorBlockEntity> CONNECTOR_BLOCK= FabricBlockEntityTypeBuilder.create(ConnectorBlockEntity::new, MBlocks.CONNECTOR).build();
+    public static final BlockEntityType<StructureBlockBlockEntity> SMART_STRUCTURE_BLOCK= FabricBlockEntityTypeBuilder.create(StructureBlockBlockEntity::new, MBlocks.STRUCTURE_BLOCK_SMART).build();
+    public static final BlockEntityType<ItemBlockEntity> ITEM_BLOCK= FabricBlockEntityTypeBuilder.create(ItemBlockEntity::new, MBlocks.ITEM_BLOCK).build();
+
+
+}

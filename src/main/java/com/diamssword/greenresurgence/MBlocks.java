@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence;
 
 import com.diamssword.greenresurgence.blockEntities.ConnectorBlockEntity;
+import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.blocks.*;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
@@ -24,10 +25,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class MBlocks implements BlockRegistryContainer {
 
@@ -39,23 +36,18 @@ public class MBlocks implements BlockRegistryContainer {
     public static final PostBlock ELECTRIC_POST=new PostBlock(AbstractBlock.Settings.create().nonOpaque().sounds(BlockSoundGroup.WOOD),true);
     @DiamsGroup
     public static final PostBlock WOOD_POST=new PostBlock(AbstractBlock.Settings.create().nonOpaque().sounds(BlockSoundGroup.WOOD),false);
+    @DiamsGroup
+    public static final MetroCorridorFull METRO_CORRIDOR=new MetroCorridorFull(AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL),0);
+    @DiamsGroup
+    public static final MetroCorridorFull METRO_CORRIDOR_SLAB=new MetroCorridorFull(AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL),1);
+    @DiamsGroup
+    public static final MetroCorridorFull METRO_CORRIDOR_SLAB_INVERT=new MetroCorridorFull(AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL),2);
     public static final StructureBlock STRUCTURE_BLOCK =new StructureBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
     public static final SmartStructureBlock STRUCTURE_BLOCK_SMART =new SmartStructureBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
-    public static final BlockEntityType<LootedBlockEntity> LOOTED_BE = Registry.register(
-            Registries.BLOCK_ENTITY_TYPE,new Identifier(GreenResurgence.ID, "looted_block"),
-            FabricBlockEntityTypeBuilder.create(LootedBlockEntity::new, LOOTED_BLOCK).build()
-    );
-    public static final BlockEntityType<ConnectorBlockEntity> CONNECTOR_BE = Registry.register(
-            Registries.BLOCK_ENTITY_TYPE,new Identifier(GreenResurgence.ID, "connector_block"),
-            FabricBlockEntityTypeBuilder.create(ConnectorBlockEntity::new, LOOTED_BLOCK).build()
-    );
-    public static final BlockEntityType<ConnectorBlockEntity> STRUCUTRE_BE = Registry.register(
-            Registries.BLOCK_ENTITY_TYPE,new Identifier(GreenResurgence.ID, "smart_structure_block"),
-            FabricBlockEntityTypeBuilder.create(ConnectorBlockEntity::new, STRUCTURE_BLOCK_SMART).build()
-    );
+    public static final ItemBlock ITEM_BLOCK =new ItemBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
+
     @Override
     public void afterFieldProcessing() {
-
     }
     @Override
     public void postProcessField(String namespace, Block value, String identifier, Field field) {

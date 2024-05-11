@@ -6,12 +6,10 @@ import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.faction.perimeter.FactionInstance;
 import com.diamssword.greenresurgence.systems.faction.perimeter.IFactionList;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -76,22 +74,13 @@ public class BaseInteractions {
         {
             if(pl.interactionManager.getGameMode().equals(GameMode.SURVIVAL))
             {
-        BlockPos p=hit.getBlockPos().offset(hit.getSide());
+                BlockPos p=hit.getBlockPos().offset(hit.getSide());
+
                 IFactionList list=w.getComponent(Components.BASE_LIST);
                 if(!list.canEditAt(pl,p))
                     return ActionResult.FAIL;
             }
         }
-        else if(w.isClient && !player.isCreative())
-        {
-            BlockPos p=hit.getBlockPos().offset(hit.getSide());
-            for (BlockBox box : CurrentZonePacket.currentZone) {
-                if(box.contains(p))
-                    return ActionResult.PASS;
-            }
-            return ActionResult.FAIL;
-        }
         return ActionResult.PASS;
     }
-
 }

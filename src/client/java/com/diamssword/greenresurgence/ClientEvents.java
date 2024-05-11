@@ -8,18 +8,25 @@ import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.render.BoxRenderers;
 import com.diamssword.greenresurgence.render.CableRenderer;
 import com.diamssword.greenresurgence.systems.LootableLogic;
+import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockBox;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameMode;
+import net.minecraft.world.World;
 
 import static com.diamssword.greenresurgence.render.BoxRenderers.*;
 
@@ -106,6 +113,28 @@ public class ClientEvents {
             }
             return true;
         });
-    }
 
+        UseBlockCallback.EVENT.register(ClientEvents::placeBlock);
+    }
+    public static ActionResult placeBlock(PlayerEntity player, World w, Hand hand, BlockHitResult hit)
+    {
+        GameMode mode=MinecraftClient.getInstance().getNetworkHandler().getPlayerListEntry(player.getUuid()).getGameMode();
+        if(mode==GameMode.CREATIVE)
+            return ActionResult.PASS;
+        BlockPos p=hit.getBlockPos().offset(hit.getSide());
+        for (BlockBox box : CurrentZonePacket.currentZone) {
+            if(box.contains(p))
+                return ActionResult.PASS;
+            if((!(player.getMainHandStack().getItem() instanceof BlockItem)) ||mode ==GameMode.ADVENTURE)
+            {
+                return ActionResult.PASS;
+            }
+
+        }
+        if((!(player.getMainHandStack().getItem() instanceof BlockItem)) ||mode ==GameMode.ADVENTURE)
+        {
+            return ActionResult.PASS;
+        }
+        return ActionResult.FAIL;
+    }
 }

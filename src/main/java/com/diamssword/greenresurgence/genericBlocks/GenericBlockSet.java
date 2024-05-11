@@ -233,8 +233,11 @@ public class GenericBlockSet {
         for (GeneratedBlockInstance b : generatedBlocks) {
                 if (b.type == BlockTypes.FENCE)
                     factory.apply(BlockTags.FENCES).add(b.block);
-                if (b.type == BlockTypes.DOOR)
+                if (b.type == BlockTypes.DOOR) {
                     factory.apply(BlockTags.DOORS).add(b.block);
+
+                    factory.apply(BlockTags.WOODEN_DOORS).add(b.block);
+                }
             if (b.type == BlockTypes.LADDER)
                 factory.apply(BlockTags.CLIMBABLE).add(b.block);
 

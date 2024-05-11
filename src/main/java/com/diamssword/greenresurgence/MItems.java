@@ -29,7 +29,6 @@ public class MItems implements ItemRegistryContainer {
 
     @Override
     public void afterFieldProcessing() {
-
     }
     public static <T extends Block> OwoItemSettings withDiamsTab()
     {

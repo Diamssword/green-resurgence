@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.blocks;
 
+import com.diamssword.greenresurgence.MBlockEntities;
 import com.diamssword.greenresurgence.MBlocks;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import net.minecraft.block.*;
@@ -25,7 +26,7 @@ public class LootedBlock extends Block  implements BlockEntityProvider {
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return world.isClient?null: LootedBlock.checkType(type,MBlocks.LOOTED_BE, LootedBlockEntity::tick);
+        return world.isClient?null: LootedBlock.checkType(type, MBlockEntities.LOOTED_BLOCk, LootedBlockEntity::tick);
     }
     @Nullable
     @Override

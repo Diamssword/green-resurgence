@@ -1,0 +1,20 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"2": "create:block/metro_door"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [3, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 8, 1.25, 16], "texture": "#2"},
+				"east": {"uv": [0, 8, 8, 16], "texture": "#2"},
+				"south": {"uv": [6, 8, 7.25, 16], "texture": "#2"},
+				"west": {"uv": [0, 8, 8, 16], "texture": "#2"},
+				"down": {"uv": [4.5, 8, 5.75, 16], "texture": "#2"}
+			}
+		}
+	]
+}

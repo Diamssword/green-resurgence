@@ -1,0 +1,52 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+    <components>
+<flow-layout direction="vertical" >
+    <children>
+        <draggable>
+        <flow-layout direction="vertical"> <!---->
+            <children>
+                    <button id="the-button" > <!---->
+                        <text>A Button</text> <!---->
+
+                    </button>
+                    <player><!--Custom component to show the player, exactly the same as Entity but doesn't need a type param-->
+                        <sizing><horizontal method="fixed">80</horizontal><vertical method="fixed">80</vertical></sizing>
+                        <look-at-cursor>true</look-at-cursor>
+                        <scale-to-fit>true</scale-to-fit>
+                    </player>
+                <inventory id="container" width="3" height="3"/>
+
+                <inventory id="bag" width="8" height="1"/>
+                <inventory id="player" width="9" height="3">
+                    <margins>
+                        <all>10</all>
+                    </margins>
+                </inventory>
+                <inventory id="hotbar" width="9" height="1"/>
+            </children>
+
+            <horizontal-alignment>center</horizontal-alignment>
+            <vertical-alignment>center</vertical-alignment>
+
+            <sizing>
+                <vertical method="fill">80</vertical>
+                <horizontal method="fill">50</horizontal>
+
+            </sizing>
+            <!---->
+            <padding>
+                <all>10</all>
+            </padding>
+
+            <surface>
+                <panel dark="true" />
+            </surface>
+        </flow-layout>
+        </draggable>
+    </children>
+    <vertical-alignment>center</vertical-alignment>
+    <horizontal-alignment>center</horizontal-alignment>
+</flow-layout>
+    </components>
+</owo-ui>

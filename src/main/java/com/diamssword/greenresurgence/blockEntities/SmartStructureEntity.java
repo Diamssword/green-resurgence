@@ -1,13 +1,10 @@
 package com.diamssword.greenresurgence.blockEntities;
 
+import com.diamssword.greenresurgence.MBlockEntities;
 import com.diamssword.greenresurgence.MBlocks;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtHelper;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
@@ -16,7 +13,7 @@ public class SmartStructureEntity  extends BlockEntity {
     public int offsetY;
     public int offsetZ;
     public SmartStructureEntity(BlockPos pos, BlockState state) {
-        super(MBlocks.STRUCUTRE_BE, pos, state);
+        super(MBlockEntities.SMART_STRUCTURE_BLOCK, pos, state);
     }
     public void setOffset(Vec3i pos)
     {

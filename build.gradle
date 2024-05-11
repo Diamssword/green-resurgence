@@ -62,6 +62,9 @@ dependencies {
 	include "dev.onyxstudios.cardinal-components-api:cardinal-components-item:${project.cca_version}"
 	include "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${project.cca_version}"
 	include "dev.onyxstudios.cardinal-components-api:cardinal-components-level:${project.cca_version}"
+
+
+
 	// Uncomment the following line to enable the deprecated Fabric API modules. 
 	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
 

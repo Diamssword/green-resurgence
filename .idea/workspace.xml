@@ -5,12 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2280433-581a-4b82-ab53-687b6ee5ff53" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Datagen.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Datagen.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/ClientEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/ClientEvents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/ClientNetwork.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/ClientNetwork.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/GreenResurgenceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/GreenResurgenceClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/GreenResurgence.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/GreenResurgence.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/GreenResurgenceDataGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/GreenResurgenceDataGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MBlocks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MBlocks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MItems.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/ConnectorBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/ConnectorBlockEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/datagen/ModelHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/datagen/ModelHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/LootedBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/LootedBlockEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/SmartStructureEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/SmartStructureEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/LootedBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/LootedBlock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/GenericBlockSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/GenericBlockSet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/GenericBlocks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/GenericBlocks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/Channels.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/Channels.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/BaseInteractions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/BaseInteractions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/lang/fragment.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/lang/fragment.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +64,16 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$PROJECT_DIR$/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-common-09039fcafb/1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2/minecraft-common-09039fcafb-1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2-sources.jar!/net/minecraft/block/entity/AbstractFurnaceBlockEntity.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="jar://$PROJECT_DIR$/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-common-09039fcafb/1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2/minecraft-common-09039fcafb-1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2-sources.jar!/net/minecraft/screen/AbstractFurnaceScreenHandler.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="jar://$PROJECT_DIR$/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-common-09039fcafb/1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2/minecraft-common-09039fcafb-1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2-sources.jar!/net/minecraft/screen/ScreenHandler.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="jar://$PROJECT_DIR$/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-common-09039fcafb/1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2/minecraft-common-09039fcafb-1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2-sources.jar!/net/minecraft/screen/ScreenHandlerListener.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_20_1_1_20_1_build_10_v2/com/simibubi/create/create-fabric-1.20.1/0.5.1-f-build.1417+mc1.20.1/create-fabric-1.20.1-0.5.1-f-build.1417+mc1.20.1-sources.jar!/com/simibubi/create/AllBlockEntityTypes.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_20_1_1_20_1_build_10_v2/com/simibubi/create/create-fabric-1.20.1/0.5.1-f-build.1417+mc1.20.1/create-fabric-1.20.1-0.5.1-f-build.1417+mc1.20.1-sources.jar!/com/simibubi/create/AllBlocks.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_20_1_1_20_1_build_10_v2/com/simibubi/create/create-fabric-1.20.1/0.5.1-f-build.1417+mc1.20.1/create-fabric-1.20.1-0.5.1-f-build.1417+mc1.20.1-sources.jar!/com/simibubi/create/content/decoration/slidingDoor/SlidingDoorBlockEntity.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/net_fabricmc_yarn_1_20_1_1_20_1_build_10_v2/io/wispforest/owo-lib/0.11.2+1.20/owo-lib-0.11.2+1.20-sources.jar!/io/wispforest/owo/mixin/ScreenHandlerMixin.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 7
@@ -67,10 +92,13 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Git/green-resurgence/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-common-09039fcafb/1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2/minecraft-common-09039fcafb-1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2-sources.jar&quot;
+    &quot;last_opened_file_path&quot;: &quot;D:/Git/green-resurgence/src/main/resources/assets/green_resurgence/owo_ui&quot;
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Git\green-resurgence\src\main\resources\assets\green_resurgence\owo_ui" />
+    </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="com.diamssword.greenresurgence.genericBlocks" />
     </key>
@@ -78,14 +106,24 @@
       <recent name="com.diamssword.greenresurgence.systems.base" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.diamssword.greenresurgence.commands" />
+      <recent name="com.diamssword.greenresurgence.containers" />
       <recent name="com.diamssword.greenresurgence.network" />
-      <recent name="com.diamssword.greenresurgence.items" />
-      <recent name="com.diamssword.greenresurgence.genericBlocks" />
-      <recent name="com.diamssword.greenresurgence.blocks" />
+      <recent name="com.diamssword.greenresurgence.gui" />
+      <recent name="com.diamssword.greenresurgence.blockEntityRenderer" />
+      <recent name="com.diamssword.greenresurgence.blockEntities" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Minecraft Datagen">
+  <component name="RunManager" selected="Application.Minecraft Client">
+    <configuration name="(1)Minecraft Client " type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="net.fabricmc.devlaunchinjector.Main" />
+      <module name="green-resurgence.client" />
+      <shortenClasspath name="ARGS_FILE" />
+      <option name="VM_PARAMETERS" value="-Dfabric.dli.config=D:\Git\green-resurgence\.gradle\loom-cache\launch.cfg -Dfabric.dli.env=client -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotClient" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/run/" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="green-resurgence [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -196,6 +234,17 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Application.Minecraft Client" />
+      <item itemvalue="Application.(1)Minecraft Client " />
+      <item itemvalue="Application.Minecraft Datagen" />
+      <item itemvalue="Application.Minecraft Server" />
+      <item itemvalue="Gradle.green-resurgence [build]" />
+      <item itemvalue="Gradle.green-resurgence [genSources]" />
+      <item itemvalue="Gradle.green-resurgence [ideaSyncTask]" />
+      <item itemvalue="Gradle.green-resurgence [javadoc]" />
+      <item itemvalue="Gradle.green-resurgence [remapSourcesJar]" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.green-resurgence [build]" />

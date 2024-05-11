@@ -1,0 +1,34 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"particle": "green_resurgence:block/diams/black_and_white_tesserae",
+		"south": "green_resurgence:block/diams/black_and_white_tesserae"
+	},
+	"elements": [
+		{
+			"from": [14, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 2.5, 16], "texture": "#south", "cullface": "north"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#south", "cullface": "east"},
+				"south": {"uv": [0, 0, 2.5, 16], "texture": "#south", "cullface": "north"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#south", "cullface": "west"},
+				"up": {"uv": [12, 0, 14.5, 16], "texture": "#south", "cullface": "north"},
+				"down": {"uv": [0, 0, 2.5, 16], "texture": "#south", "cullface": "north"}
+			}
+		},
+		{
+			"from": [14, 0, -16],
+			"to": [16, 16, 0],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#south", "cullface": "north"},
+				"east": {"uv": [0, 16, 16, 0], "texture": "#south", "cullface": "east"},
+				"south": {"uv": [12, 0, 14.5, 16], "texture": "#south", "cullface": "north"},
+				"west": {"uv": [16, 16, 0, 0], "texture": "#south", "cullface": "west"},
+				"up": {"uv": [6, 0, 8.5, 16], "texture": "#south", "cullface": "north"},
+				"down": {"uv": [2, 0, 4.5, 16], "texture": "#south", "cullface": "north"}
+			}
+		}
+	]
+}

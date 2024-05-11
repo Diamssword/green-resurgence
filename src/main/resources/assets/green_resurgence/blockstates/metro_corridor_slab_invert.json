@@ -1,0 +1,10 @@
+{
+  "variants": {
+	"facing=south":{"model": "green_resurgence:block/diams/metro_corridor_slab_alt","uvlock":false,"y":90},
+	"facing=west":{"model": "green_resurgence:block/diams/metro_corridor_slab_alt","uvlock":false,"y":180},
+	"facing=north":{"model": "green_resurgence:block/diams/metro_corridor_slab_alt","uvlock":false,"y":270},
+	"facing=up":{"model": "green_resurgence:block/diams/metro_corridor_slab_alt","uvlock":false,"y":180},
+	"facing=down":{"model": "green_resurgence:block/diams/metro_corridor_slab_alt","uvlock":false,"y":180},
+	"facing=east":{"model": "green_resurgence:block/diams/metro_corridor_slab_alt","uvlock":false,"y":0}
+  }
+}
