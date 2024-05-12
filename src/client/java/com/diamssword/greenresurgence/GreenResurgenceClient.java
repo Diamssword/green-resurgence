@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence;
 
+import com.diamssword.greenresurgence.blockEntityRenderer.ImageBlockEntityRenderer;
 import com.diamssword.greenresurgence.blockEntityRenderer.ItemBlockEntityRenderer;
 import com.diamssword.greenresurgence.blockEntityRenderer.LootedBlockEntityRenderer;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
@@ -37,6 +38,7 @@ public class GreenResurgenceClient implements ClientModInitializer {
 		BlockRenderLayerMap.INSTANCE.putBlock(MBlocks.CONNECTOR, RenderLayer.getCutout());
 		BlockEntityRendererFactories.register(MBlockEntities.LOOTED_BLOCk, LootedBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(MBlockEntities.ITEM_BLOCK, ItemBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(MBlockEntities.IMAGE_BLOCK, ImageBlockEntityRenderer::new);
 		ClientNetwork.initialize();
 		ClientEvents.initialize();
 		keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(

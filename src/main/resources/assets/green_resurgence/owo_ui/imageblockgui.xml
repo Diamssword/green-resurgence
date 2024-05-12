@@ -1,0 +1,96 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+    <components>
+<flow-layout direction="vertical" >
+    <children>
+        <flow-layout direction="horizontal"> <!---->
+            <children>
+                <flow-layout direction="vertical">
+                    <children>
+                        <label>
+                            <horizontal-text-alignment>left</horizontal-text-alignment>
+                            <text>Taille</text>
+                        </label>
+                        <label>
+                            <text>Largeur</text>
+                        </label>
+                        <discrete-slider max="20" min="1" id="sizeX">
+                            <sizing>
+                                <horizontal method="fill">100</horizontal>
+                            </sizing>
+                        </discrete-slider>
+                        <label>
+                            <text>Hauteur</text>
+                        </label>
+                        <discrete-slider max="20" min="1" id="sizeY">
+                            <sizing>
+                                <horizontal method="fill">100</horizontal>
+                            </sizing>
+                        </discrete-slider>
+                        <label>
+                            <text>Etirer</text>
+                        </label>
+                        <small-checkbox id="stretch"/>
+                        <label>
+                            <text>Rotation</text>
+                        </label>
+                        <discrete-slider max="180" min="-180" id="rotation">
+                            <sizing>
+                                <horizontal method="fill">100</horizontal>
+                            </sizing>
+                        </discrete-slider>
+                        <label>
+                            <text>------------------------</text>
+                        </label>
+                        <label>
+                            <horizontal-text-alignment>left</horizontal-text-alignment>
+                            <text>URL</text>
+                        </label>
+                        <text-box id="url">
+                            <sizing>
+                                <horizontal method="fill">100</horizontal>
+                            </sizing>
+                        </text-box>
+                        <button id="send">
+                            <text> Modifier </text>
+                            <margins><left>20</left><top>4</top></margins>
+                        </button>
+
+                    </children>
+                    <horizontal-alignment>left</horizontal-alignment>
+                    <vertical-alignment>top</vertical-alignment>
+
+                    <sizing>
+                        <vertical method="fill">100</vertical>
+                        <horizontal method="fill">30</horizontal>
+                    </sizing>
+                    <!---->
+
+                </flow-layout>
+            </children>
+
+
+            <horizontal-alignment>left</horizontal-alignment>
+            <vertical-alignment>top</vertical-alignment>
+
+            <sizing>
+                <vertical method="fill">100</vertical>
+                <horizontal method="fill">100</horizontal>
+
+            </sizing>
+            <!---->
+            <padding>
+                <all>10</all>
+            </padding>
+            <margins>
+                <all>1</all>
+            </margins>
+
+        </flow-layout>
+    </children>
+    <vertical-alignment>top</vertical-alignment>
+    <horizontal-alignment>left</horizontal-alignment>
+</flow-layout>
+
+    </components>
+</owo-ui>

@@ -45,6 +45,7 @@ public class MBlocks implements BlockRegistryContainer {
     public static final StructureBlock STRUCTURE_BLOCK =new StructureBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
     public static final SmartStructureBlock STRUCTURE_BLOCK_SMART =new SmartStructureBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
     public static final ItemBlock ITEM_BLOCK =new ItemBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
+    public static final ImageBlock IMAGE_BLOCK =new ImageBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
 
     @Override
     public void afterFieldProcessing() {

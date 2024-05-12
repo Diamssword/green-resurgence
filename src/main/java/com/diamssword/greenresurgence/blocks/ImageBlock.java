@@ -1,9 +1,13 @@
 package com.diamssword.greenresurgence.blocks;
 
+import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
 import com.diamssword.greenresurgence.containers.Containers;
 import com.diamssword.greenresurgence.containers.IGridContainer;
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
+import com.diamssword.greenresurgence.network.Channels;
+import com.diamssword.greenresurgence.network.GuiPackets;
+import com.google.common.graph.Network;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
@@ -38,31 +42,35 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ItemBlock extends Block implements BlockEntityProvider,Waterloggable {
+public class ImageBlock extends Block implements BlockEntityProvider,Waterloggable {
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
-    public static final DirectionProperty FACING=Properties.HORIZONTAL_FACING;
-    public static BooleanProperty COLLISION= BooleanProperty.of("collision");
-    public ItemBlock(Settings settings) {
+    public static final DirectionProperty FACING=Properties.FACING;
+    public static final VoxelShape SHAPE_D= Block.createCuboidShape(0,0,0,16,1,16);
+    public static final VoxelShape SHAPE_U=Block.createCuboidShape(0,15,0,16,16,16);
+    public static final VoxelShape SHAPE_N=Block.createCuboidShape(0,0,15,16,16,16);
+    public static final VoxelShape SHAPE_S=Block.createCuboidShape(0,0,0,16,16,1);
+    public static final VoxelShape SHAPE_E= Block.createCuboidShape(0,0,0,1,16,16);
+    public static final VoxelShape SHAPE_W= Block.createCuboidShape(15,0,0,16,16,16);
+    public ImageBlock(Settings settings) {
         super(settings);
-        this.getDefaultState().with(COLLISION,true).with(FACING,Direction.NORTH).with(WATERLOGGED,false);
+        this.getDefaultState().with(FACING,Direction.NORTH).with(WATERLOGGED,false);
+
     }
     @Override
     public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
         NbtCompound nbtCompound = BlockItem.getBlockEntityNbt(stack);
         if(nbtCompound !=null) {
-            if(nbtCompound.contains("item"))
-            {
-                var item= ItemStack.fromNbt(nbtCompound.getCompound("item"));
-                tooltip.add(Text.literal("Item: ").append(item.getName()));
+            if (nbtCompound.contains("rotation")) {
+                tooltip.add(Text.literal("Rotation: "+nbtCompound.getFloat("rotation")));
             }
-            if (nbtCompound.contains("positionX")) {
-                tooltip.add(Text.literal("Position: "+nbtCompound.getInt("positionX")+","+nbtCompound.getInt("positionY")+","+nbtCompound.getInt("positionZ")));
+            if (nbtCompound.contains("sizeX")) {
+                tooltip.add(Text.literal("Taille: "+nbtCompound.getFloat("sizeX")+"x"+nbtCompound.getFloat("sizeY")));
             }
-            if (nbtCompound.contains("rotationX")) {
-                tooltip.add(Text.literal("Rotation: "+nbtCompound.getInt("rotationX")+","+nbtCompound.getInt("rotationY")+","+nbtCompound.getInt("rotationZ")));
-            }
-            if (nbtCompound.contains("size")) {
-                tooltip.add(Text.literal("Taille: "+nbtCompound.getDouble("size")));
+            if (nbtCompound.contains("content")) {
+                String str=nbtCompound.getString("content");
+                if(str.length()>50)
+                    str=str.substring(0,47)+"...";
+                tooltip.add(Text.literal("URL: "+str));
             }
         }
 
@@ -70,15 +78,42 @@ public class ItemBlock extends Block implements BlockEntityProvider,Waterloggabl
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
-        return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER).with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+
+        return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER).with(FACING, ctx.getSide());
+    }
+    @Deprecated
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        switch (state.get(FACING))
+        {
+            case DOWN -> {
+                return  SHAPE_U;
+            }
+            case UP -> {
+                return SHAPE_D;
+            }
+            case NORTH -> {
+                return SHAPE_N;
+            }
+            case SOUTH -> {
+                return SHAPE_S;
+            }
+            case WEST -> {
+                return SHAPE_W;
+
+            }
+            case EAST -> {
+                return SHAPE_E;
+            }
+        }
+        return VoxelShapes.fullCube();
     }
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return state.get(COLLISION)?VoxelShapes.fullCube():VoxelShapes.empty();
+        return VoxelShapes.empty();
     }
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(COLLISION,FACING, WATERLOGGED);
+        builder.add(FACING, WATERLOGGED);
     }
     @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
@@ -98,11 +133,11 @@ public class ItemBlock extends Block implements BlockEntityProvider,Waterloggabl
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new ItemBlockEntity(pos,state);
+        return new ImageBlockEntity(pos,state);
     }
-    public ItemBlockEntity getBlockEntity(BlockPos pos, BlockView world)
+    public ImageBlockEntity getBlockEntity(BlockPos pos, BlockView world)
     {
-        return (ItemBlockEntity) world.getBlockEntity(pos);
+        return (ImageBlockEntity) world.getBlockEntity(pos);
     }
     public BlockState rotate(BlockState state, BlockRotation rotation) {
         return (BlockState)state.with(FACING, rotation.rotate(state.get(FACING)));
@@ -116,7 +151,7 @@ public class ItemBlock extends Block implements BlockEntityProvider,Waterloggabl
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if(!world.isClient && player.isCreative())
         {
-            createHandler(player,pos,world);
+            Channels.MAIN.serverHandle(player).send(new GuiPackets.GuiPacket(GuiPackets.GUI.ImageBlock,pos));
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
@@ -125,37 +160,5 @@ public class ItemBlock extends Block implements BlockEntityProvider,Waterloggabl
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.INVISIBLE;
     }
-    public void createHandler(PlayerEntity player,BlockPos pos,World world)
-    {
-        NamedScreenHandlerFactory screen=new NamedScreenHandlerFactory() {
-            @Nullable
-            @Override
-            public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-                ScreenHandler scr=new ScreenHandler( syncId,playerInventory,ItemBlock.this.getBlockEntity(pos,world).getContainer());
-                scr.setPos(pos);
-                return scr;
-            }
-            @Override
-            public Text getDisplayName() {
-                return Text.of("Inventaire");
-            }
-        };
-        player.openHandledScreen(screen);
-    }
-    public static class ScreenHandler extends MultiInvScreenHandler {
 
-        public ScreenHandler(int syncId, PlayerInventory playerInventory) {
-            super(syncId, playerInventory);
-        }
-
-        public ScreenHandler( int syncId, PlayerInventory playerInventory, IGridContainer... inventories) {
-            super( syncId, playerInventory, inventories);
-        }
-
-        @Override
-        public ScreenHandlerType<ScreenHandler> type() {
-            return Containers.ITEMBLOCK;
-        }
-
-    }
 }

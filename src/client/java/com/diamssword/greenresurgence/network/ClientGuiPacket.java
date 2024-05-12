@@ -1,5 +1,7 @@
 package com.diamssword.greenresurgence.network;
 
+import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
+import com.diamssword.greenresurgence.gui.ImageBlockGui;
 import com.diamssword.greenresurgence.gui.ItemBlockGui;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -14,8 +16,8 @@ public class ClientGuiPacket {
             switch(message.gui())
             {
 
-                case ItemBlock -> {
-                 //   openGui(new ItemBlockGui(message.pos()));
+                case ImageBlock -> {
+                   openGui(new ImageBlockGui(getTile(ImageBlockEntity.class,message.pos())));
                 }
             }
         });

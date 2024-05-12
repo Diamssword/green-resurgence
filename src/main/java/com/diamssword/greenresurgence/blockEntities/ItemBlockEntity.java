@@ -2,7 +2,9 @@ package com.diamssword.greenresurgence.blockEntities;
 
 import com.diamssword.greenresurgence.MBlockEntities;
 import com.diamssword.greenresurgence.MBlocks;
+import com.diamssword.greenresurgence.blocks.ItemBlock;
 import com.diamssword.greenresurgence.containers.GridContainer;
+import com.diamssword.greenresurgence.network.GuiPackets;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -77,7 +79,25 @@ public class ItemBlockEntity extends BlockEntity {
             rotateStates();
         }
     }
-
+    public void receiveGuiPacket(GuiPackets.GuiTileValue msg)
+    {
+        var pos=this.getPosition();
+        var rot=this.getRotation();
+        switch (msg.key())
+        {
+            case "posX"->this.setPosition(new Vec3d(msg.asDouble(),pos.y,pos.z));
+            case "posY"->this.setPosition(new Vec3d(pos.x,msg.asDouble(),pos.z));
+            case "posZ"->this.setPosition(new Vec3d(pos.x,pos.y,msg.asDouble()));
+            case "rotX"->this.setRotation(new Vec3d(msg.asDouble(),rot.y,rot.z));
+            case "rotY"->this.setRotation(new Vec3d(rot.x,msg.asDouble(),rot.z));
+            case "rotZ"->this.setRotation(new Vec3d(rot.x,rot.y,msg.asDouble()));
+            case "size"->this.setSize(msg.asDouble());
+            case "collision"->{
+                BlockState st=getWorld().getBlockState(msg.pos());
+                getWorld().setBlockState(msg.pos(),st.with(ItemBlock.COLLISION,msg.asInt()==1));
+            }
+        }
+    }
     public Vec3d getRotation() {
         return rotation;
     }

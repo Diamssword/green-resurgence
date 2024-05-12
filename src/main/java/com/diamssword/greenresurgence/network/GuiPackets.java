@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.network;
 
+import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
 import com.diamssword.greenresurgence.blocks.ItemBlock;
 import net.minecraft.block.BlockState;
@@ -14,10 +15,44 @@ public class GuiPackets {
         Inventory
     }
     public static enum GUI{
-        ItemBlock
+        ImageBlock
     }
     public record GuiPacket(GUI gui, @Nullable  BlockPos pos){};
-    public record GuiTileValue(BlockPos pos,String key,double value){};
+    public record GuiTileValue(BlockPos pos,String key,String value) {
+        public GuiTileValue(BlockPos pos,String key,float value)
+        {
+            this(pos,key,value+"");
+        }
+        public GuiTileValue(BlockPos pos,String key,int value)
+        {
+            this(pos,key,value+"");
+        }
+        public  GuiTileValue(BlockPos pos,String key,double value)
+        {
+            this(pos,key,value+"");
+        }
+        public double asDouble()
+        {
+            try{
+               return Double.parseDouble(this.value);
+            }catch (NumberFormatException ignored){}
+            return 0;
+        }
+        public int asInt()
+        {
+            try{
+                return Integer.parseInt(this.value);
+            }catch (NumberFormatException ignored){}
+            return 0;
+        }
+        public float asFloat()
+        {
+            try{
+                return Float.parseFloat(this.value);
+            }catch (NumberFormatException ignored){}
+            return 0;
+        }
+    }
     public record KeyPress(KEY key){};
     public static void init()
     {
@@ -28,23 +63,11 @@ public class GuiPackets {
             {
                 if(te instanceof ItemBlockEntity ib)
                 {
-                    var pos=ib.getPosition();
-                    var rot=ib.getRotation();
-                    switch (msg.key)
-                    {
-                        case "posX"->ib.setPosition(new Vec3d(msg.value,pos.y,pos.z));
-                        case "posY"->ib.setPosition(new Vec3d(pos.x,msg.value,pos.z));
-                        case "posZ"->ib.setPosition(new Vec3d(pos.x,pos.y,msg.value));
-                        case "rotX"->ib.setRotation(new Vec3d(msg.value,rot.y,rot.z));
-                        case "rotY"->ib.setRotation(new Vec3d(rot.x,msg.value,rot.z));
-                        case "rotZ"->ib.setRotation(new Vec3d(rot.x,rot.y,msg.value));
-                        case "size"->ib.setSize(msg.value);
-                        case "collision"->{
-                        BlockState st=ctx.player().getWorld().getBlockState(msg.pos);
-                        ctx.player().getWorld().setBlockState(msg.pos,st.with(ItemBlock.COLLISION,msg.value==1));
-                        }
-                    }
-
+                    ib.receiveGuiPacket(msg);
+                }
+                else  if(te instanceof ImageBlockEntity ib)
+                {
+                    ib.receiveGuiPacket(msg);
                 }
             }
         });
