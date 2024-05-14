@@ -19,6 +19,7 @@ public class MItems implements ItemRegistryContainer {
             .initializer((group)->{
         group.addTab(Icon.of(new ItemStack(Registries.ITEM.get(new Identifier(GreenResurgence.ID,"wrench")))),"base",null,true);
         group.addTab(Icon.of(new ItemStack(Registries.ITEM.get(new Identifier(GreenResurgence.ID,"container_placer")))),"placer",null,false);
+        group.addTab(Icon.of(GreenResurgence.asRessource("textures/item/materials/wood_furniture.png"),0,0,16,16),"materials",null,false);
     }).build();
     public static final Item WRENCH = new Item(new OwoItemSettings().group(GROUP));
  //   public static final Item WRENCH_1 = new Item(new OwoItemSettings().group(GROUP));

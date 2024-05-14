@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.datagen;
 
 import com.diamssword.greenresurgence.genericBlocks.GenericBlockSet;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
+import com.diamssword.greenresurgence.materials.MaterialSet;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.BlockStateModelGenerator;
@@ -26,5 +27,6 @@ public class ModelGenerator extends FabricModelProvider {
 		for (GenericBlockSet set : GenericBlocks.sets) {
 			set.modelGenerator(itemModelGenerator);
 		}
+		MaterialSet.registerModels(itemModelGenerator);
 	}
 }

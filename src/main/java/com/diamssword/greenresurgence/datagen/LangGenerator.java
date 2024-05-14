@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.datagen;
 
 import com.diamssword.greenresurgence.genericBlocks.GenericBlockSet;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
+import com.diamssword.greenresurgence.materials.MaterialSet;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 
@@ -21,6 +22,12 @@ public class LangGenerator extends FabricLanguageProvider {
 			for (GenericBlockSet set : GenericBlocks.sets) {
 				set.langGenerator(translationBuilder);
 			}
+			MaterialSet.registerLangs(translationBuilder);
+			translationBuilder.add("materials.tier.1","Tier I");
+			translationBuilder.add("materials.tier.2","Tier II");
+			translationBuilder.add("materials.tier.3","Tier III");
+			translationBuilder.add("materials.tier.4","Tier IV");
+			translationBuilder.add("materials.tier.5","Tier V");
 			translationBuilder.add(existingFilePath);
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to add existing language file!", e);

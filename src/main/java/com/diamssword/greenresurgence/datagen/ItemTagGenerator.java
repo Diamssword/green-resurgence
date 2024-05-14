@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.datagen;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.MItems;
+import com.diamssword.greenresurgence.materials.MaterialSet;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.item.Item;
@@ -10,6 +11,8 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class ItemTagGenerator  extends FabricTagProvider.ItemTagProvider {
@@ -31,6 +34,12 @@ public class ItemTagGenerator  extends FabricTagProvider.ItemTagProvider {
      //   getOrCreateTagBuilder(looting_wrench).add(MItems.WRENCH, MItems.WRENCH_1);
         getOrCreateTagBuilder(looting_hammer).add(MItems.SLEDGEHAMMER);
         getOrCreateTagBuilder(looting_tool_1).add(MItems.WRENCH);
+
+        MaterialSet.sets.forEach((m,s)->{
+            s.getItems().forEach(i->{
+                getOrCreateTagBuilder(TagKey.of(RegistryKeys.ITEM, GreenResurgence.asRessource("materials/"+s.material+"/"+i.tier))).add(i);
+            });
+        });
        // getOrCreateTagBuilder(looting_tool_2).add(MItems.WRENCH_1);
 
 
