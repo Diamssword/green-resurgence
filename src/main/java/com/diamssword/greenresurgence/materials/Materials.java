@@ -47,5 +47,37 @@ public class Materials {
                 .add(4,"electrum","Lingot d'Electrum","Un conducteur exceptionnel")
                 .add(4,"aluminium","Plaque d'Aluminium","Leger et Résistant")
                 .add(5,"unobtanium","Unobtanium","/gamemode creative");
+        //Building
+        MaterialSet.createSet("build")
+                .add(1,"stone","Pierre","Primitif mais résistant")
+                .add(1,"brick","Brique","Une brique.")
+                .add(1,"parpaing","Parpaing","Par monts et parpaings!")
+                .add(1,"sand","Sable","Du sable fin")
+                .add(3,"cement","Béton","Pilier du monde moderne")
+                .add(4,"plaster","Plâtre","Pour une finition propre")
+                .add(5,"marble","Marbre","Pour l'élégance");
+        //Adesive
+        MaterialSet.createSet("adesive")
+                .add(1,"scotch","Scotch","Un rouleau de Scotch")
+                .add(1,"glue","Colle","Un bon pot de colle")
+                .add(1,"resin","Résine","Gluant et visqueux")
+                .add(2,"nail","Clous","Si j'avais un marteaux...")
+                .add(2,"screw","Vis","De la visserie en tout genre")
+                .add(4,"epoxy","Résine Epoxy","Une résine puissante")
+                .add(4,"glue1","Colle Professionelle","Maintenant 2 fois plus collant!")
+                .add(4,"rivet","Rivets en acier","C'est du solide");
+
+        //Components
+        MaterialSet.createSet("component")
+                .add(3,"board","Carte Mère Abimée","Plus de gaming sur cette carte...")
+                .add(3,"socket","Carte d'Extension","Une petite carte éléctronique")
+                .add(3,"diode","Diodes Anciennes","De vielles diodes peu puissantes")
+                .add(3,"case","Boitier Electrique","Un boitier plein de petits composants")
+                .add(4,"diode1","Diode Moderne","Une diode standard")
+                .add(4,"board1","Carte Mère Neuve","(Presque) Neuve!")
+                .add(4,"lens","Lentille Graveuse","Laser de categorie 2. Ne pas regarde directement!")
+                .add(5,"diode2","Diodes Crystalines","De minuscules diodes High-Tech!")
+                .add(5,"board2","Carte Mère High Tech","On dirait que ça pulse même éteint...")
+                .add(5,"socket1","Carte d'Extension Supraconductrice","Les leds bleu rajoutent un charme");
     }
 }
