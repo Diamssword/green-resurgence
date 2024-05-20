@@ -53,7 +53,7 @@ public class ItemBlockEntityRenderer implements BlockEntityRenderer<ItemBlockEnt
         int seed=blockEntity.getPos().getX()+blockEntity.getPos().getY()+blockEntity.getPos().getZ();
 
 
-        MinecraftClient.getInstance().getItemRenderer().renderItem(st, ModelTransformationMode.FIXED, getLight(blockEntity), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, world,seed);
+        MinecraftClient.getInstance().getItemRenderer().renderItem(st, ModelTransformationMode.FIXED,blockEntity.isLightOffset()? getLight(blockEntity):light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, world,seed);
 
         matrices.pop();
     }

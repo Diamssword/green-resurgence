@@ -74,7 +74,7 @@ public class GenericBlocks {
         last_days.add("chiseled_sandstone", GenericBlockSet.BlockTypes.SIMPLE);
         last_days.add("chest", GenericBlockSet.BlockTypes.SIMPLE).model(GenericBlockSet.ModelType.PILLAR);
         last_days.add("chest1", GenericBlockSet.BlockTypes.SIMPLE).model(GenericBlockSet.ModelType.PILLAR);
-        last_days.add("glass", GenericBlockSet.BlockTypes.GLASS_BLOCK,GenericBlockSet.BlockTypes.GLASS_PANE);
+        last_days.add("glass", GenericBlockSet.BlockTypes.GLASS_BLOCK,GenericBlockSet.BlockTypes.GLASS_PANE, GenericBlockSet.BlockTypes.OMNI_CARPET);
         last_days.add("iron_block", GenericBlockSet.BlockTypes.SIMPLE);
         last_days.add("nether_gold_ore", GenericBlockSet.BlockTypes.FURNACE).model(GenericBlockSet.ModelType.TWO_TEXTURED_MACHINE);
         last_days.add("bookshelf", GenericBlockSet.BlockTypes.FURNACE).model(GenericBlockSet.ModelType.TWO_TEXTURED_MACHINE);

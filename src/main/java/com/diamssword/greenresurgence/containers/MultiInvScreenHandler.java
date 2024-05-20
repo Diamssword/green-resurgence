@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence.containers;
 
-import com.diamssword.greenresurgence.blocks.ItemBlock;
+import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import io.wispforest.owo.client.screens.SyncedProperty;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -12,10 +12,7 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 public abstract class MultiInvScreenHandler extends ScreenHandler {
@@ -48,6 +45,31 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
            listeners.forEach(v->v.accept(this));
        });
     }
+    //This constructor gets called from the BlockEntity on the server without calling the other constructor first, the server knows the inventory of the container
+    //and can therefore directly provide it as an argument. This inventory will then be synced to the client.
+    public MultiInvScreenHandler(int syncId, PlayerInventory playerInventory, IGridContainer... inventories) {
+        super(null, syncId);
+        for (IGridContainer iGridContainer : inventories) {
+
+            checkSize(iGridContainer.getInventory(), iGridContainer.getSize());
+            iGridContainer.getInventory().onOpen(playerInventory.player);
+        }
+        ready=true;
+        this.inventories=inventories;
+        //used to send the GridContainer information to the client
+        this.props=this.createProperty(Props.class,new Props(inventoryPos,inventories));
+        props.markDirty();
+        playerGrid=new GridContainer("player",playerInventory,9,3,9);
+        hotbarGrid=new GridContainer("hotbar",playerInventory,9,1);
+        addSlotsFor(playerGrid);
+        addSlotsFor(hotbarGrid);
+        for (IGridContainer inventory : inventories) {
+            addSlotsFor(inventory);
+        }
+
+ 
+    }
+
     public void setPos(BlockPos pos)
     {
         this.inventoryPos=pos;
@@ -58,7 +80,7 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
     {
         return this.inventoryPos;
     }
-    public abstract ScreenHandlerType<ItemBlock.ScreenHandler> type();
+    public abstract ScreenHandlerType<? extends MultiInvScreenHandler> type();
     @Override
     public ScreenHandlerType<?> getType() {
         return type();
@@ -83,30 +105,6 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
     public void onReady(Consumer<MultiInvScreenHandler> consumer)
     {
         listeners.add(consumer);
-    }
-    //This constructor gets called from the BlockEntity on the server without calling the other constructor first, the server knows the inventory of the container
-    //and can therefore directly provide it as an argument. This inventory will then be synced to the client.
-    public MultiInvScreenHandler(int syncId, PlayerInventory playerInventory, IGridContainer... inventories) {
-        super(null, syncId);
-        for (IGridContainer iGridContainer : inventories) {
-
-            checkSize(iGridContainer.getInventory(), iGridContainer.getSize());
-            iGridContainer.getInventory().onOpen(playerInventory.player);
-        }
-        ready=true;
-        this.inventories=inventories;
-        //used to send the GridContainer information to the client
-        this.props=this.createProperty(Props.class,new Props(inventoryPos,inventories));
-        props.markDirty();
-        playerGrid=new GridContainer("player",playerInventory,9,3,9);
-        hotbarGrid=new GridContainer("hotbar",playerInventory,9,1);
-        addSlotsFor(playerGrid);
-        addSlotsFor(hotbarGrid);
-        for (IGridContainer inventory : inventories) {
-            addSlotsFor(inventory);
-        }
-
- 
     }
     private void addSlotsFor(IGridContainer container)
     {
@@ -136,6 +134,17 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
         }
         return null;
 
+    }
+    public IGridContainer getContainerFor(int slot)
+    {
+        Slot s=this.slots.get(slot);
+        for (String string : this.inventoriesMap.keySet()) {
+            var b=this.inventoriesMap.get(string);
+            if(b.contains(s)) {
+                return  getInventory(string);
+            }
+        }
+        return null;
     }
     public int getInventoryWidth(String name)
     {
@@ -181,11 +190,12 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
         if (slot != null && slot.hasStack()) {
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();
-            if (invSlot < totalSize()) {
-                if (!this.insertItem(originalStack, totalSize(), this.slots.size(), true)) {
+            var cont=getContainerFor(invSlot);
+            if (cont != null && cont != playerGrid && cont!=hotbarGrid) {
+                if (!this.insertItem(originalStack,  true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(originalStack, 0,totalSize(), false)) {
+            } else if (!this.insertItem(originalStack,false)) {
                 return ItemStack.EMPTY;
             }
  
@@ -195,10 +205,73 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
                 slot.markDirty();
             }
         }
- 
         return newStack;
     }
 
+    protected boolean insertItem(ItemStack stack, boolean fromContainer) {
+        boolean bl = false;
+        List<IGridContainer> invs=new ArrayList<>();
+        if(fromContainer)
+        {
+            invs.add(this.getInventory("player"));
+            invs.add(this.getInventory("hotbar"));
+        }
+        else
+            Collections.addAll(invs,this.inventories);
+
+
+        if (stack.isStackable()) {
+            for (var inv : invs) {
+                for (var slot : this.getSlotForInventory(inv.getName())) {
+                    var itemstack = slot.getStack();
+                    if (!itemstack.isEmpty() && ItemStack.canCombine(stack, itemstack)) {
+                        int j = itemstack.getCount() + stack.getCount();
+                        if (j <= stack.getMaxCount()) {
+                            stack.setCount(0);
+                            itemstack.setCount(j);
+                            slot.markDirty();
+                            bl = true;
+                        } else if (itemstack.getCount() < stack.getMaxCount()) {
+                            stack.decrement(stack.getMaxCount() - itemstack.getCount());
+                            itemstack.setCount(stack.getMaxCount());
+                            slot.markDirty();
+                            bl = true;
+                        }
+                    }
+                    if (itemstack.isEmpty() && slot.canInsert(stack)) {
+                        if (stack.getCount() > slot.getMaxItemCount()) {
+                            slot.setStack(stack.split(slot.getMaxItemCount()));
+                        } else {
+                            slot.setStack(stack.split(stack.getCount()));
+                        }
+                        slot.markDirty();
+                        bl = true;
+                    }
+                    if (stack.isEmpty())
+                        break;
+                }
+                if (stack.isEmpty())
+                    break;
+            }
+        }
+        else if (!stack.isEmpty()) {
+            for (var inv : invs) {
+                for (var slot : this.getSlotForInventory(inv.getName())) {
+                    var itemstack = slot.getStack();
+                    if (itemstack.isEmpty() && slot.canInsert(stack)) {
+                        if (stack.getCount() > slot.getMaxItemCount()) {
+                            slot.setStack(stack.split(slot.getMaxItemCount()));
+                        } else {
+                            slot.setStack(stack.split(stack.getCount()));
+                        }
+                        slot.markDirty();
+                        return true;
+                    }
+                }
+            }
+        }
+        return bl;
+    }
     public static class Props {
         public int count;
         public String[] names;

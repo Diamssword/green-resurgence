@@ -26,6 +26,7 @@ import java.util.ArrayList;
 public class ItemBlockEntity extends BlockEntity {
     private Vec3d rotation= Vec3d.ZERO;
     private  Vec3d position= Vec3d.ZERO;
+    private boolean lightOffset=true;
     private double size=10;
     private ItemStack item= new ItemStack(Items.APPLE);
     public Direction baseDir;
@@ -41,6 +42,7 @@ public class ItemBlockEntity extends BlockEntity {
         nbt.putDouble("rotationX",rotation.x);
         nbt.putDouble("rotationY",rotation.y);
         nbt.putDouble("rotationZ",rotation.z);
+        nbt.putBoolean("lightOffset",lightOffset);
         nbt.put("item",item.writeNbt(new NbtCompound()));
         nbt.putDouble("size",size);
         if(this.baseDir ==null)
@@ -69,6 +71,7 @@ public class ItemBlockEntity extends BlockEntity {
         }
         position=new Vec3d(nbt.getDouble("positionX"),nbt.getDouble("positionY"),nbt.getDouble("positionZ"));
         rotation=new Vec3d(nbt.getDouble("rotationX"),nbt.getDouble("rotationY"),nbt.getDouble("rotationZ"));
+        lightOffset=nbt.getBoolean("lightOffset");
         size=Math.max(1,nbt.getDouble("size"));
         if(nbt.contains("item"))
         {
@@ -92,6 +95,7 @@ public class ItemBlockEntity extends BlockEntity {
             case "rotY"->this.setRotation(new Vec3d(rot.x,msg.asDouble(),rot.z));
             case "rotZ"->this.setRotation(new Vec3d(rot.x,rot.y,msg.asDouble()));
             case "size"->this.setSize(msg.asDouble());
+            case "light"->this.setLightOffset(msg.asInt()==1);
             case "collision"->{
                 BlockState st=getWorld().getBlockState(msg.pos());
                 getWorld().setBlockState(msg.pos(),st.with(ItemBlock.COLLISION,msg.asInt()==1));
@@ -184,5 +188,12 @@ public class ItemBlockEntity extends BlockEntity {
                 saveAndUpdate();
             }
         }
+    }
+    public void setLightOffset(boolean offset) {
+        this.lightOffset=offset;
+        saveAndUpdate();
+    }
+    public boolean isLightOffset() {
+        return this.lightOffset;
     }
 }

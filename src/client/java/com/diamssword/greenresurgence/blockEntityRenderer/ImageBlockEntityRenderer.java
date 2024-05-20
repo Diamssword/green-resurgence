@@ -39,13 +39,14 @@ public class ImageBlockEntityRenderer implements BlockEntityRenderer<ImageBlockE
 
         Identifier id=TextureCache.instance().getImage(blockEntity.getContent());
 
-        renderImage(id,blockEntity.getCachedState().get(ImageBlock.FACING),blockEntity.getSize().x,blockEntity.getSize().y,matrices,vertexConsumers,light,blockEntity.isStretch(),blockEntity.getRotation());
+        renderImage(id,blockEntity,blockEntity.getCachedState().get(ImageBlock.FACING),matrices,vertexConsumers,light);
 
     }
 
-    public static void renderImage(Identifier image, Direction facing, float width, float height, MatrixStack matrixStack, VertexConsumerProvider buffer1, int light,boolean stretch,float rotation) {
+    public static void renderImage(Identifier image,ImageBlockEntity te, Direction facing, MatrixStack matrixStack, VertexConsumerProvider buffer1, int light) {
         matrixStack.push();
-
+        var width=te.getSize().x;
+        var height=te.getSize().y;
         float imageRatio = 1F;
         Identifier resourceLocation = EMPTY_IMAGE;
         if (image != null) {
@@ -55,7 +56,7 @@ public class ImageBlockEntityRenderer implements BlockEntityRenderer<ImageBlockE
         }
 
      //   matrixStack.translate(-0.5D, 0D, -0.5D);
-        if(!stretch)
+        if(!te.isStretch())
             height=width;
         rotate(facing, matrixStack);
 
@@ -66,7 +67,7 @@ public class ImageBlockEntityRenderer implements BlockEntityRenderer<ImageBlockE
         float ratioX;
         float ratioY;
 
-        if (stretch) {
+        if (te.isStretch()) {
             ratioX = 0F;
             ratioY = 0F;
         } else {
@@ -81,8 +82,8 @@ public class ImageBlockEntityRenderer implements BlockEntityRenderer<ImageBlockE
             ratioX *= width;
             ratioY *= height;
         }
-        matrixStack.translate(0.5,0.5,0);
-        matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(rotation));
+        matrixStack.translate(te.isOffsetX()?0:  0.5,te.isOffsetY()?0:0.5,0);
+        matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(te.getRotation()));
         matrixStack.translate(-width/2f, -height/2f, 0D);
         VertexConsumer builderFront = buffer1.getBuffer(RenderLayer.getEntityCutout(resourceLocation));
 

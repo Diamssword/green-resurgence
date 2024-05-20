@@ -9,6 +9,7 @@ import com.diamssword.greenresurgence.materials.Materials;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
+import com.diamssword.greenresurgence.systems.lootables.Lootables;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
@@ -19,6 +20,7 @@ import io.wispforest.owo.ui.parsing.UIParsing;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.registry.Registries;
@@ -39,6 +41,7 @@ public class GreenResurgence implements ModInitializer {
 	}
 	@Override
 	public void onInitialize() {
+
 		FieldRegistrationHandler.register(MItems.class, ID, false);
 		FieldRegistrationHandler.register(MBlocks.class, ID, false);
 		FieldRegistrationHandler.register(MBlockEntities.class, ID, false);
@@ -53,7 +56,23 @@ public class GreenResurgence implements ModInitializer {
 		registerCommand("faction", FactionCommand::register);
 		registerCommand("structureBlockHelper", StructureBlockHelperCommand::register);
 		BaseInteractions.register();
+		ServerLifecycleEvents.SERVER_STARTING.register((server)->{
+			onPostInit();
+		});
 
+	}
+
+	private static boolean havePostInited=false;
+	/**
+	 * Called when a client join a world
+	 * Called only once
+	 */
+	public static void onPostInit()
+	{
+		if(!havePostInited) {
+			Lootables.init();
+			havePostInited = true;
+		}
 	}
 	public void registerCommand(String name, Consumer<LiteralArgumentBuilder<ServerCommandSource>> builder)
 	{

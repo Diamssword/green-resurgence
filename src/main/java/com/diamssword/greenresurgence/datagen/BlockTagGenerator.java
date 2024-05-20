@@ -14,11 +14,7 @@ import net.minecraft.util.Identifier;
 import java.util.concurrent.CompletableFuture;
 
 public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
-    public static final TagKey<Block> lootable_block = TagKey.of(RegistryKeys.BLOCK, new Identifier(GreenResurgence.ID,"lootable_block"));
-    public static final TagKey<Block> lootable_plank = TagKey.of(RegistryKeys.BLOCK, new Identifier(GreenResurgence.ID,"lootable/planks"));
-    public static final TagKey<Block> looting_wrench = TagKey.of(RegistryKeys.BLOCK, new Identifier(GreenResurgence.ID,"looting_tool/type/wrench"));
-    public static final TagKey<Block> looting_hammer = TagKey.of(RegistryKeys.BLOCK, new Identifier(GreenResurgence.ID,"looting_tool/type/hammer"));
-    public BlockTagGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+      public BlockTagGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
         super(output, completableFuture);
 
     }
@@ -28,10 +24,6 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         GenericBlocks.sets.forEach(set->{
             set.tagGenerator(this::getOrCreateTagBuilder);
         });
-        getOrCreateTagBuilder(lootable_block).add(Blocks.SAND,Blocks.STONE);
-        getOrCreateTagBuilder(lootable_plank).add(Blocks.SAND,Blocks.STONE);
-        getOrCreateTagBuilder(looting_wrench).add(Blocks.SAND);
-        getOrCreateTagBuilder(looting_hammer).add(Blocks.STONE);
 
     }
 }

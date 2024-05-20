@@ -47,6 +47,12 @@ public class ImageBlockGui extends BaseUIModelScreen<FlowLayout> {
                 rootComponent.childById(DiscreteSliderComponent.class,"sizeY").active(v);
             Channels.MAIN.clientHandle().send(new GuiPackets.GuiTileValue(tile.getPos(),"stretch",v?1:0));
         });
+        rootComponent.childById(SmallCheckboxComponent.class,"offsetX").checked(tile.isOffsetX()).onChanged().subscribe(v->{
+            Channels.MAIN.clientHandle().send(new GuiPackets.GuiTileValue(tile.getPos(),"offsetX",v?1:0));
+        });
+        rootComponent.childById(SmallCheckboxComponent.class,"offsetY").checked(tile.isOffsetY()).onChanged().subscribe(v->{
+            Channels.MAIN.clientHandle().send(new GuiPackets.GuiTileValue(tile.getPos(),"offsetY",v?1:0));
+        });
         var field=rootComponent.childById(TextBoxComponent.class,"url");
         field.setMaxLength(30000);
         field.text(tile.getContent());

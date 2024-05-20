@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.datagen;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.systems.lootables.TableHelper;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
@@ -21,7 +22,6 @@ import net.minecraft.util.Identifier;
 import java.util.function.BiConsumer;
 
 public class LootTableGenerator extends SimpleFabricLootTableProvider {
-    public static final Identifier PLANKS = new Identifier(GreenResurgence.ID, "block_loots/planks");
 
 
     public LootTableGenerator(FabricDataOutput output) {
@@ -30,7 +30,8 @@ public class LootTableGenerator extends SimpleFabricLootTableProvider {
 
     @Override
     public void accept(BiConsumer<Identifier, LootTable.Builder> exporter) {
-        exporter.accept(PLANKS, LootTable.builder()
+        TableHelper.generate(exporter);
+        /*exporter.accept(PLANKS, LootTable.builder()
                 .pool(
                         LootPool.builder().rolls(ConstantLootNumberProvider.create(1.0F))
                         .with(ItemEntry.builder(Items.DIAMOND).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1,3))))
@@ -38,5 +39,7 @@ public class LootTableGenerator extends SimpleFabricLootTableProvider {
                 )
                         //.with(ItemEntry.builder(Items.DIAMOND_SWORD)).apply(EnchantWithLevelsLootFunction.builder(UniformLootNumberProvider.create(20.0F, 39.0F))))
                 );
+
+         */
     }
 }

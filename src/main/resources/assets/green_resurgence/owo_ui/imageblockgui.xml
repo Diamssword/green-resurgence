@@ -31,6 +31,22 @@
                             <text>Etirer</text>
                         </label>
                         <small-checkbox id="stretch"/>
+                        <flow-layout direction="horizontal">
+                            <children>
+
+                                <label>
+                                    <margins><left>10</left></margins>
+                                    <text>Off X</text>
+                                </label>
+                                <small-checkbox id="offsetX"/>
+                                <label>
+                                    <margins><left>10</left></margins>
+                                    <text>Off Y</text>
+                                </label>
+                                <small-checkbox id="offsetY"/>
+                            </children>
+                            <margins><top>5</top></margins>
+                        </flow-layout>
                         <label>
                             <text>Rotation</text>
                         </label>

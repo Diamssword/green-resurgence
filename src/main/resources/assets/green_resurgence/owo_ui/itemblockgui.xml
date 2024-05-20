@@ -9,7 +9,7 @@
                     <children>
                         <label>
                             <horizontal-text-alignment>left</horizontal-text-alignment>
-                            <text>Position</text>
+                            <text>----Position----</text>
                         </label>
                         <label>
                             <text>X</text>
@@ -36,17 +36,16 @@
                             </sizing>
                         </discrete-slider>
                         <label>
-                            <text>------------------------</text>
-                        </label>
-                        <label>
                             <horizontal-text-alignment>left</horizontal-text-alignment>
-                            <text>Rotation</text>
+                            <text>----Rotation----</text>
                         </label>
                         <label>
                             <text>X</text>
                         </label>
+
                         <discrete-slider max="180" min="-180" id="rotX">
                             <sizing>
+                                <vertical method="fixed">20</vertical>
                                 <horizontal method="fill">100</horizontal>
                             </sizing>
                         </discrete-slider>
@@ -66,6 +65,16 @@
                                 <horizontal method="fill">100</horizontal>
                             </sizing>
                         </discrete-slider>
+                        <label>
+                            <horizontal-text-alignment>left</horizontal-text-alignment>
+                            <text>----Taille----</text>
+                        </label>
+
+                        <discrete-slider max="100" min="1" id="size">
+                            <sizing>
+                                <horizontal method="fill">100</horizontal>
+                            </sizing>
+                        </discrete-slider>
                     </children>
                     <horizontal-alignment>left</horizontal-alignment>
                     <vertical-alignment>top</vertical-alignment>
@@ -73,13 +82,47 @@
                     <sizing>
                         <vertical method="fill">100</vertical>
                         <horizontal method="fill">20</horizontal>
-
                     </sizing>
-                    <!---->
+                    <margins>
+                        <all>0</all>
+                    </margins>
 
                 </flow-layout>
                 <flow-layout direction="vertical">
                     <children>
+                        <flow-layout direction="horizontal">
+                            <children>
+                                <label>
+                                    <text>Item</text>
+                                   <margins><top>12</top><right>2</right></margins>
+                                </label>
+                                <inventory id="container" name="" width="1" height="1"/>
+                                <label>
+                                    <text> | </text>
+                                    <margins><top>12</top><right>2</right></margins>
+                                </label>
+                                <label>
+                                    <horizontal-text-alignment>left</horizontal-text-alignment>
+                                    <margins><top>12</top><right>2</right></margins>
+                                    <text>Collision</text>
+                                </label>
+                                <small-checkbox id="collision">
+                                    <margins><top>11</top><right>2</right></margins>
+                                </small-checkbox>
+                                <label>
+                                    <text> | </text>
+                                    <margins><top>12</top><right>2</right></margins>
+                                </label>
+                                <label>
+                                    <horizontal-text-alignment>left</horizontal-text-alignment>
+                                    <margins><top>12</top><right>2</right></margins>
+                                    <text>Lumière</text>
+                                </label>
+                                <small-checkbox id="light">
+                                    <margins><top>11</top><right>2</right></margins>
+                                </small-checkbox>
+                            </children>
+                        </flow-layout>
                         <inventory id="player" name="disabled" width="9" height="3"/>
                         <inventory id="hotbar" width="9" height="1">
                             <margins>
@@ -93,61 +136,17 @@
                     <vertical-alignment>bottom</vertical-alignment>
                     <positioning type="relative">50,97</positioning>
                     <sizing>
-                        <vertical method="fixed">80</vertical>
+                        <vertical method="fixed">120</vertical>
                         <horizontal method="fixed">200</horizontal>
 
                     </sizing>
                 </flow-layout>
-                <flow-layout direction="vertical">
-                    <children>
-                        <label>
-                            <horizontal-text-alignment>left</horizontal-text-alignment>
-                            <text>Taille</text>
-                        </label>
-
-                        <discrete-slider max="100" min="1" id="size">
-                            <sizing>
-                                <horizontal method="fill">100</horizontal>
-                            </sizing>
-                        </discrete-slider>
-                        <label>
-                            <text>------------------------</text>
-                        </label>
-                        <label>
-                            <horizontal-text-alignment>left</horizontal-text-alignment>
-                            <text>Item</text>
-                        </label>
-
-                        <inventory id="container" name="" width="1" height="1"/>
-                        <label>
-                            <horizontal-text-alignment>left</horizontal-text-alignment>
-                            <margins><top>5</top><bottom>2</bottom></margins>
-                            <text>Collision</text>
-                        </label>
-                        <small-checkbox id="collision"/>
-                    </children>
-                    <positioning type="relative">100,0</positioning>
-                    <horizontal-alignment>left</horizontal-alignment>
-                    <vertical-alignment>top</vertical-alignment>
-
-                    <sizing>
-                        <vertical method="fill">100</vertical>
-                        <horizontal method="fill">20</horizontal>
-
-                    </sizing>
-                    <!---->
-
-                </flow-layout>
-            </children>
-
-
+               </children>
             <horizontal-alignment>left</horizontal-alignment>
             <vertical-alignment>top</vertical-alignment>
-
             <sizing>
                 <vertical method="fill">100</vertical>
                 <horizontal method="fill">100</horizontal>
-
             </sizing>
             <!---->
             <padding>

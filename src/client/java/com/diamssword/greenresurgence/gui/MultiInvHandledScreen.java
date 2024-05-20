@@ -5,6 +5,7 @@ import io.wispforest.owo.mixin.ui.SlotAccessor;
 import io.wispforest.owo.ui.base.*;
 import io.wispforest.owo.ui.core.*;
 import io.wispforest.owo.util.pond.OwoSlotExtension;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
@@ -19,8 +20,9 @@ public abstract class MultiInvHandledScreen<R extends ParentComponent, S extends
     private final Map<String,List<MySlotComponent>> slotComps=new HashMap<>();
     protected MultiInvHandledScreen(S handler, PlayerInventory inventory, Text title, Class<R> rootComponentClass, BaseUIModelScreen.DataSource source) {
         super(handler, inventory, Text.literal(""), rootComponentClass, source);
+
         this.handler.onReady(v->{
-            if(this.uiAdapter.rootComponent instanceof BaseParentComponent r)
+            if(this.uiAdapter !=null && this.uiAdapter.rootComponent instanceof BaseParentComponent r)
                 findInvComps(r);
         });
     }
@@ -31,6 +33,10 @@ public abstract class MultiInvHandledScreen<R extends ParentComponent, S extends
             if(this.uiAdapter.rootComponent instanceof BaseParentComponent r)
                 findInvComps(r);
         });
+    }
+    @Override
+    protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
+
     }
     @Override
     protected void init() {

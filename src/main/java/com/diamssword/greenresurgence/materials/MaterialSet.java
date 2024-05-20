@@ -46,6 +46,10 @@ public class MaterialSet {
 
         });
     }
+    public Item get(String name)
+    {
+        return items.get(GreenResurgence.asRessource("material_"+material+"_"+name));
+    }
     public static void registerModels(ItemModelGenerator builder)
     {
         sets.forEach((m,v)->{

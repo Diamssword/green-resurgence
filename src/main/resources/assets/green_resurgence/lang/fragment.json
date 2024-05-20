@@ -31,5 +31,6 @@
 	"block.green_resurgence.metro_corridor_slab":"Couloir de métro (mur A)",
 	"block.green_resurgence.metro_corridor_slab_inverted":"Couloir de métro (mur B)",
 	"block.green_resurgence.item_block":"Bloc Modéle",
-	"block.green_resurgence.image_block":"Poster"
+	"block.green_resurgence.image_block":"Poster",
+	"green_resurgence.container.loot": "Loot"
 }

@@ -59,7 +59,7 @@ public class GuiPackets {
         Channels.MAIN.registerClientboundDeferred(GuiPacket.class);
         Channels.MAIN.registerServerbound(GuiTileValue.class,(msg,ctx)->{
             BlockEntity te=ctx.player().getWorld().getBlockEntity(msg.pos);
-            if(te != null)
+            if(te != null && ctx.player().isCreative())
             {
                 if(te instanceof ItemBlockEntity ib)
                 {

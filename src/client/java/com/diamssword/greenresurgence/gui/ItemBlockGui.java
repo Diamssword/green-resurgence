@@ -51,7 +51,9 @@ public class ItemBlockGui extends MultiInvHandledScreen<FlowLayout, ItemBlock.Sc
         this.component(SmallCheckboxComponent.class,"collision").checked(st.get(ItemBlock.COLLISION)).onChanged().subscribe(v->{
             Channels.MAIN.clientHandle().send(new GuiPackets.GuiTileValue(tile.getPos(),"collision",v?1:0));
         });
-
+        this.component(SmallCheckboxComponent.class,"light").checked(tile.isLightOffset()).onChanged().subscribe(v->{
+            Channels.MAIN.clientHandle().send(new GuiPackets.GuiTileValue(tile.getPos(),"light",v?1:0));
+        });
 
     }
     private void bindSlider(String name, double value,double step)

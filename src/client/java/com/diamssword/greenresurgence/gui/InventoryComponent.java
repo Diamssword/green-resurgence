@@ -118,14 +118,6 @@ public class InventoryComponent extends BaseComponent {
         return this;
     }
 
-    public InventoryComponent resetVisibleArea() {
-      //  this.visibleArea(PositionedRectangle.of(0, 0, this.regionWidth, this.regionHeight));
-        return this;
-    }
-
-    public AnimatableProperty<PositionedRectangle> visibleArea() {
-        return this.visibleArea;
-    }
 
     public InventoryComponent blend(boolean blend) {
         this.blend = blend;

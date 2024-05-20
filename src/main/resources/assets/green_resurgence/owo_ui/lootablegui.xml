@@ -1,0 +1,35 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+<components>
+<flow-layout direction="vertical" >
+    <children>
+        <flow-layout direction="vertical">
+            <children>
+                <inventory id="loot" width="3" height="3"/>
+                <inventory id="player" width="9" height="3"/>
+                <inventory id="hotbar" width="9" height="1">
+                    <margins>
+                        <top>-5</top>
+                    </margins>
+                </inventory>
+            </children>
+            <surface>
+                <panel  dark="true"/>
+            </surface>
+            <vertical-alignment>center</vertical-alignment>
+            <horizontal-alignment>center</horizontal-alignment>
+            <padding>
+                <all>6</all>
+            </padding>
+        </flow-layout>
+    </children>
+
+    <vertical-alignment>center</vertical-alignment>
+    <horizontal-alignment>center</horizontal-alignment>
+    <surface>
+
+        <blur quality="20" size="5"/>
+    </surface>
+</flow-layout>
+</components>
+</owo-ui>

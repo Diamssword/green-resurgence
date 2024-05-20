@@ -26,6 +26,8 @@ public class ImageBlockEntity extends BlockEntity {
     private Vec2f size= new Vec2f(1,1);
     private String content="";
     private boolean stretch=false;
+    private boolean offsetX=false;
+    private boolean offsetY=false;
 
     public ImageBlockEntity(BlockPos pos, BlockState state) {
         super(MBlockEntities.IMAGE_BLOCK, pos, state);
@@ -38,6 +40,8 @@ public class ImageBlockEntity extends BlockEntity {
         nbt.putFloat("rotation",rotation);
         nbt.putString("content",content);
         nbt.putBoolean("stretch",stretch);
+        nbt.putBoolean("offsetX",offsetX);
+        nbt.putBoolean("offsetY",offsetY);
         super.writeNbt(nbt);
     }
     @Override
@@ -47,6 +51,8 @@ public class ImageBlockEntity extends BlockEntity {
         rotation=nbt.getFloat("rotation");
         content=nbt.getString("content");
         stretch=nbt.getBoolean("stretch");
+        offsetX=nbt.getBoolean("offsetX");
+        offsetY=nbt.getBoolean("offsetY");
 
     }
 
@@ -111,6 +117,22 @@ public class ImageBlockEntity extends BlockEntity {
     public boolean isStretch() {
         return stretch;
     }
+    public void setOffsetX(boolean b) {
+        this.offsetX=b;
+        saveAndUpdate();
+    }
+
+    public boolean isOffsetX() {
+        return offsetX;
+    }
+    public void setOffsetY(boolean b) {
+        this.offsetY=b;
+        saveAndUpdate();
+    }
+
+    public boolean isOffsetY() {
+        return offsetY;
+    }
     public void receiveGuiPacket(GuiPackets.GuiTileValue msg)
     {
         switch (msg.key())
@@ -119,6 +141,8 @@ public class ImageBlockEntity extends BlockEntity {
             case "sizeY"->this.setSizeY(msg.asFloat());
             case "rotation"->this.setRotation(msg.asFloat());
             case "stretch"->this.setStretch(msg.asInt()==1);
+            case "offsetX"->this.setOffsetX(msg.asInt()==1);
+            case "offsetY"->this.setOffsetY(msg.asInt()==1);
             case "url"->this.setContent(msg.value());
         }
     }

@@ -41,25 +41,21 @@ public class LootedBlockEntityRenderer implements BlockEntityRenderer<LootedBloc
     public void render(LootedBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 
 
-        BlockState blockState = blockEntity.getRealBlock();
-        if (blockState.getRenderType() != BlockRenderType.MODEL || blockEntity.durability ==0) {
+        BlockState blockState = blockEntity.getDisplayBlock();
+        if (blockState.getRenderType() != BlockRenderType.MODEL ) {
             return;
         }
         World world = blockEntity.getWorld();
-        if (blockState.getRenderType() == BlockRenderType.INVISIBLE) {
-            return;
-        }
+
         matrices.push();
         this.blockRenderManager.getModelRenderer().render((BlockRenderView)world, this.blockRenderManager.getModel(blockState), blockState, blockEntity.getPos(), matrices, vertexConsumers.getBuffer(RenderLayers.getMovingBlockLayer(blockState)), false, Random.create(), blockState.getRenderingSeed(blockEntity.getPos()), OverlayTexture.DEFAULT_UV);
-       // matrices.push();
-        BlockPos blockPos = blockEntity.getPos();
-        MatrixStack.Entry entry3 = matrices.peek();
-        int tot =(int) (((LootedBlockEntity.MAX-blockEntity.durability)/(float)LootedBlockEntity.MAX)*9);
-
-        OverlayVertexConsumer vertexConsumer2 = new OverlayVertexConsumer(MinecraftClient.getInstance().getBufferBuilders().getOutlineVertexConsumers().getBuffer(ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(Math.max(0,Math.min(tot,9)))), entry3.getPositionMatrix(), entry3.getNormalMatrix(), 1f);
-        this.blockRenderManager.renderDamage(blockEntity.getRealBlock(), blockPos, (BlockRenderView)blockEntity.getWorld(), matrices, vertexConsumer2);
-       // matrices.pop();
-
+        if(blockEntity.durability>0) {
+            BlockPos blockPos = blockEntity.getPos();
+            MatrixStack.Entry entry3 = matrices.peek();
+            int tot = (int) (((LootedBlockEntity.MAX - blockEntity.durability) / (float) LootedBlockEntity.MAX) * 9);
+            OverlayVertexConsumer vertexConsumer2 = new OverlayVertexConsumer(MinecraftClient.getInstance().getBufferBuilders().getOutlineVertexConsumers().getBuffer(ModelLoader.BLOCK_DESTRUCTION_RENDER_LAYERS.get(Math.max(0, Math.min(tot, 9)))), entry3.getPositionMatrix(), entry3.getNormalMatrix(), 1f);
+            this.blockRenderManager.renderDamage(blockState, blockPos, (BlockRenderView) blockEntity.getWorld(), matrices, vertexConsumer2);
+        }
         matrices.pop();
     }
 }

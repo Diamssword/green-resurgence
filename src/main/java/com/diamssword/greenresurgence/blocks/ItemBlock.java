@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.blocks;
 
 import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
+import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.containers.Containers;
 import com.diamssword.greenresurgence.containers.IGridContainer;
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
@@ -15,7 +16,6 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -116,7 +116,7 @@ public class ItemBlock extends Block implements BlockEntityProvider,Waterloggabl
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if(!world.isClient && player.isCreative())
         {
-            createHandler(player,pos,world);
+            Containers.createHandler(player,pos,(sync,inv,p1)-> new ScreenHandler( sync,inv,ItemBlock.this.getBlockEntity(pos,world).getContainer()));
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
@@ -125,23 +125,7 @@ public class ItemBlock extends Block implements BlockEntityProvider,Waterloggabl
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.INVISIBLE;
     }
-    public void createHandler(PlayerEntity player,BlockPos pos,World world)
-    {
-        NamedScreenHandlerFactory screen=new NamedScreenHandlerFactory() {
-            @Nullable
-            @Override
-            public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-                ScreenHandler scr=new ScreenHandler( syncId,playerInventory,ItemBlock.this.getBlockEntity(pos,world).getContainer());
-                scr.setPos(pos);
-                return scr;
-            }
-            @Override
-            public Text getDisplayName() {
-                return Text.of("Inventaire");
-            }
-        };
-        player.openHandledScreen(screen);
-    }
+
     public static class ScreenHandler extends MultiInvScreenHandler {
 
         public ScreenHandler(int syncId, PlayerInventory playerInventory) {
