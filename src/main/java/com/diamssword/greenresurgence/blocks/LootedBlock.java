@@ -54,9 +54,9 @@ public class LootedBlock extends Block  implements BlockEntityProvider {
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 
         LootedBlockEntity et=getBlockEntity(pos,world);
-        if(et!=null)
+        if(et!=null && et.getDisplayBlock() !=null)
         {
-            return getBlockEntity(pos,world).getDisplayBlock().getOutlineShape(world,pos,context);
+            return et.getDisplayBlock().getOutlineShape(world,pos,context);
         }
 
         return VoxelShapes.fullCube();
@@ -65,7 +65,7 @@ public class LootedBlock extends Block  implements BlockEntityProvider {
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         LootedBlockEntity et=getBlockEntity(pos,world);
-        if(et!=null)
+        if(et!=null && et.getDisplayBlock() !=null)
         {
             return getBlockEntity(pos,world).getDisplayBlock().getCollisionShape(world,pos,context);
         }
@@ -74,7 +74,7 @@ public class LootedBlock extends Block  implements BlockEntityProvider {
     @Override
     public VoxelShape getSidesShape(BlockState state, BlockView world, BlockPos pos) {
         LootedBlockEntity et=getBlockEntity(pos,world);
-        if(et!=null)
+        if(et!=null && et.getDisplayBlock() !=null)
         {
             return getBlockEntity(pos,world).getDisplayBlock().getSidesShape(world,pos);
         }

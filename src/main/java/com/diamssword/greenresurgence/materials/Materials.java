@@ -37,7 +37,7 @@ public class Materials {
                 .add(2,"copperwire","Fil de Cuivre","Un fil de cuivre en bon état")
                 .add(2,"copperplate","Plaque de Cuivre","Une plaque de cuivre brillante")
                 .add(2,"lead","Plombs","Récuperé d'anciens équipements de pêches ou de chasse")
-                .add(2,"leadweight","Poids en plomb","D'anciens contrepoids en plomb")
+                .add(2,"lead1","Morceaux de plomb","D'anciens contrepoids en plomb")
                 .add(3,"lithium","Lithium","De la poudre de lithium pure")
                 .add(3,"graphite","Graphite","Une barre de graphite")
                 .add(3,"goldjewelry","Bijou en or","Cette bague ne manquera plus à personne...")
@@ -70,6 +70,7 @@ public class Materials {
                 .add(1,"resin","Résine","Gluant et visqueux")
                 .add(2,"nail","Clous","Si j'avais un marteaux...")
                 .add(2,"screw","Vis","De la visserie en tout genre")
+                .add(2,"nuts","Boulon","Un boulon.")
                 .add(4,"epoxy","Résine Epoxy","Une résine puissante")
                 .add(4,"glue1","Colle Professionelle","Maintenant 2 fois plus collant!")
                 .add(4,"rivet","Rivets en acier","C'est du solide");

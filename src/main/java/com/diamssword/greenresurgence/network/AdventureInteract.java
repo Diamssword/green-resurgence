@@ -41,7 +41,7 @@ public class AdventureInteract {
                 else if(st !=null && LootableLogic.isGoodTool(st,state))
                 {
                     ctx.player().getWorld().setBlockState(msg.pos, MBlocks.LOOTED_BLOCK.getDefaultState());
-                    var te=MBlocks.LOOTED_BLOCK.getBlockEntity(msg.pos, ctx.player().getWorld())
+                    var te=MBlocks.LOOTED_BLOCK.getBlockEntity(msg.pos, ctx.player().getWorld());
                     te.setRealBlock(state);
                     setCooldown(ctx.player());
                     if( LootableLogic.isDestroyInteract(st)) {

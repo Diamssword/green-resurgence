@@ -75,7 +75,7 @@ public class LootableLogic {
     }
     public static Identifier getGoodTool(ItemStack tool,BlockState block)
     {
-        if(tool.isEmpty())
+        if(tool.isEmpty() && block!=null)
         {
             if(Lootables.isGoodTool(block.getBlock(), Lootables.HAND.id()))
                 return Lootables.HAND.id();

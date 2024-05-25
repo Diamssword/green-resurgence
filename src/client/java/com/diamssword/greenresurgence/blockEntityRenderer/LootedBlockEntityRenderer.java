@@ -42,7 +42,7 @@ public class LootedBlockEntityRenderer implements BlockEntityRenderer<LootedBloc
 
 
         BlockState blockState = blockEntity.getDisplayBlock();
-        if (blockState.getRenderType() != BlockRenderType.MODEL ) {
+        if (blockState ==null || blockState.getRenderType() != BlockRenderType.MODEL ) {
             return;
         }
         World world = blockEntity.getWorld();
