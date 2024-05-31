@@ -9,9 +9,8 @@ import net.minecraft.entity.player.PlayerEntity;
 public class ComponentsRegister {
     public static void init()
     {
-        UIParsing.registerFactory("player", element -> {
-            return new EntityComponent<PlayerEntity>(Sizing.content(), MinecraftClient.getInstance().player){};
-        });
+        UIParsing.registerFactory("player", element -> new EntityComponent<PlayerEntity>(Sizing.content(), MinecraftClient.getInstance().player){});
         UIParsing.registerFactory("inventory", InventoryComponent::parse);
+        UIParsing.registerFactory("buttoninventory", ButtonInventoryComponent::parse);
     }
 }

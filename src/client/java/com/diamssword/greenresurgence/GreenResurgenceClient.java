@@ -5,6 +5,7 @@ import com.diamssword.greenresurgence.blockEntityRenderer.ItemBlockEntityRendere
 import com.diamssword.greenresurgence.blockEntityRenderer.LootedBlockEntityRenderer;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.gui.ComponentsRegister;
+import com.diamssword.greenresurgence.gui.CraftingScreen;
 import com.diamssword.greenresurgence.gui.Handlers;
 import com.diamssword.greenresurgence.gui.SurvivalistInventory;
 import com.diamssword.greenresurgence.network.Channels;
@@ -17,6 +18,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.block.Block;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.*;
@@ -54,7 +56,8 @@ public class GreenResurgenceClient implements ClientModInitializer {
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if(keyBinding.isPressed())
 			{
-				Channels.MAIN.clientHandle().send(new GuiPackets.KeyPress(GuiPackets.KEY.Inventory));
+				MinecraftClient.getInstance().setScreen(new CraftingScreen());
+			//	Channels.MAIN.clientHandle().send(new GuiPackets.KeyPress(GuiPackets.KEY.Inventory));
 			}
 
 		});

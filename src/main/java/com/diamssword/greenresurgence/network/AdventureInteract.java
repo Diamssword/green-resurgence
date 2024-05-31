@@ -2,7 +2,9 @@ package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.MBlocks;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
+import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.lootables.LootableLogic;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,6 +23,7 @@ public class AdventureInteract {
     public record BlockInteract(BlockPos pos){};
     public static void init()
     {
+        UseBlockCallback.EVENT.register(LootableLogic::onRightClick);
         Channels.MAIN.registerServerbound(BlockInteract.class,(msg,ctx)->{
 
             if(ctx.player().interactionManager.getGameMode().isSurvivalLike() && checkCooldown(ctx.player())) {

@@ -46,7 +46,7 @@ public class LootedBlockEntity extends BlockEntity {
     }
     public BlockState getDisplayBlock()
     {
-        if(emptyBlock==null)
+        if(emptyBlock==null && this.block !=null)
             emptyBlock= Lootables.getEmptyBlock(block.getBlock()).getDefaultState();
         if(durability<=0)
             return emptyBlock;

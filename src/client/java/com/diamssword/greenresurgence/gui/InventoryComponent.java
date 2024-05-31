@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.gui;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.containers.IGridContainer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.base.BaseComponent;
 import io.wispforest.owo.ui.core.*;
@@ -23,7 +24,6 @@ public class InventoryComponent extends BaseComponent {
     private int regionWidth=18;
     private int regionHeight=18;
     protected boolean blend = false;
-    private List<MultiInvHandledScreen.MySlotComponent> slots=new ArrayList<>();
     protected InventoryComponent(String inventoryId,int width,int height,String name) {
         this.inventoryId=inventoryId;
         this.name=name;
@@ -34,17 +34,6 @@ public class InventoryComponent extends BaseComponent {
     }
     protected InventoryComponent(String inventoryId,int width,int height) {
         this(inventoryId,width,height,inventoryId);
-    }
-    public void setSlots(List<MultiInvHandledScreen.MySlotComponent> slots, int width, int height)
-    {
-        this.regionHeight=10+height*18;
-        this.regionWidth=width*18;
-        this.slots=slots;
-        this.slots.forEach(sl->{
-
-            sl.updateX(this.x+sl.baseX);
-            sl.updateY(this.y+sl.baseY+10);
-        });
     }
     @Override
     protected int determineHorizontalContentSize(Sizing sizing) {
@@ -157,7 +146,6 @@ public class InventoryComponent extends BaseComponent {
             this.visibleArea(PositionedRectangle.of(x, y, width, height));
         }
     }
-
     public static InventoryComponent parse(Element element) {
         UIParsing.expectAttributes(element, "id");
         UIParsing.expectAttributes(element, "width");

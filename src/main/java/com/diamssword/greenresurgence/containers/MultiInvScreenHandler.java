@@ -50,7 +50,6 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
     public MultiInvScreenHandler(int syncId, PlayerInventory playerInventory, IGridContainer... inventories) {
         super(null, syncId);
         for (IGridContainer iGridContainer : inventories) {
-
             checkSize(iGridContainer.getInventory(), iGridContainer.getSize());
             iGridContainer.getInventory().onOpen(playerInventory.player);
         }
@@ -86,7 +85,7 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
         return type();
     }
     private boolean ready=false;
-    private static final List<Consumer<MultiInvScreenHandler>> listeners=new ArrayList<>();
+    private final List<Consumer<MultiInvScreenHandler>> listeners=new ArrayList<>();
 
     /**
      * @return if the containers have been received and are ready to display
@@ -121,6 +120,14 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
    public List<Slot> getSlotForInventory(String name)
     {
         return inventoriesMap.getOrDefault(name,new ArrayList<>());
+    }
+    public String getInventoryForSlot(Slot s)
+    {
+        for (String id : this.inventoriesMap.keySet()) {
+            if(this.inventoriesMap.get(id).contains(s))
+                return id;
+        }
+        return null;
     }
     public IGridContainer getInventory(String name)
     {

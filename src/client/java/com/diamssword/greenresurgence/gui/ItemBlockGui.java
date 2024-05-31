@@ -11,13 +11,14 @@ import io.wispforest.owo.ui.component.DiscreteSliderComponent;
 import io.wispforest.owo.ui.component.SmallCheckboxComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
-public class ItemBlockGui extends MultiInvHandledScreen<FlowLayout, ItemBlock.ScreenHandler> {
+public class ItemBlockGui extends MultiInvHandledScreen<ItemBlock.ScreenHandler,FlowLayout> {
     private ItemBlockEntity tile;
     public ItemBlockGui(ItemBlock.ScreenHandler handler, PlayerInventory inv, Text title) {
-        super(handler,inv, title,FlowLayout.class, BaseUIModelScreen.DataSource.asset(GreenResurgence.asRessource("itemblockgui")));
+        super(handler,inv, FlowLayout.class, BaseUIModelScreen.DataSource.asset(GreenResurgence.asRessource("itemblockgui")));
         if(handler.isReady()) {
             tile = ClientGuiPacket.getTile(ItemBlockEntity.class, handler.getPos());
             onReady();
@@ -28,8 +29,6 @@ public class ItemBlockGui extends MultiInvHandledScreen<FlowLayout, ItemBlock.Sc
                 onReady();
             });
     }
-
-
     @Override
     public boolean shouldPause() {
         return false;
@@ -38,6 +37,12 @@ public class ItemBlockGui extends MultiInvHandledScreen<FlowLayout, ItemBlock.Sc
     protected void build(FlowLayout rootComponent) {
 
     }
+
+    @Override
+    protected void drawBackground(DrawContext var1, float var2, int var3, int var4) {
+
+    }
+
     private void onReady()
     {
         bindSlider("posX",(100+(tile.getPosition().getX()))/200f,0.005);

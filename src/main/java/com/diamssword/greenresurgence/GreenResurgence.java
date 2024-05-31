@@ -8,6 +8,7 @@ import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.materials.Materials;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
+import com.diamssword.greenresurgence.systems.crafting.Recipes;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -52,6 +53,7 @@ public class GreenResurgence implements ModInitializer {
 		GenericBlocks.register();
 		GenericBlocks.GENERIC_GROUP.initialize();
 		Materials.init();
+		Recipes.init();
 		registerCommand("giveStructureItem",StructureItemCommand::register);
 		registerCommand("faction", FactionCommand::register);
 		registerCommand("structureBlockHelper", StructureBlockHelperCommand::register);

@@ -1,0 +1,27 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+<components>
+<flow-layout direction="horizontal" >
+    <children>
+        <flow-layout direction="horizontal" >
+            <children>
+                <buttoninventory col="3" id="green_resurgence:test">
+
+                    <sizing><vertical method="fill">100</vertical><horizontal method="fill">50</horizontal></sizing>
+                </buttoninventory>
+
+            </children>
+            <padding><all>5</all></padding>
+            <sizing><vertical method="fill">50</vertical><horizontal method="fill">50</horizontal></sizing>
+            <surface>
+                <panel/>
+            </surface>
+        </flow-layout>
+
+            </children>
+    <sizing><vertical method="fill">100</vertical><horizontal method="fill">100</horizontal></sizing>
+    <vertical-alignment>center</vertical-alignment>
+    <horizontal-alignment>center</horizontal-alignment>
+</flow-layout>
+</components>
+</owo-ui>

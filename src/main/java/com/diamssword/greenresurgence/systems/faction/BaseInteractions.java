@@ -9,6 +9,7 @@ import com.diamssword.greenresurgence.systems.faction.perimeter.IFactionList;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -72,7 +73,7 @@ public class BaseInteractions {
     {
         if(player instanceof ServerPlayerEntity pl)
         {
-            if(pl.interactionManager.getGameMode().equals(GameMode.SURVIVAL))
+            if(pl.interactionManager.getGameMode().equals(GameMode.SURVIVAL) && player.getMainHandStack().getItem() instanceof BlockItem)
             {
                 BlockPos p=hit.getBlockPos().offset(hit.getSide());
 
