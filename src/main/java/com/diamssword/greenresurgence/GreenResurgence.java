@@ -11,6 +11,9 @@ import com.diamssword.greenresurgence.structure.ItemPlacers;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
+import com.diamssword.greenresurgence.systems.lootables.LootablesReloader;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
@@ -22,15 +25,30 @@ import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.registry.Registries;
+import net.minecraft.resource.JsonDataLoader;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.JsonHelper;
+import net.minecraft.util.profiler.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
 public class GreenResurgence implements ModInitializer {
@@ -40,9 +58,10 @@ public class GreenResurgence implements ModInitializer {
 	{
 		return new Identifier(ID,name);
 	}
+
 	@Override
 	public void onInitialize() {
-
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(Lootables.loader);
 		FieldRegistrationHandler.register(MItems.class, ID, false);
 		FieldRegistrationHandler.register(MBlocks.class, ID, false);
 		FieldRegistrationHandler.register(MBlockEntities.class, ID, false);
@@ -54,6 +73,7 @@ public class GreenResurgence implements ModInitializer {
 		GenericBlocks.GENERIC_GROUP.initialize();
 		Materials.init();
 		Recipes.init();
+		Lootables.init();
 		registerCommand("giveStructureItem",StructureItemCommand::register);
 		registerCommand("faction", FactionCommand::register);
 		registerCommand("structureBlockHelper", StructureBlockHelperCommand::register);
@@ -72,7 +92,6 @@ public class GreenResurgence implements ModInitializer {
 	public static void onPostInit()
 	{
 		if(!havePostInited) {
-			Lootables.init();
 			havePostInited = true;
 		}
 	}

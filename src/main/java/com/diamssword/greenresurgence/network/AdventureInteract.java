@@ -4,6 +4,8 @@ import com.diamssword.greenresurgence.MBlocks;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.lootables.LootableLogic;
+import com.diamssword.greenresurgence.systems.lootables.Lootables;
+import com.diamssword.greenresurgence.systems.lootables.LootablesReloader;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -21,9 +23,13 @@ import java.util.Map;
 public class AdventureInteract {
     static Map<PlayerEntity,Long> cooldowns=new HashMap<>();
     public record BlockInteract(BlockPos pos){};
+    public record LootableList(LootablesReloader loader){};
     public static void init()
     {
         UseBlockCallback.EVENT.register(LootableLogic::onRightClick);
+        Channels.MAIN.registerClientbound(LootableList.class,(msg,ctx)->{
+            Lootables.loader=msg.loader;
+        });
         Channels.MAIN.registerServerbound(BlockInteract.class,(msg,ctx)->{
 
             if(ctx.player().interactionManager.getGameMode().isSurvivalLike() && checkCooldown(ctx.player())) {

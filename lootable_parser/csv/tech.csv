@@ -1,0 +1,9 @@
+categorie,item,quantitée,pourcentage,rolls
+paper,cardboard,1-2,100,2-5
+metal,copperwire,1-4,30,
+component,board,1,50,
+component,socket,1,50,
+component,diode,1-2,50,
+component,case,1,50,
+metal,scrap,1-2,30,
+metal,ironbar,1,30,

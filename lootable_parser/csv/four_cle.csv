@@ -1,0 +1,12 @@
+categorie,item,quantitée,pourcentage,rolls
+cable,house,1,20,1-2
+metal,copperwire,1-3,50,
+metal,lead1,1,50,
+glass,window,1,50,
+metal,copperplate,1,50,
+alloy,brass,1,50,
+adesive,screw,1-4,50,
+adesive,nuts,1-4,50,
+component,diode,1-2,30,
+component,socket,1,30,
+metal,ironbar,1,50,

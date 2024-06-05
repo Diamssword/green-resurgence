@@ -14,7 +14,15 @@ public class Materials {
     public static MaterialSet adesive;
     public static MaterialSet components;
     public static MaterialSet alloy;
+    public static MaterialSet plastic;
     public static MaterialSet building;
+    private static MaterialSet cables;
+    private static MaterialSet energy;
+    private static MaterialSet chemical;
+    private static MaterialSet glass;
+    private static MaterialSet bones;
+    private static MaterialSet leather;
+    private static MaterialSet fabric;
 
     public static void init() {
         //WOOD
@@ -54,6 +62,16 @@ public class Materials {
                 .add(4,"electrum","Lingot d'Electrum","Un conducteur exceptionnel")
                 .add(4,"aluminium","Plaque d'Aluminium","Leger et Résistant")
                 .add(5,"unobtanium","Unobtanium","/gamemode creative");
+
+        //Plastic
+        plastic=MaterialSet.createSet("plastic")
+                .add(1,"bottle","Bouteille en Plastique","Une simple bouteille")
+                .add(1,"sheet","Rideau de Douche","Un vieux rideau en plastique")
+                .add(1,"film","Film Plastique","Un film en plastique souple")
+                .add(2,"bin","Corbeille","Une petite corbeille en plastique")
+                .add(2,"bac","Bac en Plastique","Une bac en plastique solide")
+                .add(4,"plastacier","Lingot de Plastacier","Un alliage de palstique rés solide!");
+
         //Building
         building=MaterialSet.createSet("build")
                 .add(1,"stone","Pierre","Primitif mais résistant")
@@ -87,5 +105,59 @@ public class Materials {
                 .add(5,"diode2","Diodes Crystalines","De minuscules diodes High-Tech!")
                 .add(5,"board2","Carte Mère High Tech","On dirait que ça pulse même éteint...")
                 .add(5,"socket1","Carte d'Extension Supraconductrice","Les leds bleu rajoutent un charme");
+
+        //Cables
+        cables= MaterialSet.createSet("cables")
+                .add(1,"tin","Cable en Étain","Une bobine de cable en étain")
+                .add(1,"house","Cable Électrique","Un cable d'alimentation standard")
+                .add(3,"high","Cable Haut Voltage","Un cable pour les hautes tensions")
+                .add(3,"underground","Cable souterrain","Un cable haute tension spécialisé et robuste")
+                .add(4,"supra","Supraconducteur","Un cable miltaire sans aucunes pertes!");
+
+        //Energy
+        energy= MaterialSet.createSet("energy")
+                .add(1,"battery","Pile","Une pile à usage unique")
+                .add(3,"cell","Batterie","Une batterie rechargable")
+                .add(5,"cell1","Batterie Haute Capacitée","Une batterie rechargable de haute capacitée");
+        //Chemical
+        chemical= MaterialSet.createSet("chemical")
+                .add(1,"vinegar","Vinaigre","Bon pour la plomberie et en salade")
+                .add(1,"bleach","Javel","Bon pour le ménage, pas en salade")
+                .add(1,"chlorine","Chlore","Blanchi un peu les doigts")
+                .add(3,"alcool","Alcool à Brulé","Pique un peu la gorge...")
+                .add(3,"water","Eau Déminéralisée","Peu rafraichissant")
+                .add(3,"acid","Acide","De l'acide peut puissant")
+                .add(4,"acid1","Acide Sulfurique","Un acide extrémement corrosif")
+                .add(4,"solvant","Solvant","Un solvant industriel")
+                .add(4,"amonia","Ammoniac","")
+                .add(4,"acetone","Acétone","");
+        leather= MaterialSet.createSet("leather")
+                .add(1,"pig","cuir de Cochon","")
+                .add(1,"cow","Cuir de Vache","")
+                .add(2,"corcodile","Cuir de Crocodile","")
+                .add(2,"bear","Cuir d'Ours'","")
+                .add(3,"rino","Cuir de Rhinocéros","Le meilleur ami de l'homme...");
+        fabric= MaterialSet.createSet("fabric")
+                .add(1,"cotton","Toile en Cotton","Un tissu léger et doux")
+                .add(1,"lin","Drap en Lin","Un tissu doux")
+                .add(1,"poly","Tissu Polyester","Une matière en plastique")
+                .add(1,"silk","Tissu de Soie","Un tissu trés léger")
+                .add(2,"jute","Carré de Jute","Un tissu brut et résistant")
+                .add(3,"jean","Pantalon en Jean","")
+                .add(3,"chanvre","Toile en Chanvre","");
+        //Glass
+        glass= MaterialSet.createSet("glass")
+                .add(1,"shards","Éclats de Verre","Des éclats de verre tranchants")
+                .add(1,"bottle","Bouteille en Verre","Une bouteille vide en verre")
+                .add(2,"window","Vitre en Verre","Une vitre plate en verre")
+                .add(4,"window1","Vitre Blindé","Une vitre à l'épreuve des balles");
+        //Bones
+        bones= MaterialSet.createSet("bones")
+                .add(1,"fish","Arêtes","Des os de poisson")
+                .add(1,"small","Petits os","De petits os d'oiseau ou de rongeur")
+                .add(2,"human","Os Humains","Les os de quelqu'un moins chanceux...")
+                .add(2,"dog","Os de chien","Le meilleur ami de l'homme...")
+                .add(3,"big","Gros Os","L'os d'une grosse créature")
+                .add(3,"ivory","Ivoir","De l'ivoir ");
     }
 }

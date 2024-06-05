@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
+import com.diamssword.greenresurgence.systems.lootables.LootablesReloader;
 import io.wispforest.owo.network.OwoNetChannel;
 import io.wispforest.owo.network.serialization.PacketBufSerializer;
 import net.minecraft.util.Identifier;
@@ -23,6 +24,7 @@ public class Channels {
             return new Vec3i(x,y,z);
         });
         PacketBufSerializer.register(MultiInvScreenHandler.Props.class, MultiInvScreenHandler.Props::serializer, MultiInvScreenHandler.Props::unserializer);
+        PacketBufSerializer.register(LootablesReloader.class, LootablesReloader::serializer, LootablesReloader::unserializer);
         AdventureInteract.init();
         StructureSizePacket.init();
         CurrentZonePacket.init();

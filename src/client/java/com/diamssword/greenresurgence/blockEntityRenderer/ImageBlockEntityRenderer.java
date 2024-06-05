@@ -82,7 +82,7 @@ public class ImageBlockEntityRenderer implements BlockEntityRenderer<ImageBlockE
             ratioX *= width;
             ratioY *= height;
         }
-        matrixStack.translate(te.isOffsetX()?0:  0.5,te.isOffsetY()?0:0.5,0);
+        matrixStack.translate(te.isOffsetX()?0:  0.5,te.isOffsetY()?0:0.5,-0.05);
         matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(te.getRotation()));
         matrixStack.translate(-width/2f, -height/2f, 0D);
         VertexConsumer builderFront = buffer1.getBuffer(RenderLayer.getEntityCutout(resourceLocation));

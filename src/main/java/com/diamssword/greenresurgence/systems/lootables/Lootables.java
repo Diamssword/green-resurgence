@@ -1,11 +1,31 @@
 package com.diamssword.greenresurgence.systems.lootables;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.network.AdventureInteract;
+import com.diamssword.greenresurgence.network.Channels;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
+import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.resource.ResourceReloadListenerKeys;
+import net.fabricmc.fabric.mixin.resource.conditions.DataPackContentsMixin;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.data.report.DynamicRegistriesProvider;
 import net.minecraft.item.Item;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.*;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.resource.SimpleResourceReload;
+import net.minecraft.server.DataPackContents;
+import net.minecraft.server.command.ReloadCommand;
 import net.minecraft.util.Identifier;
 
 import java.time.temporal.Temporal;
@@ -14,6 +34,7 @@ public class Lootables {
     /*
     Le temps de refresh d'un block en millisecondes (7J ici)
      */
+    public static LootablesReloader loader =new LootablesReloader();
     public static final long refreshPhase =30000; //604_800_000;
     public static final TagKey<Item> WRENCH= createTool("wrench");
     public static final TagKey<Item> HAMMER=createTool("hammer");
@@ -23,34 +44,27 @@ public class Lootables {
         return TagKey.of(RegistryKeys.ITEM,GreenResurgence.asRessource("lootable/tools/"+name));
     }
 
-    public static  void init()
-    {
-        LootableGroup.create().add(GreenResurgence.asRessource("teien_smoker"),GreenResurgence.asRessource("last_days_furnace"),GreenResurgence.asRessource("last_days_smoker")).addTool(WRENCH,Tables.FURNACE).addTool(HAND,Tables.FURNACE_INV);
-        LootableGroup.create().addRep(new Identifier("conquest:rustic_spruce_wood_planks"), new Identifier("conquest:glass_paned_cabinets"),new Identifier("conquest:fancy_oak_wood_cabinets"),new Identifier("conquest:cupboards"),new Identifier("conquest:poor_wardrobe"),new Identifier("conquest:fancy_wardrobe")).addTool(HAMMER,Tables.FURNITURE);
-
-    }
     public static boolean isGoodTool(Block b, Identifier tool) {
-        for (LootableGroup group : LootableGroup.getGroups()) {
-            if (group.asBlock(b) && group.asTool(tool)) {
-                return true;
-            }
-        }
-        return false;
+        return loader.getTable(b).map(lootable -> lootable.asTool(tool)).orElse(false);
     }
     public static Identifier getTableForBlock(Block b, Identifier tool) {
-        for (LootableGroup group : LootableGroup.getGroups()) {
-            if (group.asBlock(b) && group.asTool(tool)) {
-                return group.getLootForTool(tool);
-            }
+        var val=loader.getTable(b);
+        if(val.isPresent() && val.get().asTool(tool))
+        {
+            return val.get().getLootForTool(tool);
         }
         return null;
     }
     public static Block getEmptyBlock(Block b) {
-        for (LootableGroup group : LootableGroup.getGroups()) {
-            if(group.asBlock(b))
-                return group.getEmptyBlock(b);
-        }
-        return Blocks.AIR;
+     return loader.getTable(b).map(Lootable::getEmptyBlock).orElse(Blocks.AIR);
+
+    }
+
+    public static void init() {
+        ServerPlayConnectionEvents.JOIN.register((h,s,serv)->{
+            Channels.MAIN.serverHandle(h.player).send(new AdventureInteract.LootableList(loader));
+        });
+        ServerTickEvents.END_SERVER_TICK.register(loader::worldTick);
     }
 }
 
