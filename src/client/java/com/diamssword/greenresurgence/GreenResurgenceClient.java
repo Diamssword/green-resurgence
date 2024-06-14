@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence;
 import com.diamssword.greenresurgence.blockEntityRenderer.ImageBlockEntityRenderer;
 import com.diamssword.greenresurgence.blockEntityRenderer.ItemBlockEntityRenderer;
 import com.diamssword.greenresurgence.blockEntityRenderer.LootedBlockEntityRenderer;
+import com.diamssword.greenresurgence.genericBlocks.GenericBlockSet;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.gui.ComponentsRegister;
 import com.diamssword.greenresurgence.gui.CraftingScreen;
@@ -10,6 +11,7 @@ import com.diamssword.greenresurgence.gui.Handlers;
 import com.diamssword.greenresurgence.gui.SurvivalistInventory;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.GuiPackets;
+import com.diamssword.greenresurgence.render.Entities;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
 import com.diamssword.greenresurgence.structure.MultiblockInstance;
 import net.fabricmc.api.ClientModInitializer;
@@ -28,8 +30,10 @@ import org.lwjgl.glfw.GLFW;
 
 public class GreenResurgenceClient implements ClientModInitializer {
 	private static KeyBinding keyBinding;
+	private static KeyBinding keyBinding1;
 	@Override
 	public void onInitializeClient() {
+		Entities.init();
 		ClientPlayConnectionEvents.INIT.register((a,b)->{
 			GreenResurgence.onPostInit();
 		});
@@ -37,9 +41,12 @@ public class GreenResurgenceClient implements ClientModInitializer {
 				BlockRenderLayerMap.INSTANCE.putBlock(structuresPlacer.block, RenderLayer.getCutout());
 		}
 		GenericBlocks.sets.forEach(set->{
-			for (Block glass : set.getGlasses()) {
-				BlockRenderLayerMap.INSTANCE.putBlock(glass, RenderLayer.getTranslucent());
-			}
+			set.getGlasses().forEach((b,t)->{
+				if(t== GenericBlockSet.Transparency.CUTOUT)
+					BlockRenderLayerMap.INSTANCE.putBlock(b, RenderLayer.getCutout());
+				else if(t== GenericBlockSet.Transparency.TRANSPARENT)
+					BlockRenderLayerMap.INSTANCE.putBlock(b, RenderLayer.getTranslucent());
+			});
 		});
 		BlockRenderLayerMap.INSTANCE.putBlock(MBlocks.CONNECTOR, RenderLayer.getCutout());
 		BlockEntityRendererFactories.register(MBlockEntities.LOOTED_BLOCk, LootedBlockEntityRenderer::new);
@@ -53,11 +60,21 @@ public class GreenResurgenceClient implements ClientModInitializer {
 				GLFW.GLFW_KEY_I, // The keycode of the key
 				"category."+GreenResurgence.ID // The translation key of the keybinding's category.
 		));
+		keyBinding1 = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+				"key."+GreenResurgence.ID+".spook1",
+				InputUtil.Type.KEYSYM, // The type of the keybinding, KEYSYM for keyboard, MOUSE for mouse.
+				GLFW.GLFW_KEY_C, // The keycode of the key
+				"category."+GreenResurgence.ID // The translation key of the keybinding's category.
+		));
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if(keyBinding.isPressed())
 			{
 				MinecraftClient.getInstance().setScreen(new CraftingScreen());
 			//	Channels.MAIN.clientHandle().send(new GuiPackets.KeyPress(GuiPackets.KEY.Inventory));
+			}
+			if(keyBinding1.isPressed())
+			{
+				Channels.MAIN.clientHandle().send(new GuiPackets.KeyPress(GuiPackets.KEY.Inventory));
 			}
 
 		});

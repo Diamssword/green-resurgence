@@ -5,14 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2280433-581a-4b82-ab53-687b6ee5ff53" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/mixin/PlayerEntityMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Datagen.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Datagen.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lootable_parser/csv/blocs.csv" beforeDir="false" afterPath="$PROJECT_DIR$/lootable_parser/csv/blocs.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lootable_parser/csv/four_cle.csv" beforeDir="false" afterPath="$PROJECT_DIR$/lootable_parser/csv/four_cle.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lootable_parser/loot_tables/lootable/four_cle.json" beforeDir="false" afterPath="$PROJECT_DIR$/lootable_parser/loot_tables/lootable/four_cle.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lootable_parser/lootables.json" beforeDir="false" afterPath="$PROJECT_DIR$/lootable_parser/lootables.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/GreenResurgenceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/GreenResurgenceClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/blockEntityRenderer/ImageBlockEntityRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/blockEntityRenderer/ImageBlockEntityRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/mixin/client/ExampleClientMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/mixin/client/UserAttackBlockMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/resources/green_resurgence.client.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/resources/green_resurgence.client.mixins.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/GreenResurgence.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/GreenResurgence.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/materials/Materials.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/materials/Materials.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/datagen/ModelHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/datagen/ModelHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/GenericBlockSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/GenericBlockSet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/GenericBlocks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/GenericBlocks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/mixin/ExampleMixin.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/AdventureInteract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/AdventureInteract.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/Channels.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/Channels.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/lootables/LootableGroup.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/GuiPackets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/GuiPackets.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/Components.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/Components.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/lootables/Lootables.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/lootables/Lootables.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/lootables/LootablesReloader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/lootables/LootablesReloader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/green_resurgence/loot_tables/lootable/four_cle.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/green_resurgence/loot_tables/lootable/four_cle.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/data/green_resurgence/lootables.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/green_resurgence/lootables.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/green_resurgence.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/green_resurgence.mixins.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,9 +64,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="FabricBlock" />
-        <option value="Interface" />
         <option value="FabricItem" />
+        <option value="Interface" />
+        <option value="FabricBlock" />
         <option value="Class" />
       </list>
     </option>
@@ -80,11 +102,15 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Git/green-resurgence/src/main/resources/assets/green_resurgence/owo_ui&quot;
+    &quot;last_opened_file_path&quot;: &quot;D:/Git/green-resurgence/src/main/resources/data/green_resurgence&quot;
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.diamssword.greenresurgence" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Git\green-resurgence\src\main\resources\data\green_resurgence" />
       <recent name="D:\Git\green-resurgence\src\main\resources\assets\green_resurgence\owo_ui" />
     </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
@@ -94,11 +120,11 @@
       <recent name="com.diamssword.greenresurgence.systems.base" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.diamssword.greenresurgence.genericBlocks" />
+      <recent name="com.diamssword.greenresurgence" />
+      <recent name="com.diamssword.greenresurgence.network" />
+      <recent name="com.diamssword.greenresurgence.systems.clothing" />
       <recent name="com.diamssword.greenresurgence.systems.lootables" />
-      <recent name="com.diamssword.greenresurgence.gui" />
-      <recent name="com.diamssword.greenresurgence.blockEntityRenderer" />
-      <recent name="com.diamssword.greenresurgence.blockEntities" />
-      <recent name="com.diamssword.greenresurgence.blocks" />
     </key>
   </component>
   <component name="RunManager" selected="Application.Minecraft Client">

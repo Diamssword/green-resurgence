@@ -1,0 +1,27 @@
+[
+   {
+      "id": "h-149",
+      "layer": "hair",
+      "name": "test"
+   },
+   {
+      "id": "short_vert",
+      "layer": "pants",
+      "name": "test"
+   },
+   {
+      "id": "sneaker_jaune_simple",
+      "layer": "shoes",
+      "name": "test"
+   },
+   {
+      "id": "tshirt_rose_noir_double_steve",
+      "layer": "teeshirt",
+      "name": "test"
+   },
+   {
+      "id": "u-f-50",
+      "layer": "underware",
+      "name": "test"
+   }
+]

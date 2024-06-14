@@ -1,0 +1,5 @@
+{
+"parent":"green_resurgence:block/diams/chair_wool_white",
+"textures": {
+		"1": "green_resurgence:block/diams/chair_wool_green"
+		}}

@@ -3,7 +3,8 @@
 	"package": "com.diamssword.greenresurgence.mixin.client",
 	"compatibilityLevel": "JAVA_17",
 	"client": [
-		"ExampleClientMixin"
+		"PlayerRenderMixin",
+		"UserAttackBlockMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

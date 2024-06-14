@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
+import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
 import com.diamssword.greenresurgence.systems.lootables.LootablesReloader;
 import io.wispforest.owo.network.OwoNetChannel;
 import io.wispforest.owo.network.serialization.PacketBufSerializer;
@@ -25,9 +26,11 @@ public class Channels {
         });
         PacketBufSerializer.register(MultiInvScreenHandler.Props.class, MultiInvScreenHandler.Props::serializer, MultiInvScreenHandler.Props::unserializer);
         PacketBufSerializer.register(LootablesReloader.class, LootablesReloader::serializer, LootablesReloader::unserializer);
+        PacketBufSerializer.register(ClothingLoader.class, ClothingLoader::serializer, ClothingLoader::unserializer);
         AdventureInteract.init();
         StructureSizePacket.init();
         CurrentZonePacket.init();
+        DictionaryPackets.init();
         GuiPackets.init();
     }
 }

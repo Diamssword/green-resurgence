@@ -3,6 +3,8 @@ package com.diamssword.greenresurgence.systems.lootables;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.network.AdventureInteract;
 import com.diamssword.greenresurgence.network.Channels;
+import com.diamssword.greenresurgence.network.DictionaryPackets;
+import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -62,9 +64,11 @@ public class Lootables {
 
     public static void init() {
         ServerPlayConnectionEvents.JOIN.register((h,s,serv)->{
-            Channels.MAIN.serverHandle(h.player).send(new AdventureInteract.LootableList(loader));
+            Channels.MAIN.serverHandle(h.player).send(new DictionaryPackets.LootableList(loader));
+            Channels.MAIN.serverHandle(h.player).send(new DictionaryPackets.ClothingList(ClothingLoader.instance));
         });
         ServerTickEvents.END_SERVER_TICK.register(loader::worldTick);
+        ServerTickEvents.END_SERVER_TICK.register(ClothingLoader.instance::worldTick);
     }
 }
 

@@ -1,0 +1,52 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "cocricotmod:block/base_cube_all",
+	"textures": {
+		"0": "green_resurgence:block/diams/radiator_white",
+		"particle": "green_resurgence:block/diams/radiator_white"
+	},
+	"elements": [
+		{
+			"from": [0, 3, 11.75],
+			"to": [16, 16, 15.25],
+			"rotation": {"angle": 0, "axis": "y", "origin": [23, 14, 22.25]},
+			"faces": {
+				"north": {"uv": [0, 0, 8, 6.5], "texture": "#0"},
+				"south": {"uv": [8, 0, 0, 6.5], "texture": "#0"},
+				"up": {"uv": [8, 6.5, 0, 8.25], "texture": "#0"},
+				"down": {"uv": [8, 6.5, 0, 8.25], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, 0, -3],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, 0, -3],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"gui": {
+			"rotation": [30, 45, 0],
+			"translation": [-3.25, 1.75, 0],
+			"scale": [0.83, 0.83, 0.83]
+		},
+		"head": {
+			"translation": [0, 8, -12],
+			"scale": [1.2, 1.2, 1.2]
+		},
+		"fixed": {
+			"translation": [0, 0, -5.5]
+		}
+	}
+}

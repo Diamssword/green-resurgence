@@ -4,6 +4,7 @@ import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import com.diamssword.greenresurgence.network.AdventureInteract;
 import com.diamssword.greenresurgence.network.Channels;
+import com.diamssword.greenresurgence.network.DictionaryPackets;
 import com.google.gson.*;
 import com.mojang.logging.LogUtils;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
@@ -99,7 +100,7 @@ public class LootablesReloader implements SimpleSynchronousResourceReloadListene
         if(shouldSync)
         {
             shouldSync=false;
-            Channels.MAIN.serverHandle(server).send(new AdventureInteract.LootableList(this));
+            Channels.MAIN.serverHandle(server).send(new DictionaryPackets.LootableList(this));
         }
     }
     public static void serializer(PacketByteBuf write, LootablesReloader val)

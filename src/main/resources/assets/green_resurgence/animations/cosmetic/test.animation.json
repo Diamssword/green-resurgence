@@ -1,0 +1,30 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"misc.living": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"a": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [0, 180, 20],
+							"easing": "easeInElastic"
+						}
+					},
+					"position": {
+						"0.3333": {
+							"vector": [0, 1, 0]
+						},
+						"0.9167": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
+		}
+	}
+}

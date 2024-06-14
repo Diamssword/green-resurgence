@@ -47,7 +47,8 @@
 	},
 	"custom": {
 		"cardinal-components": [
-			"green_resurgence:base_list"
+			"green_resurgence:base_list",
+			"green_resurgence:player_data"
 		]
 	}
 }

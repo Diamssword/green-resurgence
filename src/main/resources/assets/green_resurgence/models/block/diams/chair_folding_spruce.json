@@ -1,0 +1,5 @@
+{
+"parent":"green_resurgence:block/diams/chair_folding_oak",
+"textures": {
+		"0": "green_resurgence:block/diams/wood_spruce_chair_folding"
+		}}

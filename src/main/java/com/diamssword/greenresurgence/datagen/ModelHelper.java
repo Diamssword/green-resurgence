@@ -177,6 +177,18 @@ public class ModelHelper {
                 .register(Direction.SOUTH, DoorHinge.LEFT, (Boolean)false, BlockStateVariant.create().put(VariantSettings.MODEL, leftHingeClosedModelId).put(VariantSettings.Y, VariantSettings.Rotation.R90))
                 .register(Direction.SOUTH, DoorHinge.LEFT, (Boolean)true, BlockStateVariant.create().put(VariantSettings.MODEL, leftHingeOpenModelId).put(VariantSettings.Y, VariantSettings.Rotation.R90));
     }
+    public static BlockStateVariantMap.DoubleProperty<Direction, Boolean> fillConnectedPillarVariantMap(BlockStateVariantMap.DoubleProperty<Direction, Boolean> variantMap, Identifier down, Identifier up) {
+        return variantMap
+                .register(Direction.WEST,true, BlockStateVariant.create().put(VariantSettings.MODEL, up).put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                .register(Direction.NORTH, true, BlockStateVariant.create().put(VariantSettings.MODEL, up).put(VariantSettings.Y, VariantSettings.Rotation.R0))
+                .register(Direction.SOUTH,true, BlockStateVariant.create().put(VariantSettings.MODEL, up).put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                .register(Direction.EAST, true, BlockStateVariant.create().put(VariantSettings.MODEL, up).put(VariantSettings.Y, VariantSettings.Rotation.R90))
+
+                .register(Direction.WEST,false, BlockStateVariant.create().put(VariantSettings.MODEL, down).put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                .register(Direction.NORTH, false, BlockStateVariant.create().put(VariantSettings.MODEL, down).put(VariantSettings.Y, VariantSettings.Rotation.R0))
+                .register(Direction.SOUTH,false, BlockStateVariant.create().put(VariantSettings.MODEL, down).put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                .register(Direction.EAST, false, BlockStateVariant.create().put(VariantSettings.MODEL, down).put(VariantSettings.Y, VariantSettings.Rotation.R90));
+    }
     public static BlockStateVariantMap.DoubleProperty<Direction, Boolean> fillLanternVariantMap(BlockStateVariantMap.DoubleProperty<Direction, Boolean> variantMap, Identifier down, Identifier up, Identifier side, Identifier down_off,Identifier up_off,Identifier side_off) {
         return variantMap
                 .register(Direction.UP, true, BlockStateVariant.create().put(VariantSettings.MODEL, up))

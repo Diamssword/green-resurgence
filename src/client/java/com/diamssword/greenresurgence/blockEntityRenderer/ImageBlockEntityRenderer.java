@@ -2,7 +2,6 @@ package com.diamssword.greenresurgence.blockEntityRenderer;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
-import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
 import com.diamssword.greenresurgence.blocks.ImageBlock;
 import com.diamssword.greenresurgence.render.images.TextureCache;
 import net.fabricmc.api.EnvType;

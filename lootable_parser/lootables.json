@@ -54,17 +54,23 @@
    {
       "block": "green_resurgence:teien_shulker_green_slab",
       "empty": "minecraft:air",
-      "tables": {}
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
    },
    {
       "block": "green_resurgence:teien_shulker_gray_slab",
       "empty": "minecraft:air",
-      "tables": {}
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
    },
    {
       "block": "green_resurgence:last_days_bookshelf",
       "empty": "minecraft:air",
-      "tables": {}
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
    },
    {
       "block": "green_resurgence:last_days_nether_gold_ore",
@@ -74,17 +80,23 @@
    {
       "block": "green_resurgence:last_days_redstone_ore",
       "empty": "minecraft:air",
-      "tables": {}
+      "tables": {
+         "wrench": "green_resurgence:lootable/machine_cable"
+      }
    },
    {
       "block": "green_resurgence:last_days_purple_glazed_terracotta",
       "empty": "minecraft:air",
-      "tables": {}
+      "tables": {
+         "wrench": "green_resurgence:lootable/mahine_tuyau"
+      }
    },
    {
       "block": "green_resurgence:teien_lectern",
       "empty": "minecraft:air",
-      "tables": {}
+      "tables": {
+         "wrench": "green_resurgence:lootable/machine_elec"
+      }
    },
    {
       "block": "conquest:bottle",
@@ -265,5 +277,56 @@
       "block": "green_resurgence:teien_lily_pad_slab",
       "empty": "minecraft:air",
       "tables": {}
+   },
+   {
+      "block": "green_resurgence:diams_fridge_bottom",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/four",
+         "wrench": "green_resurgence:lootable/four_cle"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_fridge_up",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/four",
+         "wrench": "green_resurgence:lootable/four_cle"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_carton_petit_travers",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/carton"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_carton_petit_ouvert",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/carton"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_carton_petit_entreouvert",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/carton"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_carton_petit",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/carton"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_carton_gros",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/carton"
+      }
    }
 ]

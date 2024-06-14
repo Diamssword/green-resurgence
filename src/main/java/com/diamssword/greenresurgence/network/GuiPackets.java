@@ -2,12 +2,10 @@ package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
-import com.diamssword.greenresurgence.blocks.ItemBlock;
-import net.minecraft.block.BlockState;
+import com.diamssword.greenresurgence.systems.character.MovementManager;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
 public class GuiPackets {
@@ -76,6 +74,7 @@ public class GuiPackets {
             {
 
                 case Inventory -> {
+                    MovementManager.toggleCrawl(ctx.player());
                  /*   NamedScreenHandlerFactory screen=new NamedScreenHandlerFactory() {
                         @Nullable
                         @Override

@@ -8,6 +8,7 @@ import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.materials.Materials;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
+import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
@@ -62,10 +63,12 @@ public class GreenResurgence implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(Lootables.loader);
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(ClothingLoader.instance);
 		FieldRegistrationHandler.register(MItems.class, ID, false);
 		FieldRegistrationHandler.register(MBlocks.class, ID, false);
 		FieldRegistrationHandler.register(MBlockEntities.class, ID, false);
 		FieldRegistrationHandler.register(Containers.class, ID, false);
+		FieldRegistrationHandler.register(MEntities.class, ID, false);
 		ItemPlacers.init();
 		MItems.GROUP.initialize();
 		Channels.initialize();

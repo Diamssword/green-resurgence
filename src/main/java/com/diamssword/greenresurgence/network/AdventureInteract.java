@@ -23,13 +23,9 @@ import java.util.Map;
 public class AdventureInteract {
     static Map<PlayerEntity,Long> cooldowns=new HashMap<>();
     public record BlockInteract(BlockPos pos){};
-    public record LootableList(LootablesReloader loader){};
     public static void init()
     {
         UseBlockCallback.EVENT.register(LootableLogic::onRightClick);
-        Channels.MAIN.registerClientbound(LootableList.class,(msg,ctx)->{
-            Lootables.loader=msg.loader;
-        });
         Channels.MAIN.registerServerbound(BlockInteract.class,(msg,ctx)->{
 
             if(ctx.player().interactionManager.getGameMode().isSurvivalLike() && checkCooldown(ctx.player())) {

@@ -1,0 +1,5 @@
+{
+"parent":"green_resurgence:block/diams/chair_stool_vintage",
+"textures": {
+		"0": "green_resurgence:block/diams/chair_stool_military"
+		}}

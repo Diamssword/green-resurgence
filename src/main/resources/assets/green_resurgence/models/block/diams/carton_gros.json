@@ -1,0 +1,59 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "green_resurgence:block/diams/carton_gros",
+		"particle": "green_resurgence:block/diams/carton_gros"
+	},
+	"elements": [
+		{
+			"from": [-14, 0, 0],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [-14, 0, 0]},
+			"faces": {
+				"north": {"uv": [0, 8, 7.5, 12], "texture": "#0"},
+				"east": {"uv": [11.5, 0, 7.5, 4], "texture": "#0"},
+				"south": {"uv": [0, 8, 7.5, 12], "texture": "#0"},
+				"west": {"uv": [7.5, 0, 11.5, 4], "texture": "#0"},
+				"up": {"uv": [7.5, 4, 0, 0], "texture": "#0"},
+				"down": {"uv": [7.5, 4, 0, 8], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, 100, 0],
+			"translation": [1, 4, 2],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, -78, 0],
+			"translation": [0, 4, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"translation": [7, -0.5, 0],
+			"scale": [0.64, 0.61, 0.5]
+		},
+		"firstperson_lefthand": {
+			"translation": [-1.5, -0.5, 0],
+			"scale": [0.64, 0.61, 0.5]
+		},
+		"ground": {
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"gui": {
+			"rotation": [13, -20, 0],
+			"translation": [3.25, 0, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"head": {
+			"rotation": [0, 90, 16],
+			"translation": [0, 14, -14],
+			"scale": [1.1, 1.1, 1.1]
+		},
+		"fixed": {
+			"translation": [6.75, 0, 0]
+		}
+	}
+}

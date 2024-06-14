@@ -16,18 +16,17 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 public class GenericBlockSet {
     public final String subdomain;
     private final ModelHelper helper;
     private final List<GenericBlockInstance> blocks=new ArrayList<>();
-    private final List<Block> glassRenderNeeded =new ArrayList<>();
+    private final Map<Block,Transparency> glassRenderNeeded =new HashMap();
     private final List<GeneratedBlockInstance> generatedBlocks =new ArrayList<>();
     private final List<GeneratedItemInstance> generatedItems =new ArrayList<>();
     private final List<GenExceptionInstance> genExceptions =new ArrayList<>();
@@ -47,12 +46,12 @@ public class GenericBlockSet {
     }
     public GenericBlockRegisterInstance add(String name,BlockTypes... blocks)
     {
-        this.blocks.add(new GenericBlockInstance(name,false,blocks));
+        this.blocks.add(new GenericBlockInstance(name,Transparency.UNDEFINED,blocks));
         return new GenericBlockRegisterInstance(this,name,blocks);
     }
-    public GenericBlockRegisterInstance add(String name,boolean forceTransluscent,BlockTypes... blocks)
+    public GenericBlockRegisterInstance add(String name,Transparency render,BlockTypes... blocks)
     {
-        this.blocks.add(new GenericBlockInstance(name,forceTransluscent,blocks));
+        this.blocks.add(new GenericBlockInstance(name,render,blocks));
         return new GenericBlockRegisterInstance(this,name,blocks);
     }
 
@@ -79,29 +78,65 @@ public class GenericBlockSet {
                 switch (block)
                 {
                     case SIMPLE -> {
-                        Block b=new Block(processSettings(entry.forceTransparent,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)));
+                        Block b=new Block(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)));
                         Item i;
                         Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
                         Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
-                        if(entry.forceTransparent)
-                            glassRenderNeeded.add(b);
+                        glassRenderNeeded.put(b,entry.transparency);
                     }
-                    case FURNACE,PILLAR -> {
-                        Block b=new GlazedTerracottaBlock(processSettings(entry.forceTransparent,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)));
+                    case PILLAR -> {
+                        Block b=new GenericPillar(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)),entry.transparency);
                         Item i;
                         Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
                         Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
+                        glassRenderNeeded.put(b,entry.transparency);
+                    }
+                    case CHAIR_SLAB -> {
+                        Block b=new ChairSlab(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.WOOD)));
+                        Item i;
+                        Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
+                        Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
+                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
+                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
+                        glassRenderNeeded.put(b,entry.transparency);
+                    }
+                    case CHAIR -> {
+                        Block b=new Chair(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.WOOD)),entry.transparency);
+                        Item i;
+                        Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
+                        Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
+                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
+                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
+                        glassRenderNeeded.put(b,entry.transparency);
+                    }
+                    case PILLAR_SLAB -> {
+                        Block b=new PillarSlab(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)));
+                        Item i;
+                        Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
+                        Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
+                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
+                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
+                        glassRenderNeeded.put(b,entry.transparency);
+                    }
+                    case CONNECTED_H,CONNECTED_V -> {
+                        Block b=new ConnectedBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)),block==BlockTypes.CONNECTED_H);
+                        Item i;
+                        Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
+                        Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
+                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
+                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
+                        glassRenderNeeded.put(b,entry.transparency);
                     }
                     case GLASS_BLOCK -> {
                         Block b=new GlassBlock(AbstractBlock.Settings.create().sounds(BlockSoundGroup.GLASS).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never));
                         Item i;
                         Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
                         Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
-                        glassRenderNeeded.add(b);
+                        glassRenderNeeded.put(b,entry.transparency==Transparency.UNDEFINED?Transparency.TRANSPARENT:entry.transparency);
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
                     }
@@ -110,27 +145,25 @@ public class GenericBlockSet {
                         Block b=new PaneBlock(AbstractBlock.Settings.create().sounds(block==BlockTypes.IRON_BARS?BlockSoundGroup.METAL: BlockSoundGroup.GLASS).nonOpaque());
                         Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name+"_pane"), b);
                         Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name+"_pane"), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
-                        glassRenderNeeded.add(b);
+                        glassRenderNeeded.put(b,entry.transparency==Transparency.UNDEFINED?Transparency.TRANSPARENT:entry.transparency);
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name+"_pane",b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name+"_pane",i,block));
                     }
                     case ROTATABLE_SLAB -> {
                         Item i;
-                        Block b=new RotatableSlabBlock(processSettings(entry.forceTransparent,AbstractBlock.Settings.create().sounds(BlockSoundGroup.STONE)));
+                        Block b=new RotatableSlabBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.STONE)));
                         Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name+"_slab"), b);
                         Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name+"_slab"), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
-                        if(entry.forceTransparent)
-                            glassRenderNeeded.add(b);
+                        glassRenderNeeded.put(b,entry.transparency);
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name+"_slab",b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name+"_slab",i,block));
                     }
                     case LECTERN -> {
                         Item i;
-                        Block b=new LecternShapedBlock(processSettings(entry.forceTransparent,AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY)));
+                        Block b=new LecternShapedBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY)));
                         Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
                         Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
-                        if(entry.forceTransparent)
-                            glassRenderNeeded.add(b);
+                        glassRenderNeeded.put(b,entry.transparency);
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
                     }
@@ -139,60 +172,54 @@ public class GenericBlockSet {
                         Block b=new DoorLongBlock(AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never), BlockSetType.OAK);
                         Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
                         Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new TallBlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
-                        if(entry.forceTransparent)
-                            glassRenderNeeded.add(b);
+                        glassRenderNeeded.put(b,entry.transparency);
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
                     }
                     case FENCE -> {
                         Item i;
-                        Block b=new FenceBlock(processSettings(entry.forceTransparent,AbstractBlock.Settings.create().sounds(BlockSoundGroup.NETHER_BRICKS)));
+                        Block b=new FenceBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.NETHER_BRICKS)));
                         Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name+"_fence"), b);
                         Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name+"_fence"), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
-                        if(entry.forceTransparent)
-                            glassRenderNeeded.add(b);
+                        glassRenderNeeded.put(b,entry.transparency);
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name+"_fence",b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name+"_fence",i,block));
                     }
                     case OMNI_SLAB,OMNI_CARPET,OMNI_CARPET_SOLID -> {
                         Item i;
-                        Block b=new OmniSlabBlock(processSettings(entry.forceTransparent,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)),block==BlockTypes.OMNI_CARPET||block==BlockTypes.OMNI_CARPET_SOLID,block==BlockTypes.OMNI_CARPET);
+                        Block b=new OmniSlabBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)),block==BlockTypes.OMNI_CARPET||block==BlockTypes.OMNI_CARPET_SOLID,block==BlockTypes.OMNI_CARPET);
                         Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name+"_slab"), b);
                         Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name+"_slab"), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
-                        if(entry.forceTransparent)
-                            glassRenderNeeded.add(b);
+                        glassRenderNeeded.put(b,entry.transparency);
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name+"_slab",b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name+"_slab",i,block));
                     }
                     case OMNI_BLOCK -> {
                         Item i;
-                        Block b=new OmniBlock(processSettings(entry.forceTransparent,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)));
+                        Block b=new OmniBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)));
                         Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
                         Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
-                        if(entry.forceTransparent)
-                            glassRenderNeeded.add(b);
+                        glassRenderNeeded.put(b,entry.transparency);
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
                     }
                     case LANTERN -> {
                         Item i;
-                        Block b=new LanternGeneric(processSettings(entry.forceTransparent,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).solid().strength(3.5f).sounds(BlockSoundGroup.LANTERN).luminance(LanternGeneric::produceLight).nonOpaque().pistonBehavior(PistonBehavior.DESTROY)));
+                        Block b=new LanternGeneric(processSettings(entry.transparency,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).solid().strength(3.5f).sounds(BlockSoundGroup.LANTERN).luminance(LanternGeneric::produceLight).nonOpaque().pistonBehavior(PistonBehavior.DESTROY)));
 
                         Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
                         Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
-                        if(entry.forceTransparent)
-                            glassRenderNeeded.add(b);
+                        glassRenderNeeded.put(b,entry.transparency);
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
                     }
                     case BED -> {
                         Item i;
-                        Block b=new BedGeneric(processSettings(entry.forceTransparent,AbstractBlock.Settings.create().mapColor(MapColor.WHITE_GRAY).sounds(BlockSoundGroup.WOOD).strength(0.2f).nonOpaque().burnable().pistonBehavior(PistonBehavior.DESTROY)));
+                        Block b=new BedGeneric(processSettings(entry.transparency,AbstractBlock.Settings.create().mapColor(MapColor.WHITE_GRAY).sounds(BlockSoundGroup.WOOD).strength(0.2f).nonOpaque().burnable().pistonBehavior(PistonBehavior.DESTROY)));
 
                         Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
                         Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
-                        if(entry.forceTransparent)
-                            glassRenderNeeded.add(b);
+                        glassRenderNeeded.put(b,entry.transparency);
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
                     }
@@ -201,8 +228,7 @@ public class GenericBlockSet {
                         Block b=new TrapdoorBlock(AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never), BlockSetType.OAK);
                         Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
                         Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new TallBlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
-                        if(entry.forceTransparent)
-                            glassRenderNeeded.add(b);
+                        glassRenderNeeded.put(b,entry.transparency);
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
                     }
@@ -211,7 +237,7 @@ public class GenericBlockSet {
                         Block b=new GenericLadder(AbstractBlock.Settings.create().notSolid().strength(0.4f).sounds(BlockSoundGroup.LADDER).nonOpaque().pistonBehavior(PistonBehavior.DESTROY));
                         Registry.register(Registries.BLOCK, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), b);
                         Registry.register(Registries.ITEM, new Identifier(GreenResurgence.ID, this.subdomain+"_"+entry.name), i=new BlockItem(b, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
-                        glassRenderNeeded.add(b);
+                        glassRenderNeeded.put(b,entry.transparency);
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
                     }
@@ -220,24 +246,26 @@ public class GenericBlockSet {
         });
 
     }
-    private AbstractBlock.Settings processSettings(boolean non_opaque, AbstractBlock.Settings settings)
+    private AbstractBlock.Settings processSettings(Transparency non_opaque, AbstractBlock.Settings settings)
     {
-        if(non_opaque)
-            return settings.nonOpaque().solidBlock(Blocks::never);
+        if(non_opaque!=Transparency.OPAQUE)
+            settings=settings.nonOpaque().solidBlock(Blocks::never);
+        if(non_opaque==Transparency.NOTFULL)
+            settings=settings.notSolid().nonOpaque();
         return settings;
     }
-    public Block[] getGlasses() {
-        return glassRenderNeeded.toArray(new Block[0]);
+    public Map<Block,Transparency> getGlasses() {
+        return glassRenderNeeded;
     }
     public void tagGenerator(Function<TagKey<Block>, FabricTagBuilder> factory){
         for (GeneratedBlockInstance b : generatedBlocks) {
-                if (b.type == BlockTypes.FENCE)
-                    factory.apply(BlockTags.FENCES).add(b.block);
-                if (b.type == BlockTypes.DOOR) {
-                    factory.apply(BlockTags.DOORS).add(b.block);
+            if (b.type == BlockTypes.FENCE)
+                factory.apply(BlockTags.FENCES).add(b.block);
+            if (b.type == BlockTypes.DOOR) {
+                factory.apply(BlockTags.DOORS).add(b.block);
 
-                    factory.apply(BlockTags.WOODEN_DOORS).add(b.block);
-                }
+                factory.apply(BlockTags.WOODEN_DOORS).add(b.block);
+            }
             if (b.type == BlockTypes.LADDER)
                 factory.apply(BlockTags.CLIMBABLE).add(b.block);
 
@@ -263,6 +291,8 @@ public class GenericBlockSet {
                     new Model(Optional.of(new Identifier("block/fence_inventory")), Optional.empty(), TextureKey.TEXTURE).upload(ModelIds.getItemModelId(b.item), TextureMap.texture(new Identifier(GreenResurgence.ID, "block/" + this.subdomain + "/" + b.name)), generator.writer);
                 else if (b.type == BlockTypes.DOOR)
                     generator.register(b.item, new Model(Optional.of(helper.getBlockModelId(b.name).withSuffixedPath("_left")), Optional.empty()));
+                else if (b.type == BlockTypes.CONNECTED_V)
+                    generator.register(b.item, new Model(Optional.of(helper.getBlockModelId(b.name).withSuffixedPath("_bottom")), Optional.empty()));
                 else
                     generator.register(b.item, new Model(Optional.of(helper.getBlockModelId(b.name)), Optional.empty()));
             }
@@ -282,19 +312,19 @@ public class GenericBlockSet {
                         factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
 
                     }
-                    case PILLAR -> {
+                    case PILLAR,CHAIR_SLAB,CHAIR,PILLAR_SLAB -> {
                         generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(b.block, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name))).coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
                         if(noModel) return;
                         TexturedModel.Factory factory = helper.getModeleFactoryFor(getModelFor(b.name,b.type).orElse(ModelType.PILLAR),b.name);
                         factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
 
                     }
-                    case FURNACE -> {
-                        generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(b.block, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name))).coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
+                    case CONNECTED_V -> {
+                        generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(b.block)
+                                .coordinate(ModelHelper.fillConnectedPillarVariantMap(BlockStateVariantMap.create(HorizontalFacingBlock.FACING, ConnectedBlock.BOTTOM),helper.getBlockModelId(b.name).withSuffixedPath("_bottom"),helper.getBlockModelId(b.name).withSuffixedPath("_up"))));
                         if(noModel) return;
-                        TexturedModel.Factory factory = helper.getModeleFactoryFor(getModelFor(b.name,b.type).orElse(ModelType.MACHINE),b.name);
+                        TexturedModel.Factory factory = helper.getModeleFactoryFor(getModelFor(b.name,b.type).orElse(ModelType.PILLAR),b.name);
                         factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
-
 
                     }
                     case LADDER -> {
@@ -349,7 +379,7 @@ public class GenericBlockSet {
 
     }
 
-    public record GenericBlockInstance(String name,boolean forceTransparent, BlockTypes... blocks){};
+    public record GenericBlockInstance(String name,Transparency transparency, BlockTypes... blocks){};
     private record GeneratedBlockInstance(String name, Block block, BlockTypes type){};
     private record GeneratedItemInstance(String name, Item item, BlockTypes type){};
     private record GenExceptionInstance(String name, BlockTypes type,boolean genBlockState){};
@@ -415,6 +445,14 @@ public class GenericBlockSet {
             return this;
         }
     }
+    public static enum Transparency
+    {
+        TRANSPARENT,
+        CUTOUT,
+        OPAQUE,
+        NOTFULL,
+        UNDEFINED
+    }
     public static enum ModelType
     {
         SIMPLE,
@@ -429,8 +467,10 @@ public class GenericBlockSet {
     public static enum BlockTypes
     {
         SIMPLE,
-        FURNACE,
         PILLAR,
+        PILLAR_SLAB,
+        CHAIR_SLAB,
+        CHAIR,
         GLASS_BLOCK,
         GLASS_PANE,
         IRON_BARS,
@@ -445,6 +485,8 @@ public class GenericBlockSet {
         LANTERN,
         BED,
         TRAPDOOR,
-        LADDER
+        LADDER,
+        CONNECTED_V,
+        CONNECTED_H
     }
 }
