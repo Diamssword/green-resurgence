@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
+import com.diamssword.greenresurgence.gui.CharacterCustomizationScreen;
 import com.diamssword.greenresurgence.gui.ImageBlockGui;
 import com.diamssword.greenresurgence.gui.ItemBlockGui;
 import net.minecraft.block.entity.BlockEntity;
@@ -18,6 +19,9 @@ public class ClientGuiPacket {
 
                 case ImageBlock -> {
                    openGui(new ImageBlockGui(getTile(ImageBlockEntity.class,message.pos())));
+                }
+                case Customizer -> {
+                    openGui(new CharacterCustomizationScreen());
                 }
             }
         });

@@ -1,27 +1,3502 @@
 [
    {
-      "id": "h-149",
-      "layer": "hair",
-      "name": "test"
+      "id": "bandeau_cheveux",
+      "layer": "accessoires",
+      "name": "Bandeau Cheveux"
+   },
+   {
+      "id": "bracelet_argent",
+      "layer": "accessoires",
+      "name": "Bracelet Argent"
+   },
+   {
+      "id": "bracelet_or",
+      "layer": "accessoires",
+      "name": "Bracelet Or"
+   },
+   {
+      "id": "chaine_argent",
+      "layer": "accessoires",
+      "name": "Chaine Argent"
+   },
+   {
+      "id": "chaine_cheveux",
+      "layer": "accessoires",
+      "name": "Chaine Cheveux"
+   },
+   {
+      "id": "chaine_en_or",
+      "layer": "accessoires",
+      "name": "Chaine En Or"
+   },
+   {
+      "id": "echarpe_beige",
+      "layer": "accessoires",
+      "name": "Echarpe Beige"
+   },
+   {
+      "id": "echarpe_rouge",
+      "layer": "accessoires",
+      "name": "Echarpe Rouge"
+   },
+   {
+      "id": "lunette_noire",
+      "layer": "accessoires",
+      "name": "Lunette Noire"
+   },
+   {
+      "id": "necklace",
+      "layer": "accessoires",
+      "name": "Necklace"
+   },
+   {
+      "id": "noeud_bleu_canard_cheveux",
+      "layer": "accessoires",
+      "name": "Noeud Bleu Canard Cheveux"
+   },
+   {
+      "id": "noeud_bleu_cheveux",
+      "layer": "accessoires",
+      "name": "Noeud Bleu Cheveux"
+   },
+   {
+      "id": "noeud_bordeau_cheveux",
+      "layer": "accessoires",
+      "name": "Noeud Bordeau Cheveux"
+   },
+   {
+      "id": "noeud_marron",
+      "layer": "accessoires",
+      "name": "Noeud Marron"
+   },
+   {
+      "id": "noeud_noir_cheveux",
+      "layer": "accessoires",
+      "name": "Noeud Noir Cheveux"
+   },
+   {
+      "id": "uniform_tie_1",
+      "layer": "accessoires",
+      "name": "Uniform Tie 1"
+   },
+   {
+      "id": "uniform_tie_2",
+      "layer": "accessoires",
+      "name": "Uniform Tie 2"
+   },
+   {
+      "id": "bonnet_beige",
+      "layer": "hat",
+      "name": "Bonnet Beige"
+   },
+   {
+      "id": "bonnet_bleu",
+      "layer": "hat",
+      "name": "Bonnet Bleu"
+   },
+   {
+      "id": "bonnet_gris",
+      "layer": "hat",
+      "name": "Bonnet Gris"
+   },
+   {
+      "id": "bonnet_noir",
+      "layer": "hat",
+      "name": "Bonnet Noir"
+   },
+   {
+      "id": "chapeau_citrouille",
+      "layer": "hat",
+      "name": "Chapeau Citrouille"
+   },
+   {
+      "id": "chapeau_grenouille",
+      "layer": "hat",
+      "name": "Chapeau Grenouille"
+   },
+   {
+      "id": "chapeau_marron_noeud",
+      "layer": "hat",
+      "name": "Chapeau Marron Noeud"
+   },
+   {
+      "id": "couronne_fleur_gothique",
+      "layer": "hat",
+      "name": "Couronne Fleur Gothique"
+   },
+   {
+      "id": "hat_1",
+      "layer": "hat",
+      "name": "Hat 1"
+   },
+   {
+      "id": "blouson_caca_doie",
+      "layer": "jacket",
+      "name": "Blouson Caca Doie"
+   },
+   {
+      "id": "bw_hoodie_alex",
+      "layer": "jacket",
+      "name": "Bw Hoodie Alex"
+   },
+   {
+      "id": "bw_hoodie_steve",
+      "layer": "jacket",
+      "name": "Bw Hoodie Steve"
+   },
+   {
+      "id": "gilet_bleu",
+      "layer": "jacket",
+      "name": "Gilet Bleu"
+   },
+   {
+      "id": "gilet_bleu_court",
+      "layer": "jacket",
+      "name": "Gilet Bleu Court"
+   },
+   {
+      "id": "gilet_bordeau_court",
+      "layer": "jacket",
+      "name": "Gilet Bordeau Court"
+   },
+   {
+      "id": "gilet_gris",
+      "layer": "jacket",
+      "name": "Gilet Gris"
+   },
+   {
+      "id": "gilet_mauve",
+      "layer": "jacket",
+      "name": "Gilet Mauve"
+   },
+   {
+      "id": "gilet_noir_court",
+      "layer": "jacket",
+      "name": "Gilet Noir Court"
+   },
+   {
+      "id": "gilet_rose_court",
+      "layer": "jacket",
+      "name": "Gilet Rose Court"
+   },
+   {
+      "id": "gilet_vert_fonce_court",
+      "layer": "jacket",
+      "name": "Gilet Vert Fonce Court"
+   },
+   {
+      "id": "jean_jacket_steve",
+      "layer": "jacket",
+      "name": "Jean Jacket Steve"
+   },
+   {
+      "id": "polo_bleu_blanc_steve",
+      "layer": "jacket",
+      "name": "Polo Bleu Blanc Steve"
+   },
+   {
+      "id": "polo_vert_blanc_steve",
+      "layer": "jacket",
+      "name": "Polo Vert Blanc Steve"
+   },
+   {
+      "id": "polo_violet_blanc_steve",
+      "layer": "jacket",
+      "name": "Polo Violet Blanc Steve"
+   },
+   {
+      "id": "pull_100",
+      "layer": "jacket",
+      "name": "Pull 100"
+   },
+   {
+      "id": "pull_101",
+      "layer": "jacket",
+      "name": "Pull 101"
+   },
+   {
+      "id": "pull_102",
+      "layer": "jacket",
+      "name": "Pull 102"
+   },
+   {
+      "id": "pull_103",
+      "layer": "jacket",
+      "name": "Pull 103"
+   },
+   {
+      "id": "pull_104",
+      "layer": "jacket",
+      "name": "Pull 104"
+   },
+   {
+      "id": "pull_105",
+      "layer": "jacket",
+      "name": "Pull 105"
+   },
+   {
+      "id": "pull_106",
+      "layer": "jacket",
+      "name": "Pull 106"
+   },
+   {
+      "id": "pull_107",
+      "layer": "jacket",
+      "name": "Pull 107"
+   },
+   {
+      "id": "pull_108",
+      "layer": "jacket",
+      "name": "Pull 108"
+   },
+   {
+      "id": "pull_109",
+      "layer": "jacket",
+      "name": "Pull 109"
+   },
+   {
+      "id": "pull_110",
+      "layer": "jacket",
+      "name": "Pull 110"
+   },
+   {
+      "id": "pull_111",
+      "layer": "jacket",
+      "name": "Pull 111"
+   },
+   {
+      "id": "pull_112",
+      "layer": "jacket",
+      "name": "Pull 112"
+   },
+   {
+      "id": "pull_113",
+      "layer": "jacket",
+      "name": "Pull 113"
+   },
+   {
+      "id": "pull_114",
+      "layer": "jacket",
+      "name": "Pull 114"
+   },
+   {
+      "id": "pull_115",
+      "layer": "jacket",
+      "name": "Pull 115"
+   },
+   {
+      "id": "pull_116",
+      "layer": "jacket",
+      "name": "Pull 116"
+   },
+   {
+      "id": "pull_117",
+      "layer": "jacket",
+      "name": "Pull 117"
+   },
+   {
+      "id": "pull_118",
+      "layer": "jacket",
+      "name": "Pull 118"
+   },
+   {
+      "id": "pull_119",
+      "layer": "jacket",
+      "name": "Pull 119"
+   },
+   {
+      "id": "pull_120",
+      "layer": "jacket",
+      "name": "Pull 120"
+   },
+   {
+      "id": "pull_121",
+      "layer": "jacket",
+      "name": "Pull 121"
+   },
+   {
+      "id": "pull_122",
+      "layer": "jacket",
+      "name": "Pull 122"
+   },
+   {
+      "id": "pull_123",
+      "layer": "jacket",
+      "name": "Pull 123"
+   },
+   {
+      "id": "pull_124",
+      "layer": "jacket",
+      "name": "Pull 124"
+   },
+   {
+      "id": "pull_125",
+      "layer": "jacket",
+      "name": "Pull 125"
+   },
+   {
+      "id": "pull_126",
+      "layer": "jacket",
+      "name": "Pull 126"
+   },
+   {
+      "id": "pull_127",
+      "layer": "jacket",
+      "name": "Pull 127"
+   },
+   {
+      "id": "pull_128",
+      "layer": "jacket",
+      "name": "Pull 128"
+   },
+   {
+      "id": "pull_129",
+      "layer": "jacket",
+      "name": "Pull 129"
+   },
+   {
+      "id": "pull_130",
+      "layer": "jacket",
+      "name": "Pull 130"
+   },
+   {
+      "id": "pull_131",
+      "layer": "jacket",
+      "name": "Pull 131"
+   },
+   {
+      "id": "pull_132",
+      "layer": "jacket",
+      "name": "Pull 132"
+   },
+   {
+      "id": "pull_133",
+      "layer": "jacket",
+      "name": "Pull 133"
+   },
+   {
+      "id": "pull_134",
+      "layer": "jacket",
+      "name": "Pull 134"
+   },
+   {
+      "id": "pull_135",
+      "layer": "jacket",
+      "name": "Pull 135"
+   },
+   {
+      "id": "pull_136",
+      "layer": "jacket",
+      "name": "Pull 136"
+   },
+   {
+      "id": "pull_137",
+      "layer": "jacket",
+      "name": "Pull 137"
+   },
+   {
+      "id": "pull_138",
+      "layer": "jacket",
+      "name": "Pull 138"
+   },
+   {
+      "id": "pull_139",
+      "layer": "jacket",
+      "name": "Pull 139"
+   },
+   {
+      "id": "pull_140",
+      "layer": "jacket",
+      "name": "Pull 140"
+   },
+   {
+      "id": "pull_141",
+      "layer": "jacket",
+      "name": "Pull 141"
+   },
+   {
+      "id": "pull_142",
+      "layer": "jacket",
+      "name": "Pull 142"
+   },
+   {
+      "id": "pull_143",
+      "layer": "jacket",
+      "name": "Pull 143"
+   },
+   {
+      "id": "pull_144",
+      "layer": "jacket",
+      "name": "Pull 144"
+   },
+   {
+      "id": "pull_145",
+      "layer": "jacket",
+      "name": "Pull 145"
+   },
+   {
+      "id": "pull_145_alex",
+      "layer": "jacket",
+      "name": "Pull 145 Alex"
+   },
+   {
+      "id": "pull_146",
+      "layer": "jacket",
+      "name": "Pull 146"
+   },
+   {
+      "id": "pull_147",
+      "layer": "jacket",
+      "name": "Pull 147"
+   },
+   {
+      "id": "pull_148",
+      "layer": "jacket",
+      "name": "Pull 148"
+   },
+   {
+      "id": "pull_149",
+      "layer": "jacket",
+      "name": "Pull 149"
+   },
+   {
+      "id": "pull_150",
+      "layer": "jacket",
+      "name": "Pull 150"
+   },
+   {
+      "id": "pull_151",
+      "layer": "jacket",
+      "name": "Pull 151"
+   },
+   {
+      "id": "pull_152",
+      "layer": "jacket",
+      "name": "Pull 152"
+   },
+   {
+      "id": "pull_153",
+      "layer": "jacket",
+      "name": "Pull 153"
+   },
+   {
+      "id": "pull_154",
+      "layer": "jacket",
+      "name": "Pull 154"
+   },
+   {
+      "id": "pull_155",
+      "layer": "jacket",
+      "name": "Pull 155"
+   },
+   {
+      "id": "pull_156",
+      "layer": "jacket",
+      "name": "Pull 156"
+   },
+   {
+      "id": "pull_157",
+      "layer": "jacket",
+      "name": "Pull 157"
+   },
+   {
+      "id": "pull_158",
+      "layer": "jacket",
+      "name": "Pull 158"
+   },
+   {
+      "id": "pull_159",
+      "layer": "jacket",
+      "name": "Pull 159"
+   },
+   {
+      "id": "pull_160",
+      "layer": "jacket",
+      "name": "Pull 160"
+   },
+   {
+      "id": "pull_161",
+      "layer": "jacket",
+      "name": "Pull 161"
+   },
+   {
+      "id": "pull_162",
+      "layer": "jacket",
+      "name": "Pull 162"
+   },
+   {
+      "id": "pull_163",
+      "layer": "jacket",
+      "name": "Pull 163"
+   },
+   {
+      "id": "pull_164",
+      "layer": "jacket",
+      "name": "Pull 164"
+   },
+   {
+      "id": "pull_165",
+      "layer": "jacket",
+      "name": "Pull 165"
+   },
+   {
+      "id": "pull_166",
+      "layer": "jacket",
+      "name": "Pull 166"
+   },
+   {
+      "id": "pull_167",
+      "layer": "jacket",
+      "name": "Pull 167"
+   },
+   {
+      "id": "pull_168",
+      "layer": "jacket",
+      "name": "Pull 168"
+   },
+   {
+      "id": "pull_169",
+      "layer": "jacket",
+      "name": "Pull 169"
+   },
+   {
+      "id": "pull_170",
+      "layer": "jacket",
+      "name": "Pull 170"
+   },
+   {
+      "id": "pull_171",
+      "layer": "jacket",
+      "name": "Pull 171"
+   },
+   {
+      "id": "pull_172",
+      "layer": "jacket",
+      "name": "Pull 172"
+   },
+   {
+      "id": "pull_173",
+      "layer": "jacket",
+      "name": "Pull 173"
+   },
+   {
+      "id": "pull_174",
+      "layer": "jacket",
+      "name": "Pull 174"
+   },
+   {
+      "id": "pull_175",
+      "layer": "jacket",
+      "name": "Pull 175"
+   },
+   {
+      "id": "pull_176",
+      "layer": "jacket",
+      "name": "Pull 176"
+   },
+   {
+      "id": "pull_177",
+      "layer": "jacket",
+      "name": "Pull 177"
+   },
+   {
+      "id": "pull_178",
+      "layer": "jacket",
+      "name": "Pull 178"
+   },
+   {
+      "id": "pull_179",
+      "layer": "jacket",
+      "name": "Pull 179"
+   },
+   {
+      "id": "pull_180",
+      "layer": "jacket",
+      "name": "Pull 180"
+   },
+   {
+      "id": "pull_181",
+      "layer": "jacket",
+      "name": "Pull 181"
+   },
+   {
+      "id": "pull_182",
+      "layer": "jacket",
+      "name": "Pull 182"
+   },
+   {
+      "id": "pull_184",
+      "layer": "jacket",
+      "name": "Pull 184"
+   },
+   {
+      "id": "pull_185",
+      "layer": "jacket",
+      "name": "Pull 185"
+   },
+   {
+      "id": "pull_186",
+      "layer": "jacket",
+      "name": "Pull 186"
+   },
+   {
+      "id": "pull_187",
+      "layer": "jacket",
+      "name": "Pull 187"
+   },
+   {
+      "id": "pull_44",
+      "layer": "jacket",
+      "name": "Pull 44"
+   },
+   {
+      "id": "pull_45",
+      "layer": "jacket",
+      "name": "Pull 45"
+   },
+   {
+      "id": "pull_46",
+      "layer": "jacket",
+      "name": "Pull 46"
+   },
+   {
+      "id": "pull_47",
+      "layer": "jacket",
+      "name": "Pull 47"
+   },
+   {
+      "id": "pull_48",
+      "layer": "jacket",
+      "name": "Pull 48"
+   },
+   {
+      "id": "pull_49",
+      "layer": "jacket",
+      "name": "Pull 49"
+   },
+   {
+      "id": "pull_50",
+      "layer": "jacket",
+      "name": "Pull 50"
+   },
+   {
+      "id": "pull_51",
+      "layer": "jacket",
+      "name": "Pull 51"
+   },
+   {
+      "id": "pull_52",
+      "layer": "jacket",
+      "name": "Pull 52"
+   },
+   {
+      "id": "pull_53",
+      "layer": "jacket",
+      "name": "Pull 53"
+   },
+   {
+      "id": "pull_54",
+      "layer": "jacket",
+      "name": "Pull 54"
+   },
+   {
+      "id": "pull_55",
+      "layer": "jacket",
+      "name": "Pull 55"
+   },
+   {
+      "id": "pull_56",
+      "layer": "jacket",
+      "name": "Pull 56"
+   },
+   {
+      "id": "pull_57",
+      "layer": "jacket",
+      "name": "Pull 57"
+   },
+   {
+      "id": "pull_58",
+      "layer": "jacket",
+      "name": "Pull 58"
+   },
+   {
+      "id": "pull_59",
+      "layer": "jacket",
+      "name": "Pull 59"
+   },
+   {
+      "id": "pull_60",
+      "layer": "jacket",
+      "name": "Pull 60"
+   },
+   {
+      "id": "pull_61",
+      "layer": "jacket",
+      "name": "Pull 61"
+   },
+   {
+      "id": "pull_62",
+      "layer": "jacket",
+      "name": "Pull 62"
+   },
+   {
+      "id": "pull_63",
+      "layer": "jacket",
+      "name": "Pull 63"
+   },
+   {
+      "id": "pull_64",
+      "layer": "jacket",
+      "name": "Pull 64"
+   },
+   {
+      "id": "pull_65",
+      "layer": "jacket",
+      "name": "Pull 65"
+   },
+   {
+      "id": "pull_66",
+      "layer": "jacket",
+      "name": "Pull 66"
+   },
+   {
+      "id": "pull_67",
+      "layer": "jacket",
+      "name": "Pull 67"
+   },
+   {
+      "id": "pull_68",
+      "layer": "jacket",
+      "name": "Pull 68"
+   },
+   {
+      "id": "pull_69",
+      "layer": "jacket",
+      "name": "Pull 69"
+   },
+   {
+      "id": "pull_70",
+      "layer": "jacket",
+      "name": "Pull 70"
+   },
+   {
+      "id": "pull_72",
+      "layer": "jacket",
+      "name": "Pull 72"
+   },
+   {
+      "id": "pull_73",
+      "layer": "jacket",
+      "name": "Pull 73"
+   },
+   {
+      "id": "pull_74",
+      "layer": "jacket",
+      "name": "Pull 74"
+   },
+   {
+      "id": "pull_75",
+      "layer": "jacket",
+      "name": "Pull 75"
+   },
+   {
+      "id": "pull_76",
+      "layer": "jacket",
+      "name": "Pull 76"
+   },
+   {
+      "id": "pull_77",
+      "layer": "jacket",
+      "name": "Pull 77"
+   },
+   {
+      "id": "pull_78",
+      "layer": "jacket",
+      "name": "Pull 78"
+   },
+   {
+      "id": "pull_79",
+      "layer": "jacket",
+      "name": "Pull 79"
+   },
+   {
+      "id": "pull_80",
+      "layer": "jacket",
+      "name": "Pull 80"
+   },
+   {
+      "id": "pull_81",
+      "layer": "jacket",
+      "name": "Pull 81"
+   },
+   {
+      "id": "pull_82",
+      "layer": "jacket",
+      "name": "Pull 82"
+   },
+   {
+      "id": "pull_83",
+      "layer": "jacket",
+      "name": "Pull 83"
+   },
+   {
+      "id": "pull_84",
+      "layer": "jacket",
+      "name": "Pull 84"
+   },
+   {
+      "id": "pull_85",
+      "layer": "jacket",
+      "name": "Pull 85"
+   },
+   {
+      "id": "pull_86",
+      "layer": "jacket",
+      "name": "Pull 86"
+   },
+   {
+      "id": "pull_87",
+      "layer": "jacket",
+      "name": "Pull 87"
+   },
+   {
+      "id": "pull_88",
+      "layer": "jacket",
+      "name": "Pull 88"
+   },
+   {
+      "id": "pull_89",
+      "layer": "jacket",
+      "name": "Pull 89"
+   },
+   {
+      "id": "pull_90",
+      "layer": "jacket",
+      "name": "Pull 90"
+   },
+   {
+      "id": "pull_91",
+      "layer": "jacket",
+      "name": "Pull 91"
+   },
+   {
+      "id": "pull_92",
+      "layer": "jacket",
+      "name": "Pull 92"
+   },
+   {
+      "id": "pull_93",
+      "layer": "jacket",
+      "name": "Pull 93"
+   },
+   {
+      "id": "pull_94",
+      "layer": "jacket",
+      "name": "Pull 94"
+   },
+   {
+      "id": "pull_95",
+      "layer": "jacket",
+      "name": "Pull 95"
+   },
+   {
+      "id": "pull_96",
+      "layer": "jacket",
+      "name": "Pull 96"
+   },
+   {
+      "id": "pull_97",
+      "layer": "jacket",
+      "name": "Pull 97"
+   },
+   {
+      "id": "pull_98",
+      "layer": "jacket",
+      "name": "Pull 98"
+   },
+   {
+      "id": "pull_99",
+      "layer": "jacket",
+      "name": "Pull 99"
+   },
+   {
+      "id": "pull_automne_couleur_steve",
+      "layer": "jacket",
+      "name": "Pull Automne Couleur Steve"
+   },
+   {
+      "id": "pull_automne_marron_steve",
+      "layer": "jacket",
+      "name": "Pull Automne Marron Steve"
+   },
+   {
+      "id": "pull_automne_vert_steve",
+      "layer": "jacket",
+      "name": "Pull Automne Vert Steve"
+   },
+   {
+      "id": "pull_automne_violet_steve",
+      "layer": "jacket",
+      "name": "Pull Automne Violet Steve"
+   },
+   {
+      "id": "pull_beige_saumon_mashallah",
+      "layer": "jacket",
+      "name": "Pull Beige Saumon Mashallah"
+   },
+   {
+      "id": "pull_blanc_coeur_steve",
+      "layer": "jacket",
+      "name": "Pull Blanc Coeur Steve"
+   },
+   {
+      "id": "pull_blanc_mashallah",
+      "layer": "jacket",
+      "name": "Pull Blanc Mashallah"
+   },
+   {
+      "id": "pull_bleu_col_blanc_steve",
+      "layer": "jacket",
+      "name": "Pull Bleu Col Blanc Steve"
+   },
+   {
+      "id": "pull_bleu_fg_steve",
+      "layer": "jacket",
+      "name": "Pull Bleu Fg Steve"
+   },
+   {
+      "id": "pull_bleu_fonce_mashallah",
+      "layer": "jacket",
+      "name": "Pull Bleu Fonce Mashallah"
+   },
+   {
+      "id": "pull_bleu_rayures_steve",
+      "layer": "jacket",
+      "name": "Pull Bleu Rayures Steve"
+   },
+   {
+      "id": "pull_bleu_steve",
+      "layer": "jacket",
+      "name": "Pull Bleu Steve"
+   },
+   {
+      "id": "pull_bleu_tshirt_blanc_steve",
+      "layer": "jacket",
+      "name": "Pull Bleu Tshirt Blanc Steve"
+   },
+   {
+      "id": "pull_bordeau_col_blanc_steve",
+      "layer": "jacket",
+      "name": "Pull Bordeau Col Blanc Steve"
+   },
+   {
+      "id": "pull_bordeau_mashallah",
+      "layer": "jacket",
+      "name": "Pull Bordeau Mashallah"
+   },
+   {
+      "id": "pull_bordeau_rayures_steve",
+      "layer": "jacket",
+      "name": "Pull Bordeau Rayures Steve"
+   },
+   {
+      "id": "pull_camo_bleu_steve",
+      "layer": "jacket",
+      "name": "Pull Camo Bleu Steve"
+   },
+   {
+      "id": "pull_camo_rouge_steve",
+      "layer": "jacket",
+      "name": "Pull Camo Rouge Steve"
+   },
+   {
+      "id": "pull_camo_vert_steve",
+      "layer": "jacket",
+      "name": "Pull Camo Vert Steve"
+   },
+   {
+      "id": "pull_camo_violet_steve",
+      "layer": "jacket",
+      "name": "Pull Camo Violet Steve"
+   },
+   {
+      "id": "pull_champignon_steeve",
+      "layer": "jacket",
+      "name": "Pull Champignon Steeve"
+   },
+   {
+      "id": "pull_coeur_cyan_steve",
+      "layer": "jacket",
+      "name": "Pull Coeur Cyan Steve"
+   },
+   {
+      "id": "pull_coeur_jaune_steve",
+      "layer": "jacket",
+      "name": "Pull Coeur Jaune Steve"
+   },
+   {
+      "id": "pull_coeur_orange_steve",
+      "layer": "jacket",
+      "name": "Pull Coeur Orange Steve"
+   },
+   {
+      "id": "pull_coeur_rose_steve",
+      "layer": "jacket",
+      "name": "Pull Coeur Rose Steve"
+   },
+   {
+      "id": "pull_coeur_vert_steve",
+      "layer": "jacket",
+      "name": "Pull Coeur Vert Steve"
+   },
+   {
+      "id": "pull_degrade_steve",
+      "layer": "jacket",
+      "name": "Pull Degrade Steve"
+   },
+   {
+      "id": "pull_degrade_sunset_bleu_steve",
+      "layer": "jacket",
+      "name": "Pull Degrade Sunset Bleu Steve"
+   },
+   {
+      "id": "pull_degrade_sunset_bordeau_steve",
+      "layer": "jacket",
+      "name": "Pull Degrade Sunset Bordeau Steve"
+   },
+   {
+      "id": "pull_degrade_sunset_vert_steve",
+      "layer": "jacket",
+      "name": "Pull Degrade Sunset Vert Steve"
+   },
+   {
+      "id": "pull_flower_alex",
+      "layer": "jacket",
+      "name": "Pull Flower Alex"
+   },
+   {
+      "id": "pull_girs_fonce_col_blanc_steve",
+      "layer": "jacket",
+      "name": "Pull Girs Fonce Col Blanc Steve"
+   },
+   {
+      "id": "pull_gris_col_gris_steve",
+      "layer": "jacket",
+      "name": "Pull Gris Col Gris Steve"
+   },
+   {
+      "id": "pull_gris_col_noir_steve",
+      "layer": "jacket",
+      "name": "Pull Gris Col Noir Steve"
+   },
+   {
+      "id": "pull_gris_fg_steve",
+      "layer": "jacket",
+      "name": "Pull Gris Fg Steve"
+   },
+   {
+      "id": "pull_gris_fonce_steve",
+      "layer": "jacket",
+      "name": "Pull Gris Fonce Steve"
+   },
+   {
+      "id": "pull_gris_mashallah",
+      "layer": "jacket",
+      "name": "Pull Gris Mashallah"
+   },
+   {
+      "id": "pull_gris_steve",
+      "layer": "jacket",
+      "name": "Pull Gris Steve"
+   },
+   {
+      "id": "pull_gris_tshirt_blanc_steve",
+      "layer": "jacket",
+      "name": "Pull Gris Tshirt Blanc Steve"
+   },
+   {
+      "id": "pull_jaune_col_blanc",
+      "layer": "jacket",
+      "name": "Pull Jaune Col Blanc"
+   },
+   {
+      "id": "pull_jaune_steve",
+      "layer": "jacket",
+      "name": "Pull Jaune Steve"
+   },
+   {
+      "id": "pull_kaki_rayures_steve",
+      "layer": "jacket",
+      "name": "Pull Kaki Rayures Steve"
+   },
+   {
+      "id": "pull_long_bleu",
+      "layer": "jacket",
+      "name": "Pull Long Bleu"
+   },
+   {
+      "id": "pull_long_bordeau",
+      "layer": "jacket",
+      "name": "Pull Long Bordeau"
+   },
+   {
+      "id": "pull_long_noir",
+      "layer": "jacket",
+      "name": "Pull Long Noir"
+   },
+   {
+      "id": "pull_long_turquoise",
+      "layer": "jacket",
+      "name": "Pull Long Turquoise"
+   },
+   {
+      "id": "pull_long_violet",
+      "layer": "jacket",
+      "name": "Pull Long Violet"
+   },
+   {
+      "id": "pull_marron_col_blanc_steve",
+      "layer": "jacket",
+      "name": "Pull Marron Col Blanc Steve"
+   },
+   {
+      "id": "pull_marron_mashallah",
+      "layer": "jacket",
+      "name": "Pull Marron Mashallah"
+   },
+   {
+      "id": "pull_marron_tshirt_blanc_steve",
+      "layer": "jacket",
+      "name": "Pull Marron Tshirt Blanc Steve"
+   },
+   {
+      "id": "pull_menthe_mashallah",
+      "layer": "jacket",
+      "name": "Pull Menthe Mashallah"
+   },
+   {
+      "id": "pull_noir_gemmes_steve",
+      "layer": "jacket",
+      "name": "Pull Noir Gemmes Steve"
+   },
+   {
+      "id": "pull_noir_mashallah",
+      "layer": "jacket",
+      "name": "Pull Noir Mashallah"
+   },
+   {
+      "id": "pull_orange_fg_steve",
+      "layer": "jacket",
+      "name": "Pull Orange Fg Steve"
+   },
+   {
+      "id": "pull_orange_steve",
+      "layer": "jacket",
+      "name": "Pull Orange Steve"
+   },
+   {
+      "id": "pull_rayures_beige_steve",
+      "layer": "jacket",
+      "name": "Pull Rayures Beige Steve"
+   },
+   {
+      "id": "pull_rayures_bleu_steve",
+      "layer": "jacket",
+      "name": "Pull Rayures Bleu Steve"
+   },
+   {
+      "id": "pull_rayures_rose_orange_steeve",
+      "layer": "jacket",
+      "name": "Pull Rayures Rose Orange Steeve"
+   },
+   {
+      "id": "pull_rayures_rose_steve",
+      "layer": "jacket",
+      "name": "Pull Rayures Rose Steve"
+   },
+   {
+      "id": "pull_rayures_vert_steve",
+      "layer": "jacket",
+      "name": "Pull Rayures Vert Steve"
+   },
+   {
+      "id": "pull_rose_fg_steve",
+      "layer": "jacket",
+      "name": "Pull Rose Fg Steve"
+   },
+   {
+      "id": "pull_rose_steve",
+      "layer": "jacket",
+      "name": "Pull Rose Steve"
+   },
+   {
+      "id": "pull_rouge_coeur_steve",
+      "layer": "jacket",
+      "name": "Pull Rouge Coeur Steve"
+   },
+   {
+      "id": "pull_rouge_rayures_steve",
+      "layer": "jacket",
+      "name": "Pull Rouge Rayures Steve"
+   },
+   {
+      "id": "pull_rouge_steve",
+      "layer": "jacket",
+      "name": "Pull Rouge Steve"
+   },
+   {
+      "id": "pull_smiley_marron_steve",
+      "layer": "jacket",
+      "name": "Pull Smiley Marron Steve"
+   },
+   {
+      "id": "pull_smiley_steve",
+      "layer": "jacket",
+      "name": "Pull Smiley Steve"
+   },
+   {
+      "id": "pull_smiley_violet_steve",
+      "layer": "jacket",
+      "name": "Pull Smiley Violet Steve"
+   },
+   {
+      "id": "pull_vert_col_blanc_steve",
+      "layer": "jacket",
+      "name": "Pull Vert Col Blanc Steve"
+   },
+   {
+      "id": "pull_vert_fg_steve",
+      "layer": "jacket",
+      "name": "Pull Vert Fg Steve"
+   },
+   {
+      "id": "pull_vert_fonce_mashallah",
+      "layer": "jacket",
+      "name": "Pull Vert Fonce Mashallah"
+   },
+   {
+      "id": "pull_vert_fonce_tshirt_blanc_steve",
+      "layer": "jacket",
+      "name": "Pull Vert Fonce Tshirt Blanc Steve"
+   },
+   {
+      "id": "pull_vert_mashallah",
+      "layer": "jacket",
+      "name": "Pull Vert Mashallah"
+   },
+   {
+      "id": "pull_vert_pomme_steve",
+      "layer": "jacket",
+      "name": "Pull Vert Pomme Steve"
+   },
+   {
+      "id": "pull_vert_rayures_steve",
+      "layer": "jacket",
+      "name": "Pull Vert Rayures Steve"
+   },
+   {
+      "id": "pull_vert_steve",
+      "layer": "jacket",
+      "name": "Pull Vert Steve"
+   },
+   {
+      "id": "pull_vert_tshirt_blanc_steve",
+      "layer": "jacket",
+      "name": "Pull Vert Tshirt Blanc Steve"
+   },
+   {
+      "id": "pull_violet_col_blanc_steve",
+      "layer": "jacket",
+      "name": "Pull Violet Col Blanc Steve"
+   },
+   {
+      "id": "pull_violet_mashallah",
+      "layer": "jacket",
+      "name": "Pull Violet Mashallah"
+   },
+   {
+      "id": "pull_violet_rayures_steve",
+      "layer": "jacket",
+      "name": "Pull Violet Rayures Steve"
+   },
+   {
+      "id": "pull_violet_tshirt_blanc_steve",
+      "layer": "jacket",
+      "name": "Pull Violet Tshirt Blanc Steve"
+   },
+   {
+      "id": "squared_jacket",
+      "layer": "jacket",
+      "name": "Squared Jacket"
+   },
+   {
+      "id": "sweat_capuche_gris_steve_-_copie",
+      "layer": "jacket",
+      "name": "Sweat Capuche Gris Steve   Copie"
+   },
+   {
+      "id": "sweat_capuche_gris_steve",
+      "layer": "jacket",
+      "name": "Sweat Capuche Gris Steve"
+   },
+   {
+      "id": "sweat_capuche_marron_steve",
+      "layer": "jacket",
+      "name": "Sweat Capuche Marron Steve"
+   },
+   {
+      "id": "sweat_capuche_orange_steve",
+      "layer": "jacket",
+      "name": "Sweat Capuche Orange Steve"
+   },
+   {
+      "id": "sweat_capuche_rouge_steve",
+      "layer": "jacket",
+      "name": "Sweat Capuche Rouge Steve"
+   },
+   {
+      "id": "sweat_capuche_turquoise_steve",
+      "layer": "jacket",
+      "name": "Sweat Capuche Turquoise Steve"
+   },
+   {
+      "id": "sweat_capuche_vert_steve",
+      "layer": "jacket",
+      "name": "Sweat Capuche Vert Steve"
+   },
+   {
+      "id": "sweat_noir",
+      "layer": "jacket",
+      "name": "Sweat Noir"
+   },
+   {
+      "id": "teddiebear_hoodie_alex",
+      "layer": "jacket",
+      "name": "Teddiebear Hoodie Alex"
+   },
+   {
+      "id": "teddiebear_hoodie_steve",
+      "layer": "jacket",
+      "name": "Teddiebear Hoodie Steve"
+   },
+   {
+      "id": "top_1",
+      "layer": "jacket",
+      "name": "Top 1"
+   },
+   {
+      "id": "top_10",
+      "layer": "jacket",
+      "name": "Top 10"
+   },
+   {
+      "id": "top_11",
+      "layer": "jacket",
+      "name": "Top 11"
+   },
+   {
+      "id": "top_12",
+      "layer": "jacket",
+      "name": "Top 12"
+   },
+   {
+      "id": "top_13",
+      "layer": "jacket",
+      "name": "Top 13"
+   },
+   {
+      "id": "top_14",
+      "layer": "jacket",
+      "name": "Top 14"
+   },
+   {
+      "id": "top_2",
+      "layer": "jacket",
+      "name": "Top 2"
+   },
+   {
+      "id": "top_3",
+      "layer": "jacket",
+      "name": "Top 3"
+   },
+   {
+      "id": "top_4",
+      "layer": "jacket",
+      "name": "Top 4"
+   },
+   {
+      "id": "top_5",
+      "layer": "jacket",
+      "name": "Top 5"
+   },
+   {
+      "id": "top_6",
+      "layer": "jacket",
+      "name": "Top 6"
+   },
+   {
+      "id": "top_7",
+      "layer": "jacket",
+      "name": "Top 7"
+   },
+   {
+      "id": "top_8",
+      "layer": "jacket",
+      "name": "Top 8"
+   },
+   {
+      "id": "top_9",
+      "layer": "jacket",
+      "name": "Top 9"
+   },
+   {
+      "id": "tshirt_36",
+      "layer": "jacket",
+      "name": "Tshirt 36"
+   },
+   {
+      "id": "tshirt_37",
+      "layer": "jacket",
+      "name": "Tshirt 37"
+   },
+   {
+      "id": "tshirt_38",
+      "layer": "jacket",
+      "name": "Tshirt 38"
+   },
+   {
+      "id": "tshirt_39",
+      "layer": "jacket",
+      "name": "Tshirt 39"
+   },
+   {
+      "id": "tshirt_40",
+      "layer": "jacket",
+      "name": "Tshirt 40"
+   },
+   {
+      "id": "tshirt_41",
+      "layer": "jacket",
+      "name": "Tshirt 41"
+   },
+   {
+      "id": "tshirt_42",
+      "layer": "jacket",
+      "name": "Tshirt 42"
+   },
+   {
+      "id": "tshirt_43",
+      "layer": "jacket",
+      "name": "Tshirt 43"
+   },
+   {
+      "id": "tshirt_44",
+      "layer": "jacket",
+      "name": "Tshirt 44"
+   },
+   {
+      "id": "tshirt_45",
+      "layer": "jacket",
+      "name": "Tshirt 45"
+   },
+   {
+      "id": "tshirt_46",
+      "layer": "jacket",
+      "name": "Tshirt 46"
+   },
+   {
+      "id": "tshirt_47",
+      "layer": "jacket",
+      "name": "Tshirt 47"
+   },
+   {
+      "id": "tshirt_48",
+      "layer": "jacket",
+      "name": "Tshirt 48"
+   },
+   {
+      "id": "tshirt_49",
+      "layer": "jacket",
+      "name": "Tshirt 49"
+   },
+   {
+      "id": "tshirt_50",
+      "layer": "jacket",
+      "name": "Tshirt 50"
+   },
+   {
+      "id": "tshirt_51",
+      "layer": "jacket",
+      "name": "Tshirt 51"
+   },
+   {
+      "id": "tshirt_52",
+      "layer": "jacket",
+      "name": "Tshirt 52"
+   },
+   {
+      "id": "uniform_sweater",
+      "layer": "jacket",
+      "name": "Uniform Sweater"
+   },
+   {
+      "id": "veste_beige",
+      "layer": "jacket",
+      "name": "Veste Beige"
+   },
+   {
+      "id": "veste_capuche_marron",
+      "layer": "jacket",
+      "name": "Veste Capuche Marron"
+   },
+   {
+      "id": "veste_costume_bleu_steve",
+      "layer": "jacket",
+      "name": "Veste Costume Bleu Steve"
+   },
+   {
+      "id": "veste_costume_bordeaux_steve",
+      "layer": "jacket",
+      "name": "Veste Costume Bordeaux Steve"
+   },
+   {
+      "id": "veste_costume_vert_steve",
+      "layer": "jacket",
+      "name": "Veste Costume Vert Steve"
+   },
+   {
+      "id": "veste_fermee_grise",
+      "layer": "jacket",
+      "name": "Veste Fermee Grise"
+   },
+   {
+      "id": "veste_helpme_steve",
+      "layer": "jacket",
+      "name": "Veste Helpme Steve"
+   },
+   {
+      "id": "veste_longue_costume",
+      "layer": "jacket",
+      "name": "Veste Longue Costume"
+   },
+   {
+      "id": "veste_moltonnee_blanche_steve",
+      "layer": "jacket",
+      "name": "Veste Moltonnée Blanche Steve"
+   },
+   {
+      "id": "veste_moltonnee_grise_alex",
+      "layer": "jacket",
+      "name": "Veste Moltonnée Grise Alex"
+   },
+   {
+      "id": "veste_moltonnee_taupe_steve",
+      "layer": "jacket",
+      "name": "Veste Moltonnée Taupe Steve"
+   },
+   {
+      "id": "veste_noire",
+      "layer": "jacket",
+      "name": "Veste Noire"
+   },
+   {
+      "id": "veston_brun",
+      "layer": "jacket",
+      "name": "Veston Brun"
+   },
+   {
+      "id": "baggie_bleu",
+      "layer": "pants",
+      "name": "Baggie Bleu"
+   },
+   {
+      "id": "baggie_bleu_clair",
+      "layer": "pants",
+      "name": "Baggie Bleu Clair"
+   },
+   {
+      "id": "baggie_gris",
+      "layer": "pants",
+      "name": "Baggie Gris"
+   },
+   {
+      "id": "baggie_noir",
+      "layer": "pants",
+      "name": "Baggie Noir"
+   },
+   {
+      "id": "camo_pants",
+      "layer": "pants",
+      "name": "Camo Pants"
+   },
+   {
+      "id": "green_camo_pants",
+      "layer": "pants",
+      "name": "Green Camo Pants"
+   },
+   {
+      "id": "jeans_bleu",
+      "layer": "pants",
+      "name": "Jeans Bleu"
+   },
+   {
+      "id": "jeans_trous_coeur",
+      "layer": "pants",
+      "name": "Jeans Trous Coeur"
+   },
+   {
+      "id": "jean_bleu_clair",
+      "layer": "pants",
+      "name": "Jean Bleu Clair"
+   },
+   {
+      "id": "jean_chaine_bleu",
+      "layer": "pants",
+      "name": "Jean Chaine Bleu"
+   },
+   {
+      "id": "jupe_blanche_ete",
+      "layer": "pants",
+      "name": "Jupe Blanche Été"
+   },
+   {
+      "id": "jupe_bleue",
+      "layer": "pants",
+      "name": "Jupe Bleue"
+   },
+   {
+      "id": "jupe_marron",
+      "layer": "pants",
+      "name": "Jupe Marron"
+   },
+   {
+      "id": "jupe_pochette",
+      "layer": "pants",
+      "name": "Jupe Pochette"
+   },
+   {
+      "id": "jupe_velour_grise",
+      "layer": "pants",
+      "name": "Jupe Velour Grise"
+   },
+   {
+      "id": "jupe_velour_marron",
+      "layer": "pants",
+      "name": "Jupe Velour Marron"
+   },
+   {
+      "id": "jupe_verte",
+      "layer": "pants",
+      "name": "Jupe Verte"
+   },
+   {
+      "id": "pantacourt",
+      "layer": "pants",
+      "name": "Pantacourt"
+   },
+   {
+      "id": "pantalon_beige_carreaux",
+      "layer": "pants",
+      "name": "Pantalon Beige Carreaux"
+   },
+   {
+      "id": "pantalon_blanc_bande_noire",
+      "layer": "pants",
+      "name": "Pantalon Blanc Bande Noire"
+   },
+   {
+      "id": "pantalon_blanc_ceinture_acier",
+      "layer": "pants",
+      "name": "Pantalon Blanc Ceinture Acier"
+   },
+   {
+      "id": "pantalon_encore_trous",
+      "layer": "pants",
+      "name": "Pantalon Encore Trous"
+   },
+   {
+      "id": "pantalon_helpme",
+      "layer": "pants",
+      "name": "Pantalon Helpme"
+   },
+   {
+      "id": "pantalon_marron_chaine",
+      "layer": "pants",
+      "name": "Pantalon Marron Chaine"
+   },
+   {
+      "id": "pantalon_mauve",
+      "layer": "pants",
+      "name": "Pantalon Mauve"
+   },
+   {
+      "id": "pantalon_noir_bande_blanche",
+      "layer": "pants",
+      "name": "Pantalon Noir Bande Blanche"
+   },
+   {
+      "id": "pantalon_noir_ceinture_acier",
+      "layer": "pants",
+      "name": "Pantalon Noir Ceinture Acier"
+   },
+   {
+      "id": "pantalon_rouge_trou",
+      "layer": "pants",
+      "name": "Pantalon Rouge Trou"
+   },
+   {
+      "id": "pantalon_trou_noir",
+      "layer": "pants",
+      "name": "Pantalon Trou Noir"
+   },
+   {
+      "id": "pant_131",
+      "layer": "pants",
+      "name": "Pant 131"
+   },
+   {
+      "id": "pant_132",
+      "layer": "pants",
+      "name": "Pant 132"
+   },
+   {
+      "id": "pant_133",
+      "layer": "pants",
+      "name": "Pant 133"
+   },
+   {
+      "id": "pant_134",
+      "layer": "pants",
+      "name": "Pant 134"
+   },
+   {
+      "id": "pant_135",
+      "layer": "pants",
+      "name": "Pant 135"
+   },
+   {
+      "id": "pant_136",
+      "layer": "pants",
+      "name": "Pant 136"
+   },
+   {
+      "id": "pant_137",
+      "layer": "pants",
+      "name": "Pant 137"
+   },
+   {
+      "id": "pant_138",
+      "layer": "pants",
+      "name": "Pant 138"
+   },
+   {
+      "id": "pant_139",
+      "layer": "pants",
+      "name": "Pant 139"
+   },
+   {
+      "id": "pant_140",
+      "layer": "pants",
+      "name": "Pant 140"
+   },
+   {
+      "id": "pant_141",
+      "layer": "pants",
+      "name": "Pant 141"
+   },
+   {
+      "id": "pant_142",
+      "layer": "pants",
+      "name": "Pant 142"
+   },
+   {
+      "id": "pant_143",
+      "layer": "pants",
+      "name": "Pant 143"
+   },
+   {
+      "id": "pant_144",
+      "layer": "pants",
+      "name": "Pant 144"
+   },
+   {
+      "id": "pant_145",
+      "layer": "pants",
+      "name": "Pant 145"
+   },
+   {
+      "id": "pant_146",
+      "layer": "pants",
+      "name": "Pant 146"
+   },
+   {
+      "id": "pant_147",
+      "layer": "pants",
+      "name": "Pant 147"
+   },
+   {
+      "id": "pant_148",
+      "layer": "pants",
+      "name": "Pant 148"
+   },
+   {
+      "id": "pant_149",
+      "layer": "pants",
+      "name": "Pant 149"
+   },
+   {
+      "id": "pant_150",
+      "layer": "pants",
+      "name": "Pant 150"
+   },
+   {
+      "id": "pant_151",
+      "layer": "pants",
+      "name": "Pant 151"
+   },
+   {
+      "id": "pant_152",
+      "layer": "pants",
+      "name": "Pant 152"
+   },
+   {
+      "id": "pant_153",
+      "layer": "pants",
+      "name": "Pant 153"
+   },
+   {
+      "id": "pant_154",
+      "layer": "pants",
+      "name": "Pant 154"
+   },
+   {
+      "id": "pant_155",
+      "layer": "pants",
+      "name": "Pant 155"
+   },
+   {
+      "id": "pull_nuages_steve",
+      "layer": "pants",
+      "name": "Pull Nuages Steve"
+   },
+   {
+      "id": "pull_rose_clair_steve",
+      "layer": "pants",
+      "name": "Pull Rose Clair Steve"
+   },
+   {
+      "id": "pull_watermelon_steve",
+      "layer": "pants",
+      "name": "Pull Watermelon Steve"
+   },
+   {
+      "id": "salopette_beige",
+      "layer": "pants",
+      "name": "Salopette Beige"
+   },
+   {
+      "id": "salopette_verte",
+      "layer": "pants",
+      "name": "Salopette Verte"
+   },
+   {
+      "id": "short_blanc",
+      "layer": "pants",
+      "name": "Short Blanc"
+   },
+   {
+      "id": "short_bleu",
+      "layer": "pants",
+      "name": "Short Bleu"
+   },
+   {
+      "id": "short_bleu_fonce",
+      "layer": "pants",
+      "name": "Short Bleu Fonce"
+   },
+   {
+      "id": "short_gris",
+      "layer": "pants",
+      "name": "Short Gris"
+   },
+   {
+      "id": "short_noir",
+      "layer": "pants",
+      "name": "Short Noir"
+   },
+   {
+      "id": "short_rose",
+      "layer": "pants",
+      "name": "Short Rose"
    },
    {
       "id": "short_vert",
       "layer": "pants",
-      "name": "test"
+      "name": "Short Vert"
    },
    {
-      "id": "sneaker_jaune_simple",
+      "id": "short_vert_clair",
+      "layer": "pants",
+      "name": "Short Vert Clair"
+   },
+   {
+      "id": "skirt_1",
+      "layer": "pants",
+      "name": "Skirt 1"
+   },
+   {
+      "id": "skirt_10",
+      "layer": "pants",
+      "name": "Skirt 10"
+   },
+   {
+      "id": "skirt_11",
+      "layer": "pants",
+      "name": "Skirt 11"
+   },
+   {
+      "id": "skirt_12",
+      "layer": "pants",
+      "name": "Skirt 12"
+   },
+   {
+      "id": "skirt_13",
+      "layer": "pants",
+      "name": "Skirt 13"
+   },
+   {
+      "id": "skirt_14",
+      "layer": "pants",
+      "name": "Skirt 14"
+   },
+   {
+      "id": "skirt_15",
+      "layer": "pants",
+      "name": "Skirt 15"
+   },
+   {
+      "id": "skirt_16",
+      "layer": "pants",
+      "name": "Skirt 16"
+   },
+   {
+      "id": "skirt_17",
+      "layer": "pants",
+      "name": "Skirt 17"
+   },
+   {
+      "id": "skirt_18",
+      "layer": "pants",
+      "name": "Skirt 18"
+   },
+   {
+      "id": "skirt_19",
+      "layer": "pants",
+      "name": "Skirt 19"
+   },
+   {
+      "id": "skirt_2",
+      "layer": "pants",
+      "name": "Skirt 2"
+   },
+   {
+      "id": "skirt_20",
+      "layer": "pants",
+      "name": "Skirt 20"
+   },
+   {
+      "id": "skirt_21",
+      "layer": "pants",
+      "name": "Skirt 21"
+   },
+   {
+      "id": "skirt_22",
+      "layer": "pants",
+      "name": "Skirt 22"
+   },
+   {
+      "id": "skirt_23",
+      "layer": "pants",
+      "name": "Skirt 23"
+   },
+   {
+      "id": "skirt_3",
+      "layer": "pants",
+      "name": "Skirt 3"
+   },
+   {
+      "id": "skirt_4",
+      "layer": "pants",
+      "name": "Skirt 4"
+   },
+   {
+      "id": "skirt_5",
+      "layer": "pants",
+      "name": "Skirt 5"
+   },
+   {
+      "id": "skirt_6",
+      "layer": "pants",
+      "name": "Skirt 6"
+   },
+   {
+      "id": "skirt_7",
+      "layer": "pants",
+      "name": "Skirt 7"
+   },
+   {
+      "id": "skirt_8",
+      "layer": "pants",
+      "name": "Skirt 8"
+   },
+   {
+      "id": "skirt_9",
+      "layer": "pants",
+      "name": "Skirt 9"
+   },
+   {
+      "id": "uniform_pants",
+      "layer": "pants",
+      "name": "Uniform Pants"
+   },
+   {
+      "id": "uniform_skirt",
+      "layer": "pants",
+      "name": "Uniform Skirt"
+   },
+   {
+      "id": "white_shred_jean",
+      "layer": "pants",
+      "name": "White Shred Jean"
+   },
+   {
+      "id": "botine",
       "layer": "shoes",
-      "name": "test"
+      "name": "Botine"
    },
    {
-      "id": "tshirt_rose_noir_double_steve",
+      "id": "botte_marron",
+      "layer": "shoes",
+      "name": "Botte Marron"
+   },
+   {
+      "id": "chaussures_chaussettes_bordeaux",
+      "layer": "shoes",
+      "name": "Chaussures Chaussettes Bordeaux"
+   },
+   {
+      "id": "chaussure_beige_marron",
+      "layer": "shoes",
+      "name": "Chaussure Beige Marron"
+   },
+   {
+      "id": "chaussure_blanche",
+      "layer": "shoes",
+      "name": "Chaussure Blanche"
+   },
+   {
+      "id": "chaussure_bleu_blanche",
+      "layer": "shoes",
+      "name": "Chaussure Bleu Blanche"
+   },
+   {
+      "id": "chaussure_chaussette_noeud_rouge",
+      "layer": "shoes",
+      "name": "Chaussure Chaussette Noeud Rouge"
+   },
+   {
+      "id": "chaussure_noir_blanche",
+      "layer": "shoes",
+      "name": "Chaussure Noir Blanche"
+   },
+   {
+      "id": "chaussure_violette",
+      "layer": "shoes",
+      "name": "Chaussure Violette"
+   },
+   {
+      "id": "galaxy_shoes",
+      "layer": "shoes",
+      "name": "Galaxy Shoes"
+   },
+   {
+      "id": "rangeurs",
+      "layer": "shoes",
+      "name": "Rangeurs"
+   },
+   {
+      "id": "sandale_verte",
+      "layer": "shoes",
+      "name": "Sandale Verte"
+   },
+   {
+      "id": "shoes_103",
+      "layer": "shoes",
+      "name": "Shoes 103"
+   },
+   {
+      "id": "shoes_104",
+      "layer": "shoes",
+      "name": "Shoes 104"
+   },
+   {
+      "id": "shoes_105",
+      "layer": "shoes",
+      "name": "Shoes 105"
+   },
+   {
+      "id": "shoes_106",
+      "layer": "shoes",
+      "name": "Shoes 106"
+   },
+   {
+      "id": "shoes_107",
+      "layer": "shoes",
+      "name": "Shoes 107"
+   },
+   {
+      "id": "shoes_108",
+      "layer": "shoes",
+      "name": "Shoes 108"
+   },
+   {
+      "id": "shoes_109",
+      "layer": "shoes",
+      "name": "Shoes 109"
+   },
+   {
+      "id": "shoes_110",
+      "layer": "shoes",
+      "name": "Shoes 110"
+   },
+   {
+      "id": "shoes_111",
+      "layer": "shoes",
+      "name": "Shoes 111"
+   },
+   {
+      "id": "shoes_112",
+      "layer": "shoes",
+      "name": "Shoes 112"
+   },
+   {
+      "id": "shoes_113",
+      "layer": "shoes",
+      "name": "Shoes 113"
+   },
+   {
+      "id": "tennis_blanc",
+      "layer": "shoes",
+      "name": "Tennis Blanc"
+   },
+   {
+      "id": "tennis_blanc_comme_neige",
+      "layer": "shoes",
+      "name": "Tennis Blanc Comme Neige"
+   },
+   {
+      "id": "tennis_blanc_cyan",
+      "layer": "shoes",
+      "name": "Tennis Blanc Cyan"
+   },
+   {
+      "id": "uniform_shoes_female",
+      "layer": "shoes",
+      "name": "Uniform Shoes Female"
+   },
+   {
+      "id": "uniform_shoes_male",
+      "layer": "shoes",
+      "name": "Uniform Shoes Male"
+   },
+   {
+      "id": "white_shoes",
+      "layer": "shoes",
+      "name": "White Shoes"
+   },
+   {
+      "id": "chaussette_bleu_clair_noeud_parme",
+      "layer": "socks",
+      "name": "Chaussette Bleu Clair Noeud Parme"
+   },
+   {
+      "id": "jl_fleur_bleu_1",
+      "layer": "tatoo",
+      "name": "Jl Fleur Bleu 1"
+   },
+   {
+      "id": "jl_tournesol_1",
+      "layer": "tatoo",
+      "name": "Jl Tournesol 1"
+   },
+   {
+      "id": "jr_fleur_blanche_2",
+      "layer": "tatoo",
+      "name": "Jr Fleur Blanche 2"
+   },
+   {
+      "id": "jr_fleur_bleu_1",
+      "layer": "tatoo",
+      "name": "Jr Fleur Bleu 1"
+   },
+   {
+      "id": "jr_tournesol_1",
+      "layer": "tatoo",
+      "name": "Jr Tournesol 1"
+   },
+   {
+      "id": "l_bouteille",
+      "layer": "tatoo",
+      "name": "L Bouteille"
+   },
+   {
+      "id": "l_cadenat",
+      "layer": "tatoo",
+      "name": "L Cadenat"
+   },
+   {
+      "id": "l_chauvesouris",
+      "layer": "tatoo",
+      "name": "L Chauvesouris"
+   },
+   {
+      "id": "l_corbeau",
+      "layer": "tatoo",
+      "name": "L Corbeau"
+   },
+   {
+      "id": "l_feu_bleu_1",
+      "layer": "tatoo",
+      "name": "L Feu Bleu 1"
+   },
+   {
+      "id": "l_feu_gris_1",
+      "layer": "tatoo",
+      "name": "L Feu Gris 1"
+   },
+   {
+      "id": "l_feu_rouge_1",
+      "layer": "tatoo",
+      "name": "L Feu Rouge 1"
+   },
+   {
+      "id": "l_feu_violet_1",
+      "layer": "tatoo",
+      "name": "L Feu Violet 1"
+   },
+   {
+      "id": "l_fleur_blanche_1",
+      "layer": "tatoo",
+      "name": "L Fleur Blanche 1"
+   },
+   {
+      "id": "l_fleur_blanche_2",
+      "layer": "tatoo",
+      "name": "L Fleur Blanche 2"
+   },
+   {
+      "id": "l_fleur_bleu_1",
+      "layer": "tatoo",
+      "name": "L Fleur Bleu 1"
+   },
+   {
+      "id": "l_fleur_feu_1",
+      "layer": "tatoo",
+      "name": "L Fleur Feu 1"
+   },
+   {
+      "id": "l_fleur_rouge_1",
+      "layer": "tatoo",
+      "name": "L Fleur Rouge 1"
+   },
+   {
+      "id": "l_musique",
+      "layer": "tatoo",
+      "name": "L Musique"
+   },
+   {
+      "id": "l_oiseau_1",
+      "layer": "tatoo",
+      "name": "L Oiseau 1"
+   },
+   {
+      "id": "l_roue",
+      "layer": "tatoo",
+      "name": "L Roue"
+   },
+   {
+      "id": "l_serpent",
+      "layer": "tatoo",
+      "name": "L Serpent"
+   },
+   {
+      "id": "l_skull",
+      "layer": "tatoo",
+      "name": "L Skull"
+   },
+   {
+      "id": "l_smiley_1",
+      "layer": "tatoo",
+      "name": "L Smiley 1"
+   },
+   {
+      "id": "l_s_balance",
+      "layer": "tatoo",
+      "name": "L S Balance"
+   },
+   {
+      "id": "l_s_belier",
+      "layer": "tatoo",
+      "name": "L S Belier"
+   },
+   {
+      "id": "l_s_cancer",
+      "layer": "tatoo",
+      "name": "L S Cancer"
+   },
+   {
+      "id": "l_s_capricorne",
+      "layer": "tatoo",
+      "name": "L S Capricorne"
+   },
+   {
+      "id": "l_s_gemeau",
+      "layer": "tatoo",
+      "name": "L S Gemeau"
+   },
+   {
+      "id": "l_s_lion",
+      "layer": "tatoo",
+      "name": "L S Lion"
+   },
+   {
+      "id": "l_s_poisson",
+      "layer": "tatoo",
+      "name": "L S Poisson"
+   },
+   {
+      "id": "l_s_sagitaire",
+      "layer": "tatoo",
+      "name": "L S Sagitaire"
+   },
+   {
+      "id": "l_s_taureau",
+      "layer": "tatoo",
+      "name": "L S Taureau"
+   },
+   {
+      "id": "l_s_verseau",
+      "layer": "tatoo",
+      "name": "L S Verseau"
+   },
+   {
+      "id": "l_s_vierge",
+      "layer": "tatoo",
+      "name": "L S Vierge"
+   },
+   {
+      "id": "l_tour",
+      "layer": "tatoo",
+      "name": "L Tour"
+   },
+   {
+      "id": "l_tournesol_1",
+      "layer": "tatoo",
+      "name": "L Tournesol 1"
+   },
+   {
+      "id": "r_bouteille",
+      "layer": "tatoo",
+      "name": "R Bouteille"
+   },
+   {
+      "id": "r_cadenat",
+      "layer": "tatoo",
+      "name": "R Cadenat"
+   },
+   {
+      "id": "r_chauvesouris",
+      "layer": "tatoo",
+      "name": "R Chauvesouris"
+   },
+   {
+      "id": "r_corbeau",
+      "layer": "tatoo",
+      "name": "R Corbeau"
+   },
+   {
+      "id": "r_feu_bleu_1",
+      "layer": "tatoo",
+      "name": "R Feu Bleu 1"
+   },
+   {
+      "id": "r_feu_gris_1",
+      "layer": "tatoo",
+      "name": "R Feu Gris 1"
+   },
+   {
+      "id": "r_feu_rouge_1",
+      "layer": "tatoo",
+      "name": "R Feu Rouge 1"
+   },
+   {
+      "id": "r_feu_violet_1",
+      "layer": "tatoo",
+      "name": "R Feu Violet 1"
+   },
+   {
+      "id": "r_fleur_blanche_1",
+      "layer": "tatoo",
+      "name": "R Fleur Blanche 1"
+   },
+   {
+      "id": "r_fleur_blanche_2",
+      "layer": "tatoo",
+      "name": "R Fleur Blanche 2"
+   },
+   {
+      "id": "r_fleur_bleu_1",
+      "layer": "tatoo",
+      "name": "R Fleur Bleu 1"
+   },
+   {
+      "id": "r_fleur_feu_1",
+      "layer": "tatoo",
+      "name": "R Fleur Feu 1"
+   },
+   {
+      "id": "r_fleur_rouge_1",
+      "layer": "tatoo",
+      "name": "R Fleur Rouge 1"
+   },
+   {
+      "id": "r_musique",
+      "layer": "tatoo",
+      "name": "R Musique"
+   },
+   {
+      "id": "r_oiseau_1",
+      "layer": "tatoo",
+      "name": "R Oiseau 1"
+   },
+   {
+      "id": "r_points",
+      "layer": "tatoo",
+      "name": "R Points"
+   },
+   {
+      "id": "r_roue",
+      "layer": "tatoo",
+      "name": "R Roue"
+   },
+   {
+      "id": "r_serpent",
+      "layer": "tatoo",
+      "name": "R Serpent"
+   },
+   {
+      "id": "r_skull",
+      "layer": "tatoo",
+      "name": "R Skull"
+   },
+   {
+      "id": "r_smiley_1",
+      "layer": "tatoo",
+      "name": "R Smiley 1"
+   },
+   {
+      "id": "r_s_balance",
+      "layer": "tatoo",
+      "name": "R S Balance"
+   },
+   {
+      "id": "r_s_belier",
+      "layer": "tatoo",
+      "name": "R S Belier"
+   },
+   {
+      "id": "r_s_cancer",
+      "layer": "tatoo",
+      "name": "R S Cancer"
+   },
+   {
+      "id": "r_s_capircorne",
+      "layer": "tatoo",
+      "name": "R S Capircorne"
+   },
+   {
+      "id": "r_s_gemeau",
+      "layer": "tatoo",
+      "name": "R S Gemeau"
+   },
+   {
+      "id": "r_s_lion",
+      "layer": "tatoo",
+      "name": "R S Lion"
+   },
+   {
+      "id": "r_s_poisson",
+      "layer": "tatoo",
+      "name": "R S Poisson"
+   },
+   {
+      "id": "r_s_sagitaire",
+      "layer": "tatoo",
+      "name": "R S Sagitaire"
+   },
+   {
+      "id": "r_s_taureau",
+      "layer": "tatoo",
+      "name": "R S Taureau"
+   },
+   {
+      "id": "r_s_verseau",
+      "layer": "tatoo",
+      "name": "R S Verseau"
+   },
+   {
+      "id": "r_s_vierge",
+      "layer": "tatoo",
+      "name": "R S Vierge"
+   },
+   {
+      "id": "r_tour",
+      "layer": "tatoo",
+      "name": "R Tour"
+   },
+   {
+      "id": "r_tournesol_1",
+      "layer": "tatoo",
+      "name": "R Tournesol 1"
+   },
+   {
+      "id": "t-16",
+      "layer": "tatoo",
+      "name": "T 16"
+   },
+   {
+      "id": "t-17",
+      "layer": "tatoo",
+      "name": "T 17"
+   },
+   {
+      "id": "t-18",
+      "layer": "tatoo",
+      "name": "T 18"
+   },
+   {
+      "id": "t-19",
+      "layer": "tatoo",
+      "name": "T 19"
+   },
+   {
+      "id": "t-20",
+      "layer": "tatoo",
+      "name": "T 20"
+   },
+   {
+      "id": "t-21",
+      "layer": "tatoo",
+      "name": "T 21"
+   },
+   {
+      "id": "t-22",
+      "layer": "tatoo",
+      "name": "T 22"
+   },
+   {
+      "id": "t-23",
+      "layer": "tatoo",
+      "name": "T 23"
+   },
+   {
+      "id": "t-24",
+      "layer": "tatoo",
+      "name": "T 24"
+   },
+   {
+      "id": "t-25",
+      "layer": "tatoo",
+      "name": "T 25"
+   },
+   {
+      "id": "t-26",
+      "layer": "tatoo",
+      "name": "T 26"
+   },
+   {
+      "id": "t-27",
+      "layer": "tatoo",
+      "name": "T 27"
+   },
+   {
+      "id": "t_28",
+      "layer": "tatoo",
+      "name": "T 28"
+   },
+   {
+      "id": "t_29",
+      "layer": "tatoo",
+      "name": "T 29"
+   },
+   {
+      "id": "t_30",
+      "layer": "tatoo",
+      "name": "T 30"
+   },
+   {
+      "id": "t_31",
+      "layer": "tatoo",
+      "name": "T 31"
+   },
+   {
+      "id": "t_32",
+      "layer": "tatoo",
+      "name": "T 32"
+   },
+   {
+      "id": "t_33",
+      "layer": "tatoo",
+      "name": "T 33"
+   },
+   {
+      "id": "t_34",
+      "layer": "tatoo",
+      "name": "T 34"
+   },
+   {
+      "id": "t_35",
+      "layer": "tatoo",
+      "name": "T 35"
+   },
+   {
+      "id": "t_36",
+      "layer": "tatoo",
+      "name": "T 36"
+   },
+   {
+      "id": "t_37",
+      "layer": "tatoo",
+      "name": "T 37"
+   },
+   {
+      "id": "t_38",
+      "layer": "tatoo",
+      "name": "T 38"
+   },
+   {
+      "id": "t_39",
+      "layer": "tatoo",
+      "name": "T 39"
+   },
+   {
+      "id": "t_40",
+      "layer": "tatoo",
+      "name": "T 40"
+   },
+   {
+      "id": "t_41",
+      "layer": "tatoo",
+      "name": "T 41"
+   },
+   {
+      "id": "t_42",
+      "layer": "tatoo",
+      "name": "T 42"
+   },
+   {
+      "id": "t_43",
+      "layer": "tatoo",
+      "name": "T 43"
+   },
+   {
+      "id": "t_44",
+      "layer": "tatoo",
+      "name": "T 44"
+   },
+   {
+      "id": "t_45",
+      "layer": "tatoo",
+      "name": "T 45"
+   },
+   {
+      "id": "t_46",
+      "layer": "tatoo",
+      "name": "T 46"
+   },
+   {
+      "id": "t_47",
+      "layer": "tatoo",
+      "name": "T 47"
+   },
+   {
+      "id": "t_48",
+      "layer": "tatoo",
+      "name": "T 48"
+   },
+   {
+      "id": "t_49",
+      "layer": "tatoo",
+      "name": "T 49"
+   },
+   {
+      "id": "t_50",
+      "layer": "tatoo",
+      "name": "T 50"
+   },
+   {
+      "id": "t_51",
+      "layer": "tatoo",
+      "name": "T 51"
+   },
+   {
+      "id": "t_52",
+      "layer": "tatoo",
+      "name": "T 52"
+   },
+   {
+      "id": "t_53",
+      "layer": "tatoo",
+      "name": "T 53"
+   },
+   {
+      "id": "t_54",
+      "layer": "tatoo",
+      "name": "T 54"
+   },
+   {
+      "id": "t_55",
+      "layer": "tatoo",
+      "name": "T 55"
+   },
+   {
+      "id": "t_56",
+      "layer": "tatoo",
+      "name": "T 56"
+   },
+   {
+      "id": "t_57",
+      "layer": "tatoo",
+      "name": "T 57"
+   },
+   {
+      "id": "t_58",
+      "layer": "tatoo",
+      "name": "T 58"
+   },
+   {
+      "id": "t_59",
+      "layer": "tatoo",
+      "name": "T 59"
+   },
+   {
+      "id": "t_60",
+      "layer": "tatoo",
+      "name": "T 60"
+   },
+   {
+      "id": "t_61",
+      "layer": "tatoo",
+      "name": "T 61"
+   },
+   {
+      "id": "t_62",
+      "layer": "tatoo",
+      "name": "T 62"
+   },
+   {
+      "id": "t_63",
+      "layer": "tatoo",
+      "name": "T 63"
+   },
+   {
+      "id": "t_64",
+      "layer": "tatoo",
+      "name": "T 64"
+   },
+   {
+      "id": "t_65",
+      "layer": "tatoo",
+      "name": "T 65"
+   },
+   {
+      "id": "t_66",
+      "layer": "tatoo",
+      "name": "T 66"
+   },
+   {
+      "id": "t_67",
+      "layer": "tatoo",
+      "name": "T 67"
+   },
+   {
+      "id": "t_68",
+      "layer": "tatoo",
+      "name": "T 68"
+   },
+   {
+      "id": "t_69",
+      "layer": "tatoo",
+      "name": "T 69"
+   },
+   {
+      "id": "t_70",
+      "layer": "tatoo",
+      "name": "T 70"
+   },
+   {
+      "id": "t_71",
+      "layer": "tatoo",
+      "name": "T 71"
+   },
+   {
+      "id": "t_72",
+      "layer": "tatoo",
+      "name": "T 72"
+   },
+   {
+      "id": "t_73",
+      "layer": "tatoo",
+      "name": "T 73"
+   },
+   {
+      "id": "t_74",
+      "layer": "tatoo",
+      "name": "T 74"
+   },
+   {
+      "id": "t_75",
+      "layer": "tatoo",
+      "name": "T 75"
+   },
+   {
+      "id": "t_76",
+      "layer": "tatoo",
+      "name": "T 76"
+   },
+   {
+      "id": "t_77",
+      "layer": "tatoo",
+      "name": "T 77"
+   },
+   {
+      "id": "t_78",
+      "layer": "tatoo",
+      "name": "T 78"
+   },
+   {
+      "id": "t_79",
+      "layer": "tatoo",
+      "name": "T 79"
+   },
+   {
+      "id": "t_80",
+      "layer": "tatoo",
+      "name": "T 80"
+   },
+   {
+      "id": "t_81",
+      "layer": "tatoo",
+      "name": "T 81"
+   },
+   {
+      "id": "t_82",
+      "layer": "tatoo",
+      "name": "T 82"
+   },
+   {
+      "id": "t_83",
+      "layer": "tatoo",
+      "name": "T 83"
+   },
+   {
+      "id": "t_84",
+      "layer": "tatoo",
+      "name": "T 84"
+   },
+   {
+      "id": "t_85",
+      "layer": "tatoo",
+      "name": "T 85"
+   },
+   {
+      "id": "t_86",
+      "layer": "tatoo",
+      "name": "T 86"
+   },
+   {
+      "id": "t_87",
+      "layer": "tatoo",
+      "name": "T 87"
+   },
+   {
+      "id": "t_88",
+      "layer": "tatoo",
+      "name": "T 88"
+   },
+   {
+      "id": "t_89",
+      "layer": "tatoo",
+      "name": "T 89"
+   },
+   {
+      "id": "t_90",
+      "layer": "tatoo",
+      "name": "T 90"
+   },
+   {
+      "id": "t_91",
+      "layer": "tatoo",
+      "name": "T 91"
+   },
+   {
+      "id": "t_92",
+      "layer": "tatoo",
+      "name": "T 92"
+   },
+   {
+      "id": "t_93",
+      "layer": "tatoo",
+      "name": "T 93"
+   },
+   {
+      "id": "t_94",
+      "layer": "tatoo",
+      "name": "T 94"
+   },
+   {
+      "id": "t_95",
+      "layer": "tatoo",
+      "name": "T 95"
+   },
+   {
+      "id": "t_96",
+      "layer": "tatoo",
+      "name": "T 96"
+   },
+   {
+      "id": "t_97",
+      "layer": "tatoo",
+      "name": "T 97"
+   },
+   {
+      "id": "t_fleur_bleu_1",
+      "layer": "tatoo",
+      "name": "T Fleur Bleu 1"
+   },
+   {
+      "id": "t_tournesol",
+      "layer": "tatoo",
+      "name": "T Tournesol"
+   },
+   {
+      "id": "t_venom_2",
+      "layer": "tatoo",
+      "name": "T Venom 2"
+   },
+   {
+      "id": "chemise_blanche_steve",
       "layer": "teeshirt",
-      "name": "test"
+      "name": "Chemise Blanche Steve"
    },
    {
-      "id": "u-f-50",
-      "layer": "underware",
-      "name": "test"
+      "id": "chemise_bleu",
+      "layer": "teeshirt",
+      "name": "Chemise Bleu"
+   },
+   {
+      "id": "chemise_carreaux_bleu_teeshirt_noir",
+      "layer": "teeshirt",
+      "name": "Chemise Carreaux Bleu Teeshirt Noir"
+   },
+   {
+      "id": "chemise_carreaux_cyan_teeshirt_noir",
+      "layer": "teeshirt",
+      "name": "Chemise Carreaux Cyan Teeshirt Noir"
+   },
+   {
+      "id": "chemise_carreaux_gris_teeshirt_noir",
+      "layer": "teeshirt",
+      "name": "Chemise Carreaux Gris Teeshirt Noir"
+   },
+   {
+      "id": "chemise_carreaux_jaune_clair_teeshirt_noir",
+      "layer": "teeshirt",
+      "name": "Chemise Carreaux Jaune Clair Teeshirt Noir"
+   },
+   {
+      "id": "chemise_carreaux_moutarde_teeshirt_noir",
+      "layer": "teeshirt",
+      "name": "Chemise Carreaux Moutarde Teeshirt Noir"
+   },
+   {
+      "id": "chemise_carreaux_orange_teeshirt_noir",
+      "layer": "teeshirt",
+      "name": "Chemise Carreaux Orange Teeshirt Noir"
+   },
+   {
+      "id": "chemise_carreaux_rouge_teeshirt_noir",
+      "layer": "teeshirt",
+      "name": "Chemise Carreaux Rouge Teeshirt Noir"
+   },
+   {
+      "id": "chemise_carreaux_vert_clair_teeshirt_noir",
+      "layer": "teeshirt",
+      "name": "Chemise Carreaux Vert Clair Teeshirt Noir"
+   },
+   {
+      "id": "chemise_carreaux_vert_teeshirt_noir",
+      "layer": "teeshirt",
+      "name": "Chemise Carreaux Vert Teeshirt Noir"
+   },
+   {
+      "id": "chemise_carreaux_violet_teeshirt_noir",
+      "layer": "teeshirt",
+      "name": "Chemise Carreaux Violet Teeshirt Noir"
+   },
+   {
+      "id": "chemise_citrouille_steve",
+      "layer": "teeshirt",
+      "name": "Chemise Citrouille Steve"
+   },
+   {
+      "id": "chemise_grise",
+      "layer": "teeshirt",
+      "name": "Chemise Grise"
+   },
+   {
+      "id": "chemise_noire_steve",
+      "layer": "teeshirt",
+      "name": "Chemise Noire Steve"
+   },
+   {
+      "id": "chemise_rouge",
+      "layer": "teeshirt",
+      "name": "Chemise Rouge"
+   },
+   {
+      "id": "chemise_vert",
+      "layer": "teeshirt",
+      "name": "Chemise Vert"
+   },
+   {
+      "id": "chemise_violette",
+      "layer": "teeshirt",
+      "name": "Chemise Violette"
+   },
+   {
+      "id": "crop_top_blanc",
+      "layer": "teeshirt",
+      "name": "Crop Top Blanc"
+   },
+   {
+      "id": "crop_top_noir",
+      "layer": "teeshirt",
+      "name": "Crop Top Noir"
+   },
+   {
+      "id": "crop_top_rose",
+      "layer": "teeshirt",
+      "name": "Crop Top Rose"
+   },
+   {
+      "id": "debardeur_bretelle",
+      "layer": "teeshirt",
+      "name": "Debardeur Bretelle"
+   },
+   {
+      "id": "debardeur_marron",
+      "layer": "teeshirt",
+      "name": "Debardeur Marron"
+   },
+   {
+      "id": "green_shirt_neutre",
+      "layer": "teeshirt",
+      "name": "Green Shirt Neutre"
+   },
+   {
+      "id": "pull_kaki",
+      "layer": "teeshirt",
+      "name": "Pull Kaki"
+   },
+   {
+      "id": "pull_kaki_sous_chemise_beige",
+      "layer": "teeshirt",
+      "name": "Pull Kaki Sous Chemise Beige"
+   },
+   {
+      "id": "pull_marron",
+      "layer": "teeshirt",
+      "name": "Pull Marron"
+   },
+   {
+      "id": "robe_bleue_clair_ceinture_or",
+      "layer": "teeshirt",
+      "name": "Robe Bleue Clair Ceinture Or"
+   },
+   {
+      "id": "robe_bleue_verte",
+      "layer": "teeshirt",
+      "name": "Robe Bleue Verte"
+   },
+   {
+      "id": "robe_bleu_canard",
+      "layer": "teeshirt",
+      "name": "Robe Bleu Canard"
+   },
+   {
+      "id": "robe_bleu_glace",
+      "layer": "teeshirt",
+      "name": "Robe Bleu Glace"
+   },
+   {
+      "id": "robe_courte_noire",
+      "layer": "teeshirt",
+      "name": "Robe Courte Noire"
+   },
+   {
+      "id": "robe_courte_noire_marron",
+      "layer": "teeshirt",
+      "name": "Robe Courte Noire Marron"
+   },
+   {
+      "id": "robe_flamme",
+      "layer": "teeshirt",
+      "name": "Robe Flamme"
+   },
+   {
+      "id": "robe_marron_clair",
+      "layer": "teeshirt",
+      "name": "Robe Marron Clair"
+   },
+   {
+      "id": "robe_marron_haut_beige",
+      "layer": "teeshirt",
+      "name": "Robe Marron Haut Beige"
+   },
+   {
+      "id": "robe_marron_noeud_orange",
+      "layer": "teeshirt",
+      "name": "Robe Marron Noeud Orange"
+   },
+   {
+      "id": "robe_orange_clair",
+      "layer": "teeshirt",
+      "name": "Robe Orange Clair"
+   },
+   {
+      "id": "robe_robe_poudree",
+      "layer": "teeshirt",
+      "name": "Robe Robe Poudree"
+   },
+   {
+      "id": "robe_rouge_noir",
+      "layer": "teeshirt",
+      "name": "Robe Rouge Noir"
+   },
+   {
+      "id": "robe_verte_or",
+      "layer": "teeshirt",
+      "name": "Robe Verte Or"
+   },
+   {
+      "id": "robe_violette",
+      "layer": "teeshirt",
+      "name": "Robe Violette"
+   },
+   {
+      "id": "rob_rouge_ceinture_or",
+      "layer": "teeshirt",
+      "name": "Rob Rouge Ceinture Or"
+   },
+   {
+      "id": "shirt_alex",
+      "layer": "teeshirt",
+      "name": "Shirt Alex"
+   },
+   {
+      "id": "shirt_steve",
+      "layer": "teeshirt",
+      "name": "Shirt Steve"
+   },
+   {
+      "id": "tee_shirt_noir_raye_steve",
+      "layer": "teeshirt",
+      "name": "Tee Shirt Noir Rayé Steve"
+   },
+   {
+      "id": "top_15",
+      "layer": "teeshirt",
+      "name": "Top 15"
+   },
+   {
+      "id": "top_16",
+      "layer": "teeshirt",
+      "name": "Top 16"
+   },
+   {
+      "id": "tshirt_53",
+      "layer": "teeshirt",
+      "name": "Tshirt 53"
+   },
+   {
+      "id": "tshirt_54",
+      "layer": "teeshirt",
+      "name": "Tshirt 54"
+   },
+   {
+      "id": "tshirt_55",
+      "layer": "teeshirt",
+      "name": "Tshirt 55"
+   },
+   {
+      "id": "tshirt_56",
+      "layer": "teeshirt",
+      "name": "Tshirt 56"
+   },
+   {
+      "id": "tshirt_57",
+      "layer": "teeshirt",
+      "name": "Tshirt 57"
+   },
+   {
+      "id": "tshirt_58",
+      "layer": "teeshirt",
+      "name": "Tshirt 58"
+   },
+   {
+      "id": "tshirt_59",
+      "layer": "teeshirt",
+      "name": "Tshirt 59"
+   },
+   {
+      "id": "tshirt_60",
+      "layer": "teeshirt",
+      "name": "Tshirt 60"
+   },
+   {
+      "id": "tshirt_61",
+      "layer": "teeshirt",
+      "name": "Tshirt 61"
+   },
+   {
+      "id": "tshirt_62",
+      "layer": "teeshirt",
+      "name": "Tshirt 62"
+   },
+   {
+      "id": "tshirt_63",
+      "layer": "teeshirt",
+      "name": "Tshirt 63"
+   },
+   {
+      "id": "tshirt_64",
+      "layer": "teeshirt",
+      "name": "Tshirt 64"
+   },
+   {
+      "id": "tshirt_65",
+      "layer": "teeshirt",
+      "name": "Tshirt 65"
+   },
+   {
+      "id": "tshirt_66",
+      "layer": "teeshirt",
+      "name": "Tshirt 66"
+   },
+   {
+      "id": "tshirt_67",
+      "layer": "teeshirt",
+      "name": "Tshirt 67"
+   },
+   {
+      "id": "tshirt_68",
+      "layer": "teeshirt",
+      "name": "Tshirt 68"
+   },
+   {
+      "id": "tshirt_69",
+      "layer": "teeshirt",
+      "name": "Tshirt 69"
+   },
+   {
+      "id": "tshirt_70",
+      "layer": "teeshirt",
+      "name": "Tshirt 70"
+   },
+   {
+      "id": "tshirt_71",
+      "layer": "teeshirt",
+      "name": "Tshirt 71"
+   },
+   {
+      "id": "tshirt_72",
+      "layer": "teeshirt",
+      "name": "Tshirt 72"
+   },
+   {
+      "id": "tshirt_73",
+      "layer": "teeshirt",
+      "name": "Tshirt 73"
+   },
+   {
+      "id": "tshirt_74",
+      "layer": "teeshirt",
+      "name": "Tshirt 74"
+   },
+   {
+      "id": "tshirt_75",
+      "layer": "teeshirt",
+      "name": "Tshirt 75"
+   },
+   {
+      "id": "tshirt_76",
+      "layer": "teeshirt",
+      "name": "Tshirt 76"
+   },
+   {
+      "id": "tshirt_77",
+      "layer": "teeshirt",
+      "name": "Tshirt 77"
+   },
+   {
+      "id": "tshirt_78",
+      "layer": "teeshirt",
+      "name": "Tshirt 78"
+   },
+   {
+      "id": "tshirt_79",
+      "layer": "teeshirt",
+      "name": "Tshirt 79"
+   },
+   {
+      "id": "tshirt_80",
+      "layer": "teeshirt",
+      "name": "Tshirt 80"
+   },
+   {
+      "id": "tshirt_81",
+      "layer": "teeshirt",
+      "name": "Tshirt 81"
+   },
+   {
+      "id": "tshirt_82",
+      "layer": "teeshirt",
+      "name": "Tshirt 82"
+   },
+   {
+      "id": "tshirt_83",
+      "layer": "teeshirt",
+      "name": "Tshirt 83"
+   },
+   {
+      "id": "tshirt_84",
+      "layer": "teeshirt",
+      "name": "Tshirt 84"
+   },
+   {
+      "id": "tshirt_85",
+      "layer": "teeshirt",
+      "name": "Tshirt 85"
+   },
+   {
+      "id": "tshirt_86",
+      "layer": "teeshirt",
+      "name": "Tshirt 86"
+   },
+   {
+      "id": "tshirt_87",
+      "layer": "teeshirt",
+      "name": "Tshirt 87"
+   },
+   {
+      "id": "tshirt_88",
+      "layer": "teeshirt",
+      "name": "Tshirt 88"
+   },
+   {
+      "id": "tshirt_89",
+      "layer": "teeshirt",
+      "name": "Tshirt 89"
+   },
+   {
+      "id": "tshirt_90",
+      "layer": "teeshirt",
+      "name": "Tshirt 90"
+   },
+   {
+      "id": "tshirt_91",
+      "layer": "teeshirt",
+      "name": "Tshirt 91"
+   },
+   {
+      "id": "tshirt_92",
+      "layer": "teeshirt",
+      "name": "Tshirt 92"
+   },
+   {
+      "id": "tshirt_93",
+      "layer": "teeshirt",
+      "name": "Tshirt 93"
+   },
+   {
+      "id": "tshirt_94",
+      "layer": "teeshirt",
+      "name": "Tshirt 94"
+   },
+   {
+      "id": "tshirt_95",
+      "layer": "teeshirt",
+      "name": "Tshirt 95"
+   },
+   {
+      "id": "tshirt_96",
+      "layer": "teeshirt",
+      "name": "Tshirt 96"
+   },
+   {
+      "id": "tshirt_97",
+      "layer": "teeshirt",
+      "name": "Tshirt 97"
+   },
+   {
+      "id": "tshirt_98",
+      "layer": "teeshirt",
+      "name": "Tshirt 98"
+   },
+   {
+      "id": "tshirt_99",
+      "layer": "teeshirt",
+      "name": "Tshirt 99"
+   },
+   {
+      "id": "tshirt_bleu_paysage",
+      "layer": "teeshirt",
+      "name": "Tshirt Bleu Paysage"
+   },
+   {
+      "id": "tshirt_marron_paysage",
+      "layer": "teeshirt",
+      "name": "Tshirt Marron Paysage"
+   },
+   {
+      "id": "tshirt_vert_paysage",
+      "layer": "teeshirt",
+      "name": "Tshirt Vert Paysage"
+   },
+   {
+      "id": "tshirt_violet_paysage",
+      "layer": "teeshirt",
+      "name": "Tshirt Violet Paysage"
+   },
+   {
+      "id": "uniform_shirt_female",
+      "layer": "teeshirt",
+      "name": "Uniform Shirt Female"
+   },
+   {
+      "id": "uniform_shirt_male",
+      "layer": "teeshirt",
+      "name": "Uniform Shirt Male"
    }
 ]

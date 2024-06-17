@@ -1,4 +1,4 @@
-package com.diamssword.greenresurgence.gui;
+package com.diamssword.greenresurgence.gui.components;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.systems.crafting.Collection;
@@ -7,12 +7,7 @@ import com.diamssword.greenresurgence.systems.crafting.IResource;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.base.BaseComponent;
-import io.wispforest.owo.ui.component.Components;
-import io.wispforest.owo.ui.component.SliderComponent;
-import io.wispforest.owo.ui.component.SmallCheckboxComponent;
-import io.wispforest.owo.ui.component.TextBoxComponent;
 import io.wispforest.owo.ui.core.*;
-import io.wispforest.owo.ui.event.MouseDrag;
 import io.wispforest.owo.ui.parsing.UIModel;
 import io.wispforest.owo.ui.parsing.UIParsing;
 import io.wispforest.owo.ui.util.UISounds;
@@ -21,12 +16,9 @@ import io.wispforest.owo.util.EventStream;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.item.TooltipData;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;

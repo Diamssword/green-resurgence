@@ -8,6 +8,7 @@ public class CraftingScreen extends BaseUIModelScreen<FlowLayout> {
 
     public CraftingScreen() {
         super(FlowLayout.class, BaseUIModelScreen.DataSource.asset(GreenResurgence.asRessource("craftinggui")));
+
     }
 
     @Override

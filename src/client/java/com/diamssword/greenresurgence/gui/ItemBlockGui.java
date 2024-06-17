@@ -28,6 +28,7 @@ public class ItemBlockGui extends MultiInvHandledScreen<ItemBlock.ScreenHandler,
                 tile=ClientGuiPacket.getTile(ItemBlockEntity.class,v.getPos());
                 onReady();
             });
+        
     }
     @Override
     public boolean shouldPause() {

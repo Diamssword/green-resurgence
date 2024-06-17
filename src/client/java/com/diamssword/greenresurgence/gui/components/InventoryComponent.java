@@ -1,7 +1,6 @@
-package com.diamssword.greenresurgence.gui;
+package com.diamssword.greenresurgence.gui.components;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.containers.IGridContainer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.base.BaseComponent;
 import io.wispforest.owo.ui.core.*;
@@ -10,8 +9,6 @@ import io.wispforest.owo.ui.parsing.UIParsing;
 import net.minecraft.text.Text;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import net.minecraft.util.Identifier;

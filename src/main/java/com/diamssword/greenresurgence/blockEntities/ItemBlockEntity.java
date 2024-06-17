@@ -44,7 +44,7 @@ public class ItemBlockEntity extends BlockEntity {
         nbt.putDouble("rotationZ",rotation.z);
         nbt.putBoolean("lightOffset",lightOffset);
         nbt.put("item",item.writeNbt(new NbtCompound()));
-        nbt.putDouble("size",size);
+        nbt.putDouble("size.xml",size);
         if(this.baseDir ==null)
         {
             if(this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING))
@@ -72,7 +72,7 @@ public class ItemBlockEntity extends BlockEntity {
         position=new Vec3d(nbt.getDouble("positionX"),nbt.getDouble("positionY"),nbt.getDouble("positionZ"));
         rotation=new Vec3d(nbt.getDouble("rotationX"),nbt.getDouble("rotationY"),nbt.getDouble("rotationZ"));
         lightOffset=nbt.getBoolean("lightOffset");
-        size=Math.max(1,nbt.getDouble("size"));
+        size=Math.max(1,nbt.getDouble("size.xml"));
         if(nbt.contains("item"))
         {
             item=ItemStack.fromNbt(nbt.getCompound("item"));

@@ -26,3 +26,9 @@ run
 hs_err_pid*
 replay_pid*
 /src/main/generated
+pool_gen/build
+pool_gen/structures
+skin_conf_gen/input
+skin_conf_gen/textures
+skin_conf_gen/cloths.json
+src/main/resources/assets/green_resurgence/textures/cloth

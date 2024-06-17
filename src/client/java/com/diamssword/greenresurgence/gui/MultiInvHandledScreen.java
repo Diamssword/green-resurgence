@@ -4,6 +4,7 @@
 package com.diamssword.greenresurgence.gui;
 
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
+import com.diamssword.greenresurgence.gui.components.InventoryComponent;
 import com.google.common.collect.Sets;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
@@ -97,7 +98,7 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
      * and managing component focus
      */
     protected OwoUIAdapter<R> uiAdapter = null;
-    protected Map<String,InventoryComponent> invsComps=new HashMap<>();
+    protected Map<String, InventoryComponent> invsComps=new HashMap<>();
     /**
      * Whether this screen has encountered an unrecoverable
      * error during its lifecycle and should thus close
@@ -475,11 +476,18 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
     }
 
     protected boolean isClickOutsideBounds(double mouseX, double mouseY, int left, int top, int button) {
-        return mouseX < (double)left || mouseY < (double)top || mouseX >= (double)(left + this.backgroundWidth) || mouseY >= (double)(top + this.backgroundHeight);
+        for (InventoryComponent value : this.invsComps.values()) {
+            if( value.isInBoundingBox(mouseX,mouseY))
+                return false;
+        }
+
+        return true;
     }
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+        if(this.uiAdapter.mouseDragged(mouseX, mouseY, button, deltaX, deltaY))
+            return true;
         Slot slot = this.getSlotAt(mouseX, mouseY);
         ItemStack itemStack = this.handler.getCursorStack();
         if (this.touchDragSlotStart != null && this.client.options.getTouchscreen().getValue().booleanValue()) {
@@ -586,12 +594,7 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
                 if (this.client.options.pickItemKey.matchesMouse(button)) {
                     this.onMouseClick(slot, k, button, SlotActionType.CLONE);
                 } else {
-                    boolean bl2;
-                    boolean bl3 = bl2 = k != -999 && (InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_SHIFT) || InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_RIGHT_SHIFT));
-                    if (bl2) {
-                        this.quickMovingStack = slot != null && slot.hasStack() ? slot.getStack().copy() : ItemStack.EMPTY;
-                    }
-                    this.onMouseClick(slot, k, button, bl2 ? SlotActionType.QUICK_MOVE : SlotActionType.PICKUP);
+                    this.onMouseClick(slot, k, button, SlotActionType.PICKUP);
                 }
             }
         }

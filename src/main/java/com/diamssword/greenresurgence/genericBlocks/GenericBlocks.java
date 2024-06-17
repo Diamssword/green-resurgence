@@ -46,8 +46,8 @@ public class GenericBlocks {
         teien.add("lily_pad",GenericBlockSet.Transparency.CUTOUT, GenericBlockSet.BlockTypes.OMNI_CARPET);
         teien.add("newspaper",GenericBlockSet.Transparency.CUTOUT, GenericBlockSet.BlockTypes.OMNI_CARPET);
         teien.add("letter_antique",GenericBlockSet.Transparency.CUTOUT, GenericBlockSet.BlockTypes.OMNI_CARPET);
-        teien.add("paper_torn",GenericBlockSet.Transparency.CUTOUT, GenericBlockSet.BlockTypes.OMNI_CARPET);
-        teien.add("paper_torn_2",GenericBlockSet.Transparency.CUTOUT, GenericBlockSet.BlockTypes.OMNI_CARPET);
+        teien.add("paper_torn",GenericBlockSet.Transparency.TRANSPARENT, GenericBlockSet.BlockTypes.OMNI_CARPET);
+        teien.add("paper_torn_2",GenericBlockSet.Transparency.TRANSPARENT, GenericBlockSet.BlockTypes.OMNI_CARPET);
         teien.add("lectern", GenericBlockSet.BlockTypes.LECTERN);//.disableGen(false,GenericBlockSet.BlockTypes.LECTERN);
         teien.add("rusty_beam",GenericBlockSet.Transparency.CUTOUT, GenericBlockSet.BlockTypes.OMNI_CARPET,GenericBlockSet.BlockTypes.SIMPLE).disableGen(false,GenericBlockSet.BlockTypes.OMNI_CARPET);
         teien.add("purpur_block", GenericBlockSet.BlockTypes.SIMPLE).model(GenericBlockSet.ModelType.PILLAR);

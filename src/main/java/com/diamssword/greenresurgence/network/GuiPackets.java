@@ -10,10 +10,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class GuiPackets {
     public static enum KEY{
-        Inventory
+        Inventory,
     }
     public static enum GUI{
-        ImageBlock
+        ImageBlock,
+        Customizer
     }
     public record GuiPacket(GUI gui, @Nullable  BlockPos pos){};
     public record GuiTileValue(BlockPos pos,String key,String value) {

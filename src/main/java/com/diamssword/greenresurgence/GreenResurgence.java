@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence;
 
 import com.diamssword.greenresurgence.commands.FactionCommand;
+import com.diamssword.greenresurgence.commands.OpenScreenCommand;
 import com.diamssword.greenresurgence.commands.StructureBlockHelperCommand;
 import com.diamssword.greenresurgence.commands.StructureItemCommand;
 import com.diamssword.greenresurgence.containers.Containers;
@@ -80,6 +81,7 @@ public class GreenResurgence implements ModInitializer {
 		registerCommand("giveStructureItem",StructureItemCommand::register);
 		registerCommand("faction", FactionCommand::register);
 		registerCommand("structureBlockHelper", StructureBlockHelperCommand::register);
+		registerCommand("resurgenceGui", OpenScreenCommand::register);
 		BaseInteractions.register();
 		ServerLifecycleEvents.SERVER_STARTING.register((server)->{
 			onPostInit();

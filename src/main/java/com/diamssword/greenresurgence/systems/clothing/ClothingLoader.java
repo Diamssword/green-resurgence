@@ -123,14 +123,14 @@ public class ClothingLoader implements SimpleSynchronousResourceReloadListener {
                                        cloths.put(ob.get("id").getAsString(),table);
                                    }catch (IllegalArgumentException e)
                                    {
-                                       LOGGER.error("Layer for clothing with id: {} can't be parsed", id);
+                                       LOGGER.error("Layer for clothing with id: {} can't be parsed (layer {})", ob.get("id"),ob.get("layer"));
                                    }
                                }
                                else
-                                   LOGGER.error("Missing name of layer for clothing with id: {}", id);
+                                   LOGGER.error("Missing name of layer for clothing with id: {}", ob.get("id"));
                            }
                            else
-                               LOGGER.error("Duplicate id for clothing: {}", id);
+                               LOGGER.error("Duplicate id for clothing: {}", ob.get("id"));
                        }
                        else
                            LOGGER.error("Clothing is missing ID!");
