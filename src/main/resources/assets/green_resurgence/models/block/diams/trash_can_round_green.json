@@ -1,0 +1,5 @@
+{
+"parent":"green_resurgence:block/diams/trash_can_round_iron",
+"textures": {
+		"0": "green_resurgence:block/diams/trash_can_green"
+		}}

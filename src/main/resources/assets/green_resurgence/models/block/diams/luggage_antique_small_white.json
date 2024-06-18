@@ -1,0 +1,6 @@
+{
+"parent":"green_resurgence:block/diams/luggage_antique_small_brown",
+"textures": {
+        "texture": "green_resurgence:block/diams/luggage_antique_small_white",
+        "particle": "green_resurgence:block/diams/stone_color_white"
+        }}

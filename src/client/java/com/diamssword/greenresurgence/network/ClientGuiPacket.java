@@ -21,7 +21,7 @@ public class ClientGuiPacket {
                    openGui(new ImageBlockGui(getTile(ImageBlockEntity.class,message.pos())));
                 }
                 case Customizer -> {
-                    openGui(new CharacterCustomizationScreen());
+                    openGui(new CharacterCustomizationScreen(CharacterCustomizationScreen.Type.size));
                 }
             }
         });

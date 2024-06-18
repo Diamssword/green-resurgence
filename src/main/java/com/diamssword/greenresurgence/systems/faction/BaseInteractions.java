@@ -82,6 +82,7 @@ public class BaseInteractions {
                     return ActionResult.FAIL;
             }
         }
+
         return ActionResult.PASS;
     }
 }

@@ -24,5 +24,6 @@ public class ComponentsRegister {
         }){});
         UIParsing.registerFactory("inventory", InventoryComponent::parse);
         UIParsing.registerFactory("buttoninventory", ButtonInventoryComponent::parse);
+        UIParsing.registerFactory("character", CharacterComponent::parse);
     }
 }
