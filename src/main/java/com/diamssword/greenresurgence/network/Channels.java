@@ -31,6 +31,7 @@ public class Channels {
         StructureSizePacket.init();
         CurrentZonePacket.init();
         DictionaryPackets.init();
+        CosmeticsPackets.init();
         GuiPackets.init();
     }
 }

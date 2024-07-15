@@ -1,12 +1,13 @@
 {
-	"required": true,
-	"package": "com.diamssword.greenresurgence.mixin.client",
-	"compatibilityLevel": "JAVA_17",
-	"client": [
-		"PlayerRenderMixin",
-		"UserAttackBlockMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "package": "com.diamssword.greenresurgence.mixin.client",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "OwOSurfaceMixin",
+    "PlayerRenderMixin",
+    "UserAttackBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }

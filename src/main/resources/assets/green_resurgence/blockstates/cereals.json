@@ -1,0 +1,14 @@
+{
+  "variants": {
+	"layers=1":{"model": "green_resurgence:block/diams/cereal_box_chillax_layers_1","uvlock":false},
+	"layers=2":{"model": "green_resurgence:block/diams/cereal_box_chillax_layers_2","uvlock":false},
+	"layers=3":{"model": "green_resurgence:block/diams/cereal_box_chillax_layers_3","uvlock":false},
+	"layers=4":{"model": "green_resurgence:block/diams/cereal_box_chillax_layers_4","uvlock":false},
+	"layers=5":{"model": "green_resurgence:block/diams/cereal_box_chillax_layers_5","uvlock":false},
+	"layers=6":{"model": "green_resurgence:block/diams/cereal_box_chillax_layers_6","uvlock":false},
+	"layers=7":{"model": "green_resurgence:block/diams/cereal_box_chillax_layers_7","uvlock":false},
+	"layers=8":{"model": "green_resurgence:block/diams/cereal_box_chillax_layers_8","uvlock":false},
+	"layers=9":{"model": "green_resurgence:block/diams/cereal_box_chillax_layers_9","uvlock":false},
+	"layers=10":{"model": "green_resurgence:block/diams/cereal_box_chillax_layers_10","uvlock":false}
+  }
+}

@@ -105,7 +105,7 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
      * itself on the next frame
      */
     protected boolean invalid = false;
-    public MultiInvHandledScreen(T handler, PlayerInventory inventory, Class<R> rootComponentClass, BaseUIModelScreen.DataSource source) {
+    public MultiInvHandledScreen(T handler, Class<R> rootComponentClass, BaseUIModelScreen.DataSource source) {
         super(Text.literal(""));
         this.handler = handler;
         this.cancelNextRelease = true;
@@ -125,12 +125,8 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
                 findInvComps(r);
         });
     }
-    protected MultiInvHandledScreen(T handler, PlayerInventory inventory, Class<R> rootComponentClass, Identifier modelId) {
-        this(handler, inventory, rootComponentClass, BaseUIModelScreen.DataSource.asset(modelId));
-        this.handler.onReady(v->{
-            if(this.uiAdapter !=null && this.uiAdapter.rootComponent instanceof BaseParentComponent r)
-                findInvComps(r);
-        });
+    protected MultiInvHandledScreen(T handler, Class<R> rootComponentClass, Identifier modelId) {
+        this(handler, rootComponentClass, BaseUIModelScreen.DataSource.asset(modelId));
     }
     @Override
     protected void init() {
@@ -163,7 +159,7 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
         }
 
     }
-    private void findInvComps(BaseParentComponent root)
+    protected void findInvComps(BaseParentComponent root)
     {
         root.children().forEach(c->{
             if(c instanceof InventoryComponent par)
@@ -311,7 +307,7 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
 
     }
 
-    protected abstract void drawBackground(DrawContext var1, float var2, int var3, int var4);
+    protected abstract void drawBackground(DrawContext ctx, float delta, int mouseX, int mouseY);
 
     private void drawSlot(DrawContext context, Slot slot, String inventory) {
 

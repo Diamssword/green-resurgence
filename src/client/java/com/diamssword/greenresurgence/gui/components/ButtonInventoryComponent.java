@@ -32,9 +32,9 @@ public class ButtonInventoryComponent extends BaseComponent {
     private final TextFieldWidget textField;
     private EventStream<RecipePicked> onPicked=RecipePicked.newPickStream();
     private int scroll=0;
-    public final Identifier collectionID;
+    public Identifier collectionID;
     private IResource hovered;
-    private final Collection<IRecipe<IResource>,IResource> collection;
+    private Collection<IRecipe<IResource>,IResource> collection;
     private int columns=3;
     private List<IRecipe<IResource>> items=new ArrayList<>();
     private String lastResearch="";
@@ -51,13 +51,19 @@ public class ButtonInventoryComponent extends BaseComponent {
 
 
     }
+    public void setCollection(Collection<IRecipe<IResource>,IResource> collection,Identifier id)
+    {
+        this.collection=collection;
+        this.collectionID=id;
+        refreshSearch();
+    }
     public void refreshSearch()
     {
         PlayerEntity pl=MinecraftClient.getInstance().player;
         if(this.lastResearch.isBlank())
             this.items=this.collection.getRecipes(pl);
         else
-        this.items= this.collection.getRecipes(pl).stream().filter(v->v.result(pl).getName().getString().toLowerCase().trim().contains(lastResearch)).toList();
+            this.items= this.collection.getRecipes(pl).stream().filter(v->v.result(pl).getName().getString().toLowerCase().trim().contains(lastResearch)).toList();
     }
     @Override
     public boolean canFocus(FocusSource source) {
@@ -203,7 +209,6 @@ public class ButtonInventoryComponent extends BaseComponent {
     @Override
     public boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
           var v=this.textField.onKeyPress(keyCode,scanCode,modifiers);
-          System.out.println(this.textField.getText());
         if(!textField.getText().trim().equals(lastResearch))
         {
             lastResearch=textField.getText().toLowerCase().trim();
@@ -228,8 +233,8 @@ public class ButtonInventoryComponent extends BaseComponent {
 
     }
     public static ButtonInventoryComponent parse(Element element) {
-        UIParsing.expectAttributes(element, "id");
-        var invId =UIParsing.parseIdentifier(element.getAttributeNode("id"));
+        UIParsing.expectAttributes(element, "collection");
+        var invId =UIParsing.parseIdentifier(element.getAttributeNode("collection"));
         var r=Recipes.get(invId);
         if(r==null)
             r= new Collection();

@@ -12,7 +12,7 @@ import net.minecraft.text.Text;
 public class SurvivalistInventory extends MultiInvHandledScreen<MultiInvScreenHandler,FlowLayout> {
 
     public SurvivalistInventory(MultiInvScreenHandler handler, PlayerInventory inv, Text title) {
-        super(handler,inv, FlowLayout.class, BaseUIModelScreen.DataSource.asset(GreenResurgence.asRessource("inventory")));
+        super(handler, FlowLayout.class, BaseUIModelScreen.DataSource.asset(GreenResurgence.asRessource("inventory")));
     }
 
     @Override

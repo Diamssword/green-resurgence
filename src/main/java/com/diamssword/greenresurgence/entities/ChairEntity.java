@@ -29,7 +29,7 @@ public class ChairEntity extends Entity {
     public void tick()
     {
         super.tick();
-        if(!hasPlayerRider())
+        if(!hasPlayerRider() && !this.getWorld().isClient)
         {
            this.discard();
         }
@@ -44,7 +44,6 @@ public class ChairEntity extends Entity {
     }
     @Override
     protected void initDataTracker() {
-
     }
 
     @Override

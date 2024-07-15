@@ -89,7 +89,6 @@ public class CharacterComponent  extends BaseComponent {
     public void draw(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
         var matrices = context.getMatrices();
         matrices.push();
-
         matrices.translate(x + this.width / 2f, y + this.height / 2f, 100);
         matrices.scale(75 * this.scale * this.width / 64f, -75 * this.scale * this.height / 64f, 75 * this.scale);
 

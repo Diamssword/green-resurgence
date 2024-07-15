@@ -3,16 +3,22 @@
 <components>
 <flow-layout direction="horizontal" >
     <children>
-        <flow-layout direction="horizontal" >
+        <flow-layout direction="vertical" >
             <children>
-                <buttoninventory col="3" id="green_resurgence:test">
+                <buttoninventory id="main" collection="minecraft:empty">
 
-                    <sizing><vertical method="fill">100</vertical><horizontal method="fill">50</horizontal></sizing>
+                    <sizing><vertical method="fill">50</vertical><horizontal method="fill">100</horizontal></sizing>
                 </buttoninventory>
+                <inventory id="player" name="disabled" width="9" height="3"/>
+                <inventory id="hotbar" width="9" height="1">
+                    <margins>
+                        <top>-5</top>
 
+                    </margins>
+                </inventory>
             </children>
             <padding><all>5</all></padding>
-            <sizing><vertical method="fill">50</vertical><horizontal method="fill">50</horizontal></sizing>
+            <sizing><vertical method="fill">75</vertical><horizontal method="fill">35</horizontal></sizing>
             <surface>
                 <panel/>
             </surface>

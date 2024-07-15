@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.cosmetics;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;
@@ -20,8 +21,8 @@ import software.bernie.geckolib.model.DefaultedGeoModel;
 public class ClothingLayer  extends FeatureRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
     private final FeatureRendererContext<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> ctx;
     private final ClothingLoader.Layer layer;
-    private final boolean altTexture;
-    private ClothingModel<AbstractClientPlayerEntity> model;
+    public final boolean altTexture;
+    private final ClothingModel<AbstractClientPlayerEntity> model;
     public ClothingLayer(FeatureRendererContext<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> context, ClothingLoader.Layer layer, boolean altTexture, boolean thinArm) {
         super(context);
         this.ctx=context;
@@ -31,14 +32,16 @@ public class ClothingLayer  extends FeatureRenderer<AbstractClientPlayerEntity, 
     }
     @Override
     public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, AbstractClientPlayerEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-        ctx.getModel().copyBipedStateTo(model);
-        model.animateModel(entity,limbAngle,limbDistance,tickDelta);
-        model.setAngles(entity,limbAngle,limbDistance,animationProgress,headYaw,headPitch);
-
-        ClothingLoader.instance.getFirstForLayer(layer).ifPresent((c)->{
-            model.render(matrices,vertexConsumers.getBuffer(model.getLayer(GreenResurgence.asRessource("textures/cloth/"+layer.toString()+"/"+c.getLeft()+".png"))),light, LivingEntityRenderer.getOverlay(entity,0),1,1,1,1);
+        var data=entity.getComponent(Components.PLAYER_DATA);
+        data.appearance.getCloth(layer).ifPresent(c->{
+        if(data!=null)
+        {
+            ctx.getModel().copyBipedStateTo(model);
+            model.animateModel(entity,limbAngle,limbDistance,tickDelta);
+            model.setAngles(entity,limbAngle,limbDistance,animationProgress,headYaw,headPitch);
+            model.render(matrices,vertexConsumers.getBuffer(model.getLayer(GreenResurgence.asRessource("textures/cloth/"+layer.toString()+"/"+c.id()+".png"))),light, LivingEntityRenderer.getOverlay(entity,0),1,1,1,1);
+        }
         });
-
     }
 
 }

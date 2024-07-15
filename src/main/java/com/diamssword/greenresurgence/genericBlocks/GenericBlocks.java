@@ -71,6 +71,12 @@ public class GenericBlocks {
             set.add(name,render, type).disableGen(true);
         }
     }
+    private static void genericFurnitureWithVariant(GenericBlockSet set,GenericBlockSet.BlockTypes type, GenericBlockSet.Transparency render,String variant, String... names)
+    {
+        for (String name : names) {
+            set.add(name,render, type).disableGen(true).variantItem(variant);
+        }
+    }
     private static void genericChair(GenericBlockSet set, GenericBlockSet.Transparency render, String... names)
     {
         for (String name : names) {
@@ -100,6 +106,29 @@ public class GenericBlocks {
             set.add(name,render, type).disableGen(true);
         }
     }
+    private static void genericFurnitureWithVariant(GenericBlockSet set, GenericBlockSet.BlockTypes type, GenericBlockSet.Transparency render,String variantName,String base,String[] p1,@Nullable String[] p2,@Nullable  String[] p3)
+    {
+        List<String> res=new ArrayList<>();
+        for(String p : p1)
+        {
+            if(p2!=null) {
+                for(String q : p2) {
+                    if(p3!=null) {
+                        for(String s : p3) {
+                            res.add(base+p+q+s);
+                        }
+                    }
+                    else
+                        res.add(base+p+q);
+                }
+            }
+            else
+                res.add(base+p);
+        }
+        for (String name : res) {
+            set.add(name,render, type).disableGen(true).variantItem(variantName);
+        }
+    }
     private static void genericChairSlab(GenericBlockSet set, GenericBlockSet.Transparency render, String... names)
     {
         for (String name : names) {
@@ -119,26 +148,27 @@ public class GenericBlocks {
         diams.add("gray_concrete", GenericBlockSet.BlockTypes.OMNI_SLAB).disableGen(false);
         diams.add("gray_glazed_terracotta", GenericBlockSet.BlockTypes.ROTATABLE_SLAB).disableGen(false);
         diams.add("road_barrier",GenericBlockSet.Transparency.NOTFULL, GenericBlockSet.BlockTypes.PILLAR).disableGen(false);
-        diams.add("carton_petit_travers",GenericBlockSet.Transparency.NOTFULL, GenericBlockSet.BlockTypes.PILLAR).disableGen(true);
-        diams.add("carton_petit_ouvert",GenericBlockSet.Transparency.NOTFULL, GenericBlockSet.BlockTypes.PILLAR).disableGen(true);
-        diams.add("carton_petit_entreouvert",GenericBlockSet.Transparency.NOTFULL, GenericBlockSet.BlockTypes.PILLAR).disableGen(true);
-        diams.add("carton_petit",GenericBlockSet.Transparency.NOTFULL, GenericBlockSet.BlockTypes.PILLAR).disableGen(true);
         diams.add("carton_gros", GenericBlockSet.BlockTypes.PILLAR).disableGen(true);
+        diams.add("concrete_block", GenericBlockSet.BlockTypes.PILLAR).disableGen(true);
+        genericFurniture(diams, GenericBlockSet.BlockTypes.PILLAR, GenericBlockSet.Transparency.NOTFULL,"carton_petit",new String[]{"","_travers","_ouvert","_entreouvert"},null,null);
         genericFurniture(diams, GenericBlockSet.BlockTypes.PILLAR_SLAB, GenericBlockSet.Transparency.NOTFULL,"register_black");
         genericFurniture(diams, GenericBlockSet.BlockTypes.PILLAR_SLAB, GenericBlockSet.Transparency.NOTFULL,"photo_frame_",new String[]{"tree_","portrait_","zen_"},new String[]{"table","wall"},null);
         genericFurniture(diams, GenericBlockSet.BlockTypes.PILLAR, GenericBlockSet.Transparency.NOTFULL,"big_plank","small_wood_table",
         "plastic_fence","fridge_bottom","fridge_up","fridge_up_square","concrete_fence", "radiator_white_central",
         "radiator_white_left","radiator_white_right","radiator_white_solo","sink_noplate_ceramic", "sink_pedestal_ceramic");
-        genericFurniture(diams, GenericBlockSet.BlockTypes.PILLAR, GenericBlockSet.Transparency.CUTOUT,"table_square_nap_",new String[]{"blue_","green_","red_"},new String[]{"center","corner","end","middle","solo"},null);
+        genericFurnitureWithVariant(diams, GenericBlockSet.BlockTypes.PILLAR, GenericBlockSet.Transparency.CUTOUT,"table_square_nap","table_square_nap_",new String[]{"blue_","green_","red_"},new String[]{"center","border","corner","end","middle","solo"},null);
         genericFurniture(diams, GenericBlockSet.BlockTypes.PILLAR,GenericBlockSet.Transparency.NOTFULL,"tire_car_brake_disc","tire_car_flat_triple","tire_car_full","tire_car_jante","tire_car_up","tire_car_up_double","tire_car_up_triple");
-        genericChair(diams, GenericBlockSet.Transparency.NOTFULL,allColors("chair_wool_"));
+        genericFurnitureWithVariant(diams, GenericBlockSet.BlockTypes.CHAIR, GenericBlockSet.Transparency.NOTFULL,"chair_wool",allColors("chair_wool_"));
+        //genericChair(diams, GenericBlockSet.Transparency.NOTFULL,allColors("chair_wool_"));
+
         genericChairSlab(diams, GenericBlockSet.Transparency.NOTFULL,"tire_car_flat","stool_ottoman_resort","stool_waterhyacinth");
+        genericChair(diams, GenericBlockSet.Transparency.CUTOUT,"school_chair_red");
         genericChair(diams, GenericBlockSet.Transparency.NOTFULL,"tire_car_flat_double","chair_stool_military","chair_stool_vintage","chair_dining_waterhyacinth","chair_folding_oak","chair_folding_spruce","chair_gaming_black",
-        "chair_gaming_blue","chair_gaming_green","chair_wood_oak","chair_wood_oak_b","chair_wood_spruce","chair_wood_spruce_b","school_chair_red");
+        "chair_gaming_blue","chair_gaming_green","chair_wood_oak","chair_wood_oak_b","chair_wood_spruce","chair_wood_spruce_b","chair_metro_plastic_connector","chair_metro_plastic_no_connector");
         genericFurniture(diams, GenericBlockSet.BlockTypes.PILLAR,GenericBlockSet.Transparency.CUTOUT,"pendantlight_rattan_light","pendantlight_rattan_dark","trash_can_round_green","trash_can_round_iron","trash_big");
-        genericFurniture(diams, GenericBlockSet.BlockTypes.CHAIR_SLAB, GenericBlockSet.Transparency.CUTOUT,"",allColors("chair_sofa_"),new String[]{"_left","_right","_middle","_solo"},null);
+        genericFurnitureWithVariant(diams, GenericBlockSet.BlockTypes.CHAIR_SLAB, GenericBlockSet.Transparency.CUTOUT,"chair_sofa","",allColors("chair_sofa_"),new String[]{"_left","_right","_middle","_solo"},null);
         genericFurniture(diams, GenericBlockSet.BlockTypes.PILLAR_SLAB, GenericBlockSet.Transparency.NOTFULL,"luggage_",new String[]{"antique_small_brown","antique_small_white","basket","basket_stand","picnic"},null,null);
-        genericFurniture(diams, GenericBlockSet.BlockTypes.PILLAR_SLAB,GenericBlockSet.Transparency.NOTFULL,allColors("microwave_"));
+        genericFurnitureWithVariant(diams, GenericBlockSet.BlockTypes.PILLAR_SLAB,GenericBlockSet.Transparency.NOTFULL,"microwave",allColors("microwave_"));
         sets.add(diams);
     }
 

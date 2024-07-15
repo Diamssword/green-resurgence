@@ -33,13 +33,20 @@ public class OpenScreenCommand {
     public static void register(LiteralArgumentBuilder<ServerCommandSource> builder)
     {
         builder.requires(ctx-> ctx.hasPermissionLevel(2))
-                .then(CommandManager.literal("customizer").executes(OpenScreenCommand::openCustomizer));
+                .then(CommandManager.literal("customizer").executes(OpenScreenCommand::openCustomizer))
+                .then(CommandManager.literal("wardrobe").executes(OpenScreenCommand::openWardrobe));
 
 
     }
     private static int openCustomizer(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
         if(ctx.getSource().isExecutedByPlayer())
             GuiPackets.send(ctx.getSource().getPlayer(), GuiPackets.GUI.Customizer);
+        return 1;
+
+    }
+    private static int openWardrobe(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
+        if(ctx.getSource().isExecutedByPlayer())
+            GuiPackets.send(ctx.getSource().getPlayer(), GuiPackets.GUI.Wardrobe);
         return 1;
 
     }

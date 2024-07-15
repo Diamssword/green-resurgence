@@ -12,7 +12,7 @@ import net.minecraft.text.Text;
 public class LootableInvGui extends MultiInvHandledScreen<LootedBlockEntity.Container,FlowLayout> {
     private LootedBlockEntity tile;
     public LootableInvGui(LootedBlockEntity.Container handler, PlayerInventory inv, Text title) {
-        super(handler,inv, FlowLayout.class, BaseUIModelScreen.DataSource.asset(GreenResurgence.asRessource("lootablegui")));
+        super(handler, FlowLayout.class, BaseUIModelScreen.DataSource.asset(GreenResurgence.asRessource("lootablegui")));
         if(handler.isReady()) {
             tile = ClientGuiPacket.getTile(LootedBlockEntity.class, handler.getPos());
             onReady();

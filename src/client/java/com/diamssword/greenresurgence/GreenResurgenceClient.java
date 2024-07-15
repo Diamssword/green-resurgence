@@ -6,7 +6,7 @@ import com.diamssword.greenresurgence.blockEntityRenderer.LootedBlockEntityRende
 import com.diamssword.greenresurgence.genericBlocks.GenericBlockSet;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.gui.components.ComponentsRegister;
-import com.diamssword.greenresurgence.gui.CraftingScreen;
+import com.diamssword.greenresurgence.gui.BlockVariantScreen;
 import com.diamssword.greenresurgence.gui.Handlers;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.GuiPackets;
@@ -66,7 +66,6 @@ public class GreenResurgenceClient implements ClientModInitializer {
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if(keyBinding.isPressed())
 			{
-				MinecraftClient.getInstance().setScreen(new CraftingScreen());
 			//	Channels.MAIN.clientHandle().send(new GuiPackets.KeyPress(GuiPackets.KEY.Inventory));
 			}
 			if(keyBinding1.isPressed())

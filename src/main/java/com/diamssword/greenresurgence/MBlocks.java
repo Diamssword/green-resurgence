@@ -42,6 +42,8 @@ public class MBlocks implements BlockRegistryContainer {
     public static final MetroCorridorFull METRO_CORRIDOR_SLAB=new MetroCorridorFull(AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL),1);
     @DiamsGroup
     public static final MetroCorridorFull METRO_CORRIDOR_SLAB_INVERT=new MetroCorridorFull(AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL),2);
+    @DiamsGroup
+    public static final LayerModelBlock CEREALS=new LayerModelBlock(AbstractBlock.Settings.create().sounds(BlockSoundGroup.CANDLE)){public int layers() {return 10;}};
     public static final StructureBlock STRUCTURE_BLOCK =new StructureBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
     public static final SmartStructureBlock STRUCTURE_BLOCK_SMART =new SmartStructureBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
     public static final ItemBlock ITEM_BLOCK =new ItemBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());

@@ -45,6 +45,11 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
            listeners.forEach(v->v.accept(this));
        });
     }
+    public void forceReady()
+    {
+        ready=true;
+        listeners.forEach(v->v.accept(this));
+    }
     //This constructor gets called from the BlockEntity on the server without calling the other constructor first, the server knows the inventory of the container
     //and can therefore directly provide it as an argument. This inventory will then be synced to the client.
     public MultiInvScreenHandler(int syncId, PlayerInventory playerInventory, IGridContainer... inventories) {
@@ -68,7 +73,18 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
 
  
     }
-
+    public MultiInvScreenHandler(int syncId, PlayerInventory playerInventory,boolean empty) {
+        super(null, syncId);
+        ready=true;
+        this.inventories=new IGridContainer[0];
+        //used to send the GridContainer information to the client
+        this.props=this.createProperty(Props.class,new Props(inventoryPos,inventories));
+        props.markDirty();
+        playerGrid=new GridContainer("player",playerInventory,9,3,9);
+        hotbarGrid=new GridContainer("hotbar",playerInventory,9,1);
+        addSlotsFor(playerGrid);
+        addSlotsFor(hotbarGrid);
+    }
     public void setPos(BlockPos pos)
     {
         this.inventoryPos=pos;

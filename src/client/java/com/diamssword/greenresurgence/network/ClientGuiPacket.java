@@ -1,9 +1,7 @@
 package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
-import com.diamssword.greenresurgence.gui.CharacterCustomizationScreen;
-import com.diamssword.greenresurgence.gui.ImageBlockGui;
-import com.diamssword.greenresurgence.gui.ItemBlockGui;
+import com.diamssword.greenresurgence.gui.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -22,6 +20,9 @@ public class ClientGuiPacket {
                 }
                 case Customizer -> {
                     openGui(new CharacterCustomizationScreen(CharacterCustomizationScreen.Type.size));
+                }
+                case Wardrobe -> {
+                    openGui(new WardrobeGui());
                 }
             }
         });

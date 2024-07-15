@@ -14,6 +14,7 @@ public class GuiPackets {
     }
     public static enum GUI{
         ImageBlock,
+        Wardrobe,
         Customizer
     }
     public record GuiPacket(GUI gui, @Nullable  BlockPos pos){};

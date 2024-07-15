@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.systems.crafting;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +16,11 @@ public class SimpleRecipe implements IRecipe<ItemResource> {
     {
         this.result=new ItemResource(result);
         this.ingredients= Arrays.stream(ingredients).map(ItemResource::new).toList();
+    }
+    public SimpleRecipe(Identifier result)
+    {
+        this.result=new ItemResource(result,1);
+        this.ingredients=new ArrayList<>();
     }
     public SimpleRecipe(Item result,ItemStack... ingredients)
     {

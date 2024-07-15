@@ -1,87 +1,92 @@
 [
    {
       "id": "bandeau_cheveux",
-      "layer": "accessoires",
-      "name": "Bandeau Cheveux"
+      "layer": "accessories",
+      "name": "Bandeau Cheveux",
+      "collection": "a"
    },
    {
       "id": "bracelet_argent",
-      "layer": "accessoires",
-      "name": "Bracelet Argent"
+      "layer": "accessories",
+      "name": "Bracelet Argent",
+      "collection": "b"
    },
    {
       "id": "bracelet_or",
-      "layer": "accessoires",
-      "name": "Bracelet Or"
+      "layer": "accessories",
+      "name": "Bracelet Or",
+      "collection": "c"
    },
    {
       "id": "chaine_argent",
-      "layer": "accessoires",
-      "name": "Chaine Argent"
+      "layer": "accessories",
+      "name": "Chaine Argent",
+      "collection": "d"
    },
    {
       "id": "chaine_cheveux",
-      "layer": "accessoires",
-      "name": "Chaine Cheveux"
+      "layer": "accessories",
+      "name": "Chaine Cheveux",
+      "collection": "e"
    },
    {
       "id": "chaine_en_or",
-      "layer": "accessoires",
+      "layer": "accessories",
       "name": "Chaine En Or"
    },
    {
       "id": "echarpe_beige",
-      "layer": "accessoires",
+      "layer": "accessories",
       "name": "Echarpe Beige"
    },
    {
       "id": "echarpe_rouge",
-      "layer": "accessoires",
+      "layer": "accessories",
       "name": "Echarpe Rouge"
    },
    {
       "id": "lunette_noire",
-      "layer": "accessoires",
+      "layer": "accessories",
       "name": "Lunette Noire"
    },
    {
       "id": "necklace",
-      "layer": "accessoires",
+      "layer": "accessories",
       "name": "Necklace"
    },
    {
       "id": "noeud_bleu_canard_cheveux",
-      "layer": "accessoires",
+      "layer": "accessories",
       "name": "Noeud Bleu Canard Cheveux"
    },
    {
       "id": "noeud_bleu_cheveux",
-      "layer": "accessoires",
+      "layer": "accessories",
       "name": "Noeud Bleu Cheveux"
    },
    {
       "id": "noeud_bordeau_cheveux",
-      "layer": "accessoires",
+      "layer": "accessories",
       "name": "Noeud Bordeau Cheveux"
    },
    {
       "id": "noeud_marron",
-      "layer": "accessoires",
+      "layer": "accessories",
       "name": "Noeud Marron"
    },
    {
       "id": "noeud_noir_cheveux",
-      "layer": "accessoires",
+      "layer": "accessories",
       "name": "Noeud Noir Cheveux"
    },
    {
       "id": "uniform_tie_1",
-      "layer": "accessoires",
+      "layer": "accessories",
       "name": "Uniform Tie 1"
    },
    {
       "id": "uniform_tie_2",
-      "layer": "accessoires",
+      "layer": "accessories",
       "name": "Uniform Tie 2"
    },
    {
@@ -92,37 +97,44 @@
    {
       "id": "bonnet_bleu",
       "layer": "hat",
-      "name": "Bonnet Bleu"
+      "name": "Bonnet Bleu",
+      "collection": "a"
    },
    {
       "id": "bonnet_gris",
       "layer": "hat",
-      "name": "Bonnet Gris"
+      "name": "Bonnet Gris",
+      "collection": "b"
    },
    {
       "id": "bonnet_noir",
       "layer": "hat",
-      "name": "Bonnet Noir"
+      "name": "Bonnet Noir",
+      "collection": "c"
    },
    {
       "id": "chapeau_citrouille",
       "layer": "hat",
-      "name": "Chapeau Citrouille"
+      "name": "Chapeau Citrouille",
+      "collection": "e"
    },
    {
       "id": "chapeau_grenouille",
       "layer": "hat",
-      "name": "Chapeau Grenouille"
+      "name": "Chapeau Grenouille",
+      "collection": "f"
    },
    {
       "id": "chapeau_marron_noeud",
       "layer": "hat",
-      "name": "Chapeau Marron Noeud"
+      "name": "Chapeau Marron Noeud",
+      "collection": "g"
    },
    {
       "id": "couronne_fleur_gothique",
       "layer": "hat",
-      "name": "Couronne Fleur Gothique"
+      "name": "Couronne Fleur Gothique",
+      "collection": "h"
    },
    {
       "id": "hat_1",

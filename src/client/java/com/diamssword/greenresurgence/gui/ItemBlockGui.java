@@ -18,7 +18,7 @@ import net.minecraft.text.Text;
 public class ItemBlockGui extends MultiInvHandledScreen<ItemBlock.ScreenHandler,FlowLayout> {
     private ItemBlockEntity tile;
     public ItemBlockGui(ItemBlock.ScreenHandler handler, PlayerInventory inv, Text title) {
-        super(handler,inv, FlowLayout.class, BaseUIModelScreen.DataSource.asset(GreenResurgence.asRessource("itemblockgui")));
+        super(handler, FlowLayout.class, BaseUIModelScreen.DataSource.asset(GreenResurgence.asRessource("itemblockgui")));
         if(handler.isReady()) {
             tile = ClientGuiPacket.getTile(ItemBlockEntity.class, handler.getPos());
             onReady();
