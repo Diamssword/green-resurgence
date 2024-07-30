@@ -12,6 +12,10 @@ public class Collection<T extends IRecipe<A>,A extends IResource> {
     {
         recipes.add(recipe);
     }
+    public void addAll(List<? extends  T> recipes)
+    {
+        this.recipes.addAll(recipes);
+    }
     public List<A> getResults(PlayerEntity player)
     {
         return recipes.stream().map(v->v.result(player)).toList();

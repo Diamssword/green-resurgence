@@ -22,6 +22,7 @@ public class ComponentsRegister {
         UIParsing.registerFactory("clothlist", ClothInventoryComponent::parse);
         UIParsing.registerFactory("rbutton",(a)->new RButtonComponent(Text.empty(),(RButtonComponent button)->{}));
         UIParsing.registerFactory("arrowbutton",(a)->new ArrowButtonComponent((ArrowButtonComponent button)->{}));
+        UIParsing.registerFactory("recipedisplay",a->new RecipDisplayComponent(Sizing.fill(100)));
 
     }
 }

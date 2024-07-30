@@ -12,12 +12,15 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 
 public class BlockVariantScreen extends MultiInvHandledScreen<BlockVariantItem.Container,FlowLayout> {
@@ -40,7 +43,7 @@ public class BlockVariantScreen extends MultiInvHandledScreen<BlockVariantItem.C
         if(this.parent !=null)
         {
             var comp=rootComponent.childById(ButtonInventoryComponent.class,"main");
-            var coll=new Collection<SimpleRecipe,ItemResource>();
+            var coll=new Collection<SimpleRecipe,UniversalResource>();
             parent.getVariants().stream().sorted(Comparator.comparing(Identifier::getPath)).forEach(v->{
                 coll.add(new SimpleRecipe(v));
             });
@@ -55,14 +58,11 @@ public class BlockVariantScreen extends MultiInvHandledScreen<BlockVariantItem.C
         //   onWindow= this.window.isInBoundingBox(mouseX,mouseY);
     }
 
-    private boolean onPick(IRecipe<IResource> re)
+    private boolean onPick(IRecipe<UniversalResource> re)
     {
         var st=re.result(client.player);
-        if(st instanceof ItemResource re1) {
-            this.handler.setCursorStack(re1.asItem());
+            this.handler.setCursorStack(st.asItem());
             onWindow=true;
-          //  this.client.interactionManager.clickCreativeStack(re1.asItem(), -999);
-        }
         return true;
     }
     @Override

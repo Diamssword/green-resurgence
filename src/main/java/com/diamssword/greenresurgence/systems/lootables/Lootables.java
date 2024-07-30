@@ -62,13 +62,6 @@ public class Lootables {
 
     }
 
-    public static void init() {
-        ServerPlayConnectionEvents.JOIN.register((h,s,serv)->{
-            Channels.MAIN.serverHandle(h.player).send(new DictionaryPackets.LootableList(loader));
-            Channels.MAIN.serverHandle(h.player).send(new DictionaryPackets.ClothingList(ClothingLoader.instance));
-        });
-        ServerTickEvents.END_SERVER_TICK.register(loader::worldTick);
-        ServerTickEvents.END_SERVER_TICK.register(ClothingLoader.instance::worldTick);
-    }
+
 }
 

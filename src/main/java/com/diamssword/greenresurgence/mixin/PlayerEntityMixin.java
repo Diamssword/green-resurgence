@@ -26,6 +26,7 @@ public abstract class PlayerEntityMixin extends Entity {
 	@Inject(at = @At("TAIL"), method = "<init>")
 	private void init(World world, BlockPos pos, float yaw, GameProfile gameProfile, CallbackInfo ci) {
 		this.setSneaking(true);
+		this.setSneaking(false);
 	}
 	@Inject(at = @At("HEAD"), method = "updatePose",cancellable = true)
 	protected void updatePose(CallbackInfo ci) {

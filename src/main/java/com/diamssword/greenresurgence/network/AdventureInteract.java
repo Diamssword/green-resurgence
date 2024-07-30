@@ -10,9 +10,12 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.WorldEvents;
@@ -23,9 +26,19 @@ import java.util.Map;
 public class AdventureInteract {
     static Map<PlayerEntity,Long> cooldowns=new HashMap<>();
     public record BlockInteract(BlockPos pos){};
+    public record AllowedList(Identifier[] blocks, Identifier[] items){};
     public static void init()
     {
-        UseBlockCallback.EVENT.register(LootableLogic::onRightClick);
+        Channels.MAIN.registerClientbound(AllowedList.class,(msg,ctx)->{
+            BaseInteractions.allowedBlocks.clear();
+            BaseInteractions.allowedItems.clear();
+            for (Identifier block : msg.blocks) {
+                BaseInteractions.allowedBlocks.add(Registries.BLOCK.get(block));
+            }
+            for (Identifier block : msg.items) {
+                BaseInteractions.allowedItems.add(Registries.ITEM.get(block));
+            }
+        });
         Channels.MAIN.registerServerbound(BlockInteract.class,(msg,ctx)->{
 
             if(ctx.player().interactionManager.getGameMode().isSurvivalLike() && checkCooldown(ctx.player())) {

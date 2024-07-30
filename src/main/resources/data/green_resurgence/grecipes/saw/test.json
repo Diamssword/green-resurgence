@@ -1,0 +1,25 @@
+{
+  "ingredients": [
+    {
+      "name": "minecraft:dark_oak_door",
+      "type": "item",
+      "count": 64
+    },
+    {
+      "name": "minecraft:debug_stick",
+      "type": "item",
+      "count": 1
+    },
+    {
+      "name": "green_resurgence:diams_chair_metro_plastic_connector",
+      "type": "item",
+      "count": 64
+    }
+  ],
+  "result": {
+    "name": "minecraft:jungle_sapling",
+    "type": "item",
+    "count": 32
+  },
+  "type": "simple"
+}

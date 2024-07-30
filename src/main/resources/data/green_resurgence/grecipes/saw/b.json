@@ -1,0 +1,42 @@
+{
+  "type": "multi",
+  "ingredients": [
+    {
+      "type":"item",
+      "name": "minecraft:stick",
+      "count": 5
+    },
+    {
+      "type": "tag",
+      "name": "minecraft:logs",
+      "count": 2
+    },
+    {
+      "type": "tag",
+      "name": "minecraft:dirt",
+      "count": 3
+    },
+    {
+      "type": "tag",
+      "name": "minecraft:guarded_by_piglins",
+      "count": 1
+    },
+    {
+      "type": "item",
+      "name": "minecraft:cobblestone",
+      "count": 2999
+    }
+
+  ],
+  "results":[ {
+    "type": "item",
+    "name": "minecraft:oak_sign",
+    "count": 1
+  },
+    {
+      "type": "item",
+      "name": "minecraft:stone",
+      "count": 5
+    }
+  ]
+}

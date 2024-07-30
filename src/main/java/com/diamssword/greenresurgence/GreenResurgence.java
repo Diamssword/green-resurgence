@@ -1,15 +1,14 @@
 package com.diamssword.greenresurgence;
 
-import com.diamssword.greenresurgence.commands.FactionCommand;
-import com.diamssword.greenresurgence.commands.OpenScreenCommand;
-import com.diamssword.greenresurgence.commands.StructureBlockHelperCommand;
-import com.diamssword.greenresurgence.commands.StructureItemCommand;
+import com.diamssword.greenresurgence.commands.*;
 import com.diamssword.greenresurgence.containers.Containers;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.materials.Materials;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
+import com.diamssword.greenresurgence.systems.Events;
 import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
+import com.diamssword.greenresurgence.systems.crafting.RecipeLoader;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
@@ -65,6 +64,7 @@ public class GreenResurgence implements ModInitializer {
 	public void onInitialize() {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(Lootables.loader);
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(ClothingLoader.instance);
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(Recipes.loader);
 		FieldRegistrationHandler.register(MItems.class, ID, false);
 		FieldRegistrationHandler.register(MBlocks.class, ID, false);
 		FieldRegistrationHandler.register(MBlockEntities.class, ID, false);
@@ -77,12 +77,13 @@ public class GreenResurgence implements ModInitializer {
 		GenericBlocks.GENERIC_GROUP.initialize();
 		Materials.init();
 		Recipes.init();
-		Lootables.init();
 		registerCommand("giveStructureItem",StructureItemCommand::register);
 		registerCommand("faction", FactionCommand::register);
 		registerCommand("structureBlockHelper", StructureBlockHelperCommand::register);
 		registerCommand("resurgenceGui", OpenScreenCommand::register);
+		registerCommand("recipeHelper", RecipeHelperCommand::register);
 		BaseInteractions.register();
+		Events.init();
 		ServerLifecycleEvents.SERVER_STARTING.register((server)->{
 			onPostInit();
 		});

@@ -2,23 +2,28 @@ package com.diamssword.greenresurgence;
 
 import com.diamssword.greenresurgence.blockEntities.ConnectorBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
+import com.diamssword.greenresurgence.events.PlaceBlockCallback;
 import com.diamssword.greenresurgence.network.AdventureInteract;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.render.BoxRenderers;
 import com.diamssword.greenresurgence.render.CableRenderer;
+import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.lootables.LootableLogic;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockBox;
@@ -102,8 +107,9 @@ public class ClientEvents {
                             return false;
                         }
                         for (BlockBox box : CurrentZonePacket.currentZone) {
-                            if(box.contains(hitB.getBlockPos()))
-                                return true;
+                            if(box.contains(hitB.getBlockPos())) {
+                                return BaseInteractions.shouldOverlayBlock(state.getBlock());
+                            }
                         }
                         return false;
                     }
@@ -112,27 +118,36 @@ public class ClientEvents {
             }
             return true;
         });
-        UseBlockCallback.EVENT.register(ClientEvents::placeBlock);
+  //      UseBlockCallback.EVENT.register(ClientEvents::placeBlock);
+        PlaceBlockCallback.EVENT.register(ClientEvents::placeBlock);
+
     }
-    public static ActionResult placeBlock(PlayerEntity player, World w, Hand hand, BlockHitResult hit)
+
+    private static ActionResult placeBlock(ItemPlacementContext ctx, BlockState state) {
+        GameMode mode=MinecraftClient.getInstance().getNetworkHandler().getPlayerListEntry(ctx.getPlayer().getUuid()).getGameMode();
+        if(mode.equals(GameMode.SURVIVAL))
+        {
+            for (BlockBox box : CurrentZonePacket.currentZone) {
+                if(box.contains(ctx.getBlockPos()) && BaseInteractions.allowedBlocks.contains(state.getBlock()))
+                    return ActionResult.PASS;
+            }
+            return ActionResult.FAIL;
+        }
+        return ActionResult.PASS;
+    }
+
+   /* public static ActionResult placeBlock(PlayerEntity player, World w, Hand hand, BlockHitResult hit)
     {
         GameMode mode=MinecraftClient.getInstance().getNetworkHandler().getPlayerListEntry(player.getUuid()).getGameMode();
-        if(mode==GameMode.CREATIVE)
-            return ActionResult.PASS;
-        BlockPos p=hit.getBlockPos().offset(hit.getSide());
-        for (BlockBox box : CurrentZonePacket.currentZone) {
-            if(box.contains(p))
-                return ActionResult.PASS;
-            if((!(player.getMainHandStack().getItem() instanceof BlockItem)) ||mode ==GameMode.ADVENTURE)
-            {
-                return ActionResult.PASS;
-            }
-
-        }
-        if((!(player.getMainHandStack().getItem() instanceof BlockItem)) ||mode ==GameMode.ADVENTURE)
+        if(mode.equals(GameMode.SURVIVAL))
         {
-            return ActionResult.PASS;
+            BlockPos p=hit.getBlockPos().offset(hit.getSide());
+            for (BlockBox box : CurrentZonePacket.currentZone) {
+                if(box.contains(p))// && BaseInteractions.canUseItem(player,hand))
+                    return ActionResult.PASS;
+            }
+            return ActionResult.FAIL;
         }
-        return ActionResult.FAIL;
-    }
+        return ActionResult.PASS;
+    }*/
 }

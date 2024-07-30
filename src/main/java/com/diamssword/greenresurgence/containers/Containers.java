@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.containers;
 
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
+import com.diamssword.greenresurgence.blocks.CrafterBlock;
 import com.diamssword.greenresurgence.blocks.ItemBlock;
 import com.diamssword.greenresurgence.items.BlockVariantItem;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,6 +21,7 @@ public class Containers implements ContainerRegistryContainer {
     public static final ScreenHandlerType<ItemBlock.ScreenHandler> ITEMBLOCK = build(ItemBlock.ScreenHandler::new);
     public static final ScreenHandlerType<LootedBlockEntity.Container> LOOTABLE_INV = build(LootedBlockEntity.Container::new);
     public static final ScreenHandlerType<BlockVariantItem.Container> BLOCK_VARIANT_INV = build(BlockVariantItem.Container::new);
+    public static final ScreenHandlerType<CrafterBlock.ScreenHandler> CRAFTER = build(CrafterBlock.ScreenHandler::new);
 
     private static <T extends ScreenHandler> ScreenHandlerType<T> build(ScreenHandlerType.Factory<T> factory) {
         return new ScreenHandlerType<T>(factory, FeatureFlags.VANILLA_FEATURES);

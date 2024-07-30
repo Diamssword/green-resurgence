@@ -92,7 +92,6 @@ public class ModelHelper {
         Identifier identifier2 = Models.TEMPLATE_TRAPDOOR_BOTTOM.upload(getBlockModelId(name), textureMap, generator.modelCollector);
         Identifier identifier3 = Models.TEMPLATE_TRAPDOOR_OPEN.upload(getBlockModelId(name).withSuffixedPath("_open"), textureMap, generator.modelCollector);
         generator.blockStateCollector.accept(BlockStateModelGenerator.createTrapdoorBlockState(trapdoorBlock, identifier, identifier2, identifier3));
-   //     generator.registerParentedItemModel(trapdoorBlock, identifier2);
     }
     public final void registerLantern(BlockStateModelGenerator generator, String name, Block lantern) {
 
@@ -107,6 +106,10 @@ public class ModelHelper {
         Identifier identifier6=new Model(Optional.of(new Identifier(GreenResurgence.ID, "block/generic/side_lantern")), Optional.empty(), TextureKey.LANTERN).upload(getBlockModelId(name).withSuffixedPath("_side_off"), textureMap_off, generator.modelCollector);
 
         generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(lantern).coordinate(fillLanternVariantMap(BlockStateVariantMap.create(Properties.FACING, Properties.LIT), identifier1, identifier2, identifier3, identifier4,identifier5,identifier6)));
+
+    }
+    public final void registerToggleable(BlockStateModelGenerator generator, String name, Block togglelable) {
+        generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(togglelable).coordinate(fillToggleableVariantMap(BlockStateVariantMap.create(Properties.HORIZONTAL_FACING, Properties.OPEN), getBlockModelId(name), getBlockModelId(name).withSuffixedPath("_open"))));
 
     }
     public final void registerBed(BlockStateModelGenerator generator, String name, Block lantern) {
@@ -204,6 +207,18 @@ public class ModelHelper {
                 .register(Direction.NORTH, false, BlockStateVariant.create().put(VariantSettings.MODEL, side_off).put(VariantSettings.Y, VariantSettings.Rotation.R0))
                 .register(Direction.SOUTH,false, BlockStateVariant.create().put(VariantSettings.MODEL, side_off).put(VariantSettings.Y, VariantSettings.Rotation.R180))
                 .register(Direction.EAST, false, BlockStateVariant.create().put(VariantSettings.MODEL, side_off).put(VariantSettings.Y, VariantSettings.Rotation.R90));
+    }
+    public static BlockStateVariantMap.DoubleProperty<Direction, Boolean> fillToggleableVariantMap(BlockStateVariantMap.DoubleProperty<Direction, Boolean> variantMap, Identifier normal, Identifier toggled) {
+        return variantMap
+                .register(Direction.WEST,true, BlockStateVariant.create().put(VariantSettings.MODEL, toggled).put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                .register(Direction.NORTH, true, BlockStateVariant.create().put(VariantSettings.MODEL, toggled).put(VariantSettings.Y, VariantSettings.Rotation.R0))
+                .register(Direction.SOUTH,true, BlockStateVariant.create().put(VariantSettings.MODEL, toggled).put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                .register(Direction.EAST, true, BlockStateVariant.create().put(VariantSettings.MODEL, toggled).put(VariantSettings.Y, VariantSettings.Rotation.R90))
+
+                .register(Direction.WEST,false, BlockStateVariant.create().put(VariantSettings.MODEL, normal).put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                .register(Direction.NORTH, false, BlockStateVariant.create().put(VariantSettings.MODEL, normal).put(VariantSettings.Y, VariantSettings.Rotation.R0))
+                .register(Direction.SOUTH,false, BlockStateVariant.create().put(VariantSettings.MODEL, normal).put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                .register(Direction.EAST, false, BlockStateVariant.create().put(VariantSettings.MODEL, normal).put(VariantSettings.Y, VariantSettings.Rotation.R90));
     }
     public Identifier getBlockModelId(String baseID) {
         return new Identifier(GreenResurgence.ID,"block/"+this.subdomain+"/"+baseID);

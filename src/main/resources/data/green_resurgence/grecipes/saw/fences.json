@@ -1,0 +1,20 @@
+{
+  "ingredients": [
+    {
+      "name": "minecraft:stick",
+      "type": "item",
+      "count": 6
+    },
+    {
+      "name": "minecraft:string",
+      "type": "item",
+      "count": 4
+    }
+  ],
+  "result": {
+    "name": "minecraft:birch_fence",
+    "type": "item",
+    "count": 4
+  },
+  "type": "simple"
+}

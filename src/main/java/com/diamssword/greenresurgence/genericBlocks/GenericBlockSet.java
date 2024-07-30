@@ -8,7 +8,6 @@ import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider.FabricTagBuilder;
 import net.minecraft.block.*;
-import net.minecraft.block.enums.BedPart;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.data.client.*;
 import net.minecraft.item.*;
@@ -17,7 +16,6 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 
 import java.util.*;
@@ -75,66 +73,29 @@ public class GenericBlockSet {
     {
         return genExceptions.stream().filter(b->b.name.equals(name) && b.type==type && !b.genBlockState).findFirst().isEmpty();
     }
+    private void genericRegisterHelper(GenericBlockInstance entry,BlockTypes block,Block b)
+    {
+        Item i;
+        Registry.register(Registries.BLOCK, getBlockId(entry.name,block), b);
+
+        Registry.register(Registries.ITEM, getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
+        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
+        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
+        glassRenderNeeded.put(b,entry.transparency);
+    }
     public void register()
     {
         this.blocks.forEach(entry->{
             for (BlockTypes block : entry.blocks) {
                 switch (block)
                 {
-                    case SIMPLE -> {
-                        Block b=new Block(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)));
-                        Item i;
-                        Registry.register(Registries.BLOCK, getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM, getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
-                        glassRenderNeeded.put(b,entry.transparency);
-                    }
-                    case PILLAR -> {
-                        Block b=new GenericPillar(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)),entry.transparency);
-                        Item i;
-                        Registry.register(Registries.BLOCK, getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM,getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
-                        glassRenderNeeded.put(b,entry.transparency);
-                    }
-                    case CHAIR_SLAB -> {
-                        Block b=new ChairSlab(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.WOOD)));
-                        Item i;
-                        Registry.register(Registries.BLOCK, getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM, getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
-                        glassRenderNeeded.put(b,entry.transparency);
-                    }
-                    case CHAIR -> {
-                        Block b=new Chair(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.WOOD)),entry.transparency);
-                        Item i;
-                        Registry.register(Registries.BLOCK, getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM, getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
-                        glassRenderNeeded.put(b,entry.transparency);
-                    }
-                    case PILLAR_SLAB -> {
-                        Block b=new PillarSlab(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)));
-                        Item i;
-                        Registry.register(Registries.BLOCK, getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM, getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
-                        glassRenderNeeded.put(b,entry.transparency);
-                    }
-                    case CONNECTED_H,CONNECTED_V -> {
-                        Block b=new ConnectedBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)),block==BlockTypes.CONNECTED_H);
-                        Item i;
-                        Registry.register(Registries.BLOCK, getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM, getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
-                        glassRenderNeeded.put(b,entry.transparency);
-                    }
+                    case SIMPLE -> genericRegisterHelper(entry,block,new Block(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL))));
+                    case PILLAR -> genericRegisterHelper(entry,block,new GenericPillar(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)),entry.transparency));
+                    case TOGGLEABLE -> genericRegisterHelper(entry,block,new GenericPillarToggleable(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)),entry.transparency));
+                    case CHAIR_SLAB -> genericRegisterHelper(entry,block,new ChairSlab(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.WOOD))));
+                    case CHAIR -> genericRegisterHelper(entry,block,new Chair(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.WOOD)),entry.transparency));
+                    case PILLAR_SLAB -> genericRegisterHelper(entry,block,new PillarSlab(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL))));
+                    case CONNECTED_H,CONNECTED_V -> genericRegisterHelper(entry,block,new ConnectedBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)),block==BlockTypes.CONNECTED_H));
                     case GLASS_BLOCK -> {
                         Block b=new GlassBlock(AbstractBlock.Settings.create().sounds(BlockSoundGroup.GLASS).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never));
                         Item i;
@@ -162,15 +123,7 @@ public class GenericBlockSet {
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name+"_slab",b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name+"_slab",i,block));
                     }
-                    case LECTERN -> {
-                        Item i;
-                        Block b=new LecternShapedBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY)));
-                        Registry.register(Registries.BLOCK, getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM, getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-                        glassRenderNeeded.put(b,entry.transparency);
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
-                    }
+                    case LECTERN -> genericRegisterHelper(entry,block,new LecternShapedBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY))));
                     case DOOR -> {
                         Item i;
                         Block b=new DoorLongBlock(AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never), BlockSetType.OAK);
@@ -198,53 +151,13 @@ public class GenericBlockSet {
                         generatedBlocks.add(new GeneratedBlockInstance(entry.name+"_slab",b,block));
                         generatedItems.add(new GeneratedItemInstance(entry.name+"_slab",i,block));
                     }
-                    case OMNI_BLOCK -> {
-                        Item i;
-                        Block b=new OmniBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)));
-                        Registry.register(Registries.BLOCK, getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM,getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-                        glassRenderNeeded.put(b,entry.transparency);
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
-                    }
-                    case LANTERN -> {
-                        Item i;
-                        Block b=new LanternGeneric(processSettings(entry.transparency,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).solid().strength(3.5f).sounds(BlockSoundGroup.LANTERN).luminance(LanternGeneric::produceLight).nonOpaque().pistonBehavior(PistonBehavior.DESTROY)));
-
-                        Registry.register(Registries.BLOCK, getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM, getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-                        glassRenderNeeded.put(b,entry.transparency);
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
-                    }
+                    case OMNI_BLOCK -> genericRegisterHelper(entry,block,new OmniBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL))));
+                    case LANTERN -> genericRegisterHelper(entry,block,new LanternGeneric(processSettings(entry.transparency,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).solid().strength(3.5f).sounds(BlockSoundGroup.LANTERN).luminance(LanternGeneric::produceLight).nonOpaque().pistonBehavior(PistonBehavior.DESTROY))));
                     case BED -> {
-                        Item i;
-                        Block b=new BedGeneric(processSettings(entry.transparency,AbstractBlock.Settings.create().mapColor(MapColor.WHITE_GRAY).sounds(BlockSoundGroup.WOOD).strength(0.2f).nonOpaque().burnable().pistonBehavior(PistonBehavior.DESTROY)));
-
-                        Registry.register(Registries.BLOCK,getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM, getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-                        glassRenderNeeded.put(b,entry.transparency);
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
+                        genericRegisterHelper(entry,block,new BedGeneric(processSettings(entry.transparency,AbstractBlock.Settings.create().mapColor(MapColor.WHITE_GRAY).sounds(BlockSoundGroup.WOOD).strength(0.2f).nonOpaque().burnable().pistonBehavior(PistonBehavior.DESTROY))));
                     }
-                    case TRAPDOOR -> {
-                        Item i;
-                        Block b=new TrapdoorBlock(AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never), BlockSetType.OAK);
-                        Registry.register(Registries.BLOCK, getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM, getBlockId(entry.name,block), i=new TallBlockItem(b, addItemGroup(entry)));
-                        glassRenderNeeded.put(b,entry.transparency);
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
-                    }
-                    case LADDER -> {
-                        Item i;
-                        Block b=new GenericLadder(AbstractBlock.Settings.create().notSolid().strength(0.4f).sounds(BlockSoundGroup.LADDER).nonOpaque().pistonBehavior(PistonBehavior.DESTROY));
-                        Registry.register(Registries.BLOCK,getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM, getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-                        glassRenderNeeded.put(b,entry.transparency);
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
-                    }
+                    case TRAPDOOR -> genericRegisterHelper(entry,block,new TrapdoorBlock(AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never), BlockSetType.OAK));
+                    case LADDER -> genericRegisterHelper(entry,block,new GenericLadder(AbstractBlock.Settings.create().notSolid().strength(0.4f).sounds(BlockSoundGroup.LADDER).nonOpaque().pistonBehavior(PistonBehavior.DESTROY)));
                 }
             }
         });
@@ -265,9 +178,8 @@ public class GenericBlockSet {
     }
     private Identifier getBlockId(String base,BlockTypes type)
     {
-        switch (type)
+        switch(type)
         {
-
             case GLASS_PANE,IRON_BARS:
             return new Identifier(GreenResurgence.ID, this.subdomain+"_"+base+"_pane");
             case  OMNI_SLAB,OMNI_CARPET,OMNI_CARPET_SOLID,ROTATABLE_SLAB:
@@ -370,6 +282,9 @@ public class GenericBlockSet {
                         TexturedModel.Factory factory = helper.getModeleFactoryFor(getModelFor(b.name,b.type).orElse(ModelType.PILLAR),b.name);
                         factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
 
+                    }
+                    case TOGGLEABLE -> {
+                        this.helper.registerToggleable(generator,b.name,b.block);
                     }
                     case CONNECTED_V -> {
                         generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(b.block)
@@ -528,6 +443,7 @@ public class GenericBlockSet {
         SIMPLE,
         PILLAR,
         PILLAR_SLAB,
+        TOGGLEABLE,
         CHAIR_SLAB,
         CHAIR,
         GLASS_BLOCK,
