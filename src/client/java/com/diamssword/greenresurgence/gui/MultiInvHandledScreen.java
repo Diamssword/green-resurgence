@@ -5,6 +5,7 @@ package com.diamssword.greenresurgence.gui;
 
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import com.diamssword.greenresurgence.gui.components.InventoryComponent;
+import com.diamssword.greenresurgence.systems.crafting.UniversalResource;
 import com.google.common.collect.Sets;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
@@ -56,8 +57,7 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
     protected final T handler;
     @Nullable
     protected Slot focusedSlot;
-    @Nullable
-    private Slot touchDragSlotStart;
+    @Nullable Slot touchDragSlotStart;
     @Nullable
     private Slot touchDropOriginSlot;
     @Nullable
@@ -66,8 +66,8 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
     private Slot lastClickedSlot;
     protected int x;
     protected int y;
-    private boolean touchIsRightClickDrag;
-    private ItemStack touchDragStack = ItemStack.EMPTY;
+    boolean touchIsRightClickDrag;
+    ItemStack touchDragStack = ItemStack.EMPTY;
     private int touchDropX;
     private int touchDropY;
     private long touchDropTime;
@@ -75,7 +75,7 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
     private long touchDropTimer;
     protected final Set<Slot> cursorDragSlots = Sets.newHashSet();
     protected boolean cursorDragging;
-    private int heldButtonType;
+    int heldButtonType;
     private int heldButtonCode;
     private boolean cancelNextRelease;
     private int draggedStackRemainder;
@@ -165,6 +165,9 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
             if(c instanceof InventoryComponent par)
             {
                 invsComps.put(par.inventoryId,par);
+                var inv=this.handler.getInventory(par.inventoryId);
+                if(inv !=null)
+                    par.setSize(inv.getWidth(),inv.getHeight());
             }
             else if(c instanceof BaseParentComponent c1)
                 findInvComps(c1);
@@ -299,7 +302,10 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
         context.getMatrices().push();
         context.getMatrices().translate(0.0f, 0.0f, 232.0f);
         context.drawItem(stack, x, y);
-        context.drawItemInSlot(this.textRenderer, stack, x, y - (this.touchDragStack.isEmpty() ? 0 : 8), amountText);
+        if(amountText !=null)
+            context.drawItemInSlot(this.textRenderer, stack, x, y - (this.touchDragStack.isEmpty() ? 0 : 8), amountText);
+        else if(!stack.isEmpty() && stack.getCount()>1)
+            RessourceGuiHelper.drawRessourceExtra(context, UniversalResource.fromItemOpti(stack),x,y,0,16777215);
         context.getMatrices().pop();
     }
 
@@ -309,7 +315,7 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
 
     protected abstract void drawBackground(DrawContext ctx, float delta, int mouseX, int mouseY);
 
-    private void drawSlot(DrawContext context, Slot slot, String inventory) {
+    protected void drawSlot(DrawContext context, Slot slot, String inventory) {
 
         Pair pair;
         var pos=getSlotPosition(slot,inventory);
@@ -351,12 +357,15 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
                 context.fill(pos.getFirst(), pos.getSecond(), pos.getFirst()+ 16,pos.getSecond() + 16, -2130706433);
             }
             context.drawItem(itemStack, pos.getFirst(), pos.getSecond(), pos.getFirst() + pos.getSecond() * this.backgroundWidth);
-            context.drawItemInSlot(this.textRenderer, itemStack, pos.getFirst(), pos.getSecond(), string);
+            if(string !=null)
+                context.drawItemInSlot(this.textRenderer, itemStack, pos.getFirst(), pos.getSecond(), string);
+            else if(!itemStack.isEmpty() && itemStack.getCount()>1)
+                RessourceGuiHelper.drawRessourceExtra(context, UniversalResource.fromItemOpti(itemStack),pos.getFirst(),pos.getSecond(),0,16777215);
         }
         context.getMatrices().pop();
     }
 
-    private void calculateOffset() {
+    void calculateOffset() {
         ItemStack itemStack = this.handler.getCursorStack();
         if (itemStack.isEmpty() || !this.cursorDragging) {
             return;

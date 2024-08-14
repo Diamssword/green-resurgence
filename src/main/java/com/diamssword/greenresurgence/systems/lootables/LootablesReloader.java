@@ -58,42 +58,43 @@ public class LootablesReloader implements SimpleSynchronousResourceReloadListene
     public void reload(ResourceManager manager) {
         lootables=new HashMap<>();
         var id=GreenResurgence.asRessource("lootables.json");
-        var file = manager.getResource(id);
-        if(file.isPresent()) {
-            try {
-                BufferedReader reader = file.get().getReader();
+        var files = manager.getAllResources(id);
+        files.forEach(file->{
                 try {
-                    JsonArray jsonElement = JsonHelper.deserialize(GSON, (Reader) reader, JsonArray.class);
-                    jsonElement.forEach(v->{
-                       var ob= v.getAsJsonObject();
-                       if(ob.has("block"))
-                       {
-                           try {
-                               Lootable table = new Lootable(new Identifier(ob.get("block").getAsString()), new Identifier(ob.get("empty").getAsString()));
-                               if(ob.has("tables"))
-                               {
-                                   var tables=ob.get("tables").getAsJsonObject();
-                                   tables.keySet().forEach(k->{
-                                       table.addTool(GreenResurgence.asRessource("lootable/tools/"+k),new Identifier(tables.get(k).getAsString()));
-                                   });
-                               }
-                               lootables.put(table.getBlock(),table);
-                           }catch (Exception e)
-                           {
-                               LOGGER.error("Couldn't parse block from file {} for {}", id,ob.get("block").getAsString());
-                           }
-                       }
-                       else
-                           LOGGER.error("Empty declaration in file {}", id);
-                    });
-                } finally {
-                    ((Reader) reader).close();
-                    shouldSync=true;
+                    BufferedReader reader = file.getReader();
+                    try {
+                        JsonArray jsonElement = JsonHelper.deserialize(GSON, (Reader) reader, JsonArray.class);
+                        jsonElement.forEach(v->{
+                            var ob= v.getAsJsonObject();
+                            if(ob.has("block"))
+                            {
+                                try {
+                                    Lootable table = new Lootable(new Identifier(ob.get("block").getAsString()), new Identifier(ob.get("empty").getAsString()));
+                                    if(ob.has("tables"))
+                                    {
+                                        var tables=ob.get("tables").getAsJsonObject();
+                                        tables.keySet().forEach(k->{
+                                            table.addTool(GreenResurgence.asRessource("lootable/tools/"+k),new Identifier(tables.get(k).getAsString()));
+                                        });
+                                    }
+                                    lootables.put(table.getBlock(),table);
+                                }catch (Exception e)
+                                {
+                                    LOGGER.error("Couldn't parse block from file {} for {}", id,ob.get("block").getAsString());
+                                }
+                            }
+                            else
+                                LOGGER.error("Empty declaration in file {}", id);
+                        });
+                    } finally {
+                        ((Reader) reader).close();
+                        shouldSync=true;
+                    }
+                } catch (JsonParseException | IOException | IllegalArgumentException exception) {
+                    LOGGER.error("Couldn't parse data file {} from {}", id, getFabricId(), exception);
                 }
-            } catch (JsonParseException | IOException | IllegalArgumentException exception) {
-                LOGGER.error("Couldn't parse data file {} from {}", id, getFabricId(), exception);
-            }
-        }
+        });
+
     }
     public void worldTick(MinecraftServer server)
     {

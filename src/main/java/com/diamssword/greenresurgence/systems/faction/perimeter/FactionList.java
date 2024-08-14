@@ -14,6 +14,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,16 @@ public class FactionList implements IFactionList, AutoSyncedComponent {
     }
 
     @Override
+    public Optional<TerrainInstance> getTerrainAt(Vec3i pos) {
+        for (FactionInstance base : bases) {
+            var b=base.getSubTerrainAt(pos);
+            if(b.isPresent())
+                return b;
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public boolean canEditAt(PlayerEntity player, Vec3i pos) {
         Optional<FactionInstance> base= getAt(pos);
         return base.map(baseInstance -> baseInstance.canEdit(player)).orElse(false);
@@ -69,7 +81,7 @@ public class FactionList implements IFactionList, AutoSyncedComponent {
         NbtList ls= tag.getList("bases", NbtList.COMPOUND_TYPE);
         bases.clear();
         ls.forEach(c->{
-            FactionInstance b=new FactionInstance();
+            FactionInstance b=new FactionInstance(provider);
             b.readFromNbt((NbtCompound) c);
             bases.add(b);
         });
@@ -147,9 +159,15 @@ public class FactionList implements IFactionList, AutoSyncedComponent {
     }
 
     @Override
-    public List<Pair<String, BlockBox>> getBoxesForClient() {
-        ArrayList<Pair<String, BlockBox>> res = new ArrayList<>();
-        this.bases.forEach(v->v.getBoxes().forEach(b->{res.add(new Pair<>(v.getName(),b));}));
+    public List<Triple<String,String, BlockBox>> getBoxesForClient() {
+        ArrayList<Triple<String,String, BlockBox>> res = new ArrayList<>();
+        this.bases.forEach(v->{
+            v.getSubTerrains().forEach((k,v1)->{
+                v1.getBoxes().forEach(v2->{
+                    res.add(new ImmutableTriple<>(v.getName(),k,v2));
+                });
+            });
+        });
         return res;
     }
 
@@ -159,7 +177,7 @@ public class FactionList implements IFactionList, AutoSyncedComponent {
         NbtList ls= tag.getList("bases", NbtList.COMPOUND_TYPE);
         bases.clear();
         ls.forEach(c->{
-            FactionInstance b=new FactionInstance();
+            FactionInstance b=new FactionInstance(provider);
             b.readFromNbt((NbtCompound) c);
             bases.add(b);
         });

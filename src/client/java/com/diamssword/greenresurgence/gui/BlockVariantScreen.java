@@ -12,15 +12,12 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 
 public class BlockVariantScreen extends MultiInvHandledScreen<BlockVariantItem.Container,FlowLayout> {
@@ -43,13 +40,13 @@ public class BlockVariantScreen extends MultiInvHandledScreen<BlockVariantItem.C
         if(this.parent !=null)
         {
             var comp=rootComponent.childById(ButtonInventoryComponent.class,"main");
-            var coll=new Collection<SimpleRecipe,UniversalResource>();
+            var coll=new RecipeCollection(new Identifier("minecraft:void"));
             parent.getVariants().stream().sorted(Comparator.comparing(Identifier::getPath)).forEach(v->{
                 coll.add(new SimpleRecipe(v));
             });
             this.window=comp;
             comp.onRecipePicked().subscribe((v,v1,v2)-> onPick(v));
-            comp.setCollection((Collection)coll,GreenResurgence.asRessource("air"));
+            comp.setCollection(coll,GreenResurgence.asRessource("air"));
         }
     }
     @Override
@@ -58,7 +55,7 @@ public class BlockVariantScreen extends MultiInvHandledScreen<BlockVariantItem.C
         //   onWindow= this.window.isInBoundingBox(mouseX,mouseY);
     }
 
-    private boolean onPick(IRecipe<UniversalResource> re)
+    private boolean onPick(SimpleRecipe re)
     {
         var st=re.result(client.player);
             this.handler.setCursorStack(st.asItem());

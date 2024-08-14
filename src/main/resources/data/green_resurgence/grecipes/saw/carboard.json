@@ -1,0 +1,20 @@
+{
+  "ingredients": [
+    {
+      "name": "green_resurgence:material_paper_cardboard",
+      "type": "item",
+      "count": 3
+    },
+    {
+      "name": "green_resurgence:material_adesive_glue",
+      "type": "item",
+      "count": 1
+    }
+  ],
+  "result": {
+    "name": "green_resurgence:base_crate_t1",
+    "type": "item",
+    "count": 1
+  },
+  "type": "simple"
+}

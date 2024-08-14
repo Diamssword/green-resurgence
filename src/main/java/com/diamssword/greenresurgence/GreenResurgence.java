@@ -76,7 +76,6 @@ public class GreenResurgence implements ModInitializer {
 		GenericBlocks.register();
 		GenericBlocks.GENERIC_GROUP.initialize();
 		Materials.init();
-		Recipes.init();
 		registerCommand("giveStructureItem",StructureItemCommand::register);
 		registerCommand("faction", FactionCommand::register);
 		registerCommand("structureBlockHelper", StructureBlockHelperCommand::register);

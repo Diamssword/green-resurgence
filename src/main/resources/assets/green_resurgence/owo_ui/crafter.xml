@@ -10,9 +10,19 @@
                         <buttoninventory id="list" collection="green_resurgence:saw">
                             <sizing><vertical method="fill">100</vertical><horizontal method="fill">50</horizontal></sizing>
                         </buttoninventory>
-                        <recipedisplay id="display">
+                        <flow-layout direction="vertical">
+                            <children>
+                                <recipedisplay id="display">
+                                    <sizing><vertical method="fill">70</vertical><horizontal method="fill">100</horizontal></sizing>
+                                </recipedisplay>
+                                <button id="craft">
+                                    <text>Crafter</text>
+                                    <margins><top>5</top></margins>
+                                </button>
+                            </children>
+                            <horizontal-alignment>center</horizontal-alignment>
                             <sizing><vertical method="fill">100</vertical><horizontal method="fill">50</horizontal></sizing>
-                        </recipedisplay>
+                        </flow-layout>
                     </children>
                     <sizing><vertical method="fill">50</vertical><horizontal method="fill">100</horizontal></sizing>
                 </flow-layout>

@@ -20,7 +20,9 @@ import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public class FactionCommand {
@@ -31,13 +33,26 @@ public class FactionCommand {
         return CommandSource.suggestMatching(ls.getNames(), builder);
 
     };
+    private static final SuggestionProvider<ServerCommandSource> SUGGESTION_PROVIDER1 = (context, builder) -> {
+        var name=StringArgumentType.getString(context,"name");
+        if(name!=null)
+        {
+            World w=context.getSource().getWorld();
+            IFactionList ls=w.getComponent(Components.BASE_LIST);
+            var op=ls.get(name);
+            if(op.isPresent())
+                return CommandSource.suggestMatching(new ArrayList<>(op.get().getSubTerrains().keySet()),builder);
+        }
+        return CommandSource.suggestMatching(new ArrayList<>(), builder);
+
+    };
 
     public static void register(LiteralArgumentBuilder<ServerCommandSource> builder)
     {
         builder.requires(ctx-> ctx.hasPermissionLevel(2))
-                .then(CommandManager.literal("create").then(CommandManager.argument("name",StringArgumentType.string()).then(CommandManager.argument("from", BlockPosArgumentType.blockPos()).then(CommandManager.argument("to",BlockPosArgumentType.blockPos()).executes(FactionCommand::createExec)))))
+                .then(CommandManager.literal("create").then(CommandManager.argument("name",StringArgumentType.string()).then(CommandManager.argument("subname",StringArgumentType.string()).then(CommandManager.argument("from", BlockPosArgumentType.blockPos()).then(CommandManager.argument("to",BlockPosArgumentType.blockPos()).executes(FactionCommand::createExec))))))
                 .then(CommandManager.literal("get").then(CommandManager.argument("at", BlockPosArgumentType.blockPos()).executes(FactionCommand::getExec)))
-                .then(CommandManager.literal("addArea").then(CommandManager.argument("name",StringArgumentType.string()).suggests(SUGGESTION_PROVIDER).then(CommandManager.argument("from", BlockPosArgumentType.blockPos()).then(CommandManager.argument("to",BlockPosArgumentType.blockPos()).executes(FactionCommand::addExec)))))
+                .then(CommandManager.literal("addArea").then(CommandManager.argument("name",StringArgumentType.string()).suggests(SUGGESTION_PROVIDER).then(CommandManager.argument("subname",StringArgumentType.string()).suggests(SUGGESTION_PROVIDER1).then(CommandManager.argument("from", BlockPosArgumentType.blockPos()).then(CommandManager.argument("to",BlockPosArgumentType.blockPos()).executes(FactionCommand::addExec))))))
                 .then(CommandManager.literal("removeArea").then(CommandManager.argument("at", BlockPosArgumentType.blockPos()).executes(FactionCommand::removeExec)))
                 .then(CommandManager.literal("addMember").then(CommandManager.argument("faction",StringArgumentType.string()).suggests(SUGGESTION_PROVIDER).then(CommandManager.argument("player", EntityArgumentType.players()).executes(FactionCommand::addMemberExec))))
                 .then(CommandManager.literal("removeMember").then(CommandManager.argument("faction",StringArgumentType.string()).suggests(SUGGESTION_PROVIDER).then(CommandManager.argument("player", EntityArgumentType.players()).executes(FactionCommand::removeMemberExec))))
@@ -87,11 +102,12 @@ public class FactionCommand {
     private static int createExec(CommandContext<ServerCommandSource> ctx)
     {
         String name= StringArgumentType.getString(ctx,"name");
+        String sub= StringArgumentType.getString(ctx,"subname");
         BlockPos p=BlockPosArgumentType.getBlockPos(ctx,"from");
         BlockPos p1=BlockPosArgumentType.getBlockPos(ctx,"to");
         IFactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
 
-        boolean re= base.add(new FactionInstance(name,new BlockBox(p1.getX(),p1.getY(),p1.getZ(),p.getX(),p.getY(),p.getZ())));
+        boolean re= base.add(new FactionInstance(ctx.getSource().getWorld(),name,sub,new BlockBox(p1.getX(),p1.getY(),p1.getZ(),p.getX(),p.getY(),p.getZ())));
             ctx.getSource().sendFeedback(()->Text.literal(re?"Faction '"+name+"' crée":"Impossible de créer la faction '"+name+"'. Elle existe peut être déja?"),false);
         return re?1:0;
 
@@ -137,13 +153,14 @@ public class FactionCommand {
     private static int addExec(CommandContext<ServerCommandSource> ctx)
     {
         String name= StringArgumentType.getString(ctx,"name");
+        String sub= StringArgumentType.getString(ctx,"subname");
         BlockPos p=BlockPosArgumentType.getBlockPos(ctx,"from");
         BlockPos p1=BlockPosArgumentType.getBlockPos(ctx,"to");
         IFactionList bases=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
         Optional<FactionInstance> base=bases.get(name);
         if(base.isPresent())
         {
-            base.get().addArea(new BlockBox(p1.getX(),p1.getY(),p1.getZ(),p.getX(),p.getY(),p.getZ()));
+            base.get().addArea(sub,new BlockBox(p1.getX(),p1.getY(),p1.getZ(),p.getX(),p.getY(),p.getZ()));
             Components.BASE_LIST.sync(ctx.getSource().getWorld());
             ctx.getSource().sendFeedback(()->Text.literal("Zone de ajoutée pour '"+name+"':["+p.getX()+","+p.getY()+","+p.getZ()+"] à ["+p1.getX()+","+p1.getY()+","+p1.getZ()+"]"),false);
             return 1;

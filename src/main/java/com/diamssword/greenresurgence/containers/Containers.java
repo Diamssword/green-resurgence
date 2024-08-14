@@ -1,9 +1,11 @@
 package com.diamssword.greenresurgence.containers;
 
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
+import com.diamssword.greenresurgence.blocks.BaseStorageBlock;
 import com.diamssword.greenresurgence.blocks.CrafterBlock;
 import com.diamssword.greenresurgence.blocks.ItemBlock;
 import com.diamssword.greenresurgence.items.BlockVariantItem;
+import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionTerrainStorage;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
@@ -22,6 +24,8 @@ public class Containers implements ContainerRegistryContainer {
     public static final ScreenHandlerType<LootedBlockEntity.Container> LOOTABLE_INV = build(LootedBlockEntity.Container::new);
     public static final ScreenHandlerType<BlockVariantItem.Container> BLOCK_VARIANT_INV = build(BlockVariantItem.Container::new);
     public static final ScreenHandlerType<CrafterBlock.ScreenHandler> CRAFTER = build(CrafterBlock.ScreenHandler::new);
+    public static final ScreenHandlerType<FactionTerrainStorage.ScreenHandler> FAC_STORAGE = build(FactionTerrainStorage.ScreenHandler::new);
+    public static final ScreenHandlerType<BaseStorageBlock.ScreenHandler> FAC_CHEST = build(BaseStorageBlock.ScreenHandler::new);
 
     private static <T extends ScreenHandler> ScreenHandlerType<T> build(ScreenHandlerType.Factory<T> factory) {
         return new ScreenHandlerType<T>(factory, FeatureFlags.VANILLA_FEATURES);

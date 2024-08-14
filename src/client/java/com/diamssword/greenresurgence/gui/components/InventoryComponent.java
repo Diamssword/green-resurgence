@@ -6,6 +6,7 @@ import io.wispforest.owo.ui.base.BaseComponent;
 import io.wispforest.owo.ui.core.*;
 import io.wispforest.owo.ui.parsing.UIModel;
 import io.wispforest.owo.ui.parsing.UIParsing;
+import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.text.Text;
 import org.w3c.dom.Element;
 
@@ -17,17 +18,24 @@ public class InventoryComponent extends BaseComponent {
     public static final Identifier SLOT_TEXTURE= GreenResurgence.asRessource("textures/gui/slot.png");
     public final String inventoryId;
     public final String name;
-    protected final AnimatableProperty<PositionedRectangle> visibleArea;
+    protected AnimatableProperty<PositionedRectangle> visibleArea;
     private int regionWidth=18;
     private int regionHeight=18;
     protected boolean blend = false;
     protected InventoryComponent(String inventoryId,int width,int height,String name) {
         this.inventoryId=inventoryId;
         this.name=name;
+        this.setSize(width,height);
+
+    }
+    public void setSize(int width,int height)
+    {
         this.regionWidth=width*18;
         this.regionHeight=10+height*18;
         this.visibleArea = AnimatableProperty.of(PositionedRectangle.of(0, 0, this.regionWidth, this.regionHeight));
-
+        this.applySizing();
+        if(this.parent!=null)
+            this.parent.inflate(this.parent.fullSize());
     }
     protected InventoryComponent(String inventoryId,int width,int height) {
         this(inventoryId,width,height,inventoryId);
@@ -80,6 +88,7 @@ public class InventoryComponent extends BaseComponent {
         Text name=getInventoryName();
         if(name!=null)
             context.drawText(name,visibleArea.x(),visibleArea.y(),0.9f,0xffffff);
+
         context.drawTexture(SLOT_TEXTURE,
                 visibleArea.x()-1,
                 visibleArea.y()+9,

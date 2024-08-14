@@ -3,10 +3,14 @@ package com.diamssword.greenresurgence.containers;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GridContainer implements IGridContainer{
     private final Inventory inventory;
     private final String name;
     private final int width,height,index;
+    private final List<Runnable> listeners=new ArrayList<>();
     public GridContainer(String name, int width, int height)
     {
         this(name,new SimpleInventory(width*height),width,height);
@@ -47,5 +51,10 @@ public class GridContainer implements IGridContainer{
     @Override
     public Inventory getInventory() {
         return inventory;
+    }
+
+    @Override
+    public void onContentChange(Runnable onChange) {
+        listeners.add(onChange);
     }
 }

@@ -2,9 +2,14 @@ package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
+import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.character.MovementManager;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
@@ -76,21 +81,28 @@ public class GuiPackets {
             {
 
                 case Inventory -> {
-                    MovementManager.toggleCrawl(ctx.player());
-                 /*   NamedScreenHandlerFactory screen=new NamedScreenHandlerFactory() {
-                        @Nullable
-                        @Override
-                        public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-                            return new MutliInvScreenHandler(syncId,playerInventory,new GridContainer("container",3,3),new GridContainer("bag",8,1));
-                        }
+                   // MovementManager.toggleCrawl(ctx.player());
+                    var ls=ctx.player().getWorld().getComponent(Components.BASE_LIST);
+                    var l1=ls.getAt(ctx.player().getBlockPos());
+                    l1.ifPresent(v->{
+                        var terr=l1.get().getSubTerrainAt(ctx.player().getBlockPos());
+                        NamedScreenHandlerFactory screen=new NamedScreenHandlerFactory() {
+                            @Nullable
+                            @Override
+                            public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+                                return  terr.get().storage.createMenu(syncId,playerInventory,player);
+                            }
 
-                        @Override
-                        public Text getDisplayName() {
-                            return Text.of("Inventaire");
-                        }
-                    };
-                    ctx.player().openHandledScreen(screen);
-                  */
+                            @Override
+                            public Text getDisplayName() {
+                                return terr.get().storage.getDisplayName();
+                            }
+                        };
+                        ctx.player().openHandledScreen(screen);
+
+                    });
+
+
                 }
             }
         });

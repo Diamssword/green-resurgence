@@ -30,6 +30,7 @@
 	"item.green_resurgence.road_carrfour_placer":"Placeur de route carrfour",
 	"item.green_resurgence.road_angle_d_placer":"Placeur de route angle droite",
 	"item.green_resurgence.road_angle_g_placer":"Placeur de route angle gauche",
+	"item.green_resurgence.tree_placer":"Placeur d'Arbre",
 	"item.green_resurgence.universal_placer":"Placeur Universel",
 	"item.green_resurgence.container_placer":"Placeur de containeur",
 	"item.green_resurgence.wire_spool":"Bobine de Cable",
@@ -49,5 +50,8 @@
 	"block.green_resurgence.metro_corridor_slab_inverted":"Couloir de métro (mur B)",
 	"block.green_resurgence.item_block":"Bloc Modéle",
 	"block.green_resurgence.image_block":"Poster",
-	"green_resurgence.container.loot": "Loot"
+	"block.green_resurgence.base_crate_t1":"Carton de Stockage",
+	"block.green_resurgence.base_crate_t2":"Caisse de Stockage",
+	"green_resurgence.container.loot": "Loot",
+	"green_resurgence.container.storage": "Caisse de Stockage"
 }

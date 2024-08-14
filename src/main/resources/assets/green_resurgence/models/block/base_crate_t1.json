@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "green_resurgence:block/crate_base_t1_top",
+    "side": "green_resurgence:block/crate_base_t1"
+  }
+}

@@ -12,6 +12,8 @@ public class Handlers {
         HandledScreens.register(Containers.LOOTABLE_INV, LootableInvGui::new);
         HandledScreens.register(Containers.BLOCK_VARIANT_INV, BlockVariantScreen::new);
         HandledScreens.register(Containers.CRAFTER, CrafterScreen::new);
+        HandledScreens.register(Containers.FAC_STORAGE, FactionStorageScreen::new);
+        HandledScreens.register(Containers.FAC_CHEST, FactionChestGui::new);
 
     }
 }

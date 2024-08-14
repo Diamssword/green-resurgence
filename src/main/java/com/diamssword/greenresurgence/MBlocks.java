@@ -4,6 +4,7 @@ import com.diamssword.greenresurgence.blockEntities.ConnectorBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.blocks.*;
+import com.diamssword.greenresurgence.datagen.ModelGenerator;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
@@ -48,6 +49,11 @@ public class MBlocks implements BlockRegistryContainer {
     public static final SmartStructureBlock STRUCTURE_BLOCK_SMART =new SmartStructureBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
     public static final ItemBlock ITEM_BLOCK =new ItemBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
     public static final ImageBlock IMAGE_BLOCK =new ImageBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
+    @ModelGen
+    public static final BaseStorageBlock BASE_CRATE_T1 =new BaseStorageBlock(FabricBlockSettings.create().resistance(20000).sounds(BlockSoundGroup.WOOD),9);
+    @ModelGen
+    public static final BaseStorageBlock BASE_CRATE_T2 =new BaseStorageBlock(FabricBlockSettings.create().resistance(20000).sounds(BlockSoundGroup.WOOD),18);
+    @ModelGen
     public static final CrafterBlock CRAFTER =new CrafterBlock();
 
     @Override
@@ -62,7 +68,11 @@ public class MBlocks implements BlockRegistryContainer {
             i= new BlockItem(value, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(1));
         else
             i= new BlockItem(value, new OwoItemSettings().group(MItems.GROUP));
-        Registry.register(Registries.ITEM, new Identifier(namespace, identifier),i);
+        if(field.isAnnotationPresent(ModelGen.class))
+        {
+            ModelGenerator.blockItems.put( new Identifier(namespace, identifier),i);
+        }
+            Registry.register(Registries.ITEM, new Identifier(namespace, identifier),i);
 
     }
 
@@ -72,4 +82,7 @@ public class MBlocks implements BlockRegistryContainer {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
     public @interface DiamsGroup {}
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    public @interface ModelGen {}
 }

@@ -19,6 +19,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
+import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.List;
 
@@ -41,7 +42,6 @@ public class BoxRenderers {
         }
         matrix.pop();
     }
-    private static double oldEntityPos=0;
     public static void drawStructureBox(MatrixStack matrix,Vec3d pos, Vec3d size,float r,float g,float b,float a)
     {
         MinecraftClient mc=MinecraftClient.getInstance();
@@ -133,7 +133,7 @@ public class BoxRenderers {
         MinecraftClient mc=MinecraftClient.getInstance();
 
         if(mc.world!=null && mc.getEntityRenderDispatcher().shouldRenderHitboxes()) {
-            List<Pair<String, BlockBox>> ls = mc.world.getComponent(Components.BASE_LIST).getBoxesForClient();
+            List<Triple<String, String, BlockBox>> ls = mc.world.getComponent(Components.BASE_LIST).getBoxesForClient();
             ls.forEach(b -> {
                 VertexConsumerProvider.Immediate store= MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
                 VertexConsumerProvider.Immediate store1= MinecraftClient.getInstance().getBufferBuilders().getEffectVertexConsumers();
@@ -148,6 +148,7 @@ public class BoxRenderers {
                 DebugRenderer.drawBox(matrix,store,new BlockPos(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()),new BlockPos(b.getRight().getMaxX()+1, b.getRight().getMaxY()+1, b.getRight().getMaxZ()+1),red,green,blue,0.2f);
                 BlockPos p1=b.getRight().getCenter();
                 DebugRenderer.drawString(matrix,store1,"Camp: "+b.getLeft(),p1.getX(),p1.getY(),p1.getZ(),0xffffff,0.1f,true,0,true);
+                DebugRenderer.drawString(matrix,store1,"Sub: "+b.getMiddle(),p1.getX(),p1.getY()-1,p1.getZ(),0xffffff,0.1f,true,0,true);
                 drawStructureBox(matrix, new Vec3d(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()), Vec3d.of(b.getRight().getDimensions().add(1,1,1)), red, green, blue, 1);
             });
         }

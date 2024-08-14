@@ -7,8 +7,11 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
+import net.minecraft.screen.ScreenHandlerSyncHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,8 +23,8 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
     private IGridContainer[] inventories;
     private final Map<String, List<Slot>> inventoriesMap=new HashMap<>();
     private final Map<String, Integer[]> sizeMap=new HashMap<>();
-    private final GridContainer playerGrid;
-    private final GridContainer hotbarGrid;
+    protected final GridContainer playerGrid;
+    protected final GridContainer hotbarGrid;
     @Nullable
     private BlockPos inventoryPos;
 
@@ -37,13 +40,21 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
        props= this.createProperty(Props.class,new Props());
        props.observe(c->{
            this.inventoryPos=props.get().inventoryPos;
-           this.inventories=props.get().getContainers();
+           this.inventories=containersFromProps(c);
            for (IGridContainer inventory : inventories) {
                addSlotsFor(inventory);
            }
            ready=true;
            listeners.forEach(v->v.accept(this));
        });
+    }
+    public PlayerInventory getPlayerInventory()
+    {
+        return (PlayerInventory) this.playerGrid.getInventory();
+    }
+    public IGridContainer[] containersFromProps(Props prop)
+    {
+        return prop.getContainers();
     }
     public void forceReady()
     {
@@ -70,8 +81,10 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
         for (IGridContainer inventory : inventories) {
             addSlotsFor(inventory);
         }
-
- 
+    }
+    @Override
+    public void updateSlotStacks(int revision, List<ItemStack> stacks, ItemStack cursorStack) {
+        super.updateSlotStacks(revision,stacks,cursorStack);
     }
     public MultiInvScreenHandler(int syncId, PlayerInventory playerInventory,boolean empty) {
         super(null, syncId);
@@ -85,11 +98,12 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
         addSlotsFor(playerGrid);
         addSlotsFor(hotbarGrid);
     }
-    public void setPos(BlockPos pos)
+    public MultiInvScreenHandler setPos(BlockPos pos)
     {
         this.inventoryPos=pos;
         this.props.get().inventoryPos=pos;
         this.props.markDirty();
+        return this;
     }
     public BlockPos getPos()
     {
@@ -119,19 +133,26 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
      */
     public void onReady(Consumer<MultiInvScreenHandler> consumer)
     {
-        listeners.add(consumer);
+        if(isReady())
+            consumer.accept(this);
+        else
+            listeners.add(consumer);
     }
     private void addSlotsFor(IGridContainer container)
     {
         for (int m = 0; m < container.getHeight(); ++m) {
             for (int l = 0; l < container.getWidth(); ++l) {
-                Slot s=new Slot(container.getInventory(), container.getStartIndex()+ l + m * container.getWidth(), l * 18, m * 18);
+                Slot s=createSlot(container, container.getStartIndex()+ l + m * container.getWidth(), l * 18, m * 18);
                 this.addSlot(s);
                 inventoriesMap.putIfAbsent(container.getName(),new ArrayList<>());
                 inventoriesMap.get(container.getName()).add(s);
             }
         }
         sizeMap.put(container.getName(),new Integer[]{container.getWidth(),container.getHeight()});
+    }
+    protected Slot createSlot(IGridContainer container,int index,int x,int y)
+    {
+        return new Slot(container.getInventory(), index, x , y);
     }
    public List<Slot> getSlotForInventory(String name)
     {
@@ -141,6 +162,14 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
     {
         for (String id : this.inventoriesMap.keySet()) {
             if(this.inventoriesMap.get(id).contains(s))
+                return id;
+        }
+        return null;
+    }
+    public String getInventoryForSlot(int slotID)
+    {
+        for (String id : this.inventoriesMap.keySet()) {
+            if(this.inventoriesMap.get(id).stream().anyMatch(s->s.getIndex()==slotID))
                 return id;
         }
         return null;
@@ -216,7 +245,7 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
             var cont=getContainerFor(invSlot);
             if (cont != null && cont != playerGrid && cont!=hotbarGrid) {
                 if (!this.insertItem(originalStack,  true)) {
-                    return ItemStack.EMPTY;
+                    return ItemStack.EMPTY; //TODO extrait tout les stacks avec l'inventaire de fac
                 }
             } else if (!this.insertItem(originalStack,false)) {
                 return ItemStack.EMPTY;
@@ -266,6 +295,7 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
                             slot.setStack(stack.split(slot.getMaxItemCount()));
                         } else {
                             slot.setStack(stack.split(stack.getCount()));
+                            return true;
                         }
                         slot.markDirty();
                         bl = true;

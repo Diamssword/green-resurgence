@@ -5,6 +5,7 @@ import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.events.PlaceBlockCallback;
 import com.diamssword.greenresurgence.network.AdventureInteract;
 import com.diamssword.greenresurgence.network.Channels;
+import com.diamssword.greenresurgence.network.ClientZonePacket;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.render.BoxRenderers;
 import com.diamssword.greenresurgence.render.CableRenderer;
@@ -85,13 +86,11 @@ public class ClientEvents {
             if(hit.getType()== HitResult.Type.BLOCK)
             {
                 if(hit instanceof BlockHitResult hitB) {
-                    if(playerListEntry ==null)
+                    if(playerListEntry ==null || ctx.world().getTime()%20==0)
                         playerListEntry = MinecraftClient.getInstance().getNetworkHandler().getPlayerListEntry(MinecraftClient.getInstance().player.getUuid());
-
                     if(playerListEntry!=null && playerListEntry.getGameMode().isSurvivalLike())
                     {
                         ItemStack st=MinecraftClient.getInstance().player.getMainHandStack();
-
                         BlockState state=ctx.world().getBlockState((hitB).getBlockPos());
                         if(state.getBlock()== MBlocks.LOOTED_BLOCK)
                         {

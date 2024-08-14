@@ -164,7 +164,7 @@ public class GenericBlocks {
         genericFurniture(diams, GenericBlockSet.BlockTypes.TOGGLEABLE, GenericBlockSet.Transparency.NOTFULL,"toilet_white","toilet_black");
         genericFurniture(diams, GenericBlockSet.BlockTypes.TOGGLEABLE, GenericBlockSet.Transparency.CUTOUT,"trash_can_big");
         genericFurniture(diams, GenericBlockSet.BlockTypes.PILLAR, GenericBlockSet.Transparency.NOTFULL,"big_plank","small_wood_table",
-        "plastic_fence","fridge_bottom","fridge_up","fridge_up_square","concrete_fence","sink_noplate_ceramic", "sink_pedestal_ceramic");
+        "plastic_fence","fridge_bottom","fridge_up","fridge_up_square","concrete_fence","sink_noplate_ceramic", "sink_pedestal_ceramic","air_vent");
         //table nap
         genericFurnitureWithVariant(diams, GenericBlockSet.BlockTypes.PILLAR, GenericBlockSet.Transparency.CUTOUT,"table_square_nap","table_square_nap_",new String[]{"blue_","green_","red_"},new String[]{"center","border","corner","end","middle","solo"},null);
         //chair wool
@@ -181,6 +181,8 @@ public class GenericBlocks {
         //chair
         genericChair(diams, GenericBlockSet.Transparency.NOTFULL,"tire_car_flat_double","chair_stool_military","chair_stool_vintage","chair_dining_waterhyacinth","chair_folding_oak","chair_folding_spruce","chair_gaming_black",
         "chair_gaming_blue","chair_gaming_green","chair_wood_oak","chair_wood_oak_b","chair_wood_spruce","chair_wood_spruce_b","chair_metro_plastic_connector","chair_metro_plastic_no_connector");
+        //shower
+        genericFurnitureWithVariant(diams, GenericBlockSet.BlockTypes.PILLAR_SLAB, GenericBlockSet.Transparency.CUTOUT,"shower","shower_",new String[]{"wall_head","round_wall_head","round_head_with_hand","round_head","round_ceiling_head","only_with_hand","mixer","head_with_hand","head","ceiling_head"},null,null);
 
         genericFurniture(diams, GenericBlockSet.BlockTypes.PILLAR,GenericBlockSet.Transparency.CUTOUT,"pendantlight_rattan_light","pendantlight_rattan_dark","trash_can_round_green","trash_can_round_iron");
 

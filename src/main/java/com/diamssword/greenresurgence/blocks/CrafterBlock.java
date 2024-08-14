@@ -23,7 +23,7 @@ public class CrafterBlock extends Block {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if(!world.isClient )
         {
-            Containers.createHandler(player,pos,(sync, inv, p1)-> new CrafterBlock.ScreenHandler( sync,inv,true));
+            Containers.createHandler(player,pos,(sync, inv, p1)-> new CrafterBlock.ScreenHandler( sync,inv,true).setPos(pos));
             return ActionResult.SUCCESS;
         }
         return ActionResult.SUCCESS;

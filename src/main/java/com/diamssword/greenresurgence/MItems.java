@@ -26,6 +26,7 @@ public class MItems implements ItemRegistryContainer {
     public static final Item SLEDGEHAMMER = new Item(new OwoItemSettings().group(GROUP));
     public static final Item WIRE_SPOOL = new CableItem(withDiamsTab());
     public static final Item MULTIBLOCK_LINKER = new MultiblockLinkerItem(new OwoItemSettings().group(GROUP));
+    public static final Item RAIL = new Item(new OwoItemSettings().group(GROUP));
     public static final UniversalPlacerItem UNIVERSAL_PLACER= new UniversalPlacerItem(new Item.Settings().maxCount(1));
 
     @Override

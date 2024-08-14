@@ -17,11 +17,6 @@ public class CurrentZonePacket {
             return new ZoneResponse(tag);
     }
     public static void init() {
-        Channels.MAIN.registerClientbound(ZoneResponse.class, (msg, ctx) -> {
-            FactionInstance inst=new FactionInstance();
-            inst.readFromNbt(msg.tag);
-            currentZone=inst.getBoxes();
-
-        });
+        Channels.MAIN.registerClientboundDeferred(ZoneResponse.class);
     }
 }

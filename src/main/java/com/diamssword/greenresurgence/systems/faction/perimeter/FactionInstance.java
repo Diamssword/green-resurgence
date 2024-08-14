@@ -3,38 +3,51 @@ package com.diamssword.greenresurgence.systems.faction.perimeter;
 import com.diamssword.greenresurgence.events.BaseEventCallBack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtIntArray;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class FactionInstance {
-    private final List<BlockBox> boxes=new ArrayList<>();
+
+    private final Map<String,TerrainInstance> boxes=new HashMap<>();
+
     private String name;
     private List<ServerPlayerEntity> inBase=new ArrayList<>();
     private List<UUID> members=new ArrayList<>();
-    public FactionInstance()
+    protected final World world;
+    public FactionInstance(World world)
     {
+        this.world = world;
     }
 
-    public FactionInstance(String name, BlockBox box)
+    public FactionInstance(World world,String name,String subname, BlockBox box)
     {
+        this.world = world;
         this.name=name;
-        this.boxes.add(box);
+        this.boxes.put(subname,new TerrainInstance(box,this));
 
+    }
+    public Optional<TerrainInstance> getSubTerrainAt(Vec3i pos)
+    {
+        for (TerrainInstance value : boxes.values()) {
+            if(value.isIn(pos))
+                return Optional.of(value);
+        }
+        return Optional.empty();
     }
     public boolean removeAreaAt(BlockPos pos)
     {
-        Optional<BlockBox> box =boxes.stream().filter(v -> v.contains(pos)).findFirst();
-        return box.map(boxes::remove).orElse(false);
+        for (TerrainInstance value : boxes.values()) {
+            if(value.removeAreaAt(pos))
+                return true;
+        }
+        return false;
     }
     public void tick(ServerWorld world)
     {
@@ -61,22 +74,30 @@ public class FactionInstance {
     }
     public List<BlockBox> getBoxes()
     {
-        return  new ArrayList<>(boxes);
+        var ar= new ArrayList<BlockBox>();
+        boxes.values().forEach(v->ar.addAll(v.getBoxes()));
+        return ar;
+    }
+    public Map<String,TerrainInstance> getSubTerrains()
+    {
+        return new HashMap<>(this.boxes);
     }
     public String getName()
     {
         return name;
     }
-    public void addArea(BlockBox b)
+    public void addArea(String subname,BlockBox b)
     {
-        if(boxes.stream().noneMatch(b1->b1.equals(b)))
-            boxes.add(b);
+        if(boxes.containsKey(subname))
+           boxes.get(subname).addArea(b);
+        else
+            boxes.put(subname,new TerrainInstance(b,this));
     }
     public boolean isIn(Vec3i pos)
     {
-        for(BlockBox b : boxes)
+        for(TerrainInstance b : boxes.values())
         {
-            if(b.contains(pos))
+            if(b.isIn(pos))
                 return true;
         }
         return false;
@@ -96,11 +117,15 @@ public class FactionInstance {
             members.remove(player.getUuid());
     }
     public void readFromNbt(NbtCompound tag) {
-        NbtList ls= tag.getList("boxes", NbtList.INT_ARRAY_TYPE);
+        boxes.clear();
+        NbtList ls= tag.getList("terrains", NbtList.COMPOUND_TYPE);
         ls.forEach(c->{
-            NbtIntArray arr= (NbtIntArray) c;
-            if(arr.size()>5) {
-                boxes.add(new BlockBox(arr.get(0).intValue(),arr.get(1).intValue(),arr.get(2).intValue(),arr.get(3).intValue(),arr.get(4).intValue(),arr.get(5).intValue()));
+            if(c instanceof NbtCompound c1)
+            {
+                var n=c1.getString("name");
+                var t=new TerrainInstance(this);
+                t.readFromNbt(c1);
+                boxes.put(n,t);
             }
         });
         name=tag.getString("name");
@@ -114,21 +139,32 @@ public class FactionInstance {
         }
     }
     public void writeToNbt(NbtCompound tag) {
-        this.writeNetworkNBT(tag);
         NbtList ls=new NbtList();
         members.forEach(m->{
             NbtCompound t=new NbtCompound();
             t.putUuid("id",m);
             ls.add(t);
         });
+        NbtList terrains=new NbtList();
+        this.boxes.forEach((k,t)->{
+            var r=new NbtCompound();
+            r.putString("name",k);
+            t.writeNbt(r);
+            terrains.add(r);
+        });
+        tag.put("terrains",terrains);
+        tag.putString("name",name);
         tag.put("members",ls);
     }
     public void writeNetworkNBT(NbtCompound tag) {
-        NbtList boxes=new NbtList();
-        this.boxes.forEach(b->{
-            boxes.add(new NbtIntArray(new int[]{b.getMinX(), b.getMinY(),b.getMinZ(),b.getMaxX(),b.getMaxY(),b.getMaxZ()}));
+        NbtList terrains=new NbtList();
+        this.boxes.forEach((k,t)->{
+            var r=new NbtCompound();
+            r.putString("name",k);
+            t.writeToNetworkNbt(r);
+            terrains.add(r);
         });
-        tag.put("boxes",boxes);
+        tag.put("terrains",terrains);
         tag.putString("name",name);
     }
 }

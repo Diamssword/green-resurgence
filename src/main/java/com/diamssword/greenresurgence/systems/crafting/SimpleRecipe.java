@@ -1,25 +1,43 @@
 package com.diamssword.greenresurgence.systems.crafting;
 
-import com.diamssword.greenresurgence.blocks.ItemBlock;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-public class SimpleRecipe implements IRecipe<UniversalResource> {
+public class SimpleRecipe {
+    private Identifier id;
     private final UniversalResource result;
     private final List<UniversalResource> ingredients;
+    public SimpleRecipe setID(Identifier collection,String recipeID)
+    {
+        this.id=new Identifier(collection.getNamespace(),collection.getPath()+"/"+recipeID);
+
+        return this;
+    }
+    public SimpleRecipe setID(Identifier fullID)
+    {
+        this.id=fullID;
+        return this;
+    }
+    public Identifier getId() {
+        return id;
+    }
+
     public SimpleRecipe(ItemStack result,ItemStack... ingredients)
     {
         this.result=UniversalResource.fromItem(result);
@@ -40,7 +58,6 @@ public class SimpleRecipe implements IRecipe<UniversalResource> {
         this.ingredients=ingredients;
     }
 
-    @Override
     public UniversalResource result(@Nullable PlayerEntity player) {
         return result;
     }
@@ -55,7 +72,6 @@ public class SimpleRecipe implements IRecipe<UniversalResource> {
         return Optional.empty();
 
     }
-    @Override
     public List<UniversalResource> ingredients(PlayerEntity player) {
         return ingredients;
     }
@@ -68,7 +84,10 @@ public class SimpleRecipe implements IRecipe<UniversalResource> {
                 ingsR.add(UniversalResource.deserializer(ing.getAsJsonObject()));
             }
             var res=UniversalResource.deserializer(ob.getAsJsonObject("result"));
-            return new SimpleRecipe(res,ingsR);
+            var r= new SimpleRecipe(res,ingsR);
+            if(ob.has("id"))
+                r.setID(new Identifier(ob.get("id").getAsString()));
+            return r;
 
         }
         else
@@ -82,6 +101,8 @@ public class SimpleRecipe implements IRecipe<UniversalResource> {
         this.ingredients.forEach(v->ia.add(v.serializer()));
         res.add("ingredients",ia);
         res.add("result",this.result.serializer());
+        if(this.id !=null)
+            res.addProperty("id",id.toString());
         return res;
 
     }
@@ -100,5 +121,20 @@ public class SimpleRecipe implements IRecipe<UniversalResource> {
         else
             throw new Exception("missing 'ingredients' or 'result' element");
         return res;
+    }
+    public static void serializer(PacketByteBuf write, SimpleRecipe val)
+    {
+        if(val.getId()!=null)
+            write.writeString(val.getId().toString());
+    }
+    public static SimpleRecipe unserializer(PacketByteBuf read)
+    {
+        var id=read.readString();
+        if(!id.isEmpty())
+        {
+            var id1=new Identifier(id);
+            return Recipes.getRecipe(id1).orElse(null);
+        }
+        return null;
     }
 }

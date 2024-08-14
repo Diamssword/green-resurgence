@@ -8,16 +8,15 @@ import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.faction.perimeter.FactionInstance;
 import com.diamssword.greenresurgence.systems.faction.perimeter.IFactionList;
+import com.diamssword.greenresurgence.systems.faction.perimeter.components.SpecialPlacement;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.Items;
+import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -45,6 +44,7 @@ public class BaseInteractions {
         allowedBlocks.add(Blocks.SAND);
         allowedBlocks.add(Blocks.OAK_PLANKS);
         allowedBlocks.add(Blocks.OAK_DOOR);
+        allowedBlocks.add(Blocks.CHEST);
     }
     public static void register()
     {
@@ -54,18 +54,25 @@ public class BaseInteractions {
 
         BaseEventCallBack.ENTER.register(BaseInteractions::onEnter);
         BaseEventCallBack.LEAVE.register(BaseInteractions::onLeave);
-        PlaceBlockCallback.EVENT.register(BaseInteractions::placeBlock1);
+        PlaceBlockCallback.EVENT.register(BaseInteractions::placeBlock);
     }
 
-    private static ActionResult placeBlock1(ItemPlacementContext ctx, BlockState state) {
+    private static ActionResult placeBlock(ItemPlacementContext ctx, BlockState state) {
         if(ctx.getPlayer() !=null && ctx.getPlayer() instanceof ServerPlayerEntity pl)
         {
             if(pl.interactionManager.getGameMode().equals(GameMode.SURVIVAL))
             {
                 IFactionList list=ctx.getWorld().getComponent(Components.BASE_LIST);
                 if(list.canEditAt(pl,ctx.getBlockPos())) {
-                    if(allowedBlocks.contains(state.getBlock()))
+                    if(allowedBlocks.contains(state.getBlock())) {
+                        var sp=SpecialPlacement.REGISTRY.get(state.getBlock());
+                        if(sp!=null) {
+                            var terr=list.getTerrainAt(ctx.getBlockPos());
+                            if(terr.isPresent())
+                                return sp.onPlacement(ctx.getPlayer(), terr.get(),ctx.getBlockPos())?ActionResult.PASS:ActionResult.FAIL;
+                        }
                         return ActionResult.PASS;
+                    }
                     else
                         return ActionResult.FAIL;
                 }
@@ -110,8 +117,16 @@ public class BaseInteractions {
 
                 IFactionList list=w.getComponent(Components.BASE_LIST);
                 if(list.canEditAt(pl,pos)) {
-                    if(allowedBlocks.contains(w.getBlockState(pos).getBlock()))
+                    var st=w.getBlockState(pos).getBlock();
+                    if(allowedBlocks.contains(st)) {
+                        var sp=SpecialPlacement.REGISTRY.get(st);
+                        if(sp!=null) {
+                            var terr=list.getTerrainAt(pos);
+                            if(terr.isPresent())
+                                return sp.onBreak(player, terr.get(),pos)?ActionResult.PASS:ActionResult.FAIL;
+                        }
                         return ActionResult.PASS;
+                    }
                 }
                 return ActionResult.FAIL;
             }
@@ -135,23 +150,5 @@ public class BaseInteractions {
         }
         else
             return allowedItems.contains(st);
-    }
-    public static ActionResult placeBlock(PlayerEntity player, World w, Hand hand, BlockHitResult hit)
-    {
-        if(player instanceof ServerPlayerEntity pl)
-        {
-            if(pl.interactionManager.getGameMode().equals(GameMode.SURVIVAL))
-            {
-                BlockPos p=hit.getBlockPos().offset(hit.getSide());
-                IFactionList list=w.getComponent(Components.BASE_LIST);
-                if(list.canEditAt(pl,p)) {
-                    if(canUseItem(player,hand))
-                        return ActionResult.PASS;
-                    else
-                        return ActionResult.FAIL;
-                }
-            }
-        }
-        return ActionResult.PASS;
     }
 }
