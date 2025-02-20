@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.gui;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.MBlocks;
 import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
 import com.diamssword.greenresurgence.blocks.ItemBlock;
 import com.diamssword.greenresurgence.network.Channels;
@@ -8,6 +9,7 @@ import com.diamssword.greenresurgence.network.ClientGuiPacket;
 import com.diamssword.greenresurgence.network.GuiPackets;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.DiscreteSliderComponent;
+import io.wispforest.owo.ui.component.LabelComponent;
 import io.wispforest.owo.ui.component.SmallCheckboxComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
 import net.minecraft.block.BlockState;
@@ -54,9 +56,19 @@ public class ItemBlockGui extends MultiInvHandledScreen<ItemBlock.ScreenHandler,
         bindSlider("rotZ",(180+(tile.getRotation().getZ()))/360f,0.003);
         bindSlider("size",(-1+tile.getSize())/100f,0.01);
         BlockState st=tile.getWorld().getBlockState(tile.getPos());
-        this.component(SmallCheckboxComponent.class,"collision").checked(st.get(ItemBlock.COLLISION)).onChanged().subscribe(v->{
-            Channels.MAIN.clientHandle().send(new GuiPackets.GuiTileValue(tile.getPos(),"collision",v?1:0));
-        });
+        if(st.getBlock() == MBlocks.ITEM_BLOCK) {
+            this.component(SmallCheckboxComponent.class, "collision").checked(st.get(ItemBlock.COLLISION)).onChanged().subscribe(v -> {
+                Channels.MAIN.clientHandle().send(new GuiPackets.GuiTileValue(tile.getPos(), "collision", v ? 1 : 0));
+            });
+        }
+        else {
+            this.component(SmallCheckboxComponent.class, "collision").remove();
+            this.component(LabelComponent.class, "rem1").remove();
+            this.component(LabelComponent.class, "rem2").remove();
+            this.component(LabelComponent.class, "rem3").remove();
+            this.component(LabelComponent.class, "rem4").remove();
+            this.component(LabelComponent.class, "rem5").remove();
+        }
         this.component(SmallCheckboxComponent.class,"light").checked(tile.isLightOffset()).onChanged().subscribe(v->{
             Channels.MAIN.clientHandle().send(new GuiPackets.GuiTileValue(tile.getPos(),"light",v?1:0));
         });

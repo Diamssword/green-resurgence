@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.systems.crafting;
 
 import com.diamssword.greenresurgence.systems.Components;
+import com.diamssword.greenresurgence.systems.faction.perimeter.TerrainInstance;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
@@ -35,6 +36,14 @@ public class CraftingProvider {
         ls.getTerrainAt(pos).ifPresent(t->{
             setInventories(InventoryStorage.of(player.getInventory(),null),InventoryStorage.of(t.storage,null));
         });
+        return this;
+    }
+    public final CraftingProvider setForTerrain(TerrainInstance terrain, @Nullable PlayerEntity player)
+    {
+        if(player!=null)
+            setInventories(InventoryStorage.of(player.getInventory(),null),InventoryStorage.of(terrain.storage,null));
+        else
+            setInventories(InventoryStorage.of(terrain.storage,null));
         return this;
     }
     public CraftingProvider setTanks( Storage<FluidVariant>... storages)

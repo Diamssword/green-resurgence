@@ -31,17 +31,17 @@ public class ClothingLoader implements SimpleSynchronousResourceReloadListener {
     public static ClothingLoader instance=new ClothingLoader();
 
     public static enum Layer{
-        hat(15,16),
-
-        hair(11,12),
-        glasses(10,11),
-        accessories(8,11),
+        hat(27,32),
+        hair(14,19),
+        beard(11,12),
+        glasses(13,20),
+        accessories(15,16),
         jacket(9,10),
         teeshirt(4,5),
         underwear(2),
         pants(3,6),
         shoes(7,8),
-        full(13,14),
+        full(21,26),
         body(0,1);
         public final int layer1;
         public final int layer2;
@@ -149,7 +149,8 @@ public class ClothingLoader implements SimpleSynchronousResourceReloadListener {
                        var ob= v.getAsJsonObject();
                        if(ob.has("id"))
                        {
-                           if(!cloths.containsKey(ob.get("id").getAsString()))
+                           var id1=ob.get("layer").getAsString()+"_"+ob.get("id").getAsString();
+                           if(!cloths.containsKey(id1))
                            {
                                if(ob.has("layer") && ob.has("name")) {
                                    try {
@@ -159,17 +160,17 @@ public class ClothingLoader implements SimpleSynchronousResourceReloadListener {
                                        Cloth table = new Cloth(ob.get("id").getAsString(),ob.get("name").getAsString(), Layer.valueOf(ob.get("layer").getAsString()),col);
                                        if(!collections.contains(col))
                                            collections.add(col);
-                                       cloths.put(ob.get("id").getAsString(),table);
+                                       cloths.put(id1,table);
                                    }catch (IllegalArgumentException e)
                                    {
-                                       LOGGER.error("Layer for clothing with id: {} can't be parsed (layer {})", ob.get("id"),ob.get("layer"));
+                                       LOGGER.error("Layer for clothing with id: {} can't be parsed (layer {})",id1,ob.get("layer"));
                                    }
                                }
                                else
-                                   LOGGER.error("Missing name of layer for clothing with id: {}", ob.get("id"));
+                                   LOGGER.error("Missing name of layer for clothing with id: {}", id1);
                            }
                            else
-                               LOGGER.error("Duplicate id for clothing: {}", ob.get("id"));
+                               LOGGER.error("Duplicate id for clothing: {}", id1);
                        }
                        else
                            LOGGER.error("Clothing is missing ID!");
@@ -199,6 +200,7 @@ public class ClothingLoader implements SimpleSynchronousResourceReloadListener {
         val.cloths.forEach((u,v)->{
             var v1=v.toNBT();
             v1.putString("id",u);
+            v1.putString("texture",v.id);
             list.add(v1);
         });
         val.collections.forEach(c->{
@@ -223,7 +225,7 @@ public class ClothingLoader implements SimpleSynchronousResourceReloadListener {
         });
         list.forEach(el->{
             try {
-                var t= Cloth.fromNBT((NbtCompound) el,((NbtCompound) el).getString("id"));
+                var t= Cloth.fromNBT((NbtCompound) el,((NbtCompound) el).getString("texture"));
                 if(t!=null)
                     loader.cloths.put(((NbtCompound) el).getString("id"),t);
             }catch (Exception e)

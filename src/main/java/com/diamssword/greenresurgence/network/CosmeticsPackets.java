@@ -5,13 +5,16 @@ import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public class CosmeticsPackets {
     public record EquipCloth( String clothID, @Nullable String layerID){};
     public record EquipOutfit(int index){};
+    public record RefreshSkin(UUID player){};
     public record SaveOutfit(String name,int index){};
     public static void init()
     {
+        Channels.MAIN.registerClientboundDeferred(RefreshSkin.class);
         Channels.MAIN.registerServerbound(EquipCloth.class,(msg, ctx)->{
             if(!msg.clothID.equals("null"))
             {

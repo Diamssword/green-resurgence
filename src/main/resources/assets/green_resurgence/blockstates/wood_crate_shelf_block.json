@@ -1,0 +1,67 @@
+{
+  "variants": {
+    "facing=east,model=single": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf",
+      "y": 90
+    },
+    "facing=north,model=single": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf"
+    },
+    "facing=south,model=single": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf",
+      "y": 180
+    },
+    "facing=west,model=single": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf",
+      "y": 270
+    },
+	
+	"facing=east,model=center": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf",
+      "y": 90
+    },
+    "facing=north,model=center": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf"
+    },
+    "facing=south,model=center": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf",
+      "y": 180
+    },
+    "facing=west,model=center": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf",
+      "y": 270
+    },
+	
+	"facing=east,model=left": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf",
+      "y": 90
+    },
+    "facing=north,model=left": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf"
+    },
+    "facing=south,model=left": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf",
+      "y": 180
+    },
+    "facing=west,model=left": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf",
+      "y": 270
+    },
+	
+	"facing=east,model=right": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf",
+      "y": 90
+    },
+    "facing=north,model=right": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf"
+    },
+    "facing=south,model=right": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf",
+      "y": 180
+    },
+    "facing=west,model=right": {
+      "model": "green_resurgence:block/diams/wood_crate_shelf",
+      "y": 270
+    }
+  }
+}

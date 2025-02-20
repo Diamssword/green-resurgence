@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,bottom=false": {
+      "model": "green_resurgence:block/diams/shelf_supermarket_white_single_up",
+      "y": 90
+    },
+    "facing=north,bottom=false": {
+      "model": "green_resurgence:block/diams/shelf_supermarket_white_single_up"
+    },
+    "facing=south,bottom=false": {
+      "model": "green_resurgence:block/diams/shelf_supermarket_white_single_up",
+      "y": 180
+    },
+    "facing=west,bottom=false": {
+      "model": "green_resurgence:block/diams/shelf_supermarket_white_single_up",
+      "y": 270
+    },
+	"facing=east,bottom=true": {
+      "model": "green_resurgence:block/diams/shelf_supermarket_white_single_down",
+      "y": 90
+    },
+    "facing=north,bottom=true": {
+      "model": "green_resurgence:block/diams/shelf_supermarket_white_single_down"
+    },
+    "facing=south,bottom=true": {
+      "model": "green_resurgence:block/diams/shelf_supermarket_white_single_down",
+      "y": 180
+    },
+    "facing=west,bottom=true": {
+      "model": "green_resurgence:block/diams/shelf_supermarket_white_single_down",
+      "y": 270
+    }
+  }
+}

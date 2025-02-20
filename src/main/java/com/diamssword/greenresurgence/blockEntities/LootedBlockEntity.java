@@ -115,7 +115,7 @@ public class LootedBlockEntity extends BlockEntity {
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         durability = nbt.getInt("durability");
-        lastBreak = nbt.getInt("lastBreak");
+        lastBreak = nbt.getLong("lastBreak");
         block=NbtHelper.toBlockState(Registries.BLOCK.getReadOnlyWrapper(),nbt.getCompound("block"));
         emptyBlock= Lootables.getEmptyBlock(block.getBlock()).getDefaultState();
         if(nbt.contains("inventory"))

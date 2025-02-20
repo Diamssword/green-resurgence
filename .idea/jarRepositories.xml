@@ -81,5 +81,25 @@
       <option name="name" value="GeckoLib" />
       <option name="url" value="https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="https://jitpack.io" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="https://api.modrinth.com/maven" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="Terraformers" />
+      <option name="name" value="Terraformers" />
+      <option name="url" value="https://maven.terraformersmc.com/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="https://maven.terraformersmc.com/releases/" />
+    </remote-repository>
   </component>
 </project>

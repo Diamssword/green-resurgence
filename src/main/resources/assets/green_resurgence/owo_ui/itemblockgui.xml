@@ -92,16 +92,16 @@
                     <children>
                         <flow-layout direction="horizontal">
                             <children>
-                                <label>
+                                <label id="rem5">
                                     <text>Item</text>
                                    <margins><top>12</top><right>2</right></margins>
                                 </label>
                                 <inventory id="container" name="" width="1" height="1"/>
-                                <label>
+                                <label id="rem3">
                                     <text> | </text>
                                     <margins><top>12</top><right>2</right></margins>
                                 </label>
-                                <label>
+                                <label id="rem1">
                                     <horizontal-text-alignment>left</horizontal-text-alignment>
                                     <margins><top>12</top><right>2</right></margins>
                                     <text>Collision</text>
@@ -109,11 +109,11 @@
                                 <small-checkbox id="collision">
                                     <margins><top>11</top><right>2</right></margins>
                                 </small-checkbox>
-                                <label>
+                                <label id="rem2">
                                     <text> | </text>
                                     <margins><top>12</top><right>2</right></margins>
                                 </label>
-                                <label>
+                                <label id="rem4">
                                     <horizontal-text-alignment>left</horizontal-text-alignment>
                                     <margins><top>12</top><right>2</right></margins>
                                     <text>Lumière</text>

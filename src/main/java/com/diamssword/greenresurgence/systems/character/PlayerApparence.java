@@ -1,39 +1,128 @@
 package com.diamssword.greenresurgence.systems.character;
 
+import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.commands.DefaultSkinValues;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import org.jetbrains.annotations.Debug;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class PlayerApparence {
-    public float width=1;
-    public float height=1.2f;
+    private float scaledHeight=1f;
     private Map<ClothingLoader.Layer, ClothingLoader.Cloth> cloths=new HashMap<>();
-    public int hair_color=0;
-    public final PlayerData parent;
+    private int hair_color=-1;
+    private String hair_model;
+    private int beard_color=-1;
+    private String beard_model;
+    private final PlayerData parent;
     private final List<String> unlockedCloths=new ArrayList<>();
     private final SavedOutfit[] outfits=new SavedOutfit[7];
+    private DefaultSkinValues skinDatas;
     public PlayerApparence(PlayerData parent)
     {
         this.parent=parent;
+        if(!parent.player.getWorld().isClient && parent.player.getGameProfile() !=null)
+            refreshSkinData();
+    }
+    public void tick()
+    {
+
+        if(skinDatas==null&& !parent.player.getWorld().isClient && parent.player.age%20==0 && parent.player.getGameProfile() !=null)
+            refreshSkinData();
+    }
+    public DefaultSkinValues getSkinDatas()
+    {
+        return skinDatas;
+    }
+    public void refreshSkinData()
+    {
+        DefaultSkinValues.getSkinValues(parent.player.getGameProfile()).thenAccept(v->{
+            skinDatas=v;
+            if(skinDatas !=null) {
+                scaledHeight=DefaultSkinValues.HeightMToMCScale(1,skinDatas.height);
+                Components.PLAYER_DATA.sync(parent.player);
+            }
+
+        });
     }
     public void unlockCloth(String id)
     {
         if(!unlockedCloths.contains(id))
             unlockedCloths.add(id);
     }
+
+    public int getHairColor() {
+        if(hair_color<0)
+            if(skinDatas!=null)
+                return skinDatas.getHairColor();
+        return hair_color;
+    }
+
+    public String getHairModel() {
+        if(hair_model==null || hair_model.isEmpty())
+            if(skinDatas!=null)
+                return skinDatas.hair;
+
+        return hair_model;
+    }
+
+    public int getBeardColor() {
+        if(beard_color<0)
+            if(skinDatas!=null)
+                return skinDatas.getBeardColor();
+        return beard_color;
+    }
+
+    public String getBeardModel() {
+        if(beard_model==null || beard_model.isEmpty())
+            if(skinDatas!=null)
+                return skinDatas.beard;
+        return beard_model;
+    }
+
     public ArrayList<String> getUnlockedCloths()
     {
         return new ArrayList<>(unlockedCloths);
     }
     public Optional<ClothingLoader.Cloth> getCloth(ClothingLoader.Layer layer)
     {
+
         return Optional.ofNullable(cloths.get(layer));
+    }
+    public static record ClothData(String texture,boolean needColor,int color){};
+    public Optional<ClothData> getClothDatas(ClothingLoader.Layer layer)
+    {
+        if(layer== ClothingLoader.Layer.hair)
+        {
+            var modelH=getHairModel();
+            if(modelH !=null && !modelH.isEmpty())
+            {
+                return Optional.of(new ClothData(modelH,true,getHairColor()));
+            }
+            return Optional.empty();
+        }
+        else  if(layer== ClothingLoader.Layer.beard)
+        {
+            var modelH=getBeardModel();
+            if(modelH !=null && !modelH.isEmpty())
+            {
+                return Optional.of(new ClothData(modelH,true,getBeardColor()));
+            }
+            return Optional.empty();
+        }
+        else if(layer== ClothingLoader.Layer.underwear &&cloths.get(layer)==null && skinDatas !=null)
+        {
+            return Optional.of(new ClothData(skinDatas.underwear,false,-1));
+        }
+        return getCloth(layer).map(v->new ClothData(v.id(),false,-1));
     }
     public Map<ClothingLoader.Layer, ClothingLoader.Cloth> getCloths()
     {
@@ -94,15 +183,19 @@ public class PlayerApparence {
         }
     }
     public void readFromNbt(NbtCompound tag) {
-        if(tag.contains("width"))
-            width=Math.max(Math.min(1.4f,tag.getFloat("width")),0.7f);
-        else
-            width=1;
-        if(tag.contains("height"))
-            height=Math.max(Math.min(1.4f,tag.getFloat("height")),0.7f);
-        else
-            height=1;
-        hair_color=tag.getInt("hair");
+        if( tag.contains("default"))
+        {
+            this.skinDatas=new DefaultSkinValues().fromNBT(tag.getCompound("default"));
+            scaledHeight=DefaultSkinValues.HeightMToMCScale(1,skinDatas.height);
+        }
+        if(tag.contains("hairColor"))
+            hair_color=tag.getInt("hairColor");
+        if(tag.contains("hair"))
+            hair_model=tag.getString("hair");
+        if(tag.contains("beardColor"))
+            beard_color=tag.getInt("beardColor");
+        if(tag.contains("beard"))
+            beard_model=tag.getString("beard");
         if(tag.contains("cloths"))
         {
             cloths.clear();
@@ -131,16 +224,22 @@ public class PlayerApparence {
                     else
                         outfits[i]=new SavedOutfit("").fromNBT(((NbtCompound)cl.get(i)));
                 }
-
             }
-
         }
+
     }
 
-    public void writeToNbt(NbtCompound tag) {
-       tag.putFloat("width",width);
-        tag.putFloat("height",height);
-        tag.putInt("hair",hair_color);
+    public void writeToNbt(NbtCompound tag,boolean forClient) {
+        if(skinDatas!=null && forClient)
+            tag.put("default",skinDatas.toNBT());
+        if(hair_model!=null && !hair_model.isEmpty())
+            tag.putString("hair",hair_model);
+        if(hair_color>-1)
+            tag.putInt("hairColor",hair_color);
+        if(beard_model!=null && !beard_model.isEmpty())
+            tag.putString("beard",beard_model);
+        if(beard_color>-1)
+            tag.putInt("beardColor",beard_color);
         var cloths=new NbtCompound();
         var unlocked=new NbtList();
         this.unlockedCloths.forEach(v->{
@@ -149,7 +248,7 @@ public class PlayerApparence {
             unlocked.add(t);
         });
         this.cloths.forEach((i,v)->{
-            cloths.putString(i.toString(),v.id());
+            cloths.putString(i.toString(),v.layer()+"_"+v.id());
         });
         tag.put("unlockedCloths",unlocked);
         tag.put("cloths",cloths);
@@ -164,12 +263,12 @@ public class PlayerApparence {
     }
     public float getRestrainedHeight()
     {
-        return Math.max(0.8f,Math.min(1.1f,this.height));
+        return Math.max(0.8f,Math.min(1.1f,scaledHeight));
     }
-    public float getRestrainedWidth()
+   /* public float getRestrainedWidth()
     {
-        return Math.max(0.8f,Math.min(1.2f,this.width));
-    }
+        return scaledWidth;
+    }*/
     public class SavedOutfit {
         public List<String> cloths=new ArrayList<>();
         public final String name;

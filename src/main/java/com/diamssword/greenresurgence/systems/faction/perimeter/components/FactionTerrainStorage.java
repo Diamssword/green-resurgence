@@ -15,11 +15,13 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.inventory.StackReference;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.packet.s2c.play.InventoryS2CPacket;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.screen.*;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ClickType;
 import net.minecraft.util.Pair;
@@ -89,8 +91,9 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
 
     @Nullable
     @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new ScreenHandler(syncId, playerInventory, new GridContainer("storage",formated,9,6));
+    public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player)
+    {
+        return new ScreenHandler(syncId, playerInventory, new GridContainer("storage",formated,formated.size(),1));
     }
 
     @Override
@@ -181,27 +184,76 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
 
         public ScreenHandler( int syncId, PlayerInventory playerInventory, IGridContainer... containers) {
             super( syncId, playerInventory, containers);
+            ((FormattedInventory)containers[0].getInventory()).addListener(l->{
+                if(l.size()>this.getSlotForInventory("storage").size())
+                {
+                    var c=createSlot(this.getInventory("storage"),l.size()-1,0,0);
+                    this.inventoriesMap.get("storage").add(c);
 
-            this.addListener(new ScreenHandlerListener() {
-                @Override
-                public void onSlotUpdate(net.minecraft.screen.ScreenHandler handler, int slotId, ItemStack stack) {
-                    ScreenHandler.this.syncState();
-                }
+                    this.addSlot(c);
+                    for (Slot storage : this.inventoriesMap.get("storage")) {
+                        storage.setStackNoCallbacks(l.getStack(storage.getIndex()));
+                    }
+                    if(playerInventory.player instanceof ServerPlayerEntity sp) {
+                        sp.networkHandler.sendPacket(new InventoryS2CPacket(this.syncId, ScreenHandler.this.nextRevision(), ScreenHandler.this.getStacks(), ItemStack.EMPTY));
 
-                @Override
-                public void onPropertyUpdate(net.minecraft.screen.ScreenHandler handler, int property, int value) {
-
+                    }
                 }
             });
+
+        }
+        @Override
+        public void updateSlotStacks(int revision, List<ItemStack> stacks, ItemStack cursorStack) {
+            var bl=false;
+            if(stacks.size()>this.slots.size())
+            {
+                for(int i=this.slots.size();i<stacks.size();i++)
+                {
+                    var c=createSlot(this.getInventory("storage"),this.inventoriesMap.get("storage").size(),i,i);
+                    this.addSlot(c);
+                    this.inventoriesMap.get("storage").add(c);
+                    bl=true;
+
+                }
+            }
+            super.updateSlotStacks(revision,stacks,cursorStack);
+            if(bl && handler !=null)
+                handler.run();
         }
         @Override
         public IGridContainer[] containersFromProps(Props prop)
         {
-            return new IGridContainer[]{new GridContainer("storage",new FormattedInventory(new SimpleInventory(9*6)),9,6)};
+            var d=new FormattedInventory(new SimpleInventory(prop.sizes[0]*prop.sizes[1]));
+            return new IGridContainer[]{new GridContainer("storage",d,prop.sizes[0],prop.sizes[1])};
+        }
+        private Runnable handler;
+        public void onSlotAdded(Runnable handler)
+        {
+            this.handler=handler;
         }
         @Override
         public ScreenHandlerType<ScreenHandler> type() {
             return Containers.FAC_STORAGE;
+        }
+        @Override
+        public void setStackInSlot(int slot, int revision, ItemStack stack) {
+                super.setStackInSlot(slot,revision,stack);
+        }
+        @Override
+        protected void addSlotsFor(IGridContainer container)
+        {
+        /*    if(container.getName().equals("storage"))
+            {
+                var size=((FormattedInventory)container.getInventory()).parent.size();
+                for (int m = 0; m < size; ++m) {
+                        Slot s=createSlot(container, container.getStartIndex()+ m, m, m);
+                        this.addSlot(s);
+                        inventoriesMap.putIfAbsent(container.getName(),new ArrayList<>());
+                        inventoriesMap.get(container.getName()).add(s);
+                }
+            }
+            else*/
+                super.addSlotsFor(container);
         }
         @Override
         protected Slot createSlot(IGridContainer container,int index,int x,int y)
@@ -213,28 +265,37 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
         }
         @Override
         public ItemStack quickMove(PlayerEntity player, int invSlot) {
-
-            ItemStack newStack = ItemStack.EMPTY;
             Slot slot = this.slots.get(invSlot);
             if (slot != null && slot.hasStack()) {
                 ItemStack originalStack=slot.takeStack(slot.getStack().getMaxCount());
                 var cont=getContainerFor(invSlot);
-                if (cont != null && cont != playerGrid && cont!=hotbarGrid) {
-                  this.insertItem(originalStack,  true);
-                    if(!originalStack.isEmpty())
+                if (cont != null) {
+                    this.insertItem(originalStack, cont != playerGrid && cont != hotbarGrid);
+                    if (!originalStack.isEmpty())
                         slot.insertStack(originalStack);
-                    return ItemStack.EMPTY;
-                } else if (!this.insertItem(originalStack,false)) {
-                    return ItemStack.EMPTY;
+                    else {
+                        slot.setStack(ItemStack.EMPTY);
+                    }
                 }
-                if (originalStack.isEmpty()) {
-                    slot.setStack(ItemStack.EMPTY);
-                } else {
-                    slot.markDirty();
+            }
+            return ItemStack.EMPTY;
+        }
+        @Override
+        protected boolean insertItem(ItemStack stack, boolean fromContainer) {
+            if(fromContainer)
+                return super.insertItem(stack, true);
+            var inv=this.getInventory("storage");
+            if(inv.getInventory() instanceof FormattedInventory fi)
+            {
+                if(fi.canInsert(stack))
+                {
+                    var i=fi.inserStack(stack);
+                    stack.setCount(i);
+                    return true;
                 }
 
             }
-            return ItemStack.EMPTY;
+            return false;
         }
         private boolean handleSlotClick(PlayerEntity player, ClickType clickType, Slot slot, ItemStack stack, ItemStack cursorStack) {
             FeatureSet featureSet = player.getWorld().getEnabledFeatures();
@@ -257,6 +318,9 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
             };
         }
         public boolean customSlotCLick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
+            if (actionType == SlotActionType.QUICK_CRAFT) {
+                return false;
+            }
                 if(actionType==SlotActionType.PICKUP )
                 {
                     if (slotIndex < 0) {
@@ -283,7 +347,9 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
                                     slot.onTakeItem(player, stack);
                                 });
                             } else if (slot.canInsert(itemStack4)) {
-                                if (ItemStack.canCombine(itemStack, itemStack4)) {
+                                var o = clickType == ClickType.LEFT ? itemStack4.getCount() : 1;
+                                this.setCursorStack(slot.insertStack(itemStack4, o));
+                             /*   if (ItemStack.canCombine(itemStack, itemStack4)) {
                                    var o = clickType == ClickType.LEFT ? itemStack4.getCount() : 1;
                                     this.setCursorStack(slot.insertStack(itemStack4, o));
                                 } else if (itemStack4.getCount() <= slot.getMaxItemCount(itemStack4)) {
@@ -291,6 +357,7 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
                                     this.setCursorStack(st1);
                                     slot.insertStack(itemStack4);
                                 }
+                                */
                             } else if (ItemStack.canCombine(itemStack, itemStack4)) {
                                 Optional<ItemStack> optional2 = slot.tryTakeStackRange(itemStack.getCount(), itemStack4.getMaxCount() - itemStack4.getCount(), player);
                                 optional2.ifPresent((stack) -> {
@@ -347,6 +414,7 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
             return false;
         }
     public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
+
         try {
             if(!customSlotCLick(slotIndex,button,actionType,player))
                 super.onSlotClick(slotIndex,button,actionType,player);

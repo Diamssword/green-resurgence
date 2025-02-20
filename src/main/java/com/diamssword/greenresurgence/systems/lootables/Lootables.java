@@ -41,6 +41,7 @@ public class Lootables {
     public static final TagKey<Item> WRENCH= createTool("wrench");
     public static final TagKey<Item> HAMMER=createTool("hammer");
     public static final TagKey<Item> HAND=createTool("hand");
+    public static final TagKey<Item> CONTAINER=createTool("container");
     private static TagKey<Item> createTool(String name)
     {
         return TagKey.of(RegistryKeys.ITEM,GreenResurgence.asRessource("lootable/tools/"+name));

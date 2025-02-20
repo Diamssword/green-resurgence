@@ -1,4 +1,7 @@
 categorie,item,quantitée,pourcentage,rolls
-metal,scrap,1,70,1
+metal,scrap,1,70,1-2
 adesive,screw,1-2,30,
 adesive,nail,1-2,30,
+glass,shards,1-3,10,
+metal,lead,1,6,
+metal,lead1,1,6,

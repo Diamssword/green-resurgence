@@ -35,13 +35,11 @@ public class ClothingModel<T extends LivingEntity> extends BipedEntityModel<T> {
         modelPartData.addChild("body", ModelPartBuilder.create().uv(16, altTexture?32:16).cuboid(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
         modelPartData.addChild("right_leg", ModelPartBuilder.create().uv(0, altTexture?32:16).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(-1.9F, 12.0F, 0.0F));
         modelPartData.addChild("left_leg", ModelPartBuilder.create().uv(altTexture?0:16, 48).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(1.9F, 12.0F, 0.0F));
-        if (slim) {
-            modelPartData.addChild("left_arm", ModelPartBuilder.create().uv(altTexture?48:32, 48).cuboid(-1.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(5.0F, 2.5F, 0.0F));
-            modelPartData.addChild("right_arm", ModelPartBuilder.create().uv(40, altTexture?32:16).cuboid(-2.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(-5.0F, 2.5F, 0.0F));
-        } else {
-            modelPartData.addChild("left_arm", ModelPartBuilder.create().uv(altTexture?48:32, 48).cuboid(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(5.0F, 2.0F, 0.0F));
-            modelPartData.addChild("right_arm", ModelPartBuilder.create().uv(40, altTexture?32:16).cuboid(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, dilation), ModelTransform.pivot(-5.0F, 2.0F, 0.0F));
-        }
+        var dil=dilation;
+            dil=dil.add(slim?-0.25f:0.15f,0,0);
+            modelPartData.addChild("left_arm", ModelPartBuilder.create().uv(altTexture?48:32, 48).cuboid(-1.0f+(slim?-0.2f:0), -2.0F, -2.0F, 3.5F, 12.0F, 4.0F, dil), ModelTransform.pivot(5.0F, 2.5F, 0.0F));
+            modelPartData.addChild("right_arm", ModelPartBuilder.create().uv(40, altTexture?32:16).cuboid(-2.5f-(slim?-0.2f:0.15f), -2.0F, -2.0F, 3.5F, 12.0F, 4.0F, dil), ModelTransform.pivot(-5.0F, 2.5F, 0.0F));
+
         return TexturedModelData.of(modelData,64,64);
     }
 

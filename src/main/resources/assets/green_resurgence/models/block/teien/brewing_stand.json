@@ -1,0 +1,8 @@
+{
+    "parent":"block/brewing_stand",
+    "textures": {
+		"particle": "green_resurgence:block/teien/brewing_stand",
+        "base": "green_resurgence:block/teien/brewing_stand_base",
+        "stand": "green_resurgence:block/teien/brewing_stand"
+    }
+}

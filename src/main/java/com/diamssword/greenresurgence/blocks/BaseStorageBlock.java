@@ -6,22 +6,19 @@ import com.diamssword.greenresurgence.containers.Containers;
 import com.diamssword.greenresurgence.containers.GridContainer;
 import com.diamssword.greenresurgence.containers.IGridContainer;
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
-import com.diamssword.greenresurgence.genericBlocks.GenericBlockSet;
-import com.diamssword.greenresurgence.genericBlocks.GenericPillar;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.faction.perimeter.TerrainInstance;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.SpecialPlacement;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.GlazedTerracottaBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -32,10 +29,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class BaseStorageBlock extends GenericPillar implements BlockEntityProvider {
+public class BaseStorageBlock extends GlazedTerracottaBlock implements BlockEntityProvider {
     public final int inventorySize;
     public BaseStorageBlock(Settings settings, int inventorySize) {
-        super(settings, GenericBlockSet.Transparency.OPAQUE);
+        super(settings);
         this.inventorySize = inventorySize;
     }
     @Override
@@ -57,6 +54,7 @@ public class BaseStorageBlock extends GenericPillar implements BlockEntityProvid
             terr.ifPresent(terrainInstance -> terrainInstance.storage.removeInventory(pos));
             if (blockEntity instanceof GenericStorageBlockEntity) {
                 ItemScatterer.spawn(world, pos, (Inventory) blockEntity);
+                ((GenericStorageBlockEntity) blockEntity).clear();
                 world.updateComparators(pos,this);
             }
             super.onStateReplaced(state, world, pos, newState, moved);

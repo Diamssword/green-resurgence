@@ -62,7 +62,7 @@ public class ItemBlock extends Block implements BlockEntityProvider,Waterloggabl
                 tooltip.add(Text.literal("Rotation: "+nbtCompound.getInt("rotationX")+","+nbtCompound.getInt("rotationY")+","+nbtCompound.getInt("rotationZ")));
             }
             if (nbtCompound.contains("size.xml")) {
-                tooltip.add(Text.literal("Taille: "+nbtCompound.getDouble("size.xml")));
+                tooltip.add(Text.literal("Taille: "+nbtCompound.getDouble("size")));
             }
         }
 

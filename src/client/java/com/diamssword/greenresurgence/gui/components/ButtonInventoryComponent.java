@@ -54,7 +54,6 @@ public class ButtonInventoryComponent extends BaseComponent {
         textField.setEditable(true);
         textField.setDrawsBackground(false);
 
-
     }
 
     public void setCollection(RecipeCollection collection, Identifier id) {

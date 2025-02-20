@@ -84,7 +84,7 @@ public class MaterialSet {
     public MaterialSet add(int tier,String id,String name,String desc,boolean is3D)
     {
         Identifier idd=GreenResurgence.asRessource("material_"+material+"_"+id);
-        var it=new MaterialItem(new OwoItemSettings().group(MItems.GROUP).tab(2),tier,id,material);
+        var it=new MaterialItem(new OwoItemSettings().group(MItems.GROUP).tab(3),tier,id,material);
         translates.put(idd,new Pair<>(name,desc));
         items.put(idd,it);
         if(is3D)

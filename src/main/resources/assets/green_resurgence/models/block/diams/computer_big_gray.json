@@ -1,0 +1,5 @@
+{
+"parent":"green_resurgence:block/diams/computer_big_white",
+"textures": {
+		"0": "green_resurgence:block/diams/pc_4_gray"
+		}}

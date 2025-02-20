@@ -35,7 +35,7 @@ public interface OwOSurfaceMixin{
 
         for (var child : children) {
             surface = switch (child.getNodeName()) {
-                case "gpanel" -> surface.and(Panels.PANEL);
+                case "gpanel" -> surface.and(child.getAttribute("white").equalsIgnoreCase("true")?Panels.PANEL_WHITE:Panels.PANEL);
                 case "panel" -> surface.and(child.getAttribute("dark").equalsIgnoreCase("true")
                         ? Surface.DARK_PANEL
                         : Surface.PANEL);

@@ -1,332 +1,611 @@
 [
    {
-      "block": "green_resurgence:teien_shulker_orange",
+      "block": "green_resurgence:cereals",
       "empty": "minecraft:air",
       "tables": {
-         "hand": "green_resurgence:lootable/carton"
-      }
-   },
-   {
-      "block": "green_resurgence:teien_pumpkin",
-      "empty": "minecraft:air",
-      "tables": {
-         "hand": "green_resurgence:lootable/tech"
-      }
-   },
-   {
-      "block": "green_resurgence:last_days_chest",
-      "empty": "conquest:ash_planks_with_tudor_cross_frame",
-      "tables": {
-         "hand": "green_resurgence:lootable/tech2"
-      }
-   },
-   {
-      "block": "green_resurgence:last_days_chest1",
-      "empty": "conquest:ash_planks_with_tudor_cross_frame",
-      "tables": {
-         "hand": "green_resurgence:lootable/tech2"
-      }
-   },
-   {
-      "block": "green_resurgence:last_days_smoker",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/four",
-         "wrench": "green_resurgence:lootable/four_cle"
-      }
-   },
-   {
-      "block": "green_resurgence:teien_smoker",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/four",
-         "wrench": "green_resurgence:lootable/four_cle"
-      }
-   },
-   {
-      "block": "green_resurgence:last_days_furnace",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/four",
-         "wrench": "green_resurgence:lootable/four_cle"
-      }
-   },
-   {
-      "block": "green_resurgence:teien_shulker_green_slab",
-      "empty": "minecraft:air",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille"
-      }
-   },
-   {
-      "block": "green_resurgence:teien_shulker_gray_slab",
-      "empty": "minecraft:air",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille"
-      }
-   },
-   {
-      "block": "green_resurgence:last_days_bookshelf",
-      "empty": "minecraft:air",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille"
-      }
-   },
-   {
-      "block": "green_resurgence:last_days_nether_gold_ore",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "green_resurgence:last_days_redstone_ore",
-      "empty": "minecraft:air",
-      "tables": {
-         "wrench": "green_resurgence:lootable/machine_cable"
-      }
-   },
-   {
-      "block": "green_resurgence:last_days_purple_glazed_terracotta",
-      "empty": "minecraft:air",
-      "tables": {
-         "wrench": "green_resurgence:lootable/mahine_tuyau"
-      }
-   },
-   {
-      "block": "green_resurgence:teien_lectern",
-      "empty": "minecraft:air",
-      "tables": {
-         "wrench": "green_resurgence:lootable/machine_elec"
-      }
-   },
-   {
-      "block": "conquest:bottle",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:soda_bottle",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:open_book_and_inkwell",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:books_on_the_ground",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:open_scroll",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:leather_boots",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:rounded_chest",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:carpenters_chest",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:cabinet",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:cupboards",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:fancy_oak_wood_cabinets",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:glass_paned_cabinets",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:poor_wardrobe",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:fancy_wardrobe",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:large_clay_pot",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:mounted_rack_of_tongs_and_hammers",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:sword_on_the_ground",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:shovel_on_the_ground",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:pickaxe_on_the_ground",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:axe_on_the_ground",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:bow_saw_on_the_ground",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:sickle_on_the_ground",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:scroll_case",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:arrows_on_the_ground",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:bow_on_the_ground",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:fishing_rod_on_the_ground",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:hammer_on_the_ground",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:mallet",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:iron_hatchet",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:hammer",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:cast_iron_cauldron",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:cast_iron_pot",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:cast_iron_pan",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:cast_iron_bowl",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "conquest:pile_of_paper_on_the_ground",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "green_resurgence:teien_lily_pad_slab",
-      "empty": "minecraft:air",
-      "tables": {}
-   },
-   {
-      "block": "green_resurgence:diams_fridge_bottom",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/four",
-         "wrench": "green_resurgence:lootable/four_cle"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_fridge_up",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/four",
-         "wrench": "green_resurgence:lootable/four_cle"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_carton_petit_travers",
-      "empty": "minecraft:air",
-      "tables": {
-         "hand": "green_resurgence:lootable/carton"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_carton_petit_ouvert",
-      "empty": "minecraft:air",
-      "tables": {
-         "hand": "green_resurgence:lootable/carton"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_carton_petit_entreouvert",
-      "empty": "minecraft:air",
-      "tables": {
-         "hand": "green_resurgence:lootable/carton"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_carton_petit",
-      "empty": "minecraft:air",
-      "tables": {
-         "hand": "green_resurgence:lootable/carton"
+         "hammer": "green_resurgence:lootable/carton"
       }
    },
    {
       "block": "green_resurgence:diams_carton_gros",
       "empty": "minecraft:air",
       "tables": {
-         "hand": "green_resurgence:lootable/carton"
+         "hammer": "green_resurgence:lootable/carton"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_shulker_orange",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/carton"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_carton_petit",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/carton"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_carton_petit_entreouvert",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/carton"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_carton_petit_travers",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/carton"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_pumpkin",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/carton"
+      }
+   },
+   {
+      "block": "green_resurgence:last_days_purple_glazed_terracotta",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:last_days_redstone_ore",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_shulker_green_slab",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_shulker_gray_slab",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:last_days_lectern",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_barrel_toxic_up",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_barrel_toxic_down",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_barrel_rust_up",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_barrel_rust_down",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_barrel_red_up",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_barrel_red_down",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_barrel_blue_up",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_barrel_blue_down",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_fridge_up",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_fridge_bottom",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_fridge_up_square",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_gray",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_cyan",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_orange",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_magenta",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_lime",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_light_gray",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_light_blue",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_green",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_brown",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_black",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_yellow",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_white",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_red",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_pink",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_purple",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_lectern",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_air_vent",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "container": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_shulker_white",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_trash_can_big",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_register_black",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_trash_can_round_green",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_trash_can_round_iron",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:last_days_furnace",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_smoker",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:last_days_smoker",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "conquest:cast_iron_bowl",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "conquest:cast_iron_pot",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "conquest:cast_iron_cauldron",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_luggage_picnic",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/tissue"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_luggage_antique_small_white",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/tissue"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_luggage_basket_stand",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/tissue"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_luggage_antique_small_brown",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/tissue"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_luggage_basket",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/tissue"
+      }
+   },
+   {
+      "block": "conquest:large_clay_pot",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/tissue"
+      }
+   },
+   {
+      "block": "conquest:leather_boots",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/tissue"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_lily_pad_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/verre",
+         "wrench": "green_resurgence:lootable/plastique"
+      }
+   },
+   {
+      "block": "conquest:soda_bottle",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/verre"
+      }
+   },
+   {
+      "block": "conquest:bottle",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/verre"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_newspaper_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_letter_antique_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_paper_torn_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_paper_torn_2_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier"
+      }
+   },
+   {
+      "block": "conquest:pile_of_paper_on_the_ground",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier"
+      }
+   },
+   {
+      "block": "conquest:open_scroll",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier"
+      }
+   },
+   {
+      "block": "conquest:books_on_the_ground",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier"
+      }
+   },
+   {
+      "block": "conquest:open_book_and_inkwell",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_small_wood_table",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_big_plank",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      }
+   },
+   {
+      "block": "conquest:cabinet",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      }
+   },
+   {
+      "block": "conquest:cupboards",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      }
+   },
+   {
+      "block": "conquest:fancy_oak_wood_cabinets",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      }
+   },
+   {
+      "block": "conquest:glass_paned_cabinets",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      }
+   },
+   {
+      "block": "conquest:poor_wardrobe",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      }
+   },
+   {
+      "block": "conquest:fancy_wardrobe",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      }
+   },
+   {
+      "block": "conquest:rounded_chest",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      }
+   },
+   {
+      "block": "conquest:carpenters_chest",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      }
+   },
+   {
+      "block": "green_resurgence:last_days_chest",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      }
+   },
+   {
+      "block": "green_resurgence:last_days_chest1",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      }
+   },
+   {
+      "block": "green_resurgence:last_days_bookshelf",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:last_days_nether_gold_ore",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/plastique"
       }
    }
 ]

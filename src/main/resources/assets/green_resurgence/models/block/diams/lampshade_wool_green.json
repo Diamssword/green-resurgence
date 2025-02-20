@@ -1,0 +1,5 @@
+{
+"parent":"green_resurgence:block/diams/lampshade_wool_white",
+"textures": {
+		"1": "green_resurgence:block/diams/lampshade_wool_green_off"
+		}}

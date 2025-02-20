@@ -1,0 +1,5 @@
+{
+"parent":"green_resurgence:block/diams/tv_realy_old_oak",
+"textures": {
+		"0": "green_resurgence:block/diams/tv_realy_old_oak_broken"
+		}}

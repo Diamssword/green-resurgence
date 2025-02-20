@@ -16,21 +16,21 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.shape.VoxelShape;
 
 import java.util.*;
 import java.util.function.Function;
 
+
 public class GenericBlockSet {
     public final String subdomain;
     private final ModelHelper helper;
-    private final List<GenericBlockInstance> blocks=new ArrayList<>();
-    private final Map<Block,Transparency> glassRenderNeeded =new HashMap();
+    private final List<GenericBlockRegisterInstance> blocks=new ArrayList<>();
     private final List<GeneratedBlockInstance> generatedBlocks =new ArrayList<>();
     private final List<GeneratedItemInstance> generatedItems =new ArrayList<>();
-    private final List<GenExceptionInstance> genExceptions =new ArrayList<>();
-    private final List<ModelExceptionInstance> modelsExceptions =new ArrayList<>();
-    private final Map<GenericBlockInstance,String> itemVariantMap=new HashMap<>();
+    private final Map<String,BlockVariantItem> itemGroups=new HashMap<>();
     private int tabIndex;
     public GenericBlockSet(String subdomain) {
         this.subdomain = subdomain;
@@ -44,180 +44,135 @@ public class GenericBlockSet {
     {
         return generatedBlocks.isEmpty() ?new ItemStack(Items.STICK):new ItemStack(generatedBlocks.get(0).block);
     }
-    public GenericBlockRegisterInstance add(String name,BlockTypes... blocks)
+    public GenericBlockRegisterInstance create(String... names)
     {
-        var d=new GenericBlockInstance(name,Transparency.UNDEFINED,blocks);
+        var d=new GenericBlockRegisterInstance(names);
         this.blocks.add(d);
-        return new GenericBlockRegisterInstance(this,name,blocks,d);
+        return d;
     }
-    public GenericBlockRegisterInstance add(String name,Transparency render,BlockTypes... blocks)
+    public GenericBlockRegisterInstance add(String name, Transparency render, BlockType... blocks)
     {
-        var d=new GenericBlockInstance(name,render,blocks);
-        this.blocks.add(new GenericBlockInstance(name,render,blocks));
-        return new GenericBlockRegisterInstance(this,name,blocks,d);
+        var d=new GenericBlockRegisterInstance(name);
+        for (BlockType block : blocks) {
+            d.addSub(block);
+        }
+        d.setTransparency(render);
+        this.blocks.add(d);
+        return d;
     }
-
-    /**
-     *
-     * @return false if modeleGeneration is disabled
-     */
-    private boolean canGenerate(String name,BlockTypes type)
-    {
-        return genExceptions.stream().filter(b->b.name.equals(name) && b.type==type).findFirst().isEmpty();
-    }
-
-    /**
-     * @return true if you can generate the blockstate or the item model of a block
-     */
-    private boolean canGenerateState(String name,BlockTypes type)
-    {
-        return genExceptions.stream().filter(b->b.name.equals(name) && b.type==type && !b.genBlockState).findFirst().isEmpty();
-    }
-    private void genericRegisterHelper(GenericBlockInstance entry,BlockTypes block,Block b)
+    private void genericRegisterHelper(String name, GenericBlockProp entry, Block b)
     {
         Item i;
-        Registry.register(Registries.BLOCK, getBlockId(entry.name,block), b);
-
-        Registry.register(Registries.ITEM, getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
-        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
-        glassRenderNeeded.put(b,entry.transparency);
+        Registry.register(Registries.BLOCK, getBlockId(name,entry), b);
+        Registry.register(Registries.ITEM, getBlockId(name,entry), i=new BlockItem(b, addItemGroup(entry)));
+        generatedBlocks.add(new GeneratedBlockInstance(name+entry.subname,b,entry));
+        generatedItems.add(new GeneratedItemInstance(name+entry.subname,i,entry));
     }
     public void register()
     {
         this.blocks.forEach(entry->{
-            for (BlockTypes block : entry.blocks) {
-                switch (block)
+            entry.blocks.values().forEach(v->{
+                if(v.itemGroup !=null && !itemGroups.containsKey(v.itemGroup))
                 {
-                    case SIMPLE -> genericRegisterHelper(entry,block,new Block(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL))));
-                    case PILLAR -> genericRegisterHelper(entry,block,new GenericPillar(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)),entry.transparency));
-                    case TOGGLEABLE -> genericRegisterHelper(entry,block,new GenericPillarToggleable(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)),entry.transparency));
-                    case CHAIR_SLAB -> genericRegisterHelper(entry,block,new ChairSlab(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.WOOD))));
-                    case CHAIR -> genericRegisterHelper(entry,block,new Chair(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.WOOD)),entry.transparency));
-                    case PILLAR_SLAB -> genericRegisterHelper(entry,block,new PillarSlab(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL))));
-                    case CONNECTED_H,CONNECTED_V -> genericRegisterHelper(entry,block,new ConnectedBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)),block==BlockTypes.CONNECTED_H));
-                    case GLASS_BLOCK -> {
-                        Block b=new GlassBlock(AbstractBlock.Settings.create().sounds(BlockSoundGroup.GLASS).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never));
-                        Item i;
-                        Registry.register(Registries.BLOCK,getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM,getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-                        glassRenderNeeded.put(b,entry.transparency==Transparency.UNDEFINED?Transparency.TRANSPARENT:entry.transparency);
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
-                    }
-                    case GLASS_PANE,IRON_BARS -> {
-                        Item i;
-                        Block b=new PaneBlock(AbstractBlock.Settings.create().sounds(block==BlockTypes.IRON_BARS?BlockSoundGroup.METAL: BlockSoundGroup.GLASS).nonOpaque());
-                        Registry.register(Registries.BLOCK,getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM,getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-                        glassRenderNeeded.put(b,entry.transparency==Transparency.UNDEFINED?Transparency.TRANSPARENT:entry.transparency);
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name+"_pane",b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name+"_pane",i,block));
-                    }
-                    case ROTATABLE_SLAB -> {
-                        Item i;
-                        Block b=new RotatableSlabBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.STONE)));
-                        Registry.register(Registries.BLOCK, getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM, getBlockId(entry.name,block), i=new BlockItem(b,  addItemGroup(entry)));
-                        glassRenderNeeded.put(b,entry.transparency);
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name+"_slab",b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name+"_slab",i,block));
-                    }
-                    case LECTERN -> genericRegisterHelper(entry,block,new LecternShapedBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY))));
-                    case DOOR -> {
-                        Item i;
-                        Block b=new DoorLongBlock(AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never), BlockSetType.OAK);
-                        Registry.register(Registries.BLOCK, getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM,getBlockId(entry.name,block), i=new TallBlockItem(b, addItemGroup(entry)));
-                        glassRenderNeeded.put(b,entry.transparency);
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name,b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name,i,block));
-                    }
-                    case FENCE -> {
-                        Item i;
-                        Block b=new FenceBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.NETHER_BRICKS)));
-                        Registry.register(Registries.BLOCK,getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM, getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-                        glassRenderNeeded.put(b,entry.transparency);
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name+"_fence",b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name+"_fence",i,block));
-                    }
-                    case OMNI_SLAB,OMNI_CARPET,OMNI_CARPET_SOLID -> {
-                        Item i;
-                        Block b=new OmniSlabBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL)),block==BlockTypes.OMNI_CARPET||block==BlockTypes.OMNI_CARPET_SOLID,block==BlockTypes.OMNI_CARPET);
-                        Registry.register(Registries.BLOCK, getBlockId(entry.name,block), b);
-                        Registry.register(Registries.ITEM, getBlockId(entry.name,block), i=new BlockItem(b, addItemGroup(entry)));
-                        glassRenderNeeded.put(b,entry.transparency);
-                        generatedBlocks.add(new GeneratedBlockInstance(entry.name+"_slab",b,block));
-                        generatedItems.add(new GeneratedItemInstance(entry.name+"_slab",i,block));
-                    }
-                    case OMNI_BLOCK -> genericRegisterHelper(entry,block,new OmniBlock(processSettings(entry.transparency,AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL))));
-                    case LANTERN -> genericRegisterHelper(entry,block,new LanternGeneric(processSettings(entry.transparency,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).solid().strength(3.5f).sounds(BlockSoundGroup.LANTERN).luminance(LanternGeneric::produceLight).nonOpaque().pistonBehavior(PistonBehavior.DESTROY))));
-                    case BED -> {
-                        genericRegisterHelper(entry,block,new BedGeneric(processSettings(entry.transparency,AbstractBlock.Settings.create().mapColor(MapColor.WHITE_GRAY).sounds(BlockSoundGroup.WOOD).strength(0.2f).nonOpaque().burnable().pistonBehavior(PistonBehavior.DESTROY))));
-                    }
-                    case TRAPDOOR -> genericRegisterHelper(entry,block,new TrapdoorBlock(AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never), BlockSetType.OAK));
-                    case LADDER -> genericRegisterHelper(entry,block,new GenericLadder(AbstractBlock.Settings.create().notSolid().strength(0.4f).sounds(BlockSoundGroup.LADDER).nonOpaque().pistonBehavior(PistonBehavior.DESTROY)));
+                    itemGroups.put(v.itemGroup,new BlockVariantItem(new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex).maxCount(1)));
                 }
-            }
+                for (String name : entry.names) {
+                    if(v.itemGroup !=null)
+                        itemGroups.get(v.itemGroup).addVariant(getBlockId(name,v));
+                    var settings=processSettings(v);
+                    switch ( v.type)
+                    {
+                        case SIMPLE -> genericRegisterHelper(name,v,v.toggleable?new GenericBlockToggleable(settings,v):new GenericBlock(settings,v));
+                        case PILLAR -> genericRegisterHelper(name,v,v.toggleable?new GenericPillarToggleable(settings,v):new GenericPillar(settings,v));
+                        case OMNI_BLOCK -> genericRegisterHelper(name,v,v.toggleable?new OmniBlockToggleable(settings,v):new OmniBlock(settings,v));
+                        case ROTATABLE_SLAB -> genericRegisterHelper(name,v,new RotatableSlabBlock(settings));
+                        case PANE -> genericRegisterHelper(name,v,new PaneBlock(settings));
+                        case STAIRS -> genericRegisterHelper(name,v,new StairsBlock(Blocks.STONE.getDefaultState(),settings));
+                        case LECTERN -> genericRegisterHelper(name,v,new LecternShapedBlock(processSettings(v,AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY))));
+                        case FENCE -> genericRegisterHelper(name,v,new FenceBlock(processSettings(v,settings)));
+                        case DOOR -> {
+                            Item i;
+                            Block b=new DoorLongBlock(processSettings(v,AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never)), BlockSetType.OAK);
+                            Registry.register(Registries.BLOCK, getBlockId(name,v), b);
+                            Registry.register(Registries.ITEM,getBlockId(name,v), i=new TallBlockItem(b, addItemGroup(v)));
+                            generatedBlocks.add(new GeneratedBlockInstance(name,b,v));
+                            generatedItems.add(new GeneratedItemInstance(name,i,v));
+                        }
+                        case LANTERN -> genericRegisterHelper(name,v,new LanternGeneric(processSettings(v,AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).solid().strength(3.5f).sounds(BlockSoundGroup.LANTERN).luminance(LanternGeneric::produceLight).nonOpaque().pistonBehavior(PistonBehavior.DESTROY))));
+                        case BED -> genericRegisterHelper(name,v,new BedGeneric(processSettings(v,AbstractBlock.Settings.create().mapColor(MapColor.WHITE_GRAY).sounds(BlockSoundGroup.WOOD).strength(0.2f).nonOpaque().burnable().pistonBehavior(PistonBehavior.DESTROY))));
+                        case TRAPDOOR -> genericRegisterHelper(name,v,new TrapdoorBlock(processSettings(v,AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never)), BlockSetType.OAK));
+                    }
+                }
+            });
+
         });
-        Map<String,BlockVariantItem> ls1=new HashMap<>();
-        itemVariantMap.forEach((k,v)->{
-            if(!ls1.containsKey(v))
-            {
-                ls1.put(v,new BlockVariantItem(new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex)));
-            }
-            for (BlockTypes block : k.blocks()) {
-                ls1.get(v).addVariant(getBlockId(k.name,block));
-            }
-        });
-        ls1.keySet().forEach(v->{
-            Registry.register(Registries.ITEM,new Identifier(GreenResurgence.ID, this.subdomain+"_"+v), ls1.get(v));
-        });
+        itemGroups.keySet().forEach(v-> Registry.register(Registries.ITEM,new Identifier(GreenResurgence.ID, this.subdomain+"_"+v), itemGroups.get(v)));
 
     }
-    private Identifier getBlockId(String base,BlockTypes type)
+
+    private Identifier getBlockId(String base,BlockType type,SubBlock sub)
     {
-        switch(type)
-        {
-            case GLASS_PANE,IRON_BARS:
-            return new Identifier(GreenResurgence.ID, this.subdomain+"_"+base+"_pane");
-            case  OMNI_SLAB,OMNI_CARPET,OMNI_CARPET_SOLID,ROTATABLE_SLAB:
-                return new Identifier(GreenResurgence.ID, this.subdomain+"_"+base+"_slab");
-            case FENCE:
-                return new Identifier(GreenResurgence.ID, this.subdomain+"_"+base+"_fence");
-            default:
-                return new Identifier(GreenResurgence.ID, this.subdomain+"_"+base);
-        }
+        return  new Identifier(GreenResurgence.ID, this.subdomain+"_"+base+getSuffix(type,sub));
     }
-    private OwoItemSettings addItemGroup(GenericBlockInstance reg)
+    private Identifier getBlockId(String base, GenericBlockProp reg)
     {
-        if(itemVariantMap.containsKey(reg))
+        return  new Identifier(GreenResurgence.ID, this.subdomain+"_"+base+reg.subname);
+    }
+    private OwoItemSettings addItemGroup(GenericBlockProp prop)
+    {
+        if(prop.itemGroup!=null)
             return new OwoItemSettings();
         return new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex);
     }
-    private AbstractBlock.Settings processSettings(Transparency non_opaque, AbstractBlock.Settings settings)
+    private AbstractBlock.Settings processSettings(GenericBlockProp entry)
     {
-        if(non_opaque!=Transparency.OPAQUE)
+        return processSettings(entry, AbstractBlock.Settings.create());
+    }
+    private AbstractBlock.Settings processSettings(GenericBlockProp entry, AbstractBlock.Settings settings)
+    {
+        settings=settings.sounds(entry.sound);
+        if(entry.transparency!= Transparency.OPAQUE)
             settings=settings.nonOpaque().solidBlock(Blocks::never);
-        if(non_opaque==Transparency.NOTFULL)
+        if(entry.transparency== Transparency.NOTFULL)
             settings=settings.notSolid().nonOpaque();
+        var l=entry.light;
+        if(l>0)
+        {
+            if(entry.toggleable)
+                settings=settings.luminance(st->st.getProperties().contains(Properties.OPEN) &&st.get(Properties.OPEN)?l:0);
+            else
+                settings=settings.luminance(st->l);
+        }
         return settings;
     }
     public Map<Block,Transparency> getGlasses() {
-        return glassRenderNeeded;
+        var res=new HashMap<Block,Transparency>();
+         generatedBlocks.forEach(v->{
+            if(v.props.transparency==Transparency.CUTOUT || v.props.transparency==Transparency.TRANSPARENT)
+                res.put(v.block,v.props.transparency);
+        });
+        return res;
     }
     public void tagGenerator(Function<TagKey<Block>, FabricTagBuilder> factory){
         for (GeneratedBlockInstance b : generatedBlocks) {
-            if (b.type == BlockTypes.FENCE)
+            if (b.props.type == BlockType.FENCE)
                 factory.apply(BlockTags.FENCES).add(b.block);
-            if (b.type == BlockTypes.DOOR) {
+            if (b.props.type == BlockType.DOOR) {
                 factory.apply(BlockTags.DOORS).add(b.block);
-
                 factory.apply(BlockTags.WOODEN_DOORS).add(b.block);
             }
-            if (b.type == BlockTypes.LADDER)
-                factory.apply(BlockTags.CLIMBABLE).add(b.block);
+            if (b.props.type == BlockType.BED)
+                factory.apply(BlockTags.BEDS).add(b.block);
+        //    if (b.props.type == BlockType.LADDER)
+         //       factory.apply(BlockTags.CLIMBABLE).add(b.block);
+            if (b.props.type == BlockType.STAIRS)
+                factory.apply(BlockTags.STAIRS).add(b.block);
+            if (b.props.subtype==SubBlock.SLAB)
+                factory.apply(BlockTags.SLABS).add(b.block);
+            for (TagKey<Block> tag : b.props.tags) {
+                factory.apply(tag).add(b.block);
+            }
+
 
         }
     }
@@ -226,84 +181,100 @@ public class GenericBlockSet {
         for (GeneratedBlockInstance b : generatedBlocks) {
             builder.add(b.block, LangGenerator.capitalizeString(b.name.replaceAll("_"," ")));
         }
-        var l=new ArrayList<String>();
-        itemVariantMap.forEach((k,v)->{
-            if(!l.contains(v)) {
-                builder.add("item." + GreenResurgence.ID + "." + this.subdomain + "_" + v,"["+ LangGenerator.capitalizeString(v.replaceAll("_", " "))+"]");
-                l.add(v);
-            }
+        itemGroups.forEach((k,v)->{
+            var f=generatedBlocks.stream().filter(v1->k.equals(v1.props.itemGroup)).findFirst();
+            f.ifPresent(generatedBlockInstance -> builder.add("item." + GreenResurgence.ID + "." + this.subdomain + "_" + k, "[" + LangGenerator.capitalizeString(generatedBlockInstance.name.replaceAll("_", " ")) + "]"));
         });
     }
-    public Optional<ModelType> getModelFor(String name,BlockTypes type)
-    {
-        return this.modelsExceptions.stream().filter(f->f.name.equals(name) && f.block==type).map(f->f.model).findFirst();
-    }
+
     public void modelGenerator(ItemModelGenerator generator){
         for (GeneratedItemInstance b : generatedItems) {
 
-            if(canGenerateState(b.name,b.type)) {
-                if (b.type == BlockTypes.GLASS_PANE || b.type == BlockTypes.IRON_BARS)
+            if(b.type.genBlockState) {
+
+                if (b.type.type == BlockType.PANE)
                     new Model(Optional.of(new Identifier("item/generated")), Optional.empty(), TextureKey.LAYER0).upload(ModelIds.getItemModelId(b.item), TextureMap.layer0(new Identifier(GreenResurgence.ID, "block/" + this.subdomain + "/" + b.name.replace("_pane", ""))), generator.writer);
-                else if (b.type == BlockTypes.FENCE)
-                    new Model(Optional.of(new Identifier("block/fence_inventory")), Optional.empty(), TextureKey.TEXTURE).upload(ModelIds.getItemModelId(b.item), TextureMap.texture(new Identifier(GreenResurgence.ID, "block/" + this.subdomain + "/" + b.name)), generator.writer);
-                else if (b.type == BlockTypes.DOOR)
+                else if (b.type.type == BlockType.FENCE) {
+                    new Model(Optional.of(new Identifier("block/fence_inventory")), Optional.empty(), TextureKey.TEXTURE).upload(ModelIds.getItemModelId(b.item), TextureMap.texture(new Identifier(GreenResurgence.ID, "block/" + this.subdomain + "/" + b.name.replace("_fence",b.type.variants>0?"/"+b.name.replace("_fence","")+"0":""))), generator.writer);
+                }
+                else if (b.type.type == BlockType.DOOR)
                     generator.register(b.item, new Model(Optional.of(helper.getBlockModelId(b.name).withSuffixedPath("_left")), Optional.empty()));
-                else if (b.type == BlockTypes.CONNECTED_V)
-                    generator.register(b.item, new Model(Optional.of(helper.getBlockModelId(b.name).withSuffixedPath("_bottom")), Optional.empty()));
-                else
-                    generator.register(b.item, new Model(Optional.of(helper.getBlockModelId(b.name)), Optional.empty()));
+//                else if (b.type.type == BlockType.CONNECTED_V)
+             //       generator.register(b.item, new Model(Optional.of(helper.getBlockModelId(b.name).withSuffixedPath("_bottom")), Optional.empty()));
+              //  else if(b.type.subtype== SubBlock.CARPET)
+                //{
+                  //  generator.register(b.item, new Model(Optional.of(helper.transformVariantModelId(helper.getBlockModelId(b.name.replace("_carpet","")),b.type.variants)), Optional.empty()));
+                //}
+                else {
+                    generator.register(b.item, new Model(Optional.of(helper.transformVariantModelId(helper.getBlockModelId(b.name),b.type.variants)), Optional.empty()));
+                }
             }
         }
-        var l=new ArrayList<String>();
-        itemVariantMap.forEach((k,v)->{
-            if(!l.contains(v)) {
-                generator.register(Registries.ITEM.get(new Identifier(GreenResurgence.ID, this.subdomain+"_"+v)), new Model(Optional.of(helper.getBlockModelId(k.name)), Optional.empty()));
-                l.add(v);
-            }
+        itemGroups.forEach((k,v)->{
+            var f=generatedBlocks.stream().filter(v1->k.equals(v1.props.itemGroup)).findFirst();
+            f.ifPresent(generatedBlockInstance -> generator.register(Registries.ITEM.get(new Identifier(GreenResurgence.ID, this.subdomain+"_"+k)), new Model(Optional.of(helper.getBlockModelId(generatedBlockInstance.name)), Optional.empty())));
         });
     }
+
     public void modelGenerator(BlockStateModelGenerator generator){
         generatedBlocks.forEach(b->{
+            if(b.props.genBlockState) {
+                boolean noModel = !b.props.genModel;
+                int variants=b.props.variants;
+                var model=b.props.model;
+                var Tname=b.name;
+                if(b.props.subtype==SubBlock.CARPET)
+                    Tname=b.name.replace("_carpet", "");
+                else if(b.props.subtype==SubBlock.SLAB)
+                    Tname=b.name.replace("_slab", "");
+                switch (b.props.type) {
 
-            if(canGenerateState(b.name,b.type)) {
-                boolean noModel = !canGenerate(b.name,b.type);
-                switch (b.type) {
+                    case SIMPLE -> {
+                        if(b.props.toggleable)
+                        {
+                            var map=BlockStateVariantMap.create(Properties.OPEN)
+                                    .register(true, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name).withSuffixedPath("_open")))
+                                    .register(false, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name)));
+                            generator.blockStateCollector.accept(helper.createVariantsStates(VariantsBlockStateSupplier.create(b.block).coordinate(map),variants));
+                        }
+                        else
+                            generator.blockStateCollector.accept(helper.createVariantsStates(BlockStateModelGenerator.createSingletonBlockState(b.block, helper.getBlockModelId(b.name)),variants));
+                        if(noModel|| b.props.toggleable) return;
+                        TexturedModel.Factory factory = helper.getModeleFactoryFor(model,Tname);
+                        helper.registerModel(factory,model,b.block,b.name,generator,variants);
 
-                    case SIMPLE, GLASS_BLOCK -> {
-                        generator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(b.block, helper.getBlockModelId(b.name)));
-                        if(noModel) return;
-                       TexturedModel.Factory factory = helper.getModeleFactoryFor(getModelFor(b.name,b.type).orElse(ModelType.SIMPLE),b.name);
+                    }
+                    case PILLAR -> {
+                        if(b.props.toggleable)
+                        {
+                            generator.blockStateCollector.accept(helper.createVariantsStates(VariantsBlockStateSupplier.create(b.block,
+                                    BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name))).coordinate(
+                                            ModelHelper.fillToggleableVariantMap(BlockStateVariantMap.create(Properties.HORIZONTAL_FACING, Properties.OPEN),
+                                                    helper.getBlockModelId(b.name), helper.getBlockModelId(b.name).withSuffixedPath("_open"),false)),variants));
+                        }
+                        else
+                            generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(b.block, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name))).coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
+                        if(noModel || b.props.toggleable) return;
+                        TexturedModel.Factory factory = helper.getModeleFactoryFor(model,Tname);
                         factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
 
                     }
-                    case PILLAR,CHAIR_SLAB,CHAIR,PILLAR_SLAB -> {
-                        generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(b.block, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name))).coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
-                        if(noModel) return;
-                        TexturedModel.Factory factory = helper.getModeleFactoryFor(getModelFor(b.name,b.type).orElse(ModelType.PILLAR),b.name);
-                        factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
-
+                    case OMNI_BLOCK -> {
+                        if(b.props.toggleable)
+                        {
+                            generator.blockStateCollector.accept(helper.createVariantsStates(VariantsBlockStateSupplier.create(b.block,
+                                    BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name))).coordinate(
+                                    ModelHelper.fillToggleableVariantMap(BlockStateVariantMap.create(Properties.FACING, Properties.OPEN),
+                                            helper.getBlockModelId(b.name), helper.getBlockModelId(b.name).withSuffixedPath("_open"),true)),variants));
+                        }
+                        else
+                            generator.blockStateCollector.accept(helper.createVariantsStates(VariantsBlockStateSupplier.create(b.block, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name))).coordinate(BlockStateModelGenerator.createNorthDefaultRotationStates()),variants));
+                        if(noModel|| b.props.toggleable) return;
+                        TexturedModel.Factory factory = helper.getModeleFactoryFor(model,Tname);
+                        helper.registerModel(factory,model,b.block,b.name,generator,variants);
                     }
-                    case TOGGLEABLE -> {
-                        this.helper.registerToggleable(generator,b.name,b.block);
-                    }
-                    case CONNECTED_V -> {
-                        generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(b.block)
-                                .coordinate(ModelHelper.fillConnectedPillarVariantMap(BlockStateVariantMap.create(HorizontalFacingBlock.FACING, ConnectedBlock.BOTTOM),helper.getBlockModelId(b.name).withSuffixedPath("_bottom"),helper.getBlockModelId(b.name).withSuffixedPath("_up"))));
-                        if(noModel) return;
-                        TexturedModel.Factory factory = helper.getModeleFactoryFor(getModelFor(b.name,b.type).orElse(ModelType.PILLAR),b.name);
-                        factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
-
-                    }
-                    case LADDER -> {
-                        TextureMap map = new TextureMap();
-                        map.put(TextureKey.PARTICLE,helper.getBlockModelId(b.name));
-                        generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(b.block, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name))).coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
-                        if(noModel) return;
-                        TexturedModel.Factory factory = TexturedModel.makeFactory(b1 -> map,new Model(Optional.of(new Identifier(GreenResurgence.ID, "block/generic/ladder")), Optional.empty(), TextureKey.PARTICLE));
-                        factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
-                    }
-                    case GLASS_PANE, IRON_BARS -> {
-                        helper.registerGlassPane(generator, b.name.replace("_pane", ""), b.block, b.type == BlockTypes.IRON_BARS);
+                    case PANE -> {
+                        helper.registerGlassPane(generator, b.name.replace("_pane", ""), b.block, false);
                     }
                     case DOOR -> {
                         helper.registerDoor(generator, b.name, b.block);
@@ -312,27 +283,15 @@ public class GenericBlockSet {
                         helper.registerLantern(generator,b.name,b.block);
                     }
                     case FENCE -> {
-                        helper.registerFence(generator, b.name, b.block);
+                        helper.registerFence(generator, b.name, b.block,variants,model== ModelType.WALL);
                     }
-                    case OMNI_CARPET,OMNI_CARPET_SOLID -> {
-                        generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(b.block, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name))).coordinate(BlockStateModelGenerator.createNorthDefaultRotationStates()));
+                    case STAIRS ->{
+                        generator.blockStateCollector.accept(helper.createVariantsStates(BlockStateModelGenerator.createStairsBlockState(b.block,helper.getBlockModelId(b.name).withSuffixedPath("_inner"),helper.getBlockModelId(b.name),helper.getBlockModelId(b.name).withSuffixedPath("_outer")),variants));
                         if(noModel) return;
-                        TexturedModel.Factory factory = TexturedModel.makeFactory(b1 -> new TextureMap().put(TextureKey.PARTICLE, helper.getBlockModelId(b.name.replace("_slab", ""))),
-                                new Model(Optional.of(new Identifier(GreenResurgence.ID, "block/generic/omni_carpet")), Optional.empty(), TextureKey.PARTICLE));
-                        factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
-                    }
-                    case OMNI_SLAB -> {
-                        generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(b.block, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name))).coordinate(BlockStateModelGenerator.createNorthDefaultRotationStates()));
-                        if(noModel) return;
-                        TexturedModel.Factory factory = TexturedModel.makeFactory(b1 -> helper.textureOmniSlab(b.name.replace("_slab", "")),
-                                new Model(Optional.of(new Identifier(GreenResurgence.ID, "block/generic/omni_slab")), Optional.empty(), TextureKey.FRONT, TextureKey.SIDE, TextureKey.BACK));
-                        factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
-                    }
-                    case OMNI_BLOCK -> {
-                        generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(b.block, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name))).coordinate(BlockStateModelGenerator.createNorthDefaultRotationStates()));
-                        if(noModel) return;
-                        TexturedModel.Factory factory = helper.getModeleFactoryFor(getModelFor(b.name,b.type).orElse(ModelType.MACHINE),b.name);
-                        factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
+                        var facts=helper.getModelForStairs(b.name.replace("_stair",""),model);
+                        helper.registerModel(facts[0],b.block,b.name,generator,variants,TextureKey.BOTTOM,TextureKey.TOP,TextureKey.SIDE);
+                        helper.registerModel(facts[1],b.block,b.name+"_inner",generator,variants, TextureKey.BOTTOM,TextureKey.TOP,TextureKey.SIDE);
+                        helper.registerModel(facts[2],b.block,b.name+"_outer",generator,variants,TextureKey.BOTTOM,TextureKey.TOP,TextureKey.SIDE);
                     }
                     case BED -> {
                         helper.registerBed(generator,b.name,b.block);
@@ -346,78 +305,195 @@ public class GenericBlockSet {
 
     }
 
-    public record GenericBlockInstance(String name,Transparency transparency, BlockTypes... blocks){};
-    private record GeneratedBlockInstance(String name, Block block, BlockTypes type){};
-    private record GeneratedItemInstance(String name, Item item, BlockTypes type){};
-    private record GenExceptionInstance(String name, BlockTypes type,boolean genBlockState){};
-    private record ModelExceptionInstance(String name, BlockTypes block,ModelType model){};
+    public record GeneratedBlockInstance(String name, Block block, GenericBlockProp props){};
+    private record GeneratedItemInstance(String name, Item item, GenericBlockProp type){};
     protected static class GenericBlockRegisterInstance
     {
-        private final GenericBlockSet set;
-        private final String name;
-        private final BlockTypes[] registeredTypes;
-        private final GenericBlockInstance parent;
+        private final String[] names;
+        private final Map<String, GenericBlockProp> blocks=new HashMap<>();
 
-        private GenericBlockRegisterInstance(GenericBlockSet set, String name,BlockTypes[] registeredTypes,GenericBlockInstance parent) {
-            this.set = set;
-            this.name = name;
-            this.registeredTypes=registeredTypes;
-            this.parent=parent;
+        private GenericBlockRegisterInstance( String... names) {
+            this.names = names;
         }
-        public GenericBlockRegisterInstance variantItem(String id)
+        private static HitBox DefaultHitbox(SubBlock sub)
         {
-            set.itemVariantMap.put(parent,id);
+           switch (sub)
+           {
+               case SLAB :return HitBox.SLAB;
+               case CARPET  :return HitBox.CARPET;
+           }
+            return HitBox.FULL;
+        }
+        public GenericBlockRegisterInstance addSub(BlockType type,ModelType model,HitBox hitbox,SubBlock sub )
+        {
+            var prop=new GenericBlockProp();
+            prop.type=type;
+            prop.solid=true;
+            prop.sound=BlockSoundGroup.METAL;
+            prop.model=model;
+            prop.hitbox=hitbox;
+            prop.subtype=sub;
+            prop.subname=getSuffix(type,sub);
+            prop.genModel=true;
+            prop.genBlockState=true;
+            prop.transparency=Transparency.UNDEFINED;
+            blocks.put(getSuffix(type,sub),prop);
             return this;
         }
-        public GenericBlockRegisterInstance model(ModelType model)
+        public GenericBlockRegisterInstance addSub(BlockType type,ModelType model,HitBox hitbox)
         {
-            return this.model(model,this.registeredTypes);
+            return addSub(type,model,hitbox,SubBlock.NONE);
         }
-        public GenericBlockRegisterInstance model(ModelType model,BlockTypes... types)
+        public GenericBlockRegisterInstance addSub(BlockType type,ModelType model)
         {
-            for (BlockTypes type : types) {
-                String name=this.name;
-                switch (type)
-                {
-                    case OMNI_SLAB,OMNI_CARPET,OMNI_CARPET_SOLID,ROTATABLE_SLAB ->{
-                        name=name+"_slab";
-                    }
-                    case FENCE -> {
-                        name=name+"_fence";
-                    }
-                    case GLASS_PANE,IRON_BARS -> {
-                        name=name+"_pane";
-                    }
-                }
-                this.set.modelsExceptions.add(new ModelExceptionInstance(name,type,model));
-            }
-            return  this;
+            return addSub(type,model,HitBox.FULL,SubBlock.NONE);
         }
+        public GenericBlockRegisterInstance addSub(BlockType type,ModelType model,SubBlock sub)
+        {
+            return addSub(type,model,DefaultHitbox(sub),sub);
+        }
+        public GenericBlockRegisterInstance addSub(BlockType type)
+        {
+            return addSub(type,type==BlockType.PILLAR?ModelType.PILLAR:ModelType.SIMPLE,HitBox.FULL,SubBlock.NONE);
+        }
+        public GenericBlockRegisterInstance addTags(TagKey<Block>... tags)
+        {
+            blocks.values().forEach(v->{
+                Collections.addAll(v.tags,tags);
+            });
+            return this;
+        }
+        public GenericBlockRegisterInstance addGroup(String id)
+        {
+            blocks.values().forEach(v->{
+               v.itemGroup=id;
+            });
+            return this;
+        }
+        public GenericBlockRegisterInstance setTransparency(Transparency trans) {
+            blocks.values().forEach(v -> {
+                v.transparency = trans;
+            });
+            return this;
+        }
+        public GenericBlockRegisterInstance setDamage(float damage) {
+            blocks.values().forEach(v -> {
+                v.damage = damage;
+            });
+            return this;
+        }
+        public GenericBlockRegisterInstance variant(int variants)
+        {
+            blocks.values().forEach(v->{
+                v.variants=variants;
+            });
+            return this;
+        }
+        public GenericBlockRegisterInstance light(int value) {
+            blocks.values().forEach(v -> {
+                v.light = value;
+            });
+            return this;
+        }
+        public GenericBlockRegisterInstance sound(BlockSoundGroup sound) {
+            blocks.values().forEach(v -> {
+                v.sound = sound;
+            });
+            return this;
+        }
+        public GenericBlockRegisterInstance notSolid() {
+            blocks.values().forEach(v -> {
+                v.solid = false;
+            });
+            return this;
+        }
+        public GenericBlockRegisterInstance notSolid(SubBlock sub) {
+            blocks.values().forEach(v -> {
+                if(v.subtype==sub)
+                    v.solid = false;
+            });
+            return this;
+        }
+        public GenericBlockRegisterInstance seat(float level) {
+            blocks.values().forEach(v -> {
+                v.seatLevel = level;
+                v.isSeat=true;
+            });
+            return this;
+        }
+        public GenericBlockRegisterInstance disableGen(boolean genBlockStateAndItem,SubBlock subtype)
+        {
 
+            blocks.values().forEach(v -> {
+                if(v.subtype==subtype) {
+                    v.genModel = false;
+                    v.genBlockState = genBlockStateAndItem;
+                }
+            });
+            return this;
+        }
         public GenericBlockRegisterInstance disableGen(boolean genBlockStateAndItem)
         {
-            return this.disableGen(genBlockStateAndItem,this.registeredTypes);
-        }
-        public GenericBlockRegisterInstance disableGen(boolean genBlockStateAndItem,BlockTypes... types)
-        {
-            for (BlockTypes type : types) {
-                String name=this.name;
-                switch (type)
-                {
-                    case OMNI_SLAB,OMNI_CARPET,OMNI_CARPET_SOLID,ROTATABLE_SLAB ->{
-                        name=name+"_slab";
-                    }
-                    case FENCE -> {
-                        name=name+"_fence";
-                    }
-                    case GLASS_PANE,IRON_BARS -> {
-                        name=name+"_pane";
-                    }
-                }
-                this.set.genExceptions.add(new GenExceptionInstance(name,type,genBlockStateAndItem));
-            }
+            blocks.values().forEach(v -> {
+                v.genModel = false;
+                v.genBlockState = genBlockStateAndItem;
+            });
             return this;
         }
+        public GenericBlockRegisterInstance togglable()
+        {
+            blocks.values().forEach(v -> {
+                v.toggleable = true;
+            });
+            return this;
+        }
+    }
+    public static class GenericBlockProp {
+        protected boolean solid;
+        protected BlockSoundGroup sound;
+        protected SubBlock subtype;
+        protected  Transparency transparency;
+        protected String subname;
+        protected ModelType model;
+        protected BlockType type;
+        protected int light;
+        protected HitBox hitbox;
+        protected  boolean genModel;
+        protected  boolean genBlockState;
+        protected boolean toggleable;
+        protected float damage;
+        protected float seatLevel;
+        protected boolean isSeat;
+        protected String itemGroup;
+        protected int variants;
+        protected  List<TagKey<Block>> tags=new ArrayList<>();
+
+    }
+    private static String getSuffix(BlockType type,SubBlock sub)
+    {
+        switch(type)
+        {
+            case FENCE:
+                return "_fence";
+            case STAIRS:
+                return "_stair";
+            case PANE :
+                return "_pane";
+            default:
+                switch (sub)
+                {
+
+                    case NONE:
+                        return "";
+                    case PANE :
+                        return "_pane";
+                    case SLAB:
+                        return "_slab";
+                    case CARPET :
+                        return "_carpet";
+                }
+        }
+        return "";
     }
     public static enum Transparency
     {
@@ -427,41 +503,66 @@ public class GenericBlockSet {
         NOTFULL,
         UNDEFINED
     }
+    public static enum HitBox
+    {
+        FULL(Block.createCuboidShape(0,0,0,16,16,16)),
+        SLAB(Block.createCuboidShape(0,0,0,16,8,16)),
+        FIXED_SLAB(Block.createCuboidShape(0,0,0,16,8,16),false),
+        CARPET(Block.createCuboidShape(0,0,0,16,1,16)),
+        LARGE_CARPET(Block.createCuboidShape(0,0,-16,32,1,32)),
+        CARPET_FIXED(Block.createCuboidShape(0,0,0,16,1,16),false),
+        CENTER(Block.createCuboidShape(7,0,7,9,16,9),false),
+        SMALL_BOTTOM(Block.createCuboidShape(6,0,6,10,8,10),false),
+        MEDIUM(Block.createCuboidShape(3,0,3,13,13,13),false),
+        SMALL_TOP(Block.createCuboidShape(6,8,6,10,16,10),false);
+        public final VoxelShape shape;
+        public final boolean needRotate;
+        private HitBox(VoxelShape shape)
+        {
+            this.shape=shape; this.needRotate=true;
+        }
+        private HitBox(VoxelShape shape,boolean needRotate)
+        {
+            this.shape=shape; this.needRotate=needRotate;
+        }
+
+    }
     public static enum ModelType
     {
         SIMPLE,
         PILLAR,
+        SLAB,
+        SLAB_3TEX,
         INVERSED_PILLAR,
         COMPOSTER,
         MACHINE,
         BOTOMLESS_MACHINE,
         TWO_TEXTURED_MACHINE,
+        WALL,
+        LADDER,
+        CARPET
 
     }
-    public static enum BlockTypes
+    public static enum SubBlock{
+        NONE,
+        PANE,
+        SLAB,
+        CARPET
+    }
+    public static enum BlockType
     {
         SIMPLE,
         PILLAR,
-        PILLAR_SLAB,
-        TOGGLEABLE,
-        CHAIR_SLAB,
-        CHAIR,
-        GLASS_BLOCK,
-        GLASS_PANE,
-        IRON_BARS,
-        ROTATABLE_SLAB,
+        STAIRS,
+        PANE,
         LECTERN,
         DOOR,
         FENCE,
-        OMNI_SLAB,
+        ROTATABLE_SLAB,
+        WALL,
         OMNI_BLOCK,
-        OMNI_CARPET,
-        OMNI_CARPET_SOLID,
         LANTERN,
         BED,
-        TRAPDOOR,
-        LADDER,
-        CONNECTED_V,
-        CONNECTED_H
+        TRAPDOOR
     }
 }

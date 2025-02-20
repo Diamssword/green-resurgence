@@ -195,8 +195,25 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
         var comp=invsComps.get(inventory);
         if(comp!=null)
             return new Pair<>(s.x+comp.x()-this.x,s.y+comp.y()-this.y+10);
-        return  null;
+        return  new Pair<>(0,0);
 
+    }
+    protected void drawSlots(DrawContext context, int mouseX, int mouseY, float delta)
+    {
+        for (String id : invsComps.keySet()) {
+            List<Slot> slots=this.handler.getSlotForInventory(id);
+            for (Slot slot : slots) {
+                if (slot.isEnabled()) {
+                    this.drawSlot(context, slot,id);
+                }
+                if (!this.isPointOverSlot(slot, mouseX, mouseY) || !slot.isEnabled()) continue;
+                this.focusedSlot = slot;
+                var pos=getSlotPosition(slot,id);
+                if (!this.focusedSlot.canBeHighlighted()) continue;
+                MultiInvHandledScreen.drawSlotHighlight(context, pos.getFirst(), pos.getSecond(), 0);
+            }
+
+        }
     }
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -238,20 +255,7 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
         context.getMatrices().push();
         context.getMatrices().translate(i, j, 0.0f);
         this.focusedSlot = null;
-        for (String id : invsComps.keySet()) {
-            List<Slot> slots=this.handler.getSlotForInventory(id);
-            for (Slot slot : slots) {
-                if (slot.isEnabled()) {
-                    this.drawSlot(context, slot,id);
-                }
-                if (!this.isPointOverSlot(slot, mouseX, mouseY) || !slot.isEnabled()) continue;
-                this.focusedSlot = slot;
-                var pos=getSlotPosition(slot,id);
-                if (!this.focusedSlot.canBeHighlighted()) continue;
-                MultiInvHandledScreen.drawSlotHighlight(context, pos.getFirst(), pos.getSecond(), 0);
-            }
-
-        }
+        drawSlots(context,mouseX,mouseY,delta);
         this.drawForeground(context, mouseX, mouseY);
         ItemStack itemStack2 = itemStack = this.touchDragStack.isEmpty() ? this.handler.getCursorStack() : this.touchDragStack;
         if (!itemStack.isEmpty()) {
@@ -385,7 +389,7 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
     }
 
     @Nullable
-    private Slot getSlotAt(double x, double y) {
+    protected Slot getSlotAt(double x, double y) {
         for (int i = 0; i < ((ScreenHandler)this.handler).slots.size(); ++i) {
             Slot slot = (Slot)((ScreenHandler)this.handler).slots.get(i);
             if (!this.isPointOverSlot(slot, x, y) || !slot.isEnabled()) continue;
@@ -615,7 +619,7 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
         this.touchDragSlotStart = null;
     }
 
-    private boolean isPointOverSlot(Slot slot, double pointX, double pointY) {
+    protected boolean isPointOverSlot(Slot slot, double pointX, double pointY) {
         String id=this.handler.getInventoryForSlot(slot);
         if(id !=null && invsComps.containsKey(id))
         {

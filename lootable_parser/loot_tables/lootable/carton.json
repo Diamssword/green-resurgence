@@ -34,7 +34,7 @@
                   }
                ],
                "name": "green_resurgence:material_paper_poster",
-               "weight": 80
+               "weight": 30
             },
             {
                "type": "minecraft:item",
@@ -50,7 +50,7 @@
                   }
                ],
                "name": "green_resurgence:material_wood_furniture",
-               "weight": 60
+               "weight": 10
             },
             {
                "type": "minecraft:item",
@@ -66,7 +66,7 @@
                   }
                ],
                "name": "green_resurgence:material_adesive_scotch",
-               "weight": 50
+               "weight": 20
             },
             {
                "type": "minecraft:item",
@@ -82,7 +82,7 @@
                   }
                ],
                "name": "green_resurgence:material_adesive_glue",
-               "weight": 50
+               "weight": 20
             },
             {
                "type": "minecraft:item",
@@ -98,7 +98,7 @@
                   }
                ],
                "name": "green_resurgence:material_paper_newspaper",
-               "weight": 80
+               "weight": 40
             },
             {
                "type": "minecraft:item",
@@ -114,23 +114,7 @@
                   }
                ],
                "name": "green_resurgence:material_metal_scrap",
-               "weight": 40
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_plastic_sheet",
-               "weight": 30
+               "weight": 10
             },
             {
                "type": "minecraft:item",
@@ -146,87 +130,7 @@
                   }
                ],
                "name": "green_resurgence:material_plastic_film",
-               "weight": 30
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_fabric_lin",
-               "weight": 30
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_fabric_cotton",
-               "weight": 30
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_chemical_vinegar",
-               "weight": 20
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_chemical_bleach",
-               "weight": 20
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_chemical_chlorine",
-               "weight": 20
+               "weight": 10
             },
             {
                "type": "minecraft:item",
@@ -236,35 +140,19 @@
                      "count": {
                         "type": "minecraft:uniform",
                         "max": 3,
-                        "min": 1
+                        "min": 2
                      },
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_glass_shards",
-               "weight": 60
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_energy_battery",
-               "weight": 10
+               "name": "green_resurgence:material_paper_paper",
+               "weight": 12
             }
          ],
          "rolls": {
             "type": "minecraft:uniform",
             "max": 2,
-            "min": 5
+            "min": 1
          }
       }
    ]

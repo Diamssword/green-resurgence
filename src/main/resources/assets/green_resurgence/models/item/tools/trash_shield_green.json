@@ -1,0 +1,15 @@
+{
+ "parent":"green_resurgence:item/tools/shield_trash_can",
+"textures": {
+		"0": "green_resurgence:block/diams/trash_can_green"
+		},
+    "overrides": [
+        {
+            "predicate": {
+                "blocking": 1
+            },
+            "model": "green_resurgence:item/tools/trash_shield_blocking_green"
+        }
+    ]
+
+}

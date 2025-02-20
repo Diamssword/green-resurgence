@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class FormattedInventory implements Inventory {
-    private final Inventory parent;
+    public final Inventory parent;
     private List<ItemStack> items=new ArrayList<>();
     @Nullable
     private List<InventoryChangedListener> listeners;
@@ -20,6 +20,7 @@ public class FormattedInventory implements Inventory {
         this.parent = parent;
         refresh();
     }
+
     void refresh()
     {
         items.clear();
@@ -35,8 +36,8 @@ public class FormattedInventory implements Inventory {
                     items.add(d.copy());
             }
         }
-        items.sort(Comparator.comparingInt(ItemStack::getCount));
-        while (items.size()<54)
+        items.sort(Comparator.comparingInt(ItemStack::getCount).reversed());
+        if(items.isEmpty())
             items.add(ItemStack.EMPTY);
         this.markDirty();
     }
@@ -66,7 +67,7 @@ public class FormattedInventory implements Inventory {
 
     @Override
     public ItemStack getStack(int slot) {
-        return items.get(slot);
+        return getDisplayInSlot(slot);
     }
 
     private int findStackInParent(ItemStack stack)
@@ -79,25 +80,22 @@ public class FormattedInventory implements Inventory {
     }
     @Override
     public ItemStack removeStack(int slot, int amount) {
-        var s1=findStackInParent(items.get(slot));
+        var stack=getDisplayInSlot(slot);
+        var s1=findStackInParent(stack);
         var re=parent.removeStack(s1,amount);
         if(re.getCount()<amount)
         {
-            s1=findStackInParent(items.get(slot));
+            s1=findStackInParent(stack);
             var re1=parent.removeStack(s1,amount-re.getCount());
             re.setCount(re.getCount()+re1.getCount());
         }
-      //  items.get(slot).decrement(re.getCount());
+
         return re;
     }
 
     @Override
     public ItemStack removeStack(int slot) {
-        return this.removeStack(slot,items.get(slot).getMaxCount());
-        /*var s1=findStackInParent(items.get(slot));
-        var re=parent.removeStack(s1);
-        items.get(slot).decrement(re.getCount());
-        return re;*/
+        return this.removeStack(slot,getDisplayInSlot(slot).getMaxCount());
     }
     public boolean canInsert(ItemStack stack) {
         for (int i = 0; i <parent.size() ; i++) {
@@ -135,7 +133,6 @@ public class FormattedInventory implements Inventory {
                     }
                 }
             }
-
         }
         for (int i = 0; i <parent.size() ; i++) {
             var st1=parent.getStack(i);
@@ -147,7 +144,6 @@ public class FormattedInventory implements Inventory {
                 return 0;
             }
         }
-        getDisplayStack(stack).increment(stack.getCount()-ret);
         return ret;
     }
     public ItemStack getDisplayStack(ItemStack stack)
@@ -155,21 +151,22 @@ public class FormattedInventory implements Inventory {
         var d=this.items.stream().filter(v->ItemStack.canCombine(stack,v)).findAny();
         return d.orElse(ItemStack.EMPTY);
     }
+    public ItemStack getDisplayInSlot(int slot)
+    {
+        if(slot>=items.size())
+            return ItemStack.EMPTY;
+        return items.get(slot);
+    }
     @Override
     public void setStack(int slot, ItemStack stack) {
         if(stack.isEmpty())
         {
-            var s1=findStackInParent(items.get(slot));
+            var s1=findStackInParent(getDisplayInSlot(slot));
             if(s1>-1) {
                 parent.setStack(s1, stack);
                 refresh();
             }
             return;
-        }
-        var fi=this.items.get(slot);
-        if(!fi.isEmpty())
-        {
-
         }
         for (int i = 0; i <parent.size() ; i++) {
             var i1=parent.getStack(i);
@@ -224,11 +221,14 @@ public class FormattedInventory implements Inventory {
         }
         @Override
         public ItemStack getStack() {
-            return inv.items.get(this.getIndex());
+            return inv.getDisplayInSlot(this.getIndex());
         }
         @Override
         public void setStackNoCallbacks(ItemStack stack) {
-            inv.items.set(this.getIndex(),stack);
+            if(inv.items.size()<=this.getIndex())
+                inv.items.add(stack);
+            else
+                inv.items.set(this.getIndex(),stack);
 //            super.setStackNoCallbacks(stack);
         }
         @Override
@@ -259,15 +259,13 @@ public class FormattedInventory implements Inventory {
 
         @Override
         public ItemStack insertStack(ItemStack stack, int count) {
-           stack=stack.copy();
-           stack.setCount(count);
-            if (!stack.isEmpty() && this.canInsert(stack)) {
-                    var r=inv.inserStack(stack);
-                     stack.setCount(r);
-                    return stack;
-            } else {
-                return stack;
+           var stack1=stack.copy();
+           stack1.setCount(count);
+            if(!stack.isEmpty() && this.canInsert(stack)) {
+                    var r=inv.inserStack(stack1);
+                     stack.setCount(stack.getCount()-(count-r));
             }
+            return stack;
         }
         public Optional<ItemStack> tryTakeStackRange(int min, int max, PlayerEntity player) {
             if (!this.canTakeItems(player)) {

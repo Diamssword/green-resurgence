@@ -1,0 +1,52 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+    <components>
+        <flow-layout direction="horizontal" >
+            <children>
+
+
+                <flow-layout direction="vertical" >
+                    <children>
+                        <flow-layout direction="horizontal">
+                            <children>
+                                <label id="title_right">
+                                    <text>Stats</text>
+
+                                </label>
+                            </children>
+                            <margins><bottom>-1</bottom></margins>
+                            <padding><all>2</all><right>5</right></padding>
+                            <surface>
+                                <flat >#606560</flat>
+                            </surface>
+                        </flow-layout>
+                        <separator>
+                            <sizing><vertical method="fixed">1</vertical><horizontal method="fill">100</horizontal></sizing>
+                            <margins><bottom>2</bottom></margins>
+                        </separator>
+                        <flow-layout direction="horizontal" id="mainFrame">
+                            <children>
+
+                            </children>
+                            <horizontal-alignment>center</horizontal-alignment>
+                            <sizing><horizontal method="fill">100</horizontal></sizing>
+                        </flow-layout>
+
+                    </children>
+
+                    <surface>
+                        <gpanel/>
+                    </surface>
+                    <sizing><vertical method="fill">80</vertical><horizontal method="fill">80</horizontal></sizing>
+                </flow-layout>
+            </children>
+            <surface>
+                <flat>#75384239</flat>
+                <vanilla-translucent/>
+            </surface>
+            <sizing><vertical method="fill">100</vertical><horizontal method="fill">100</horizontal></sizing>
+            <vertical-alignment>center</vertical-alignment>
+            <horizontal-alignment>center</horizontal-alignment>
+        </flow-layout>
+    </components>
+</owo-ui>

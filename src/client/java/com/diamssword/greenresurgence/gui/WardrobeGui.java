@@ -60,6 +60,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
         MinecraftClient.getInstance().player.getComponent(Components.PLAYER_DATA).writeToNbt(cp);
         var dt=player.getComponent(Components.PLAYER_DATA);
         dt.readFromNbt(cp);
+        dt.appearance.refreshSkinData();
 
         var outfits=dt.appearance.getOutfits();
         slider.value(0.5);
@@ -188,7 +189,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
             for (int i = scroll; i < collections.length+scroll; i++) {
                 final int i1=i-scroll;
                 collections[i-scroll].onPress((o)->{
-                    currentCol=col.get(i1-scroll);
+                    currentCol=col.get(Math.max(0,i1-scroll));
                     switchColl(text1,text2,inventory);}).icon(col.get(i)).tooltip(Text.translatable(GreenResurgence.ID + ".wardrobe.collection." + col.get(i)));
             }
         }
@@ -199,14 +200,13 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
         var dt=player.getComponent(Components.PLAYER_DATA);
         oldCloths=dt.appearance.getCloths();
         comp.onClothPicked().subscribe(v->{
-            System.out.println("pick");
             if(oldCloths.containsValue(v)) {
                 dt.appearance.setCloth(v.layer(), null);
                 Channels.MAIN.clientHandle().send(new CosmeticsPackets.EquipCloth("null",v.layer().toString()));
             }
             else {
                 dt.appearance.setCloth(v.layer(), v);
-                Channels.MAIN.clientHandle().send(new CosmeticsPackets.EquipCloth(v.id(),v.layer().toString()));
+                Channels.MAIN.clientHandle().send(new CosmeticsPackets.EquipCloth(v.layer()+"_"+v.id(),v.layer().toString()));
             }
             oldCloths=dt.appearance.getCloths();
             comp.setEquipped(oldCloths.values().stream().toList());

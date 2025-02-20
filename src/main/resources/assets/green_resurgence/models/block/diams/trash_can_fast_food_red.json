@@ -1,0 +1,5 @@
+{
+"parent":"green_resurgence:block/diams/trash_can_fast_food_black",
+"textures": {
+		"0": "green_resurgence:block/diams/trash_can_fast_food_red"
+		}}

@@ -34,19 +34,26 @@ public class OpenScreenCommand {
     {
         builder.requires(ctx-> ctx.hasPermissionLevel(2))
                 .then(CommandManager.literal("customizer").executes(OpenScreenCommand::openCustomizer))
-                .then(CommandManager.literal("wardrobe").executes(OpenScreenCommand::openWardrobe));
+                .then(CommandManager.literal("wardrobe").executes(OpenScreenCommand::openWardrobe))
+                .then(CommandManager.literal("stats").executes((ctx)->openGuiPacket(ctx, GuiPackets.GUI.Stats)));
 
 
     }
+    private static int openGuiPacket(CommandContext<ServerCommandSource> ctx,GuiPackets.GUI gui)
+    {
+        if(ctx.getSource().isExecutedByPlayer()) {
+            GuiPackets.send(ctx.getSource().getPlayer(), gui);
+            return 1;
+        }
+        return 0;
+    }
     private static int openCustomizer(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
-        if(ctx.getSource().isExecutedByPlayer())
-            GuiPackets.send(ctx.getSource().getPlayer(), GuiPackets.GUI.Customizer);
+        openGuiPacket(ctx, GuiPackets.GUI.Customizer);
         return 1;
 
     }
     private static int openWardrobe(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
-        if(ctx.getSource().isExecutedByPlayer())
-            GuiPackets.send(ctx.getSource().getPlayer(), GuiPackets.GUI.Wardrobe);
+        openGuiPacket(ctx, GuiPackets.GUI.Wardrobe);
         return 1;
 
     }

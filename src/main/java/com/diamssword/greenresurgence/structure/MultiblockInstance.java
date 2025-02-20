@@ -19,7 +19,7 @@ public class MultiblockInstance {
     public MultiblockInstance(String name, @Nullable Identifier structurePath, boolean centered)
     {
         block = new MainStructureBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
-        placer= new StructurePlacerItem(new OwoItemSettings().group(MItems.GROUP).tab(1), structurePath!=null?structurePath:new Identifier(GreenResurgence.ID+":placer/"+name),centered);
+        placer= new StructurePlacerItem(new OwoItemSettings().group(MItems.GROUP).tab(2), structurePath!=null?structurePath:new Identifier(GreenResurgence.ID+":placer/"+name),centered);
         this.name=name;
     }
 }

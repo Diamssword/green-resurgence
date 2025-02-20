@@ -1,0 +1,62 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "green_resurgence:block/diams/lamp_base_oak",
+		"particle": "green_resurgence:block/diams/lamp_base_oak"
+	},
+	"elements": [
+		{
+			"from": [7.51, 0, 7.51],
+			"to": [8.49, 17.5, 8.49],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 0, 7]},
+			"faces": {
+				"north": {"uv": [7, 0, 8, 16], "texture": "#0"},
+				"east": {"uv": [8, 0, 9, 16], "texture": "#0"},
+				"south": {"uv": [6, 0, 7, 16], "texture": "#0"},
+				"west": {"uv": [5, 0, 6, 16], "texture": "#0"},
+				"up": {"uv": [4, 0, 5, 1], "texture": "#0"},
+				"down": {"uv": [0, 0, 1, 1], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, 1.75, 0.25]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, 1.75, 0.25]
+		},
+		"firstperson_righthand": {
+			"translation": [4, -0.25, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_lefthand": {
+			"translation": [4, -0.25, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"ground": {
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"gui": {
+			"rotation": [26, 0, 0],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"head": {
+			"rotation": [0, 0, 90],
+			"translation": [1, 2.25, -6.5]
+		},
+		"fixed": {
+			"translation": [0, -1.5, 0],
+			"scale": [1.5, 1.5, 1.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "Pied",
+			"origin": [8, 0, 8],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}

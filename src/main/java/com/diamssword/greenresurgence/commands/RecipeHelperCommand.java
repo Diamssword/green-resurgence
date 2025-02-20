@@ -9,17 +9,23 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.Dynamic3CommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
+import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.StructureBlockBlockEntity;
+import net.minecraft.block.pattern.CachedBlockPosition;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.argument.BlockPosArgumentType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.WorldSavePath;
+import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import org.apache.commons.io.FileUtils;
 
@@ -38,10 +44,11 @@ public class RecipeHelperCommand {
     {
         builder.requires(ctx-> ctx.hasPermissionLevel(2))
                 .then(CommandManager.literal("getTags").executes(RecipeHelperCommand::getTagsExec))
-              .then(CommandManager.literal("createRecipe")
-                      .then(CommandManager.argument("chest", BlockPosArgumentType.blockPos())
-                              .then(CommandManager.argument("name", StringArgumentType.string()).executes(RecipeHelperCommand::createRecipe)))
-                .then(CommandManager.literal("addToRecipe").then(CommandManager.argument("chest", BlockPosArgumentType.blockPos()).then(CommandManager.argument("name", StringArgumentType.string()).executes(RecipeHelperCommand::addRecipe)))));
+              .then(CommandManager.literal("createRecipe").then(CommandManager.argument("chest", BlockPosArgumentType.blockPos())
+                              .then(CommandManager.argument("name", StringArgumentType.string()).executes(RecipeHelperCommand::createRecipe))))
+                .then(CommandManager.literal("addToRecipe").then(CommandManager.argument("chest", BlockPosArgumentType.blockPos()).then(CommandManager.argument("name", StringArgumentType.string()).executes(RecipeHelperCommand::addRecipe))))
+                        .then(CommandManager.literal("listblocks").then(CommandManager.argument("from", BlockPosArgumentType.blockPos()).then(CommandManager.argument("to", BlockPosArgumentType.blockPos()).executes(RecipeHelperCommand::listblocks))));
+
     }
     public static MutableText copyable(MutableText text,String copied)
     {
@@ -58,6 +65,20 @@ public class RecipeHelperCommand {
         } else {
             return (Inventory)blockEntity;
         }
+    }
+    private static int listblocks(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
+        BlockBox range=BlockBox.create(BlockPosArgumentType.getLoadedBlockPos(ctx,"from"),BlockPosArgumentType.getLoadedBlockPos(ctx,"to"));
+        List<Block> blocks=new ArrayList<>();
+        for (BlockPos blockPos : BlockPos.iterate(range.getMinX(), range.getMinY(), range.getMinZ(), range.getMaxX(), range.getMaxY(), range.getMaxZ())) {
+            var d=new CachedBlockPosition(ctx.getSource().getWorld(), blockPos, true);
+            if(!d.getBlockState().isAir() && !blocks.contains(d.getBlockState().getBlock()))
+            {
+                blocks.add(d.getBlockState().getBlock());
+            }
+        }
+        var t1=Texts.join(blocks, Optional.of(Text.literal(" ")),v->Text.literal(Registries.BLOCK.getId(v).toString()));
+        ctx.getSource().sendFeedback(()->copyable(t1,t1.getString()),false);
+        return 1;
     }
     private static int addRecipe(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
         var pos=BlockPosArgumentType.getLoadedBlockPos(ctx,"chest");

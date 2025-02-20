@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence.mixin.client;
 
-import com.diamssword.greenresurgence.AttackBlockCallback;
+import com.diamssword.greenresurgence.event.AttackBlockCallback;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;

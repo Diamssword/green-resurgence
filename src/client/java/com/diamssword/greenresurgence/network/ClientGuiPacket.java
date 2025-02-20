@@ -24,6 +24,9 @@ public class ClientGuiPacket {
                 case Wardrobe -> {
                     openGui(new WardrobeGui());
                 }
+                case Stats -> {
+                    openGui(new PlayerStatsGui());
+                }
             }
         });
     }

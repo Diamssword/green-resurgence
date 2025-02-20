@@ -1,12 +1,14 @@
 package com.diamssword.greenresurgence.systems.faction.perimeter;
 
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionTerrainStorage;
+import com.diamssword.greenresurgence.systems.faction.perimeter.components.TerrainEnergyStorage;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIntArray;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ public class TerrainInstance {
     private final List<BlockBox> boxes=new ArrayList<>();
 
     public final FactionInstance parent;
+    public TerrainEnergyStorage energyStorage=new TerrainEnergyStorage();
     public FactionTerrainStorage storage=new FactionTerrainStorage();
     public TerrainInstance(FactionInstance parent)
     {
@@ -59,6 +62,8 @@ public class TerrainInstance {
         });
         if(tag.contains("storage"))
             storage.fromNBT(tag.getCompound("storage"),parent.world);
+        if(tag.contains("energy"))
+            energyStorage.fromNBT(tag.getCompound("energy"));
     }
 
     public void writeNbt(NbtCompound tag) {
@@ -66,6 +71,10 @@ public class TerrainInstance {
         var t1=new NbtCompound();
         storage.toNBT(t1);
         tag.put("storage",t1);
+        var t2=new NbtCompound();
+        energyStorage.toNBT(t2);
+        tag.put("energy",t1);
+
     }
     public void writeToNetworkNbt(NbtCompound tag) {
         NbtList boxes=new NbtList();

@@ -3,7 +3,6 @@ package com.diamssword.greenresurgence.network;
 import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
 import com.diamssword.greenresurgence.systems.Components;
-import com.diamssword.greenresurgence.systems.character.MovementManager;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -20,7 +19,8 @@ public class GuiPackets {
     public static enum GUI{
         ImageBlock,
         Wardrobe,
-        Customizer
+        Customizer,
+        Stats
     }
     public record GuiPacket(GUI gui, @Nullable  BlockPos pos){};
     public record GuiTileValue(BlockPos pos,String key,String value) {

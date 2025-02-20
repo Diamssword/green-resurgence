@@ -2,35 +2,31 @@ package com.diamssword.greenresurgence;
 
 import com.diamssword.greenresurgence.blockEntities.ConnectorBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
+import com.diamssword.greenresurgence.event.AttackBlockCallback;
 import com.diamssword.greenresurgence.events.PlaceBlockCallback;
 import com.diamssword.greenresurgence.network.AdventureInteract;
 import com.diamssword.greenresurgence.network.Channels;
-import com.diamssword.greenresurgence.network.ClientZonePacket;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
+import com.diamssword.greenresurgence.render.AdventureBlockHighlight;
 import com.diamssword.greenresurgence.render.BoxRenderers;
 import com.diamssword.greenresurgence.render.CableRenderer;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
+import com.diamssword.greenresurgence.systems.lootables.IAdvancedLootableBlock;
 import com.diamssword.greenresurgence.systems.lootables.LootableLogic;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameMode;
-import net.minecraft.world.World;
 
 import static com.diamssword.greenresurgence.render.BoxRenderers.*;
 
@@ -40,7 +36,7 @@ public class ClientEvents {
 
     public static void initialize()
     {
-        AttackBlockCallback.EVENT.register((pos,dir)->{
+        AttackBlockCallback.EVENT.register((pos, dir)->{
             if(System.currentTimeMillis()<cooldown+600)
             {
                 return ActionResult.FAIL;
@@ -53,24 +49,29 @@ public class ClientEvents {
                 if(state.getBlock()== MBlocks.LOOTED_BLOCK)
                 {
                     LootedBlockEntity ent=MBlocks.LOOTED_BLOCK.getBlockEntity(pos,player.getWorld());
-                    if(st !=null && LootableLogic.isGoodTool(st,ent.getDisplayBlock()))
+                    if(st !=null && LootableLogic.isGoodTool(st,ent.getDisplayBlock(),0))
                     {
-                        Channels.MAIN.clientHandle().send(new AdventureInteract.BlockInteract(pos));
-                        cooldown=System.currentTimeMillis();
-                        player.swingHand(player.preferredHand);
+                        sendInteract(pos,player);
                         return ActionResult.SUCCESS;
                     }
                 }
-                else if(st !=null && LootableLogic.isGoodTool(st,MinecraftClient.getInstance().world.getBlockState(pos)))
+                else if(state.hasBlockEntity() && player.getWorld().getBlockEntity(pos) instanceof IAdvancedLootableBlock res)
                 {
-                    cooldown=System.currentTimeMillis();
-                    Channels.MAIN.clientHandle().send(new AdventureInteract.BlockInteract(pos));
+                        if(res.canBeInteracted())
+                        {
+                            sendInteract(pos,player);
+                            return ActionResult.SUCCESS;
+                        }
+                }
+                else if(st !=null && LootableLogic.isGoodTool(st,MinecraftClient.getInstance().world.getBlockState(pos),0))
+                {
+                    sendInteract(pos,player);
                     return ActionResult.SUCCESS;
                 }
             }
-
             return ActionResult.PASS;
         });
+
         ClientBlockEntityEvents.BLOCK_ENTITY_UNLOAD.register((te,w)->{
             if(te instanceof ConnectorBlockEntity)
             {
@@ -95,13 +96,29 @@ public class ClientEvents {
                         if(state.getBlock()== MBlocks.LOOTED_BLOCK)
                         {
                             LootedBlockEntity ent=MBlocks.LOOTED_BLOCK.getBlockEntity((hitB).getBlockPos(),ctx.world());
-                            if(st !=null && LootableLogic.isGoodTool(st,ent.getDisplayBlock())) {
+                            if(st !=null && LootableLogic.isGoodTool(st,ent.getDisplayBlock(),2)) {
                                 BoxRenderers.drawAdventureOutline((hitB).getBlockPos(), ctx);
                                 return false;
                             }
 
                         }
-                        else if(st !=null && LootableLogic.isGoodTool(st,ctx.world().getBlockState((hitB).getBlockPos()))) {
+                        else if(state.hasBlockEntity()&&ctx.world().getBlockEntity(hitB.getBlockPos()) instanceof IAdvancedLootableBlock res)
+                        {
+                                if(res.canBeInteracted())
+                                {
+                                    BoxRenderers.drawAdventureOutline((hitB).getBlockPos(), ctx);
+                                    return false;
+                                }
+                        }
+                        else if(AdventureBlockHighlight.blocks.containsKey(state.getBlock()))
+                        {
+                            if(AdventureBlockHighlight.blocks.get(state.getBlock()).shouldHighlight(state,ctx.world(),(hitB).getBlockPos()))
+                            {
+                                BoxRenderers.drawAdventureOutline((hitB).getBlockPos(), ctx);
+                                return false;
+                            }
+                        }
+                        else if(st !=null && LootableLogic.isGoodTool(st,ctx.world().getBlockState((hitB).getBlockPos()),2)) {
                             BoxRenderers.drawAdventureOutline((hitB).getBlockPos(), ctx);
                             return false;
                         }
@@ -121,7 +138,13 @@ public class ClientEvents {
         PlaceBlockCallback.EVENT.register(ClientEvents::placeBlock);
 
     }
-
+    private static void sendInteract(BlockPos pos,PlayerEntity pl)
+    {
+        cooldown=System.currentTimeMillis();
+        Channels.MAIN.clientHandle().send(new AdventureInteract.BlockInteract(pos));
+        if(pl.preferredHand!=null)
+            pl.swingHand(pl.preferredHand);
+    }
     private static ActionResult placeBlock(ItemPlacementContext ctx, BlockState state) {
         GameMode mode=MinecraftClient.getInstance().getNetworkHandler().getPlayerListEntry(ctx.getPlayer().getUuid()).getGameMode();
         if(mode.equals(GameMode.SURVIVAL))
@@ -135,18 +158,4 @@ public class ClientEvents {
         return ActionResult.PASS;
     }
 
-   /* public static ActionResult placeBlock(PlayerEntity player, World w, Hand hand, BlockHitResult hit)
-    {
-        GameMode mode=MinecraftClient.getInstance().getNetworkHandler().getPlayerListEntry(player.getUuid()).getGameMode();
-        if(mode.equals(GameMode.SURVIVAL))
-        {
-            BlockPos p=hit.getBlockPos().offset(hit.getSide());
-            for (BlockBox box : CurrentZonePacket.currentZone) {
-                if(box.contains(p))// && BaseInteractions.canUseItem(player,hand))
-                    return ActionResult.PASS;
-            }
-            return ActionResult.FAIL;
-        }
-        return ActionResult.PASS;
-    }*/
 }

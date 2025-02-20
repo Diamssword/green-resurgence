@@ -1,8 +1,11 @@
 package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.MBlocks;
+import com.diamssword.greenresurgence.blockEntities.LootableItemBlockEntity;
+import com.diamssword.greenresurgence.blockEntities.LootableShelfEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
+import com.diamssword.greenresurgence.systems.lootables.IAdvancedLootableBlock;
 import com.diamssword.greenresurgence.systems.lootables.LootableLogic;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
 import com.diamssword.greenresurgence.systems.lootables.LootablesReloader;
@@ -47,33 +50,41 @@ public class AdventureInteract {
                 if(state.getBlock()== MBlocks.LOOTED_BLOCK)
                 {
                     LootedBlockEntity ent=MBlocks.LOOTED_BLOCK.getBlockEntity(msg.pos,ctx.player().getWorld());
-                    if(st !=null && LootableLogic.isGoodTool(st,ent.getRealBlock()))
+                    if(st !=null && LootableLogic.isGoodTool(st,ent.getRealBlock(),0))
                     {
                         setCooldown(ctx.player());
-                        if(LootableLogic.isDestroyInteract(st))
+  //                      if(LootableLogic.isDestroyInteract(st))
                             ent.attackBlock(ctx.player());
-                        else
-                            ent.openInventory(ctx.player());
+//                        else
+                      //      ent.openInventory(ctx.player());
                     }
                 }
-                else if(st !=null && LootableLogic.isGoodTool(st,state))
+                else if(state.hasBlockEntity() && ctx.player().getWorld().getBlockEntity(msg.pos) instanceof IAdvancedLootableBlock res)
+                {
+                    if(res.canBeInteracted())
+                    {
+                        setCooldown(ctx.player());
+                        res.lootBlock(ctx.player());
+                    }
+                }
+                else if(st !=null && LootableLogic.isGoodTool(st,state,0))
                 {
                     ctx.player().getWorld().setBlockState(msg.pos, MBlocks.LOOTED_BLOCK.getDefaultState());
                     var te=MBlocks.LOOTED_BLOCK.getBlockEntity(msg.pos, ctx.player().getWorld());
                     te.setRealBlock(state);
                     setCooldown(ctx.player());
-                    if( LootableLogic.isDestroyInteract(st)) {
+                  //  if( LootableLogic.isDestroyInteract(st)) {
                         te.lastBreak=System.currentTimeMillis();
                         te.markDirty();
                         LootableLogic.giveLoot(ctx.player(), msg.pos, state);
                         ctx.player().getWorld().syncWorldEvent(WorldEvents.BLOCK_BROKEN, msg.pos, Block.getRawIdFromState(state));
                         ctx.player().getWorld().playSound(null, msg.pos, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 0.5f, 1f + (float) Math.random());
-                    }
+                 /*   }
                     else
                     {
                         te.durability=LootedBlockEntity.MAX+1;
                         te.openInventory(ctx.player());
-                    }
+                    }*/
                 }
             }
         });

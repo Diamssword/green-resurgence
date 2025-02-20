@@ -41,5 +41,7 @@ public class Channels {
         CosmeticsPackets.init();
         GuiPackets.init();
         CraftPackets.init();
+        StatsPackets.init();
+        PosesPackets.init();
     }
 }

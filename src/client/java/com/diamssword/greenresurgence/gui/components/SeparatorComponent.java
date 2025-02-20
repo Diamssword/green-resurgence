@@ -16,10 +16,12 @@ public class SeparatorComponent extends BaseComponent {
     private boolean vertical=false;
     private int color=0xff606560;
 
-    protected SeparatorComponent(Sizing sizing) {
+    public SeparatorComponent(Sizing sizing) {
       this.sizing(sizing);
     }
-
+    public SeparatorComponent(Sizing horizontal,Sizing vertical) {
+        this.sizing(horizontal,vertical);
+    }
     @Override
     public void draw(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
         RenderSystem.enableDepthTest();

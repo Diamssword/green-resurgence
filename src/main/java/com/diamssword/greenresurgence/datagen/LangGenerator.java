@@ -1,20 +1,24 @@
 package com.diamssword.greenresurgence.datagen;
 
+import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlockSet;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.materials.MaterialSet;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.minecraft.util.Identifier;
 
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LangGenerator extends FabricLanguageProvider {
 	private final Path existingFilePath;
+	public static Map<Identifier,String> auto_name= new HashMap<>();
 	public LangGenerator(FabricDataOutput dataGenerator) {
 		super(dataGenerator, "en_us");
 		existingFilePath = dataGenerator.getModContainer().findPath("assets/green_resurgence/lang/fragment.json").get();
 	}
- 
 	@Override
 	public void generateTranslations(TranslationBuilder translationBuilder) {
 		try {
@@ -28,10 +32,15 @@ public class LangGenerator extends FabricLanguageProvider {
 			translationBuilder.add("materials.tier.3","Tier III");
 			translationBuilder.add("materials.tier.4","Tier IV");
 			translationBuilder.add("materials.tier.5","Tier V");
+			auto_name.forEach((k,v)->autoLocalize(translationBuilder,k,v));
 			translationBuilder.add(existingFilePath);
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to add existing language file!", e);
 		}
+	}
+	private void autoLocalize(TranslationBuilder builder,Identifier id,String name)
+	{
+		builder.add("item." +id.getNamespace() + "." + id.getPath().replaceAll("/","."),capitalizeString(name.replaceAll("_", " ")));
 	}
 	public static String capitalizeString(String string) {
 		char[] chars = string.toLowerCase().toCharArray();

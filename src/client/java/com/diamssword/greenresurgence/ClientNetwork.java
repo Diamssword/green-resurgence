@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence;
 
 import com.diamssword.greenresurgence.network.AdventureInteract;
+import com.diamssword.greenresurgence.network.ClientComesticsPacket;
 import com.diamssword.greenresurgence.network.ClientGuiPacket;
 import com.diamssword.greenresurgence.network.ClientZonePacket;
 
@@ -9,5 +10,6 @@ public class ClientNetwork {
     {
         ClientGuiPacket.init();
         ClientZonePacket.init();
+        ClientComesticsPacket.init();
     }
 }

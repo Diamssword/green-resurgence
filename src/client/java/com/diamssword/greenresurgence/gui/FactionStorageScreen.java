@@ -3,15 +3,20 @@ package com.diamssword.greenresurgence.gui;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.blocks.CrafterBlock;
 import com.diamssword.greenresurgence.gui.components.ButtonInventoryComponent;
+import com.diamssword.greenresurgence.gui.components.InventoryComponent;
+import com.diamssword.greenresurgence.gui.components.InventorySearchableComponent;
 import com.diamssword.greenresurgence.gui.components.RecipDisplayComponent;
 import com.diamssword.greenresurgence.network.CraftPackets;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
 import com.diamssword.greenresurgence.systems.crafting.UniversalResource;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionTerrainStorage;
+import com.diamssword.greenresurgence.systems.faction.perimeter.components.FormattedInventory;
 import com.mojang.datafixers.util.Pair;
+import io.wispforest.owo.ui.base.BaseParentComponent;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
+import io.wispforest.owo.ui.core.OwoUIDrawContext;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -21,16 +26,145 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+import java.util.List;
+
 public class FactionStorageScreen extends MultiInvHandledScreen<FactionTerrainStorage.ScreenHandler,FlowLayout> {
     public FactionStorageScreen(FactionTerrainStorage.ScreenHandler handler, PlayerInventory inv, Text title) {
         super(handler,FlowLayout.class, BaseUIModelScreen.DataSource.asset(GreenResurgence.asRessource("faction_storage")));
 
+    }
+    private static InventorySearchableComponent storage;
+@Override
+protected void findInvComps(BaseParentComponent root)
+{
+    root.children().forEach(c->{
+        if(c instanceof InventoryComponent par)
+        {
+            invsComps.put(par.inventoryId,par);
+            var inv=this.handler.getInventory(par.inventoryId);
+            if(inv !=null)
+                par.setSize(inv.getWidth(),inv.getHeight());
+        }
+        else if(c instanceof InventorySearchableComponent par)
+        {
+            storage=par;
+            var inv=this.handler.getInventory(par.inventoryId);
+            if(inv !=null) {
+                par.setSize(9, 6);
+                par.setInventory(this.handler.getSlotForInventory(par.inventoryId));
+                this.handler.onSlotAdded(()->{
+                    par.setInventory(this.handler.getSlotForInventory(par.inventoryId));
+                });
+
+            }
+        }
+        else if(c instanceof BaseParentComponent c1)
+            findInvComps(c1);
+    });
+
+}
+@Override
+protected void drawSlots(DrawContext context, int mouseX, int mouseY, float delta)
+{
+    for (String id : this.handler.getInventoriesNames()) {
+        List<Slot> slots;
+        if("storage".equals(id))
+            slots=storage.getDisplayedSlots();
+        else
+            slots=this.handler.getSlotForInventory(id);
+        for (Slot slot : slots) {
+            if (slot.isEnabled()) {
+                this.drawSlot(context, slot,id);
+            }
+            if (!this.isPointOverSlot(slot, mouseX, mouseY) || !slot.isEnabled()) continue;
+            this.focusedSlot = slot;
+            var pos=getSlotPosition(slot,id);
+            if (!this.focusedSlot.canBeHighlighted()) continue;
+            MultiInvHandledScreen.drawSlotHighlight(context, pos.getFirst(), pos.getSecond(), 0);
+        }
+
+    }
+}
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    super.render(context,mouseX,mouseY,delta);
+
+    }
+    @Override
+    protected boolean isClickOutsideBounds(double mouseX, double mouseY, int left, int top, int button) {
+        if(storage!=null)
+        {
+            if(storage.isInBoundingBox(mouseX,mouseY))
+                return false;
+        }
+        return super.isClickOutsideBounds(mouseX,mouseY,left,top,button);
+    }
+    @Override
+    protected Slot getSlotAt(double x, double y) {
+        if(storage!=null)
+        {
+
+            for (Slot slot : storage.getDisplayedSlots()) {
+                if(this.isPointOverSlot(slot, x, y)) {
+                    return slot;
+                }
+
+
+            }
+
+        }
+        for (int i = 0; i < ((ScreenHandler)this.handler).slots.size(); ++i) {
+            Slot slot = (Slot)((ScreenHandler)this.handler).slots.get(i);
+            if (!this.isPointOverSlot(slot, x, y) || !slot.isEnabled()) continue;
+            return slot;
+        }
+
+        return null;
+    }
+    @Override
+    protected void onMouseClick(Slot slot, int slotId, int button, SlotActionType actionType) {
+
+        if (slot != null) {
+            slotId = slot.id;
+        }
+        if(slot instanceof InventorySearchableComponent.FalseSlot)
+        {
+            if(this.handler.getCursorStack().isEmpty())
+                return;
+            slotId=this.handler.getSlotForInventory("storage").get(0).id;
+        }
+        this.client.interactionManager.clickSlot(((ScreenHandler)this.handler).syncId, slotId, button, actionType, this.client.player);
+    }
+    @Override
+    protected boolean isPointOverSlot(Slot slot, double pointX, double pointY) {
+        String id=this.handler.getInventoryForSlot(slot);
+        if(id==null)
+            id="storage";
+        var pos= getSlotPosition(slot,id);
+        return this.isPointWithinBounds(pos.getFirst(),pos.getSecond(), 16, 16, pointX, pointY);
+
+    }
+    @Override
+    public Pair<Integer,Integer> getSlotPosition(Slot s, String inventory)
+    {
+        if("storage".equals(inventory) && storage!=null)
+        {
+            List<Slot> slots=storage.getDisplayedSlots();
+            var i=slots.indexOf(s);
+            if(i>=0)
+                return new Pair<>(((i%9)*18)+storage.x()-this.x,((i/9)*18)+storage.y()-this.y+20);
+            return new Pair<>(0,0);
+        }
+        else
+            return super.getSlotPosition(s,inventory);
     }
 
     @Override
@@ -86,7 +220,7 @@ public class FactionStorageScreen extends MultiInvHandledScreen<FactionTerrainSt
             }
             context.drawItem(itemStack, pos.getFirst(), pos.getSecond(), pos.getFirst() + pos.getSecond() * this.backgroundWidth);
             if(string!=null)
-                drawItemInSlot(context, itemStack, pos.getFirst(), pos.getSecond(), string);
+                context.drawItemInSlot(this.textRenderer, itemStack, pos.getFirst(), pos.getSecond(), string);
             else if(!itemStack.isEmpty() && itemStack.getCount()>1)
                 RessourceGuiHelper.drawRessourceExtra(context, UniversalResource.fromItemOpti(itemStack),pos.getFirst(),pos.getSecond(),0,16777215);
         }
@@ -119,7 +253,6 @@ public class FactionStorageScreen extends MultiInvHandledScreen<FactionTerrainSt
                 l = k + MathHelper.ceil(16.0F * f);
                 ctx.fill(RenderLayer.getGuiOverlay(), x, k, x + 16, l, Integer.MAX_VALUE);
             }
-
             ctx.getMatrices().pop();
         }
     }

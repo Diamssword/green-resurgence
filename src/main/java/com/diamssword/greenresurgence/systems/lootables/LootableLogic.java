@@ -38,12 +38,14 @@ public class LootableLogic {
                 if(state.getBlock()== MBlocks.LOOTED_BLOCK)
                 {
                     LootedBlockEntity ent=MBlocks.LOOTED_BLOCK.getBlockEntity(p,player.getWorld());
-                    if(LootableLogic.isGoodTool(ItemStack.EMPTY,ent.getRealBlock())) {
+
+                    if(Lootables.CONTAINER.id().equals(getGoodTool(ItemStack.EMPTY,ent.getRealBlock(),1)))
+                    {
                         ent.openInventory((ServerPlayerEntity) player);
                         return ActionResult.SUCCESS;
                     }
                 }
-                else if ( isGoodTool(ItemStack.EMPTY, state)) {
+                else if(Lootables.CONTAINER.id().equals(getGoodTool(ItemStack.EMPTY,state,1))) {
                    player.getWorld().setBlockState(p, MBlocks.LOOTED_BLOCK.getDefaultState());
                     var te=MBlocks.LOOTED_BLOCK.getBlockEntity(p, player.getWorld());
                     te.setRealBlock(state);
@@ -64,7 +66,7 @@ public class LootableLogic {
                 .build(LootContextTypes.BLOCK);
         ServerWorld serverWorld = lootContextParameterSet.getWorld();
         ItemStack st=lootContextParameterSet.get(LootContextParameters.TOOL);
-        var tool=getGoodTool(st,state);
+        var tool=getGoodTool(st,state,2);
         if(tool!=null ) {
             var loot=findLootTag(state,tool);
             if(loot!=null) {
@@ -85,36 +87,45 @@ public class LootableLogic {
                 .add(LootContextParameters.ORIGIN, pos.toCenterPos())
                 .build(LootContextTypes.BLOCK);
         ServerWorld serverWorld = lootContextParameterSet.getWorld();
-            var loot=findLootTag(state,Lootables.HAND.id());
+            var loot=findLootTag(state,Lootables.CONTAINER.id());
             if(loot!=null) {
                 LootTable lootTable = serverWorld.getServer().getLootManager().getLootTable(loot);
                 lootTable.supplyInventory(inv,lootContextParameterSet,rand.nextLong());
                 inv.markDirty();
             }
     }
-    public static Identifier findLootTag(BlockState state, Identifier tool)
+    private static Identifier findLootTag(BlockState state, Identifier tool)
     {
         return Lootables.getTableForBlock(state.getBlock(),tool);
 
     }
     public static boolean isDestroyInteract(Identifier tool)
     {
-        return !tool.equals( Lootables.HAND.id());
+        return !tool.equals( Lootables.CONTAINER.id());
     }
-    public static boolean isDestroyInteract(ItemStack tool)
+
+    public static boolean isGoodTool(ItemStack tool,BlockState block,int mode)
     {
-        return !tool.isEmpty();
+        return getGoodTool(tool,block,mode)!=null;
     }
-    public static boolean isGoodTool(ItemStack tool,BlockState block)
-    {
-        return getGoodTool(tool,block)!=null;
-    }
-    public static Identifier getGoodTool(ItemStack tool,BlockState block)
+
+    /**
+     *
+     * @param tool tool itemstack
+     * @param block block to test
+     * @param mode 0= left click only 1= right click only 2= both
+     * @return the tool ID or null;
+     */
+    private static Identifier getGoodTool(ItemStack tool,BlockState block,int mode)
     {
         if(tool.isEmpty() && block!=null)
         {
-            if(Lootables.isGoodTool(block.getBlock(), Lootables.HAND.id()))
-                return Lootables.HAND.id();
+            if(Lootables.isGoodTool(block.getBlock(), Lootables.CONTAINER.id()))
+                return (mode==1||mode==2)?Lootables.CONTAINER.id():null;
+            else if( Lootables.isGoodTool(block.getBlock(), Lootables.HAND.id()))
+                return (mode==0||mode==2)?Lootables.HAND.id():null;
+            else
+                return null;
         }
         List<TagKey<Item>> list = tool.streamTags().filter(v -> v.id().getNamespace().equals(GreenResurgence.ID) && v.id().getPath().startsWith("lootable/tools")).toList();
         for(TagKey<Item> it : list)

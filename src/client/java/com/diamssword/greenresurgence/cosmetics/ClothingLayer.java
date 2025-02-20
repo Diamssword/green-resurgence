@@ -18,6 +18,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import software.bernie.geckolib.model.DefaultedGeoModel;
 
+import java.awt.*;
+import java.util.Optional;
+
 public class ClothingLayer  extends FeatureRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
     private final FeatureRendererContext<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> ctx;
     private final ClothingLoader.Layer layer;
@@ -33,15 +36,23 @@ public class ClothingLayer  extends FeatureRenderer<AbstractClientPlayerEntity, 
     @Override
     public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, AbstractClientPlayerEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
         var data=entity.getComponent(Components.PLAYER_DATA);
-        data.appearance.getCloth(layer).ifPresent(c->{
-        if(data!=null)
+        if(data.appearance!=null)
         {
-            ctx.getModel().copyBipedStateTo(model);
-            model.animateModel(entity,limbAngle,limbDistance,tickDelta);
-            model.setAngles(entity,limbAngle,limbDistance,animationProgress,headYaw,headPitch);
-            model.render(matrices,vertexConsumers.getBuffer(model.getLayer(GreenResurgence.asRessource("textures/cloth/"+layer.toString()+"/"+c.id()+".png"))),light, LivingEntityRenderer.getOverlay(entity,0),1,1,1,1);
+                var c1=data.appearance.getClothDatas(layer);
+                if(c1.isPresent())
+                {
+                    var c=c1.get();
+                    ctx.getModel().copyBipedStateTo(model);
+                    model.animateModel(entity,limbAngle,limbDistance,tickDelta);
+                 //   model.setAngles(entity,limbAngle,limbDistance,animationProgress,headYaw,headPitch);
+                    var col=new Color(255,255,255);
+                    if(c.needColor())
+                    {
+                        col=new Color(c.color()).brighter();//dirty trick to make color fit more with the website viewer
+                    }
+                        model.render(matrices,vertexConsumers.getBuffer(model.getLayer(GreenResurgence.asRessource("textures/cloth/"+layer.toString()+"/"+c.texture()+".png"))),light, LivingEntityRenderer.getOverlay(entity,0),col.getRed()/255f, col.getGreen() /255f,  col.getBlue() /255f,1);
+                }
         }
-        });
     }
 
 }

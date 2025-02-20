@@ -1,0 +1,6 @@
+{
+	"parent":"green_resurgence:block/generic/omni_carpet_large",
+	"textures": {
+		"particle": "green_resurgence:block/diams/lamp_neon_text_big_pink_on"
+	}
+}

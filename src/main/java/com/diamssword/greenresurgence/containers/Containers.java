@@ -4,6 +4,7 @@ import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.blocks.BaseStorageBlock;
 import com.diamssword.greenresurgence.blocks.CrafterBlock;
 import com.diamssword.greenresurgence.blocks.ItemBlock;
+import com.diamssword.greenresurgence.blocks.ShelfBlock;
 import com.diamssword.greenresurgence.items.BlockVariantItem;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionTerrainStorage;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,6 +22,7 @@ public class Containers implements ContainerRegistryContainer {
    public static final ScreenHandlerType<GenericScreenHandler> GENERIC = build(GenericScreenHandler::new);
     //public static final ScreenHandlerType<MutliInvScreenHandler> RELATIVE = build(MutliInvScreenHandler::new);
     public static final ScreenHandlerType<ItemBlock.ScreenHandler> ITEMBLOCK = build(ItemBlock.ScreenHandler::new);
+    public static final ScreenHandlerType<ShelfBlock.ScreenHandler> ITEMBLOCKSIMPLE = build(ShelfBlock.ScreenHandler::new);
     public static final ScreenHandlerType<LootedBlockEntity.Container> LOOTABLE_INV = build(LootedBlockEntity.Container::new);
     public static final ScreenHandlerType<BlockVariantItem.Container> BLOCK_VARIANT_INV = build(BlockVariantItem.Container::new);
     public static final ScreenHandlerType<CrafterBlock.ScreenHandler> CRAFTER = build(CrafterBlock.ScreenHandler::new);

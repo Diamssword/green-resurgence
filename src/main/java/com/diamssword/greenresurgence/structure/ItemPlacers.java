@@ -34,7 +34,7 @@ public class ItemPlacers {
     public static JigsawPlacerItem tree=jigsaw("tree",new Identifier("build","props/tree/basic"));
      public static JigsawPlacerItem jigsaw(String name,Identifier pool)
     {
-        JigsawPlacerItem item= new JigsawPlacerItem(new OwoItemSettings().group(MItems.GROUP).tab(1),pool);
+        JigsawPlacerItem item= new JigsawPlacerItem(new OwoItemSettings().group(MItems.GROUP).tab(2),pool);
         toRegister.put(name,item);
         return item;
     }
@@ -44,7 +44,7 @@ public class ItemPlacers {
     }
     public static StructurePlacerItem structure(String name,boolean centered,Identifier structure)
     {
-        StructurePlacerItem item= new StructurePlacerItem(new OwoItemSettings().group(MItems.GROUP).tab(1),structure,centered);
+        StructurePlacerItem item= new StructurePlacerItem(new OwoItemSettings().group(MItems.GROUP).tab(2),structure,centered);
         toRegister.put(name,item);
         return item;
     }

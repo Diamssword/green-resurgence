@@ -8,6 +8,7 @@ import com.diamssword.greenresurgence.network.GuiPackets;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -24,14 +25,17 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 
 public class ItemBlockEntity extends BlockEntity {
-    private Vec3d rotation= Vec3d.ZERO;
-    private  Vec3d position= Vec3d.ZERO;
+    protected Vec3d rotation= Vec3d.ZERO;
+    protected  Vec3d position= Vec3d.ZERO;
     private boolean lightOffset=true;
-    private double size=10;
+    protected double size=10;
     private ItemStack item= new ItemStack(Items.APPLE);
     public Direction baseDir;
     public ItemBlockEntity(BlockPos pos, BlockState state) {
         super(MBlockEntities.ITEM_BLOCK, pos, state);
+    }
+    public ItemBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
     @Override
     public void writeNbt(NbtCompound nbt) {
@@ -155,7 +159,7 @@ public class ItemBlockEntity extends BlockEntity {
     public NbtCompound toInitialChunkDataNbt() {
         return createNbt();
     }
-    private void saveAndUpdate()
+    protected void saveAndUpdate()
     {
         this.markDirty();
         this.world.updateListeners(this.pos,this.getCachedState(),this.getCachedState(), Block.NOTIFY_ALL);

@@ -9,6 +9,7 @@ public class Handlers {
 
        // HandledScreens.register(Containers.RELATIVE, SurvivalistInventory::new);
         HandledScreens.register(Containers.ITEMBLOCK, ItemBlockGui::new);
+        HandledScreens.register(Containers.ITEMBLOCKSIMPLE, ItemBlockGuiSimple::new);
         HandledScreens.register(Containers.LOOTABLE_INV, LootableInvGui::new);
         HandledScreens.register(Containers.BLOCK_VARIANT_INV, BlockVariantScreen::new);
         HandledScreens.register(Containers.CRAFTER, CrafterScreen::new);

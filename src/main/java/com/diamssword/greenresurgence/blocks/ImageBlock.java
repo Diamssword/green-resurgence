@@ -107,10 +107,10 @@ public class ImageBlock extends Block implements BlockEntityProvider,Waterloggab
         }
         return VoxelShapes.fullCube();
     }
-    @Override
+   /* @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return VoxelShapes.empty();
-    }
+    }*/
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING, WATERLOGGED);

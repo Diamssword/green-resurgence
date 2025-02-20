@@ -4,22 +4,25 @@ import com.diamssword.greenresurgence.blockEntities.ConnectorBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.blocks.*;
+import com.diamssword.greenresurgence.blocks.StructureBlock;
 import com.diamssword.greenresurgence.datagen.ModelGenerator;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -45,16 +48,36 @@ public class MBlocks implements BlockRegistryContainer {
     public static final MetroCorridorFull METRO_CORRIDOR_SLAB_INVERT=new MetroCorridorFull(AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL),2);
     @DiamsGroup
     public static final LayerModelBlock CEREALS=new LayerModelBlock(AbstractBlock.Settings.create().sounds(BlockSoundGroup.CANDLE)){public int layers() {return 10;}};
+    @DiamsGroup
+    public static final LayerModelBlock TRASH_BAGS=new LayerModelBlock(AbstractBlock.Settings.create().sounds(BlockSoundGroup.CANDLE)){public int layers() {return 10;}};
     public static final StructureBlock STRUCTURE_BLOCK =new StructureBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
     public static final SmartStructureBlock STRUCTURE_BLOCK_SMART =new SmartStructureBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
     public static final ItemBlock ITEM_BLOCK =new ItemBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
+    public static final LootableItemBlock LOOT_ITEM_BLOCK =new LootableItemBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
+    @DiamsGroup
+    public static final ShelfBlock SHELF_BLOCK =new ShelfBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
+    @DiamsGroup
+    public static final ShelfBlock SIDEWAY_SHELF_BLOCK =new SideShelfBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
+    @DiamsGroup
+    public static final ShelfBlock WOOD_CRATE_SHELF_BLOCK =new SideShelfBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
+
     public static final ImageBlock IMAGE_BLOCK =new ImageBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
+
+    public static final Block SHADOW_BLOCk =new TintedGlassBlock(FabricBlockSettings.create().nonOpaque().strength(-1.0F, 3600000.0F).dropsNothing().allowsSpawning(Blocks::never)){
+        public BlockRenderType getRenderType(BlockState state) {
+            return BlockRenderType.INVISIBLE;
+        }
+    };
     @ModelGen
     public static final BaseStorageBlock BASE_CRATE_T1 =new BaseStorageBlock(FabricBlockSettings.create().resistance(20000).sounds(BlockSoundGroup.WOOD),9);
     @ModelGen
     public static final BaseStorageBlock BASE_CRATE_T2 =new BaseStorageBlock(FabricBlockSettings.create().resistance(20000).sounds(BlockSoundGroup.WOOD),18);
     @ModelGen
     public static final CrafterBlock CRAFTER =new CrafterBlock();
+    @ModelGen
+    public static final GeneratorBlock GENRATOR_T1 =new GeneratorBlock(FabricBlockSettings.create());
+    @NoItemGroup
+    public static final DeployableLadderBlock DEPLOYABLE_LADDER = new DeployableLadderBlock(FabricBlockSettings.create().resistance(20000).sounds(BlockSoundGroup.WOOL));
 
     @Override
     public void afterFieldProcessing() {

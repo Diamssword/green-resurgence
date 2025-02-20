@@ -1,0 +1,67 @@
+{
+  "variants": {
+    "facing=east,model=single": {
+      "model": "green_resurgence:block/diams/metal_display_single",
+      "y": 90
+    },
+    "facing=north,model=single": {
+      "model": "green_resurgence:block/diams/metal_display_single"
+    },
+    "facing=south,model=single": {
+      "model": "green_resurgence:block/diams/metal_display_single",
+      "y": 180
+    },
+    "facing=west,model=single": {
+      "model": "green_resurgence:block/diams/metal_display_single",
+      "y": 270
+    },
+	
+	"facing=east,model=center": {
+      "model": "green_resurgence:block/diams/metal_display_middle",
+      "y": 90
+    },
+    "facing=north,model=center": {
+      "model": "green_resurgence:block/diams/metal_display_middle"
+    },
+    "facing=south,model=center": {
+      "model": "green_resurgence:block/diams/metal_display_middle",
+      "y": 180
+    },
+    "facing=west,model=center": {
+      "model": "green_resurgence:block/diams/metal_display_middle",
+      "y": 270
+    },
+	
+	"facing=east,model=left": {
+      "model": "green_resurgence:block/diams/metal_display_left",
+      "y": 90
+    },
+    "facing=north,model=left": {
+      "model": "green_resurgence:block/diams/metal_display_left"
+    },
+    "facing=south,model=left": {
+      "model": "green_resurgence:block/diams/metal_display_left",
+      "y": 180
+    },
+    "facing=west,model=left": {
+      "model": "green_resurgence:block/diams/metal_display_left",
+      "y": 270
+    },
+	
+	"facing=east,model=right": {
+      "model": "green_resurgence:block/diams/metal_display_right",
+      "y": 90
+    },
+    "facing=north,model=right": {
+      "model": "green_resurgence:block/diams/metal_display_right"
+    },
+    "facing=south,model=right": {
+      "model": "green_resurgence:block/diams/metal_display_right",
+      "y": 180
+    },
+    "facing=west,model=right": {
+      "model": "green_resurgence:block/diams/metal_display_right",
+      "y": 270
+    }
+  }
+}

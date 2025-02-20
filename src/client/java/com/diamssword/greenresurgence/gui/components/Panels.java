@@ -17,6 +17,12 @@ public class Panels {
         NinePatchTexture.draw(PANEL_NINE_PATCH_TEXTURE, context, component.x(), component.y(), component.width(), component.height());
         RenderSystem.disableBlend();
     };
+    public static Surface PANEL_WHITE = (context, component) ->{
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        NinePatchTexture.draw(OVERLAY_NINE_PATCH_TEXTURE, context, component.x(), component.y(), component.width(), component.height());
+        RenderSystem.disableBlend();
+    };
     public static void drawOverlay(OwoUIDrawContext ctx, int x, int y, int width, int height)
     {
         RenderSystem.enableBlend();

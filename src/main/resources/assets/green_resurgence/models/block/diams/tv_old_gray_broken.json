@@ -1,0 +1,5 @@
+{
+"parent":"green_resurgence:block/diams/tv_old_black",
+"textures": {
+		"0": "green_resurgence:block/diams/tv_old_gray_broken"
+		}}

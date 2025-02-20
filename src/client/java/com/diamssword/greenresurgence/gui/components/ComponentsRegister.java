@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.gui.components;
 
+import com.diamssword.greenresurgence.gui.components.hud.*;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.EntityComponent;
 import io.wispforest.owo.ui.core.Sizing;
@@ -16,6 +17,7 @@ public class ComponentsRegister {
 
         UIParsing.registerFactory("player",PlayerComponent::parse);
         UIParsing.registerFactory("inventory", InventoryComponent::parse);
+        UIParsing.registerFactory("inventorysearch", InventorySearchableComponent::parse);
         UIParsing.registerFactory("buttoninventory", ButtonInventoryComponent::parse);
         UIParsing.registerFactory("character", CharacterComponent::parse);
         UIParsing.registerFactory("separator", SeparatorComponent::parse);
@@ -23,6 +25,13 @@ public class ComponentsRegister {
         UIParsing.registerFactory("rbutton",(a)->new RButtonComponent(Text.empty(),(RButtonComponent button)->{}));
         UIParsing.registerFactory("arrowbutton",(a)->new ArrowButtonComponent((ArrowButtonComponent button)->{}));
         UIParsing.registerFactory("recipedisplay",a->new RecipDisplayComponent(Sizing.fill(100)));
+        UIParsing.registerFactory("hudbar",BarComponent::parse);
+        UIParsing.registerFactory("healthbar", HealthBarComponent::parse);
+        UIParsing.registerFactory("hotbar", HotBarComponent::parse);
+        UIParsing.registerFactory("heldtooltip", (e)->new ItemTooltipComponent());
+        UIParsing.registerFactory("hudicon", IconComponent::parse);
+        UIParsing.registerFactory("offhandslot", SingleSlotComponent::parse);
+
 
     }
 }

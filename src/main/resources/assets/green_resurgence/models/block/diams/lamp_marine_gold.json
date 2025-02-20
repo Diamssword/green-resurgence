@@ -1,0 +1,5 @@
+{
+"parent":"green_resurgence:block/diams/lamp_marine_plastic",
+"textures": {
+		"1": "green_resurgence:block/diams/lamp_marine_gold_off"
+		}}

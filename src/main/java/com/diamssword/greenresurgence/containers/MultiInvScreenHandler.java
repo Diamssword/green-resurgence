@@ -20,9 +20,9 @@ import java.util.function.Consumer;
 
 public abstract class MultiInvScreenHandler extends ScreenHandler {
     private SyncedProperty<Props> props;
-    private IGridContainer[] inventories;
-    private final Map<String, List<Slot>> inventoriesMap=new HashMap<>();
-    private final Map<String, Integer[]> sizeMap=new HashMap<>();
+    protected IGridContainer[] inventories;
+    protected final Map<String, List<Slot>> inventoriesMap=new HashMap<>();
+    protected final Map<String, Integer[]> sizeMap=new HashMap<>();
     protected final GridContainer playerGrid;
     protected final GridContainer hotbarGrid;
     @Nullable
@@ -47,6 +47,10 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
            ready=true;
            listeners.forEach(v->v.accept(this));
        });
+    }
+    public List<String> getInventoriesNames()
+    {
+        return inventoriesMap.keySet().stream().toList();
     }
     public PlayerInventory getPlayerInventory()
     {
@@ -82,10 +86,7 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
             addSlotsFor(inventory);
         }
     }
-    @Override
-    public void updateSlotStacks(int revision, List<ItemStack> stacks, ItemStack cursorStack) {
-        super.updateSlotStacks(revision,stacks,cursorStack);
-    }
+
     public MultiInvScreenHandler(int syncId, PlayerInventory playerInventory,boolean empty) {
         super(null, syncId);
         ready=true;
@@ -138,7 +139,7 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
         else
             listeners.add(consumer);
     }
-    private void addSlotsFor(IGridContainer container)
+    protected void addSlotsFor(IGridContainer container)
     {
         for (int m = 0; m < container.getHeight(); ++m) {
             for (int l = 0; l < container.getWidth(); ++l) {
@@ -245,7 +246,7 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
             var cont=getContainerFor(invSlot);
             if (cont != null && cont != playerGrid && cont!=hotbarGrid) {
                 if (!this.insertItem(originalStack,  true)) {
-                    return ItemStack.EMPTY; //TODO extrait tout les stacks avec l'inventaire de fac
+                    return ItemStack.EMPTY;
                 }
             } else if (!this.insertItem(originalStack,false)) {
                 return ItemStack.EMPTY;
@@ -270,8 +271,6 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
         }
         else
             Collections.addAll(invs,this.inventories);
-
-
         if (stack.isStackable()) {
             for (var inv : invs) {
                 for (var slot : this.getSlotForInventory(inv.getName())) {

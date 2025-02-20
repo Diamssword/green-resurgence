@@ -1,0 +1,15 @@
+{
+  "variants": {
+	"facing=west,master=false":{"model": "green_resurgence:block/removable_ladder","uvlock":false,"y":90},
+	"facing=north,master=false":{"model": "green_resurgence:block/removable_ladder","uvlock":false,"y":180},
+	"facing=east,master=false":{"model": "green_resurgence:block/removable_ladder","uvlock":false,"y":270},
+	"facing=south,master=false":{"model": "green_resurgence:block/removable_ladder","uvlock":false,"y":0},
+	"facing=down,master=false":{"model": "green_resurgence:block/removable_ladder_down","uvlock":false,"y":0},
+	"facing=west,master=true":{"model": "green_resurgence:block/removable_ladder_top","uvlock":false,"y":90},
+	"facing=north,master=true":{"model": "green_resurgence:block/removable_ladder_top","uvlock":false,"y":180},
+	"facing=east,master=true":{"model": "green_resurgence:block/removable_ladder_top","uvlock":false,"y":270},
+	"facing=south,master=true":{"model": "green_resurgence:block/removable_ladder_top","uvlock":false,"y":0},
+	"facing=down,master=true":{"model": "green_resurgence:block/removable_ladder_down_top","uvlock":false,"y":0}
+	
+  }
+}
