@@ -2,40 +2,33 @@ package com.diamssword.greenresurgence.gui;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.blocks.CrafterBlock;
-import com.diamssword.greenresurgence.blocks.ItemBlock;
-import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import com.diamssword.greenresurgence.gui.components.ButtonInventoryComponent;
 import com.diamssword.greenresurgence.gui.components.RecipDisplayComponent;
-import com.diamssword.greenresurgence.items.BlockVariantItem;
+import com.diamssword.greenresurgence.gui.components.hud.IconComponent;
 import com.diamssword.greenresurgence.network.CraftPackets;
 import com.diamssword.greenresurgence.systems.crafting.*;
-import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
+import io.wispforest.owo.ui.component.Components;
+import io.wispforest.owo.ui.component.ItemComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
-import net.minecraft.block.entity.ChestBlockEntity;
-import net.minecraft.client.MinecraftClient;
+import io.wispforest.owo.ui.core.Sizing;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.function.Supplier;
 
-public class CrafterScreen extends MultiInvHandledScreen<CrafterBlock.ScreenHandler,FlowLayout> {
+public class CrafterScreen extends PlayerBasedGui<CrafterBlock.ScreenHandler> {
     public CrafterScreen(CrafterBlock.ScreenHandler handler, PlayerInventory inv, Text title) {
-        super(handler,FlowLayout.class, BaseUIModelScreen.DataSource.asset(GreenResurgence.asRessource("crafter")));
+        super(handler,"crafter");
 
     }
 
     @Override
     protected void build(FlowLayout rootComponent) {
+        super.build(rootComponent);
         var ls=rootComponent.childById(ButtonInventoryComponent.class,"list");
         var disp=rootComponent.childById(RecipDisplayComponent.class,"display");
         rootComponent.childById(ButtonComponent.class,"craft").onPress(v->{
@@ -62,8 +55,6 @@ public class CrafterScreen extends MultiInvHandledScreen<CrafterBlock.ScreenHand
                 }
             });
         });
-
-
     }
 
     @Override

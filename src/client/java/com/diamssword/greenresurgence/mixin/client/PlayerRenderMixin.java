@@ -1,32 +1,21 @@
 package com.diamssword.greenresurgence.mixin.client;
 
-import com.diamssword.greenresurgence.CustomPoseRender.CustomPoseRenderManager;
+import com.diamssword.greenresurgence.render.CustomPoseRender.CustomPoseRenderManager;
 import com.diamssword.greenresurgence.GreenResurgenceClient;
-import com.diamssword.greenresurgence.cosmetics.ClothingLayer;
-import com.diamssword.greenresurgence.cosmetics.CustomPlayerModel;
-import com.diamssword.greenresurgence.cosmetics.GeckoCosmeticLayer;
+import com.diamssword.greenresurgence.render.cosmetics.BackpackLayerRenderer;
+import com.diamssword.greenresurgence.render.cosmetics.ClothingLayer;
+import com.diamssword.greenresurgence.render.cosmetics.CustomPlayerModel;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
-import com.mojang.authlib.GameProfile;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.model.Dilation;
-import net.minecraft.client.model.TexturedModelData;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.client.render.entity.model.EntityModel;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -61,7 +50,8 @@ public abstract class PlayerRenderMixin extends LivingEntityRenderer<AbstractCli
             var rend=CustomPoseRenderManager.get(comp.getCustomPoseID());
             if(rend !=null)
             {
-                rend.transforms(abstractClientPlayerEntity,matrixStack,comp.getCustomPose());
+
+                rend.transforms(abstractClientPlayerEntity,matrixStack,this.model,comp.getCustomPose());
             }
 
         }
@@ -91,6 +81,7 @@ public abstract class PlayerRenderMixin extends LivingEntityRenderer<AbstractCli
             if(value.layer2>-1)
                 this.addFeature(new ClothingLayer(th,value,true,slim));
         }
+        this.addFeature(new BackpackLayerRenderer<>(th));
     }
     @Inject(at = @At("TAIL"), method = "scale(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/client/util/math/MatrixStack;F)V")
     protected void scale(LivingEntity abstractClientPlayerEntity, MatrixStack matrixStack, float f, CallbackInfo info) {

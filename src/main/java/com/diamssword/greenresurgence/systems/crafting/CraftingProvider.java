@@ -19,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CraftingProvider {
@@ -59,12 +60,12 @@ public class CraftingProvider {
             for (UniversalResource ingr : ingrs) {
                 if(ingr.getType().isItem)
                 {
-                    if(!hasItem(ingr,t1))
+                    if(!hasItem(ingr,t1,null))
                         complete=false;
                 }
                 else if(ingr.getType().isFluid)
                 {
-                    if(!hasFluid(ingr,t1))
+                    if(!hasFluid(ingr,t1,null))
                         complete=false;
                 }
                 else
@@ -85,7 +86,6 @@ public class CraftingProvider {
             return true;
         }
         return false;
-
     }
     public CraftingResult getRecipeStatus(SimpleRecipe recipe, @Nullable PlayerEntity player)
     {
@@ -96,14 +96,14 @@ public class CraftingProvider {
             for (UniversalResource ingr : ingrs) {
                 if(ingr.getType().isItem)
                 {
-                    var d=hasItem(ingr,t1);
+                    var d=hasItem(ingr,t1,null);
                     status.put(ingr,d);
                     if(!d)
                         complete=false;
                 }
                 else if(ingr.getType().isFluid)
                 {
-                    var d=hasFluid(ingr,t1);
+                    var d=hasFluid(ingr,t1,null);
                     status.put(ingr,d);
                     if(!d)
                         complete=false;
@@ -116,13 +116,16 @@ public class CraftingProvider {
         return new CraftingResult(complete,status);
 
     }
-    public boolean hasFluid(UniversalResource r, TransactionContext ctx)
+    public boolean hasFluid(UniversalResource r, TransactionContext ctx,@Nullable Storage<FluidVariant> collector)
     {
         long missing=r.getAmount();
         for (Storage<FluidVariant> fluidStorage : fluidStorages) {
 
             for (Fluid stack : r.getAllFluids()) {
-                missing=missing-fluidStorage.extract(FluidVariant.of(stack,r.extra()),missing,ctx);
+                var ex=fluidStorage.extract(FluidVariant.of(stack,r.extra()),missing,ctx);
+                missing=missing-ex;
+                if(collector !=null)
+                    collector.insert(FluidVariant.of(stack),ex,ctx);
                 if(missing<=0)
                     return true;
             }
@@ -130,12 +133,16 @@ public class CraftingProvider {
         }
         return missing<=0;
     }
-    public boolean hasItem(UniversalResource r, TransactionContext ctx)
+
+    public boolean hasItem(UniversalResource r, TransactionContext ctx,@Nullable Storage<ItemVariant> collector)
     {
         long missing=r.getAmount();
         for (Storage<ItemVariant> itemStorage : itemStorages) {
             for (ItemStack stack : r.getAllStacks()) {
-                missing=missing-itemStorage.extract(ItemVariant.of(stack),missing,ctx);
+                var ex=itemStorage.extract(ItemVariant.of(stack),missing,ctx);
+                missing=missing-ex;
+                if(collector !=null)
+                    collector.insert(ItemVariant.of(stack),ex,ctx);
                 if(missing<=0)
                     return true;
             }

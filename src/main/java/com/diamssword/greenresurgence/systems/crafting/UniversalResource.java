@@ -35,6 +35,7 @@ public class UniversalResource{
         fluid(false,true),
         itemtag(true,false),
         fluidtag(false,true),
+        time(false,false),
         energy(false,false);
         private Type( boolean isItem,boolean isFluid)
         {
@@ -202,7 +203,7 @@ public class UniversalResource{
      */
     public ItemStack getCurrentItem(float time) {
             ItemStack[] itemStacks = this.itemCache;
-            return itemStacks.length == 0 ? ItemStack.EMPTY : itemStacks[MathHelper.floor(time / 30.0F) % itemStacks.length];
+            return itemStacks.length == 0 ? ItemStack.EMPTY : itemStacks[MathHelper.floor(time / 30.0F) % itemStacks.length].copy();
     }
     /**
      *
@@ -262,9 +263,9 @@ public class UniversalResource{
     }
     public static UniversalResource deserializer(JsonObject ob) throws Exception
     {
-        if(!ob.has("name"))
-            throw new Exception("Ingredient is missing 'name' field");
+
         var type=Type.item;
+        var name="";
         if(ob.has("type"))
         {
             switch (ob.get("type").getAsString())
@@ -273,8 +274,15 @@ public class UniversalResource{
                 case "fluid"->type=Type.fluid;
                 case "fluidtag"->type=Type.fluidtag;
                 case "energy"->type=Type.energy;
+                case "time"->type=Type.time;
             }
         }
+        if((type.isFluid || type.isItem) && !ob.has("name"))
+                throw new Exception("Ingredient is missing 'name' field");
+        else if(ob.has("name"))
+            name=ob.get("name").getAsString();
+        else
+            name=type.toString().toLowerCase();
         NbtCompound tag=null;
         int c=1;
         if(ob.has("count"))
@@ -283,7 +291,7 @@ public class UniversalResource{
         {
             tag=StringNbtReader.parse(ob.get("nbt").getAsString());
         }
-        return new UniversalResource(type,new Identifier(ob.get("name").getAsString()),c,tag);
+        return new UniversalResource(type,new Identifier(name),c,tag);
     }
     public NbtCompound toNBT()
     {
@@ -310,6 +318,7 @@ public class UniversalResource{
             case "tag" ->type=Type.itemtag;
             case "fluidtag"->type=Type.fluidtag;
             case "energy"->type=Type.energy;
+            case "time"->type=Type.time;
         }
         var count=tag.getInt("count");
         NbtCompound extra=null;
@@ -328,6 +337,7 @@ public class UniversalResource{
             case itemtag ->res.addProperty("type","tag");
             case fluidtag ->res.addProperty("type","fluidtag");
             case energy ->res.addProperty("type","energy");
+            case time ->res.addProperty("type","time");
         }
         res.addProperty("count",this.count);
         if(data !=null)

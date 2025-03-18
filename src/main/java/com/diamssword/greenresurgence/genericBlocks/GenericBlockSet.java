@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.genericBlocks;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.blocks.SideShelfBlock;
 import com.diamssword.greenresurgence.datagen.LangGenerator;
 import com.diamssword.greenresurgence.datagen.ModelHelper;
 import com.diamssword.greenresurgence.items.BlockVariantItem;
@@ -84,6 +85,7 @@ public class GenericBlockSet {
                     {
                         case SIMPLE -> genericRegisterHelper(name,v,v.toggleable?new GenericBlockToggleable(settings,v):new GenericBlock(settings,v));
                         case PILLAR -> genericRegisterHelper(name,v,v.toggleable?new GenericPillarToggleable(settings,v):new GenericPillar(settings,v));
+                        case CONNECTED_PILLAR ->genericRegisterHelper(name,v,new GenericConnectedPillar(settings,v));
                         case OMNI_BLOCK -> genericRegisterHelper(name,v,v.toggleable?new OmniBlockToggleable(settings,v):new OmniBlock(settings,v));
                         case ROTATABLE_SLAB -> genericRegisterHelper(name,v,new RotatableSlabBlock(settings));
                         case PANE -> genericRegisterHelper(name,v,new PaneBlock(settings));
@@ -257,6 +259,15 @@ public class GenericBlockSet {
                         if(noModel || b.props.toggleable) return;
                         TexturedModel.Factory factory = helper.getModeleFactoryFor(model,Tname);
                         factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
+
+                    }
+                    case CONNECTED_PILLAR -> {
+
+                            generator.blockStateCollector.accept(helper.createVariantsStates(VariantsBlockStateSupplier.create(b.block,
+                                    BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name))).coordinate(
+                                            ModelHelper.fillConnectedBlockVariantMap(BlockStateVariantMap.create(Properties.HORIZONTAL_FACING, SideShelfBlock.MODEL),
+                                                    helper.getBlockModelId(b.name), helper.getBlockModelId(b.name).withSuffixedPath("_middle"), helper.getBlockModelId(b.name).withSuffixedPath("_left"), helper.getBlockModelId(b.name).withSuffixedPath("_right")))
+                                    ,variants));
 
                     }
                     case OMNI_BLOCK -> {
@@ -553,6 +564,7 @@ public class GenericBlockSet {
     {
         SIMPLE,
         PILLAR,
+        CONNECTED_PILLAR,
         STAIRS,
         PANE,
         LECTERN,

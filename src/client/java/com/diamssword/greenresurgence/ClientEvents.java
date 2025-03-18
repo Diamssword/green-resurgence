@@ -2,11 +2,17 @@ package com.diamssword.greenresurgence;
 
 import com.diamssword.greenresurgence.blockEntities.ConnectorBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
+import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
+import com.diamssword.greenresurgence.entities.TwoPassengerVehicle;
 import com.diamssword.greenresurgence.event.AttackBlockCallback;
 import com.diamssword.greenresurgence.events.PlaceBlockCallback;
+import com.diamssword.greenresurgence.events.PlayerTickEvent;
+import com.diamssword.greenresurgence.gui.PlayerInventoryGui;
+import com.diamssword.greenresurgence.mixin.client.ClientPlayerEntityMixin;
 import com.diamssword.greenresurgence.network.AdventureInteract;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
+import com.diamssword.greenresurgence.network.GuiPackets;
 import com.diamssword.greenresurgence.render.AdventureBlockHighlight;
 import com.diamssword.greenresurgence.render.BoxRenderers;
 import com.diamssword.greenresurgence.render.CableRenderer;
@@ -14,11 +20,15 @@ import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.lootables.IAdvancedLootableBlock;
 import com.diamssword.greenresurgence.systems.lootables.LootableLogic;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -72,6 +82,13 @@ public class ClientEvents {
             return ActionResult.PASS;
         });
 
+        ClientTickEvents.START_CLIENT_TICK.register(mc->{
+
+            if(mc.player !=null && !mc.player.isCreative() && !mc.player.isSpectator() &&!(mc.currentScreen instanceof PlayerInventoryGui) &&  mc.options.inventoryKey.wasPressed())
+            {
+                    Channels.MAIN.clientHandle().send(new GuiPackets.KeyPress(GuiPackets.KEY.PInventory));
+            }
+        });
         ClientBlockEntityEvents.BLOCK_ENTITY_UNLOAD.register((te,w)->{
             if(te instanceof ConnectorBlockEntity)
             {
@@ -134,9 +151,20 @@ public class ClientEvents {
             }
             return true;
         });
-  //      UseBlockCallback.EVENT.register(ClientEvents::placeBlock);
         PlaceBlockCallback.EVENT.register(ClientEvents::placeBlock);
 
+        ClientTickEvents.END_CLIENT_TICK.register((client)->{
+
+            if(client.player !=null)
+            {
+                var p =client.player;
+                if (p.getControllingVehicle() instanceof TwoPassengerVehicle boatEntity) {
+                    //Channels.MAIN.clientHandle().send(new AdventureInteract.VehicleControl(p.input.pressingForward,p.input.pressingBack,p.input.pressingLeft,p.input.pressingRight));
+                    boatEntity.setInputs(p.input.pressingLeft, p.input.pressingRight, p.input.pressingForward, p.input.pressingBack);
+                    ((ClientPlayerEntityMixin)p).setRiding(p.isRiding() | (p.input.pressingLeft || p.input.pressingRight || p.input.pressingForward || p.input.pressingBack));
+                }
+            }
+        });
     }
     private static void sendInteract(BlockPos pos,PlayerEntity pl)
     {

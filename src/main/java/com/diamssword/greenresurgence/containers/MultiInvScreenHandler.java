@@ -1,30 +1,27 @@
 package com.diamssword.greenresurgence.containers;
 
-import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
+import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
+import com.diamssword.greenresurgence.systems.Components;
 import io.wispforest.owo.client.screens.SyncedProperty;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerListener;
-import net.minecraft.screen.ScreenHandlerSyncHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
 
-public abstract class MultiInvScreenHandler extends ScreenHandler {
-    private SyncedProperty<Props> props;
+public abstract class MultiInvScreenHandler extends AbstractMultiInvScreenHandler<MultiInvScreenHandler> {
+    private final SyncedProperty<GridContainerSyncer> props;
+    private CustomPlayerInventory playerInventory;
     protected IGridContainer[] inventories;
     protected final Map<String, List<Slot>> inventoriesMap=new HashMap<>();
     protected final Map<String, Integer[]> sizeMap=new HashMap<>();
-    protected final GridContainer playerGrid;
-    protected final GridContainer hotbarGrid;
+
     @Nullable
     private BlockPos inventoryPos;
 
@@ -33,11 +30,7 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
     //sync this empty inventory with the inventory on the server.
     public MultiInvScreenHandler(int syncId, PlayerInventory playerInventory) {
         super(null,syncId);
-        playerGrid=new GridContainer("player",playerInventory,9,3,9);
-        hotbarGrid=new GridContainer("hotbar",playerInventory,9,1);
-        addSlotsFor(playerGrid);
-        addSlotsFor(hotbarGrid);
-       props= this.createProperty(Props.class,new Props());
+       props= this.createProperty(GridContainerSyncer.class,new GridContainerSyncer());
        props.observe(c->{
            this.inventoryPos=props.get().inventoryPos;
            this.inventories=containersFromProps(c);
@@ -48,56 +41,66 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
            listeners.forEach(v->v.accept(this));
        });
     }
+    public PlayerInventory getPlayerInventory()
+    { //TODO might need to remove this function and redo all the logics of item deplacement for multiples player inventories
+        var pl= this.getInventory("player");
+        if(pl instanceof PlayerInventory)
+            return (PlayerInventory) pl;
+        return null;
+    }
     public List<String> getInventoriesNames()
     {
         return inventoriesMap.keySet().stream().toList();
     }
-    public PlayerInventory getPlayerInventory()
-    {
-        return (PlayerInventory) this.playerGrid.getInventory();
-    }
-    public IGridContainer[] containersFromProps(Props prop)
+    public IGridContainer[] containersFromProps(GridContainerSyncer prop)
     {
         return prop.getContainers();
     }
-    public void forceReady()
-    {
-        ready=true;
-        listeners.forEach(v->v.accept(this));
+    @Override
+    public void onClosed(PlayerEntity player) {
+        if (player instanceof ServerPlayerEntity) {
+            ItemStack itemStack = this.getCursorStack();
+            if (!itemStack.isEmpty()) {
+                if (player.isAlive() && !((ServerPlayerEntity)player).isDisconnected()) {
+                    playerInventory.setCursorStack(itemStack);
+                } else {
+                    player.dropItem(itemStack, false);
+                }
+                this.setCursorStack(ItemStack.EMPTY);
+            }
+        }
     }
-    //This constructor gets called from the BlockEntity on the server without calling the other constructor first, the server knows the inventory of the container
-    //and can therefore directly provide it as an argument. This inventory will then be synced to the client.
-    public MultiInvScreenHandler(int syncId, PlayerInventory playerInventory, IGridContainer... inventories) {
+    public MultiInvScreenHandler(int syncId, PlayerEntity player, IGridContainer... inventories) {
         super(null, syncId);
         for (IGridContainer iGridContainer : inventories) {
             checkSize(iGridContainer.getInventory(), iGridContainer.getSize());
-            iGridContainer.getInventory().onOpen(playerInventory.player);
+            iGridContainer.getInventory().onOpen(player);
         }
         ready=true;
-        this.inventories=inventories;
+        playerInventory=player.getComponent(Components.PLAYER_INVENTORY).getInventory();
+        this.setCursorStack(playerInventory.getAndClearCursorStack());
+        var ls=playerInventory.getAsContainers();
+        ls.addAll(Arrays.asList(inventories));
+        this.inventories=ls.toArray(new IGridContainer[0]);
         //used to send the GridContainer information to the client
-        this.props=this.createProperty(Props.class,new Props(inventoryPos,inventories));
+        this.props=this.createProperty(GridContainerSyncer.class,new GridContainerSyncer(inventoryPos, this.inventories));
         props.markDirty();
-        playerGrid=new GridContainer("player",playerInventory,9,3,9);
-        hotbarGrid=new GridContainer("hotbar",playerInventory,9,1);
-        addSlotsFor(playerGrid);
-        addSlotsFor(hotbarGrid);
-        for (IGridContainer inventory : inventories) {
+        for (IGridContainer inventory :  this.inventories) {
             addSlotsFor(inventory);
         }
     }
 
-    public MultiInvScreenHandler(int syncId, PlayerInventory playerInventory,boolean empty) {
+    public MultiInvScreenHandler(int syncId, PlayerEntity player,boolean empty) {
         super(null, syncId);
         ready=true;
-        this.inventories=new IGridContainer[0];
-        //used to send the GridContainer information to the client
-        this.props=this.createProperty(Props.class,new Props(inventoryPos,inventories));
+        playerInventory=player.getComponent(Components.PLAYER_INVENTORY).getInventory();
+        this.setCursorStack(playerInventory.getAndClearCursorStack());
+        inventories=playerInventory.getAsContainers().toArray(new IGridContainer[0]);
+        this.props=this.createProperty(GridContainerSyncer.class,new GridContainerSyncer(inventoryPos,inventories));
         props.markDirty();
-        playerGrid=new GridContainer("player",playerInventory,9,3,9);
-        hotbarGrid=new GridContainer("hotbar",playerInventory,9,1);
-        addSlotsFor(playerGrid);
-        addSlotsFor(hotbarGrid);
+        for (IGridContainer inventory :  this.inventories) {
+            addSlotsFor(inventory);
+        }
     }
     public MultiInvScreenHandler setPos(BlockPos pos)
     {
@@ -126,12 +129,7 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
         return ready;
     }
 
-    /**
-     *
-     * Called when the containers have been received and are ready to display
-     * You should check  isReady() before using the callback
-     * @param consumer a callback
-     */
+    @Override
     public void onReady(Consumer<MultiInvScreenHandler> consumer)
     {
         if(isReady())
@@ -141,19 +139,35 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
     }
     protected void addSlotsFor(IGridContainer container)
     {
-        for (int m = 0; m < container.getHeight(); ++m) {
-            for (int l = 0; l < container.getWidth(); ++l) {
-                Slot s=createSlot(container, container.getStartIndex()+ l + m * container.getWidth(), l * 18, m * 18);
-                this.addSlot(s);
-                inventoriesMap.putIfAbsent(container.getName(),new ArrayList<>());
-                inventoriesMap.get(container.getName()).add(s);
+
+        if(container.revert())
+        {
+
+            for (int m = container.getHeight()-1; m >=0; --m) {
+                for (int l = container.getWidth()-1; l >=0 ; --l) {
+                    Slot s=createSlot(container, container.getStartIndex()+ l + m * container.getWidth(), l * 18, m * 18);
+                    this.addSlot(s);
+                    inventoriesMap.putIfAbsent(container.getName(),new ArrayList<>());
+                    inventoriesMap.get(container.getName()).add(s);
+                }
             }
         }
+        else {
+            for (int m = 0; m < container.getHeight(); ++m) {
+                for (int l = 0; l < container.getWidth(); ++l) {
+                    Slot s = createSlot(container, container.getStartIndex() + l + m * container.getWidth(), l * 18, m * 18);
+                    this.addSlot(s);
+                    inventoriesMap.putIfAbsent(container.getName(), new ArrayList<>());
+                    inventoriesMap.get(container.getName()).add(s);
+                }
+            }
+        }
+
         sizeMap.put(container.getName(),new Integer[]{container.getWidth(),container.getHeight()});
     }
     protected Slot createSlot(IGridContainer container,int index,int x,int y)
     {
-        return new Slot(container.getInventory(), index, x , y);
+        return  container.createSlotFor(index, x , y);
     }
    public List<Slot> getSlotForInventory(String name)
     {
@@ -177,10 +191,6 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
     }
     public IGridContainer getInventory(String name)
     {
-        if(name.equals("hotbar") )
-            return hotbarGrid;
-        else if(name.equals("player") )
-            return playerGrid;
         for (IGridContainer inventory : this.inventories) {
             if(inventory.getName().equals(name))
                 return inventory;
@@ -199,14 +209,7 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
         }
         return null;
     }
-    public int getInventoryWidth(String name)
-    {
-        return sizeMap.getOrDefault(name,new Integer[]{1,1})[0];
-    }
-    public int getInventoryHeight(String name)
-    {
-        return sizeMap.getOrDefault(name,new Integer[]{1,1})[1];
-    }
+
     @Override
     public boolean canUse(PlayerEntity player) { //TODO might want to change the logic later
         for (IGridContainer inventory : this.inventories) {
@@ -244,11 +247,11 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();
             var cont=getContainerFor(invSlot);
-            if (cont != null && cont != playerGrid && cont!=hotbarGrid) {
-                if (!this.insertItem(originalStack,  true)) {
+            if (cont != null && !cont.isPlayerContainer()) {
+                if (!this.insertItem(cont,originalStack,  true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(originalStack,false)) {
+            } else if (!this.insertItem(cont,originalStack,false)) {
                 return ItemStack.EMPTY;
             }
  
@@ -261,16 +264,16 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
         return newStack;
     }
 
-    protected boolean insertItem(ItemStack stack, boolean fromContainer) {
+    protected boolean insertItem(IGridContainer origin,ItemStack stack, boolean fromContainer) {
+
         boolean bl = false;
-        List<IGridContainer> invs=new ArrayList<>();
-        if(fromContainer)
+        List<IGridContainer> invs=Arrays.stream(this.inventories).filter(v->v.isPlayerContainer()==fromContainer).toList();
+        if(invs.isEmpty() && !fromContainer)
         {
-            invs.add(this.getInventory("player"));
-            invs.add(this.getInventory("hotbar"));
+            invs=Arrays.stream(this.inventories).filter(v->v!=origin).toList();
         }
-        else
-            Collections.addAll(invs,this.inventories);
+
+
         if (stack.isStackable()) {
             for (var inv : invs) {
                 for (var slot : this.getSlotForInventory(inv.getName())) {
@@ -324,67 +327,5 @@ public abstract class MultiInvScreenHandler extends ScreenHandler {
         }
         return bl;
     }
-    public static class Props {
-        public int count;
-        public String[] names;
-        public int[] sizes;
-        public BlockPos inventoryPos;
-        public Props(@Nullable BlockPos inventoryPos, IGridContainer... containers)
-        {
-            this.inventoryPos=inventoryPos;
-            count=containers.length;
-            List<Integer> ls=new ArrayList<>();
-            List<String> ls1=new ArrayList<>();
-            for (IGridContainer container : containers) {
-                ls1.add(container.getName());
-                ls.add(container.getWidth());
-                ls.add(container.getHeight());
-            }
-            names=ls1.toArray(new String[0]);
-            sizes=new int[ls.size()];
-            for (int i = 0; i < ls.size(); i++) {
-                sizes[i]=ls.get(i);
-            }
-        }
-        public Props()
-        {
-            count=0;
-            names=new String[0];
-            sizes=new int[0];
-        }
-        public IGridContainer[] getContainers()
-        {
-            IGridContainer[] res=new IGridContainer[count];
-            for(int i=0;i<count;i++)
-            {
-                res[i]=new GridContainer(names[i],sizes[i*2],sizes[(i*2)+1]);
-            }
-            return res;
-        }
-        public static void serializer(PacketByteBuf write, Props val)
-        {
-            if(val.inventoryPos==null)
-                val.inventoryPos=BlockPos.ORIGIN;
-            write.writeInt(val.count);
-            write.writeBlockPos(val.inventoryPos);
-            write.writeIntArray(val.sizes);
-            for (String name : val.names) {
-                write.writeString(name);
-            }
 
-        }
-        public static Props unserializer(PacketByteBuf read)
-        {
-            Props p=new Props();
-            p.count=read.readInt();
-            p.inventoryPos=read.readBlockPos();
-            p.sizes=read.readIntArray();
-            p.names=new String[p.count];
-            for (int i=0;i<p.count;i++)
-            {
-                p.names[i]=read.readString();
-            }
-            return  p;
-        }
-    }
 }

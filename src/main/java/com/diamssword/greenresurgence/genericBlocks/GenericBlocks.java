@@ -108,114 +108,6 @@ public class GenericBlocks {
         }
         return s;
     }
-/*
-    private static void genericBlocs(GenericBlockSet set, BlockType type, Transparency render,@Nullable Consumer<GenericBlockSetRefonte.GenericBlockRegisterInstance> modifier, String... names)
-    {
-        for (String name : names) {
-            var d=set.add(name,render, type);
-            if(modifier!=null)
-                modifier.accept(d);
-        }
-    }
-    private static void genericBlocs(GenericBlockSet set, BlockType[] type, Transparency render, @Nullable Consumer<GenericBlockSetRefonte.GenericBlockRegisterInstance> modifier, String... names)
-    {
-        for (String name : names) {
-            var d=set.add(name,render, type);
-            if(modifier!=null)
-                modifier.accept(d);
-        }
-    }
-    private static void genericBlocsGroup(GenericBlockSet set, BlockType[] type, Transparency render,  @Nullable Consumer<GenericBlockSetRefonte.GenericBlockRegisterInstance> modifier, String group, String... names)
-    {
-        for (String name : names) {
-            var d=set.add(name,render, type).variantItem(group);
-            if(modifier !=null)
-                modifier.accept(d);
-        }
-    }
-    private static void genericBlocsGroup(GenericBlockSet set,BlockType type, Transparency render,String group, String... names)
-    {
-        for (String name : names) {
-            set.add(name,render, type).variantItem(group);
-        }
-    }
-    private static void genericFurniture(GenericBlockSet set,BlockType type, Transparency render, String... names)
-    {
-        for (String name : names) {
-            set.add(name,render, type).disableGen(true);
-        }
-    }
-    private static void genericFurnitureWithVariant(GenericBlockSet set,BlockType type, Transparency render,String variant, String... names)
-    {
-        for (String name : names) {
-            set.add(name,render, type).disableGen(true).variantItem(variant);
-        }
-    }
-    private static void genericChair(GenericBlockSet set, Transparency render, String... names)
-    {
-        for (String name : names) {
-            set.add(name,render, BlockType.CHAIR).disableGen(true);
-        }
-    }
-    private static void genericFurniture(GenericBlockSet set, BlockType type, Transparency render,String base,String[] p1,@Nullable String[] p2,@Nullable  String[] p3)
-    {
-        List<String> res=new ArrayList<>();
-        for(String p : p1)
-        {
-            if(p2!=null) {
-                for(String q : p2) {
-                    if(p3!=null) {
-                        for(String s : p3) {
-                            res.add(base+p+q+s);
-                        }
-                    }
-                    else
-                        res.add(base+p+q);
-                }
-            }
-            else
-                res.add(base+p);
-        }
-        for (String name : res) {
-            set.add(name,render, type).disableGen(true);
-        }
-    }
-    private static void genericFurnitureWithVariant(GenericBlockSet set, BlockType type, Transparency render,String variantName,String base,String[] p1,@Nullable String[] p2,@Nullable  String[] p3)
-    {
-        List<String> res=new ArrayList<>();
-        for(String p : p1)
-        {
-            if(p2!=null) {
-                for(String q : p2) {
-                    if(p3!=null) {
-                        for(String s : p3) {
-                            res.add(base+p+q+s);
-                        }
-                    }
-                    else
-                        res.add(base+p+q);
-                }
-            }
-            else
-                res.add(base+p);
-        }
-        for (String name : res) {
-            set.add(name,render, type).disableGen(true).variantItem(variantName);
-        }
-    }
-    private static void genericChairSlab(GenericBlockSet set, Transparency render, String... names)
-    {
-        for (String name : names) {
-            set.add(name,render, BlockType.CHAIR_SLAB).disableGen(true);
-        }
-    }
-    private static void genericChairMedium(GenericBlockSet set, Transparency render, String... names)
-    {
-        for (String name : names) {
-            set.add(name,render, BlockType.CHAIR_MEDIUM).disableGen(true);
-        }
-    }
-*/
     static GenericBlockSet diams= new GenericBlockSet("diams");
     static {
         //simple block centered
@@ -223,13 +115,13 @@ public class GenericBlocks {
         diams.create("concrete_side_road_blocker").addSub(BlockType.SIMPLE,ModelType.SIMPLE,HitBox.MEDIUM).disableGen(true).setTransparency(Transparency.NOTFULL);
         diams.create("road_tire_spike_cross","road_tire_spike").addSub(BlockType.PILLAR,ModelType.PILLAR,HitBox.CARPET_FIXED).setTransparency(Transparency.CUTOUT).disableGen(true).setTransparency(Transparency.NOTFULL).setDamage(1f).notSolid();
         diams.create("gray_concrete").addSub(BlockType.OMNI_BLOCK,ModelType.SLAB,SubBlock.SLAB).disableGen(false);
-        diams.create("gray_glazed_terracotta").addSub(BlockType.ROTATABLE_SLAB,ModelType.SLAB,HitBox.FIXED_SLAB,SubBlock.SLAB).disableGen(false); //TODO dalle en position haute
+        diams.create("gray_glazed_terracotta").addSub(BlockType.ROTATABLE_SLAB,ModelType.SLAB,HitBox.FIXED_SLAB,SubBlock.SLAB).disableGen(false);
         //diams.add("gray_glazed_terracotta", BlockType.ROTATABLE_SLAB).disableGen(false);
         diams.add("road_barrier",Transparency.NOTFULL, BlockType.PILLAR).disableGen(false);
         diams.create("carton_gros","concrete_block").addSub(BlockType.PILLAR).disableGen(true);
 
         //lamps
-        diams.create("lamp_marine_big_plastic","lamp_marine_big_metal","lamp_marine_big_gold","lamp_marine_big_copper","lamp_marine_big_black","lamp_marine_plastic","lamp_marine_metal","lamp_marine_gold","lamp_marine_copper","lamp_marine_black")
+        diams.create("lamp_marine_big_plastic","lamp_marine_big_metal","lamp_marine_big_gold","lamp_marine_big_copper","lamp_marine_big_black","lamp_marine_plastic","lamp_marine_metal","lamp_marine_gold","lamp_marine_copper","lamp_marine_black","lamp_ceiling_light_copper")
                         .addSub(BlockType.OMNI_BLOCK,ModelType.CARPET,HitBox.CARPET).togglable().light(12).setTransparency(Transparency.CUTOUT).addGroup("lamps").disableGen(true);
         diams.create("lamp_desk_plastic","lamp_desk_metal","lamp_desk_gold","lamp_desk_copper","lamp_desk_black")
                 .addSub(BlockType.PILLAR,ModelType.CARPET,HitBox.SMALL_BOTTOM).togglable().light(12).setTransparency(Transparency.CUTOUT).addGroup("lamps_desk").disableGen(true);
@@ -244,8 +136,8 @@ public class GenericBlocks {
         //cartons
         diams.create(simpleList("carton_petit","",new String[]{"","_travers","_ouvert","_entreouvert"})).addGroup("cartons_petit").addSub(BlockType.PILLAR,ModelType.PILLAR,HitBox.MEDIUM).setTransparency(Transparency.NOTFULL).disableGen(true);
         //register
-        diams.create("register_black").addSub(BlockType.PILLAR,ModelType.SLAB,HitBox.SMALL_BOTTOM).setTransparency(Transparency.NOTFULL).disableGen(true);
-
+        diams.create("register_black","circulation_plot").addSub(BlockType.PILLAR,ModelType.SLAB,HitBox.SMALL_BOTTOM).setTransparency(Transparency.NOTFULL).disableGen(true);
+        diams.create("gaz_bottle","gaz_bottle_big","gaz_bottle_pile","fire_extinguisher").addSub(BlockType.PILLAR,ModelType.SLAB,HitBox.SMALL_BOTTOM).setTransparency(Transparency.CUTOUT).disableGen(true);
         //photo_frame
         diams.create(simpleList("photo_frame_",new String[]{"tree_","portrait_","zen_"},new String[]{"table","wall"})).addSub(BlockType.PILLAR,ModelType.SLAB,HitBox.SMALL_BOTTOM).addGroup("photo_frame").setTransparency(Transparency.NOTFULL).disableGen(true);
         //radiator
@@ -280,7 +172,7 @@ public class GenericBlocks {
         //shower
         diams.create(simpleList("shower_","", "wall_head","round_wall_head","round_head_with_hand","round_head","round_ceiling_head","only_with_hand","mixer","head_with_hand","head","ceiling_head"))
                         .addSub(BlockType.PILLAR,ModelType.CARPET,HitBox.CARPET).notSolid().setTransparency(Transparency.CUTOUT).disableGen(true).addGroup("shower");
-        diams.create("pendantlight_rattan_light","pendantlight_rattan_dark","trash_can_round_green","trash_can_round_iron","dino_meat_mascot","trash_can_fast_food_red","trash_can_fast_food_green","trash_can_fast_food_gray","trash_can_fast_food_black").addSub(BlockType.PILLAR).setTransparency(Transparency.CUTOUT).disableGen(true);
+        diams.create("pendantlight_rattan_light","pendantlight_rattan_dark","trash_can_round_green","trash_can_round_iron","dino_meat_mascot","trash_can_fast_food_red","trash_can_fast_food_green","trash_can_fast_food_gray","trash_can_fast_food_black","trash_can_square_exterior_wood","trash_can_square_exterior_green","restaurant_display_light","restaurant_display_dark").addSub(BlockType.PILLAR).setTransparency(Transparency.CUTOUT).disableGen(true);
         diams.create(simpleList("luggage_","",new String[]{"antique_small_brown","antique_small_white","basket","basket_stand","picnic"})).addSub(BlockType.PILLAR,ModelType.SLAB,HitBox.SLAB).setTransparency(Transparency.NOTFULL).disableGen(true);
         diams.create(simpleList("bathtub_",new String[]{"right_","left_"},new String[]{"empty","water"})).addSub(BlockType.PILLAR,ModelType.SLAB).setTransparency(Transparency.CUTOUT).seat(CHAIR_SLAB).disableGen(true);
         //baricade
@@ -297,7 +189,27 @@ public class GenericBlocks {
         diams.create("shelf_wall").addSub(BlockType.OMNI_BLOCK,ModelType.CARPET,HitBox.CARPET).disableGen(true);
 
         //distributor
-        diams.create(simpleList("distributor",new String[]{"_orange_"},new String[]{"up_left","up_right","middle_left","middle_right","down_right","down_left"})).addSub(BlockType.PILLAR).disableGen(true).addGroup("distributor").setTransparency(Transparency.NOTFULL);
+        diams.create(simpleList("distributor",new String[]{"_orange_","_green_"},new String[]{"up_left","up_right","middle_left","middle_right","down_right","down_left"})).addSub(BlockType.PILLAR).disableGen(true).addGroup("distributor").setTransparency(Transparency.NOTFULL);
+
+        //bucket
+        diams.create("bucket_metal_water","bucket_metal_empty").addSub(BlockType.PILLAR,ModelType.SIMPLE,HitBox.MEDIUM).setTransparency(Transparency.NOTFULL).disableGen(true).addGroup("bucket");
+
+        //electrical
+        diams.create("electrical_power_switch","electrical_power_house","electrical_power_distributor").addSub(BlockType.PILLAR,ModelType.SLAB,HitBox.CARPET).setTransparency(Transparency.NOTFULL).disableGen(true).addGroup("electrical");
+        //umbrela
+        diams.create(allColors("umbrella_market_")).addSub(BlockType.PILLAR,ModelType.SIMPLE,HitBox.CENTER).setTransparency(Transparency.CUTOUT).disableGen(true).addGroup("umbrella");
+        diams.create("umbrella_stand").addSub(BlockType.PILLAR,ModelType.SIMPLE,HitBox.CARPET_FIXED).setTransparency(Transparency.NOTFULL).disableGen(true).addGroup("umbrella");
+        //shopping cart
+        diams.create("shopping_cart").addSub(BlockType.CONNECTED_PILLAR,ModelType.PILLAR).setTransparency(Transparency.CUTOUT).disableGen(true);
+        //livres
+        diams.create(simpleList("book_horizontal_","", "a","b","c","d","e")).addSub(BlockType.PILLAR,ModelType.PILLAR,HitBox.CARPET_FIXED).setTransparency(Transparency.CUTOUT).addGroup("book_horizontal").disableGen(true);
+
+        //ladders
+        diams.create("ladder_metal_up","ladder_metal").addSub(BlockType.PILLAR, ModelType.LADDER, GenericBlockSet.HitBox.CARPET).setTransparency(Transparency.CUTOUT).addTags(BlockTags.CLIMBABLE).sound(BlockSoundGroup.LADDER).disableGen(true);
+
+        //fences
+        diams.create("barrier_plastic").addSub(BlockType.CONNECTED_PILLAR).setTransparency(Transparency.NOTFULL).disableGen(true);
+        diams.create("barrier_plastic_angle").addSub(BlockType.PILLAR).setTransparency(Transparency.NOTFULL).disableGen(true);
         //car
         //genericFurniture(diams, BlockType.PILLAR, Transparency.CUTOUT,"car_low_front_right","car_low_front_left","car_low_back_right","car_low_back_left");
         //genericFurniture(diams, BlockType.TOGGLEABLE, Transparency.CUTOUT,"car_low_trunk","car_low_door","car_low_capot");

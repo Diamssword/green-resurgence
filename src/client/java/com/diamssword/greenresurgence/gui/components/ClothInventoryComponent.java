@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.gui.components;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.cosmetics.ClothingModel;
+import com.diamssword.greenresurgence.render.cosmetics.ClothingModel;
 import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.base.BaseComponent;
@@ -32,7 +32,6 @@ import org.joml.Vector3f;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

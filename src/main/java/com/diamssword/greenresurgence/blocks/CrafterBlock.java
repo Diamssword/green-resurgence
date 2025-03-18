@@ -55,7 +55,7 @@ public class CrafterBlock extends BlockWithEntity {
         }
 
         public ScreenHandler( int syncId, PlayerInventory playerInventory, boolean unused) {
-            super( syncId, playerInventory, true);
+            super( syncId, playerInventory.player, true);
         }
 
         @Override

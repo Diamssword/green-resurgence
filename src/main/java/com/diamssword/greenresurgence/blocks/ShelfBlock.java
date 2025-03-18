@@ -4,6 +4,7 @@ import com.diamssword.greenresurgence.MBlockEntities;
 import com.diamssword.greenresurgence.blockEntities.LootableItemBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootableShelfEntity;
 import com.diamssword.greenresurgence.containers.Containers;
+import com.diamssword.greenresurgence.containers.CreativeMultiInvScreenHandler;
 import com.diamssword.greenresurgence.containers.IGridContainer;
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import com.diamssword.greenresurgence.genericBlocks.GenericPillar;
@@ -139,7 +140,7 @@ public class ShelfBlock extends BlockWithEntity implements Waterloggable {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if(!world.isClient && player.isCreative())
         {
-            Containers.createHandler(player,pos,(sync,inv,p1)-> new ShelfBlock.ScreenHandler( sync,inv, ShelfBlock.this.getBlockEntity(pos,world).getContainer()));
+            Containers.createHandler(player,pos,(sync,inv,p1)-> new ShelfBlock.ScreenHandler( sync,p1, ShelfBlock.this.getBlockEntity(pos,world).getContainer()));
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
@@ -148,14 +149,14 @@ public class ShelfBlock extends BlockWithEntity implements Waterloggable {
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
     }
-    public static class ScreenHandler extends MultiInvScreenHandler {
+    public static class ScreenHandler extends CreativeMultiInvScreenHandler {
 
         public ScreenHandler(int syncId, PlayerInventory playerInventory) {
             super(syncId, playerInventory);
         }
 
-        public ScreenHandler( int syncId, PlayerInventory playerInventory, IGridContainer... inventories) {
-            super( syncId, playerInventory, inventories);
+        public ScreenHandler( int syncId, PlayerEntity player, IGridContainer... inventories) {
+            super( syncId, player.getInventory(), inventories);
         }
 
         @Override

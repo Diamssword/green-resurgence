@@ -1,11 +1,9 @@
 package com.diamssword.greenresurgence.mixin.client;
 
-import com.diamssword.greenresurgence.CustomPoseRender.CustomPoseRenderManager;
+import com.diamssword.greenresurgence.render.CustomPoseRender.CustomPoseRenderManager;
 import com.diamssword.greenresurgence.systems.Components;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
-import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;

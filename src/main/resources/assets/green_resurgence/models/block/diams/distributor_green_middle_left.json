@@ -1,0 +1,88 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [160, 160],
+	"textures": {
+		"0": "green_resurgence:block/diams/distributor_b",
+		"particle": "green_resurgence:block/diams/distributor_b"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 1],
+			"to": [14, 16, 2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 1]},
+			"faces": {
+				"north": {"uv": [6.6, 3.2, 9.6, 6.3], "texture": "#0"},
+				"east": {"uv": [13, 2.3, 13.2, 5.3], "texture": "#0"},
+				"west": {"uv": [13, 2.3, 13.2, 5.3], "texture": "#0"},
+				"up": {"uv": [9.8, 0.6, 6.6, 0.8], "texture": "#0"},
+				"down": {"uv": [9.8, 0.6, 6.6, 0.8], "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 0, 2],
+			"to": [15, 16, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 2]},
+			"faces": {
+				"north": {"uv": [6.4, 3.2, 9.4, 6.4], "texture": "#0"},
+				"east": {"uv": [12.9, 3.2, 15.9, 6.4], "texture": "#0"},
+				"south": {"uv": [3.2, 3.2, 6.4, 6.4], "texture": "#0"},
+				"west": {"uv": [3.2, 9.6, 0, 12.8], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [3.2, 9.6, 0, 12.8], "texture": "#0"},
+				"down": {"uv": [3.2, 9.6, 0, 12.8], "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 0, 15],
+			"to": [13, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 15]},
+			"faces": {
+				"east": {"uv": [5.8, 3.2, 6, 6.4], "texture": "#0"},
+				"south": {"uv": [3.2, 3.2, 6, 6], "texture": "#0"},
+				"west": {"uv": [5.8, 3.2, 6, 6.4], "texture": "#0"},
+				"up": {"uv": [2.8, 0.4, 6, 0.6], "texture": "#0"},
+				"down": {"uv": [2.8, 9, 6, 9.2], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0.75, -2.5, -3.25],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"thirdperson_lefthand": {
+			"translation": [-0.25, -2.5, -3],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 113, 0],
+			"translation": [3, 0.5, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 113, 0],
+			"translation": [3, 0.5, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"translation": [0, 1.75, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"gui": {
+			"rotation": [28, 154, 0],
+			"translation": [-0.5, -0.25, 0],
+			"scale": [0.7, 0.7, 0.7]
+		},
+		"head": {
+			"translation": [0, 10.5, 0],
+			"scale": [0.5, 0.5, 0.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "Millieu gauche",
+			"origin": [0, 0, 15],
+			"color": 0,
+			"children": [0, 1, 2]
+		}
+	]
+}

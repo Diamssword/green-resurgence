@@ -2,6 +2,8 @@ package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
+import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
+import com.diamssword.greenresurgence.containers.player.VanillaPlayerInvMokup;
 import com.diamssword.greenresurgence.systems.Components;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,12 +17,13 @@ import org.jetbrains.annotations.Nullable;
 public class GuiPackets {
     public static enum KEY{
         Inventory,
+        PInventory,
     }
     public static enum GUI{
         ImageBlock,
         Wardrobe,
         Customizer,
-        Stats
+        Stats,
     }
     public record GuiPacket(GUI gui, @Nullable  BlockPos pos){};
     public record GuiTileValue(BlockPos pos,String key,String value) {
@@ -102,6 +105,10 @@ public class GuiPackets {
 
                     });
 
+
+                }
+                case PInventory -> {
+                    CustomPlayerInventory.openInventoryScreen(ctx.player());
 
                 }
             }

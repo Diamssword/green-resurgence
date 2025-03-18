@@ -4,10 +4,7 @@ package com.diamssword.greenresurgence.items;
 import com.diamssword.greenresurgence.blockEntities.ConnectorBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.blocks.ConnectorBlock;
-import com.diamssword.greenresurgence.containers.Containers;
-import com.diamssword.greenresurgence.containers.GridContainer;
-import com.diamssword.greenresurgence.containers.IGridContainer;
-import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
+import com.diamssword.greenresurgence.containers.*;
 import com.diamssword.greenresurgence.network.GuiPackets;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
@@ -58,13 +55,13 @@ public class BlockVariantItem extends Item {
         }
         return TypedActionResult.success(user.getStackInHand(hand));
     }
-    public static class Container extends MultiInvScreenHandler {
+    public static class Container extends CreativeMultiInvScreenHandler {
         public Container(int syncId, PlayerInventory playerInventory) {
             super(syncId, playerInventory);
         }
 
-        public Container(int syncId, PlayerInventory playerInventory,boolean unused) {
-            super(syncId, playerInventory, true);
+        public Container(int syncId, PlayerInventory player,boolean unused) {
+            super(syncId, player, true);
         }
 
         @Override

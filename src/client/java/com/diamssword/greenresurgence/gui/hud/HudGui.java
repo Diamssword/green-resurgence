@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.gui.hud;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.gui.components.ComponentsRegister;
 import com.diamssword.greenresurgence.gui.components.hud.*;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -95,12 +96,20 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
         });
         attachWithTicker(HotBarComponent.class,"hotbar",(h)->{
             h.hidden(this.client.interactionManager.getCurrentGameMode() == GameMode.SPECTATOR);
-            var ls= DefaultedList.ofSize(5, ItemStack.EMPTY);
-            for (int i = 0; i < 5; i++) {
+            var max=CustomPlayerInventory.getHotbarSlotCount(this.client.player);
+            var ls= DefaultedList.ofSize(max, ItemStack.EMPTY);
+            for (int i = 0; i < max; i++) {
                 ls.set(i,client.player.getInventory().main.get(i));
             }
+            var b= max != h.getSize();
             h.setStacks(ls);
+
+            root.onChildMutated(h);
             h.setSelected(client.player.getInventory().selectedSlot);
+            if(b) {
+                this.resize(client,0,0);
+                this.resize(client,client.getWindow().getScaledWidth(),client.getWindow().getScaledHeight());
+            }
         });
         attachWithTicker(SingleSlotComponent.class,"offhandleft",h->{
             var ind=client.player.getMainArm().getOpposite()!= Arm.LEFT;

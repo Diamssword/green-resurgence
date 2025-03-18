@@ -1,0 +1,5 @@
+{
+"parent":"green_resurgence:block/diams/umbrella_market_white",
+"textures": {
+		"0": "green_resurgence:block/diams/umbrella_orange"
+		}}

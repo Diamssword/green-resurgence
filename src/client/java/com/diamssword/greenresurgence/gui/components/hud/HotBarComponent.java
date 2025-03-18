@@ -134,7 +134,14 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 
     public void setStacks(DefaultedList<ItemStack> stacks) {
         this.stacks=stacks;
-        this.size=stacks.size();
+        if(this.size!=stacks.size())
+        {
+            this.size=stacks.size();
+            this.dirty=true;
+            this.applySizing();
+        }
+        else
+            this.size=stacks.size();
     }
     public float getSelected() {
         return selected;

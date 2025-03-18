@@ -130,7 +130,7 @@ public class LootableItemBlock extends BlockWithEntity implements Waterloggable 
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if(!world.isClient && player.isCreative())
         {
-            Containers.createHandler(player,pos,(sync,inv,p1)-> new ItemBlock.ScreenHandler( sync,inv, LootableItemBlock.this.getBlockEntity(pos,world).getContainer()));
+            Containers.createHandler(player,pos,(sync,inv,p1)-> new ItemBlock.ScreenHandler( sync,player, LootableItemBlock.this.getBlockEntity(pos,world).getContainer()));
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;

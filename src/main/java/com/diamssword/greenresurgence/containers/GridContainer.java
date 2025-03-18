@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.containers;
 
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.screen.slot.Slot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,11 @@ public class GridContainer implements IGridContainer{
     @Override
     public Inventory getInventory() {
         return inventory;
+    }
+
+    @Override
+    public boolean isPlayerContainer() {
+        return false;
     }
 
     @Override

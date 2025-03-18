@@ -1,0 +1,47 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+<components>
+<flow-layout direction="vertical">
+    <children>
+        <flow-layout direction="vertical">
+            <children>
+                <scroll direction="vertical">
+                    <flow-layout  id="recipeMenu" direction="vertical">
+
+                        <children>
+                        </children>
+                        <padding><all>5</all></padding>
+                        <horizontal-alignment>center</horizontal-alignment>
+                    </flow-layout>
+
+                    <sizing><vertical method="fixed">200</vertical><horizontal method="fill">100</horizontal></sizing>
+                </scroll>
+                <separator>
+                    <sizing><horizontal method="fill">100</horizontal><vertical method="fixed">1</vertical></sizing>
+                </separator>
+                <scroll direction="horizontal">
+                    <flow-layout  id="recipeProgress" direction="horizontal">
+                        <children>
+                        </children>
+
+                        <horizontal-alignment>center</horizontal-alignment>
+                    </flow-layout>
+
+                    <margins><vertical>2</vertical></margins>
+                    <sizing><vertical method="fixed">20</vertical><horizontal method="fill">100</horizontal></sizing>
+                </scroll>
+            </children>
+            <surface>
+                <gpanel/>
+            </surface>
+            <sizing><horizontal method="fixed">120</horizontal><vertical method="fixed">225</vertical></sizing>
+        </flow-layout>
+
+    </children>
+
+    <horizontal-alignment>left</horizontal-alignment>
+    <vertical-alignment>center</vertical-alignment>
+</flow-layout>
+
+</components>
+</owo-ui>

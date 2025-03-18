@@ -34,6 +34,7 @@ public class RecipDisplayComponent extends BaseComponent {
     {
         if(recipe !=null )
             result=status;
+
     }
     public CraftingResult getStatus()
     {

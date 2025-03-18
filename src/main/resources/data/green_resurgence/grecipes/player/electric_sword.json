@@ -1,0 +1,35 @@
+{
+  "ingredients": [
+    {
+      "name": "green_resurgence:material_alloy_steel",
+      "type": "item",
+      "count": 2
+    },
+
+    {
+      "name": "green_resurgence:material_energy_cell",
+      "type": "item",
+      "count": 1
+    },
+    {
+      "name": "minecraft:stick",
+      "type": "item",
+      "count": 1
+    },
+    {
+      "name": "green_resurgence:material_metal_ironbar",
+      "type": "item",
+      "count": 1
+    },
+    {
+      "type":"time",
+      "count": 400
+    }
+  ],
+  "result": {
+    "name": "green_resurgence:tools/flame_sword_one_handed",
+    "type": "item",
+    "count": 1
+  },
+  "type": "simple"
+}

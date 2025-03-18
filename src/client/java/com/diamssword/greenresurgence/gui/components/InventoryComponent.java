@@ -1,11 +1,13 @@
 package com.diamssword.greenresurgence.gui.components;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.gui.components.hud.IHideableComponent;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.base.BaseComponent;
 import io.wispforest.owo.ui.core.*;
 import io.wispforest.owo.ui.parsing.UIModel;
 import io.wispforest.owo.ui.parsing.UIParsing;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.text.Text;
 import org.w3c.dom.Element;
@@ -14,28 +16,39 @@ import java.util.Map;
 
 import net.minecraft.util.Identifier;
 
-public class InventoryComponent extends BaseComponent {
-    public static final Identifier SLOT_TEXTURE= GreenResurgence.asRessource("textures/gui/slot.png");
+public class InventoryComponent extends BaseComponent implements IHideableComponent {
+    public final Identifier SLOT_TEXTURE;
     public final String inventoryId;
     public final String name;
+    public Text customName;
     protected AnimatableProperty<PositionedRectangle> visibleArea;
     private int regionWidth=18;
     private int regionHeight=18;
     protected boolean blend = false;
+    private boolean hidden;
+
     protected InventoryComponent(String inventoryId,int width,int height,String name) {
         this.inventoryId=inventoryId;
         this.name=name;
+        SLOT_TEXTURE= GreenResurgence.asRessource("textures/gui/slots/slot.png");
+        this.setSize(width,height);
+
+    }
+    protected InventoryComponent(String inventoryId,int width,int height,String name,String texture) {
+        this.inventoryId=inventoryId;
+        this.name=name;
+        SLOT_TEXTURE= GreenResurgence.asRessource("textures/gui/slots/"+texture);
         this.setSize(width,height);
 
     }
     public void setSize(int width,int height)
     {
         this.regionWidth=width*18;
-        this.regionHeight=10+height*18;
+        this.regionHeight=(getInventoryName() !=null?10:1)+height*18;
         this.visibleArea = AnimatableProperty.of(PositionedRectangle.of(0, 0, this.regionWidth, this.regionHeight));
         this.applySizing();
         if(this.parent!=null)
-            this.parent.inflate(this.parent.fullSize());
+            this.parent.onChildMutated(this);
     }
     protected InventoryComponent(String inventoryId,int width,int height) {
         this(inventoryId,width,height,inventoryId);
@@ -59,6 +72,8 @@ public class InventoryComponent extends BaseComponent {
     }
     public Text getInventoryName()
     {
+        if(this.customName !=null)
+            return this.customName;
         if(this.name.equals("disabled"))
             return null;
         if(this.inventoryId.equals("player"))
@@ -69,6 +84,8 @@ public class InventoryComponent extends BaseComponent {
     }
     @Override
     public void draw(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
+        if(hidden)
+            return;;
         RenderSystem.enableDepthTest();
 
         if (this.blend) {
@@ -86,18 +103,21 @@ public class InventoryComponent extends BaseComponent {
         int bottomEdge = Math.min(visibleArea.y() + visibleArea.height(), regionHeight);
         int rightEdge = Math.min(visibleArea.x() + visibleArea.width(), regionWidth);
         Text name=getInventoryName();
-        if(name!=null)
-            context.drawText(name,visibleArea.x(),visibleArea.y(),0.9f,0xffffff);
 
+        if(name!=null) {
+            var d=MinecraftClient.getInstance().textRenderer.getWidth(name.getString());
+            if(width() >=d)
+                context.drawText(name, visibleArea.x(), visibleArea.y(), 0.9f, 0xffffff);
+        }
         context.drawTexture(SLOT_TEXTURE,
                 visibleArea.x()-1,
-                visibleArea.y()+9,
+                visibleArea.y()+(name!=null?9:0),
                 rightEdge - visibleArea.x(),
-                bottomEdge - visibleArea.y()-10,
+                bottomEdge - visibleArea.y()-(name!=null?10:1),
                 visibleArea.x(),
                 visibleArea.y(),
                 rightEdge - visibleArea.x(),
-                bottomEdge - visibleArea.y()-10,
+                bottomEdge - visibleArea.y()-(name!=null?10:1),
                 18,18
         );
 
@@ -128,7 +148,6 @@ public class InventoryComponent extends BaseComponent {
         super.parseProperties(model, element, children);
 
         UIParsing.apply(children, "blend", UIParsing::parseBool, this::blend);
-
         if (children.containsKey("visible-area")) {
             var areaChildren = UIParsing.childElements(children.get("visible-area"));
 
@@ -156,12 +175,31 @@ public class InventoryComponent extends BaseComponent {
         UIParsing.expectAttributes(element, "id");
         UIParsing.expectAttributes(element, "width");
         UIParsing.expectAttributes(element, "height");
+        var text= "slot.png";
+        if(element.hasAttribute("texture"))
+            text=element.getAttributeNode("texture").getValue();
         var invId =element.getAttributeNode("id").getValue();
         var w=UIParsing.parseUnsignedInt(element.getAttributeNode("width"));
         var h=UIParsing.parseUnsignedInt(element.getAttributeNode("height"));
         if (element.hasAttribute("name")) {
-            return new InventoryComponent(invId,w,h,element.getAttributeNode("name").getValue());
+            return new InventoryComponent(invId,w,h,element.getAttributeNode("name").getValue(),text);
         }
-        return new InventoryComponent(invId,w,h);
+        return new InventoryComponent(invId,w,h,invId,text);
+    }
+
+    @Override
+    public void hidden(boolean hidden) {
+        this.hidden=hidden;
+        this.regionWidth=1;
+        this.regionHeight=1;
+        this.visibleArea = AnimatableProperty.of(PositionedRectangle.of(0, 0, this.regionWidth, this.regionHeight));
+        this.applySizing();
+        if(this.parent!=null)
+            this.parent.onChildMutated(this);
+    }
+
+    @Override
+    public boolean isHidden() {
+        return hidden;
     }
 }

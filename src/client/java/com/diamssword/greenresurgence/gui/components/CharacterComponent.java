@@ -1,7 +1,6 @@
 package com.diamssword.greenresurgence.gui.components;
 
-import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.cosmetics.ClothingModel;
+import com.diamssword.greenresurgence.render.cosmetics.ClothingModel;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.base.BaseComponent;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
@@ -18,7 +17,6 @@ import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
 import org.joml.Vector3f;

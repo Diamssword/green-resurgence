@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.nbt.NbtCompound;
@@ -86,7 +87,7 @@ public class LootedBlockEntity extends BlockEntity {
     {
         if(inventory ==null)
             createInventory(player);
-        Containers.createHandler(player,pos,(sync,inv,p1)-> new Container( sync,inv,new GridContainer("loot",inventory,3,3)));
+        Containers.createHandler(player,pos,(sync,inv,p1)-> new Container( sync,player,new GridContainer("loot",inventory,3,3)));
 
     }
     private void createInventory(ServerPlayerEntity player) {
@@ -151,8 +152,8 @@ public class LootedBlockEntity extends BlockEntity {
             super(syncId, playerInventory);
         }
 
-        public Container(int syncId, PlayerInventory playerInventory, IGridContainer... inventories) {
-            super(syncId, playerInventory, inventories);
+        public Container(int syncId, PlayerEntity player, IGridContainer... inventories) {
+            super(syncId, player, inventories);
         }
 
         @Override

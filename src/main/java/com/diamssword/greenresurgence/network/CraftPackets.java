@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.network;
 
+import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.crafting.CraftingProvider;
 import com.diamssword.greenresurgence.systems.crafting.CraftingResult;
 import com.diamssword.greenresurgence.systems.crafting.SimpleRecipe;
@@ -23,6 +24,7 @@ public class CraftPackets {
     private static Consumer<CraftingResult> currentTrackedClient;
     private static Map<ServerPlayerEntity, CraftStatusTracked> currentTrackedServer=new HashMap<>();
     public record RequestCraft(BlockPos pos, SimpleRecipe recipe){};
+    public record RequestPlayerCraft(SimpleRecipe recipe){};
     public record RequestCraftStatus(Integer index,BlockPos pos, SimpleRecipe recipe){};
     public record SendCraftStatus(Integer index, CraftingResult recipe){};
     private record CraftStatusTracked(Integer index, CraftingProvider provider,SimpleRecipe recipe){};
@@ -45,6 +47,10 @@ public class CraftPackets {
                 Channels.MAIN.serverHandle(ctx.player()).send(new SendCraftStatus(p1.index,prov.getRecipeStatus(msg.recipe, ctx.player())));
             }
 
+        });
+        Channels.MAIN.registerServerbound(RequestPlayerCraft.class,(msg,ctx)->{
+         var pli=ctx.player().getComponent(Components.PLAYER_INVENTORY);
+            pli.getCrafterProvider().craftRecipe(msg.recipe,ctx.player());
         });
         Channels.MAIN.registerServerbound(RequestCraftStatus.class,(msg,ctx)->{
             var prov=new CraftingProvider().setForFaction(ctx.player(),msg.pos);

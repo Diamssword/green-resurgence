@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.gui.components;
 
+import com.diamssword.greenresurgence.gui.ClickableLayoutComponent;
 import com.diamssword.greenresurgence.gui.components.hud.*;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.EntityComponent;
@@ -31,6 +32,8 @@ public class ComponentsRegister {
         UIParsing.registerFactory("heldtooltip", (e)->new ItemTooltipComponent());
         UIParsing.registerFactory("hudicon", IconComponent::parse);
         UIParsing.registerFactory("offhandslot", SingleSlotComponent::parse);
+        UIParsing.registerFactory("subscreen", SubScreenLayout::parse);
+        UIParsing.registerFactory("button-layout", ClickableLayoutComponent::parse);
 
 
     }

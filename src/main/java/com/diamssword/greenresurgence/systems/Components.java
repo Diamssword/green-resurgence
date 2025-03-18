@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.systems;
 
+import com.diamssword.greenresurgence.systems.character.PlayerInventoryData;
 import com.diamssword.greenresurgence.systems.faction.perimeter.FactionList;
 import com.diamssword.greenresurgence.systems.faction.perimeter.IFactionList;
 import com.diamssword.greenresurgence.systems.character.PlayerData;
@@ -15,10 +16,12 @@ import net.minecraft.util.Identifier;
 public class Components implements EntityComponentInitializer, WorldComponentInitializer {
     public static final ComponentKey<IFactionList> BASE_LIST = ComponentRegistryV3.INSTANCE.getOrCreate(new Identifier("green_resurgence:base_list"), IFactionList.class);
     public static final ComponentKey<PlayerData> PLAYER_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(new Identifier("green_resurgence:player_data"), PlayerData.class);
+    public static final ComponentKey<PlayerInventoryData> PLAYER_INVENTORY = ComponentRegistryV3.INSTANCE.getOrCreate(new Identifier("green_resurgence:player_inventory"), PlayerInventoryData.class);
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerForPlayers(PLAYER_DATA,PlayerData::new, RespawnCopyStrategy.ALWAYS_COPY);
+        registry.registerForPlayers(PLAYER_INVENTORY,PlayerInventoryData::new, RespawnCopyStrategy.ALWAYS_COPY);
 
     }
 

@@ -3,6 +3,7 @@
  */
 package com.diamssword.greenresurgence.gui;
 
+import com.diamssword.greenresurgence.containers.AbstractMultiInvScreenHandler;
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import com.diamssword.greenresurgence.gui.components.InventoryComponent;
 import com.diamssword.greenresurgence.systems.crafting.UniversalResource;
@@ -51,7 +52,7 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 @Environment(value=EnvType.CLIENT)
-public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R extends ParentComponent> extends Screen implements ScreenHandlerProvider<T> {
+public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHandler<?>,R extends ParentComponent> extends Screen implements ScreenHandlerProvider<T> {
     protected int backgroundWidth = 176;
     protected int backgroundHeight = 166;
     protected final T handler;
@@ -168,6 +169,8 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
                 var inv=this.handler.getInventory(par.inventoryId);
                 if(inv !=null)
                     par.setSize(inv.getWidth(),inv.getHeight());
+                else
+                    par.hidden(true);
             }
             else if(c instanceof BaseParentComponent c1)
                 findInvComps(c1);
@@ -193,8 +196,10 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
     public Pair<Integer,Integer> getSlotPosition(Slot s, String inventory)
     {
         var comp=invsComps.get(inventory);
-        if(comp!=null)
-            return new Pair<>(s.x+comp.x()-this.x,s.y+comp.y()-this.y+10);
+        if(comp!=null) {
+            var b=comp.getInventoryName() !=null;
+            return new Pair<>(s.x + comp.x() - this.x, s.y + comp.y() - this.y + (b?10:1));
+        }
         return  new Pair<>(0,0);
 
     }
@@ -353,6 +358,7 @@ public abstract class MultiInvHandledScreen<T extends MultiInvScreenHandler,R ex
         context.getMatrices().translate(0.0f, 0.0f, 100.0f);
         if (itemStack.isEmpty() && slot.isEnabled() && (pair = slot.getBackgroundSprite()) != null) {
             Sprite sprite = this.client.getSpriteAtlas((Identifier)pair.getFirst()).apply((Identifier)pair.getSecond());
+
             context.drawSprite(pos.getFirst(), pos.getSecond(), 0, 16, 16, sprite);
             bl2 = true;
         }

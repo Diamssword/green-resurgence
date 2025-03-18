@@ -1,0 +1,24 @@
+{
+  "ingredients": [
+    {
+      "name": "green_resurgence:material_bones_human",
+      "type": "item",
+      "count": 1
+    },
+    {
+      "name": "minecraft:stick",
+      "type": "item",
+      "count": 2
+    },
+    {
+      "type":"time",
+      "count": 100
+    }
+  ],
+  "result": {
+    "name": "green_resurgence:tools/bone_dagger",
+    "type": "item",
+    "count": 1
+  },
+  "type": "simple"
+}

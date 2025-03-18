@@ -1,10 +1,7 @@
 package com.diamssword.greenresurgence.systems.faction.perimeter.components;
 
 import com.diamssword.greenresurgence.blockEntities.GenericStorageBlockEntity;
-import com.diamssword.greenresurgence.containers.Containers;
-import com.diamssword.greenresurgence.containers.GridContainer;
-import com.diamssword.greenresurgence.containers.IGridContainer;
-import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
+import com.diamssword.greenresurgence.containers.*;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.minecraft.block.entity.ChestBlockEntity;
@@ -93,7 +90,7 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player)
     {
-        return new ScreenHandler(syncId, playerInventory, new GridContainer("storage",formated,formated.size(),1));
+        return new ScreenHandler(syncId, player, new GridContainer("storage",formated,formated.size(),1));
     }
 
     @Override
@@ -182,8 +179,8 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
             super(syncId, playerInventory);
         }
 
-        public ScreenHandler( int syncId, PlayerInventory playerInventory, IGridContainer... containers) {
-            super( syncId, playerInventory, containers);
+        public ScreenHandler( int syncId, PlayerEntity player, IGridContainer... containers) {
+            super( syncId, player, containers);
             ((FormattedInventory)containers[0].getInventory()).addListener(l->{
                 if(l.size()>this.getSlotForInventory("storage").size())
                 {
@@ -194,7 +191,7 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
                     for (Slot storage : this.inventoriesMap.get("storage")) {
                         storage.setStackNoCallbacks(l.getStack(storage.getIndex()));
                     }
-                    if(playerInventory.player instanceof ServerPlayerEntity sp) {
+                    if(player instanceof ServerPlayerEntity sp) {
                         sp.networkHandler.sendPacket(new InventoryS2CPacket(this.syncId, ScreenHandler.this.nextRevision(), ScreenHandler.this.getStacks(), ItemStack.EMPTY));
 
                     }
@@ -221,7 +218,7 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
                 handler.run();
         }
         @Override
-        public IGridContainer[] containersFromProps(Props prop)
+        public IGridContainer[] containersFromProps(GridContainerSyncer prop)
         {
             var d=new FormattedInventory(new SimpleInventory(prop.sizes[0]*prop.sizes[1]));
             return new IGridContainer[]{new GridContainer("storage",d,prop.sizes[0],prop.sizes[1])};
@@ -270,7 +267,7 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
                 ItemStack originalStack=slot.takeStack(slot.getStack().getMaxCount());
                 var cont=getContainerFor(invSlot);
                 if (cont != null) {
-                    this.insertItem(originalStack, cont != playerGrid && cont != hotbarGrid);
+                    this.insertItem(cont,originalStack, !cont.isPlayerContainer());
                     if (!originalStack.isEmpty())
                         slot.insertStack(originalStack);
                     else {
@@ -281,9 +278,9 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
             return ItemStack.EMPTY;
         }
         @Override
-        protected boolean insertItem(ItemStack stack, boolean fromContainer) {
+        protected boolean insertItem(IGridContainer oriign,ItemStack stack, boolean fromContainer) {
             if(fromContainer)
-                return super.insertItem(stack, true);
+                return super.insertItem(oriign,stack, true);
             var inv=this.getInventory("storage");
             if(inv.getInventory() instanceof FormattedInventory fi)
             {

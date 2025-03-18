@@ -93,7 +93,7 @@ public class SideShelfBlock extends ShelfBlock {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if(!world.isClient && player.isCreative())
         {
-            Containers.createHandler(player,pos,(sync, inv, p1)-> new ShelfBlock.ScreenHandler( sync,inv, SideShelfBlock.this.getBlockEntity(pos,world).getContainer()));
+            Containers.createHandler(player,pos,(sync, inv, p1)-> new ShelfBlock.ScreenHandler( sync,p1, SideShelfBlock.this.getBlockEntity(pos,world).getContainer()));
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;

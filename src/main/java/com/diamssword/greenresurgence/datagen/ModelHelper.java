@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.datagen;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.blocks.SideShelfBlock;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlockSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.enums.DoorHinge;
@@ -346,7 +347,30 @@ public class ModelHelper {
                 .register(Direction.SOUTH,false, BlockStateVariant.create().put(VariantSettings.MODEL, side_off).put(VariantSettings.Y, VariantSettings.Rotation.R180))
                 .register(Direction.EAST, false, BlockStateVariant.create().put(VariantSettings.MODEL, side_off).put(VariantSettings.Y, VariantSettings.Rotation.R90));
     }
+    public static BlockStateVariantMap.DoubleProperty<Direction, SideShelfBlock.Model> fillConnectedBlockVariantMap(BlockStateVariantMap.DoubleProperty<Direction, SideShelfBlock.Model> variantMap, Identifier single, Identifier center, Identifier left, Identifier right) {
+        var res= variantMap
+                .register(Direction.WEST, SideShelfBlock.Model.SINGLE, BlockStateVariant.create().put(VariantSettings.MODEL, single).put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                .register(Direction.NORTH, SideShelfBlock.Model.SINGLE, BlockStateVariant.create().put(VariantSettings.MODEL, single).put(VariantSettings.Y, VariantSettings.Rotation.R0))
+                .register(Direction.SOUTH,SideShelfBlock.Model.SINGLE, BlockStateVariant.create().put(VariantSettings.MODEL, single).put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                .register(Direction.EAST, SideShelfBlock.Model.SINGLE, BlockStateVariant.create().put(VariantSettings.MODEL, single).put(VariantSettings.Y, VariantSettings.Rotation.R90))
 
+                .register(Direction.WEST, SideShelfBlock.Model.CENTER, BlockStateVariant.create().put(VariantSettings.MODEL, center).put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                .register(Direction.NORTH, SideShelfBlock.Model.CENTER, BlockStateVariant.create().put(VariantSettings.MODEL, center).put(VariantSettings.Y, VariantSettings.Rotation.R0))
+                .register(Direction.SOUTH,SideShelfBlock.Model.CENTER, BlockStateVariant.create().put(VariantSettings.MODEL, center).put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                .register(Direction.EAST, SideShelfBlock.Model.CENTER, BlockStateVariant.create().put(VariantSettings.MODEL, center).put(VariantSettings.Y, VariantSettings.Rotation.R90))
+
+                .register(Direction.WEST, SideShelfBlock.Model.LEFT, BlockStateVariant.create().put(VariantSettings.MODEL, left).put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                .register(Direction.NORTH, SideShelfBlock.Model.LEFT, BlockStateVariant.create().put(VariantSettings.MODEL, left).put(VariantSettings.Y, VariantSettings.Rotation.R0))
+                .register(Direction.SOUTH,SideShelfBlock.Model.LEFT, BlockStateVariant.create().put(VariantSettings.MODEL, left).put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                .register(Direction.EAST, SideShelfBlock.Model.LEFT, BlockStateVariant.create().put(VariantSettings.MODEL, left).put(VariantSettings.Y, VariantSettings.Rotation.R90))
+
+                .register(Direction.WEST, SideShelfBlock.Model.RIGHT, BlockStateVariant.create().put(VariantSettings.MODEL, right).put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                .register(Direction.NORTH, SideShelfBlock.Model.RIGHT, BlockStateVariant.create().put(VariantSettings.MODEL, right).put(VariantSettings.Y, VariantSettings.Rotation.R0))
+                .register(Direction.SOUTH,SideShelfBlock.Model.RIGHT, BlockStateVariant.create().put(VariantSettings.MODEL, right).put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                .register(Direction.EAST, SideShelfBlock.Model.RIGHT, BlockStateVariant.create().put(VariantSettings.MODEL, right).put(VariantSettings.Y, VariantSettings.Rotation.R90));
+
+        return res;
+    }
     public static BlockStateVariantMap.DoubleProperty<Direction, Boolean> fillToggleableVariantMap(BlockStateVariantMap.DoubleProperty<Direction, Boolean> variantMap, Identifier normal, Identifier toggled,boolean allrotation) {
         var res= variantMap
                 .register(Direction.WEST,true, BlockStateVariant.create().put(VariantSettings.MODEL, toggled).put(VariantSettings.Y, VariantSettings.Rotation.R270))

@@ -125,10 +125,6 @@
                         </flow-layout>
                         <inventory id="player" name="disabled" width="9" height="3"/>
                         <inventory id="hotbar" width="9" height="1">
-                            <margins>
-                                <top>-5</top>
-
-                            </margins>
                         </inventory>
                     </children>
 

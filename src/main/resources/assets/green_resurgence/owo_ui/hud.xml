@@ -130,7 +130,7 @@
                                     </children>
                                     <horizontal-alignment>center</horizontal-alignment>
                                     <vertical-alignment>center</vertical-alignment>
-                                    <gap>12</gap>
+                                    <gap>6</gap>
                                     <sizing><horizontal method="fill">100</horizontal></sizing>
                                 </flow-layout>
 

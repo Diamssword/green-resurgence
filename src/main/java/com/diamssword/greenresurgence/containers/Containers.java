@@ -5,6 +5,7 @@ import com.diamssword.greenresurgence.blocks.BaseStorageBlock;
 import com.diamssword.greenresurgence.blocks.CrafterBlock;
 import com.diamssword.greenresurgence.blocks.ItemBlock;
 import com.diamssword.greenresurgence.blocks.ShelfBlock;
+import com.diamssword.greenresurgence.containers.player.VanillaPlayerInvMokup;
 import com.diamssword.greenresurgence.items.BlockVariantItem;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionTerrainStorage;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,7 +20,6 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class Containers implements ContainerRegistryContainer {
-   public static final ScreenHandlerType<GenericScreenHandler> GENERIC = build(GenericScreenHandler::new);
     //public static final ScreenHandlerType<MutliInvScreenHandler> RELATIVE = build(MutliInvScreenHandler::new);
     public static final ScreenHandlerType<ItemBlock.ScreenHandler> ITEMBLOCK = build(ItemBlock.ScreenHandler::new);
     public static final ScreenHandlerType<ShelfBlock.ScreenHandler> ITEMBLOCKSIMPLE = build(ShelfBlock.ScreenHandler::new);
@@ -28,6 +28,8 @@ public class Containers implements ContainerRegistryContainer {
     public static final ScreenHandlerType<CrafterBlock.ScreenHandler> CRAFTER = build(CrafterBlock.ScreenHandler::new);
     public static final ScreenHandlerType<FactionTerrainStorage.ScreenHandler> FAC_STORAGE = build(FactionTerrainStorage.ScreenHandler::new);
     public static final ScreenHandlerType<BaseStorageBlock.ScreenHandler> FAC_CHEST = build(BaseStorageBlock.ScreenHandler::new);
+    public static final ScreenHandlerType<GenericContainer> GENERIC_CONTAINER = build(GenericContainer::new);
+    public static final ScreenHandlerType<VanillaPlayerInvMokup> PLAYER = build(VanillaPlayerInvMokup::new);
 
     private static <T extends ScreenHandler> ScreenHandlerType<T> build(ScreenHandlerType.Factory<T> factory) {
         return new ScreenHandlerType<T>(factory, FeatureFlags.VANILLA_FEATURES);
@@ -52,6 +54,7 @@ public class Containers implements ContainerRegistryContainer {
     @FunctionalInterface
     public static interface HandlerFactory
     {
-          MultiInvScreenHandler create(int syncId,PlayerInventory inventory,PlayerEntity player);
+          AbstractMultiInvScreenHandler create(int syncId,PlayerInventory inventory,PlayerEntity player);
     }
+
 }

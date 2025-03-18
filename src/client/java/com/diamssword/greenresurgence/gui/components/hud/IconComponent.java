@@ -13,7 +13,7 @@ import java.util.Map;
 public class IconComponent extends TextureComponent implements IHideableComponent{
     private boolean hidden;
 
-    protected IconComponent(Identifier texture, int u, int v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
+    public IconComponent(Identifier texture, int u, int v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
         super(texture, u, v, regionWidth, regionHeight, textureWidth, textureHeight);
     }
     @Override

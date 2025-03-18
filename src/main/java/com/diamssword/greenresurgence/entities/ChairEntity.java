@@ -2,12 +2,9 @@ package com.diamssword.greenresurgence.entities;
 
 import com.diamssword.greenresurgence.MEntities;
 import com.diamssword.greenresurgence.genericBlocks.IChairable;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -18,7 +15,7 @@ public class ChairEntity extends Entity {
         super(entityType, world);
     }
     public ChairEntity(World world, BlockPos pos, IChairable chair) {
-        this(MEntities.chair, world);
+        this(MEntities.CHAIR, world);
         this.chair=chair;
         this.setPosition(pos.getX()+0.5,pos.getY()+0.5,pos.getZ()+0.5);
         this.prevX = pos.getX()+0.5;

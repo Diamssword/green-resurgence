@@ -82,7 +82,7 @@ public class BaseStorageBlock extends GlazedTerracottaBlock implements BlockEnti
                 @Override
                 public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 
-                    return new ScreenHandler(syncId, playerInventory, new GridContainer("storage", inv, inv.size() <= 9 ? 3 : 9, inv.size() <= 9 ? 3 : inv.size() / 9));
+                    return new ScreenHandler(syncId, player, new GridContainer("storage", inv, inv.size() <= 9 ? 3 : 6, inv.size() <= 9 ? 3 : inv.size() / 6));
                 }
             };
         }
@@ -112,8 +112,8 @@ public class BaseStorageBlock extends GlazedTerracottaBlock implements BlockEnti
             super(syncId, playerInventory);
         }
 
-        public ScreenHandler(int syncId, PlayerInventory playerInventory, IGridContainer... containers) {
-            super(syncId, playerInventory, containers);
+        public ScreenHandler(int syncId, PlayerEntity player, IGridContainer... containers) {
+            super(syncId, player, containers);
         }
         @Override
         public ScreenHandlerType<? extends MultiInvScreenHandler> type() {

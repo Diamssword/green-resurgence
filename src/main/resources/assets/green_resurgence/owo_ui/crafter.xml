@@ -27,13 +27,6 @@
                     <sizing><vertical method="fill">50</vertical><horizontal method="fill">100</horizontal></sizing>
                 </flow-layout>
 
-                <inventory id="player" name="disabled" width="9" height="3"/>
-                <inventory id="hotbar" width="9" height="1">
-                    <margins>
-                        <top>-5</top>
-
-                    </margins>
-                </inventory>
             </children>
             <padding><all>5</all></padding>
             <sizing><vertical method="content">1</vertical><horizontal method="fixed">170</horizontal></sizing>

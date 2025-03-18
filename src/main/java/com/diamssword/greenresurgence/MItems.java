@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence;
 
+import com.diamssword.greenresurgence.entities.TwoPassengerVehicle;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.items.*;
 import io.wispforest.owo.itemgroup.Icon;
@@ -30,6 +31,13 @@ public class MItems implements ItemRegistryContainer {
     public static final Item MODULAR_CHEST = new ModularArmorItem(ArmorMaterials.CHAIN, ArmorItem.Type.CHESTPLATE,new OwoItemSettings().group(GROUP));
     public static final Item MODULAR_LEG = new ModularArmorItem(ArmorMaterials.CHAIN, ArmorItem.Type.LEGGINGS,new OwoItemSettings().group(GROUP));
     public static final Item MODULAR_BOOT = new ModularArmorItem(ArmorMaterials.CHAIN, ArmorItem.Type.BOOTS,new OwoItemSettings().group(GROUP));
+    public static final Item BACKPACK = new BackPackItem(new OwoItemSettings().group(GROUP),5,2);
+    public static final Item BACKPACK1 = new BackPackItem(new OwoItemSettings().group(GROUP),3,3);
+    public static final Item BACKPACK2 = new BackPackItem(new OwoItemSettings().group(GROUP),7,5);
+    public static final Item SATCHEL = new SatchelItem(new OwoItemSettings().group(GROUP),1,2);
+    public static final Item SATCHELA = new SatchelItem(new OwoItemSettings().group(GROUP),1,3);
+    public static final Item SATCHELB = new SatchelItem(new OwoItemSettings().group(GROUP),2,3);
+    public static final EntityPlacerItem CADDIE = new EntityPlacerItem((u,p)->new TwoPassengerVehicle(MEntities.CADDIE,u.getWorld(),p.x,p.y,p.z),new OwoItemSettings().maxCount(1).group(GROUP));
     @Override
     public void afterFieldProcessing() {
     }

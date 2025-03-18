@@ -12,10 +12,10 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
-public class FactionChestGui extends MultiInvHandledScreen<BaseStorageBlock.ScreenHandler,FlowLayout> {
+public class FactionChestGui extends PlayerBasedGui<BaseStorageBlock.ScreenHandler> {
     private GenericStorageBlockEntity tile;
     public FactionChestGui(BaseStorageBlock.ScreenHandler handler, PlayerInventory inv, Text title) {
-        super(handler, FlowLayout.class, BaseUIModelScreen.DataSource.asset(GreenResurgence.asRessource("faction_chest")));
+        super(handler, "faction_chest");
         handler.onReady(v->{
             tile=ClientGuiPacket.getTile(GenericStorageBlockEntity.class,v.getPos());
         });
@@ -24,6 +24,7 @@ public class FactionChestGui extends MultiInvHandledScreen<BaseStorageBlock.Scre
 
     @Override
     protected void build(FlowLayout rootComponent) {
+        super.build(rootComponent);
     var inv=rootComponent.childById(InventoryComponent.class,"storage");
     //inv.setSize(this.handler.getInventory("storage").getWidth(),this.handler.getInventory("storage").getHeight());
     }

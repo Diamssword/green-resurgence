@@ -1,0 +1,8 @@
+{
+	"parent":"green_resurgence:block/diams/lamp_ceiling_light_copper",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "green_resurgence:block/diams/lamp_ceiling_light",
+		"particle": "green_resurgence:block/diams/lamp_ceiling_light"
+	}
+}

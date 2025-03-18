@@ -1,20 +1,17 @@
 package com.diamssword.greenresurgence;
 
-import com.diamssword.greenresurgence.blockEntityRenderer.ImageBlockEntityRenderer;
-import com.diamssword.greenresurgence.blockEntityRenderer.ItemBlockEntityRenderer;
-import com.diamssword.greenresurgence.blockEntityRenderer.LootedBlockEntityRenderer;
-import com.diamssword.greenresurgence.blockEntityRenderer.ShelfBlockEntityRenderer;
-import com.diamssword.greenresurgence.cosmetics.ModularArmorLayerRenderer;
-import com.diamssword.greenresurgence.cosmetics.CustomPlayerModel;
+import com.diamssword.greenresurgence.items.*;
+import com.diamssword.greenresurgence.render.blockEntityRenderer.ImageBlockEntityRenderer;
+import com.diamssword.greenresurgence.render.blockEntityRenderer.ItemBlockEntityRenderer;
+import com.diamssword.greenresurgence.render.blockEntityRenderer.LootedBlockEntityRenderer;
+import com.diamssword.greenresurgence.render.blockEntityRenderer.ShelfBlockEntityRenderer;
+import com.diamssword.greenresurgence.render.cosmetics.ModularArmorLayerRenderer;
+import com.diamssword.greenresurgence.render.cosmetics.CustomPlayerModel;
 import com.diamssword.greenresurgence.gui.hud.CustomHud;
-import com.diamssword.greenresurgence.items.GeckoItemRenderer;
-import com.diamssword.greenresurgence.items.ModularArmorRenderer;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlockSet;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.gui.components.ComponentsRegister;
 import com.diamssword.greenresurgence.gui.Handlers;
-import com.diamssword.greenresurgence.items.ItemModelOverrideProvider;
-import com.diamssword.greenresurgence.items.ModularArmorItem;
 import com.diamssword.greenresurgence.items.weapons.GeckoActivated;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.GuiPackets;
@@ -84,22 +81,18 @@ public class GreenResurgenceClient implements ClientModInitializer {
 		ClientEvents.initialize();
 		ItemModelOverrideProvider.init();
 		keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-				"key."+GreenResurgence.ID+".spook",
+				"key."+GreenResurgence.ID+".player_inv",
 				InputUtil.Type.KEYSYM, // The type of the keybinding, KEYSYM for keyboard, MOUSE for mouse.
-				GLFW.GLFW_KEY_I, // The keycode of the key
+				GLFW.GLFW_KEY_J, // The keycode of the key
 				"category."+GreenResurgence.ID // The translation key of the keybinding's category.
 		));
 		keyBinding1 = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-				"key."+GreenResurgence.ID+".spook1",
+				"key."+GreenResurgence.ID+".base_inv",
 				InputUtil.Type.KEYSYM, // The type of the keybinding, KEYSYM for keyboard, MOUSE for mouse.
 				GLFW.GLFW_KEY_C, // The keycode of the key
 				"category."+GreenResurgence.ID // The translation key of the keybinding's category.
 		));
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			if(keyBinding.isPressed())
-			{
-			//	Channels.MAIN.clientHandle().send(new GuiPackets.KeyPress(GuiPackets.KEY.Inventory));
-			}
 			if(keyBinding1.isPressed())
 			{
 				Channels.MAIN.clientHandle().send(new GuiPackets.KeyPress(GuiPackets.KEY.Inventory));
@@ -112,6 +105,7 @@ public class GreenResurgenceClient implements ClientModInitializer {
 		);
 		ModularArmorItem.ProviderFunction= ModularArmorRenderer::RendererProvider;
 		GeckoActivated.ProviderFunction= GeckoItemRenderer::RendererProvider;
+		BackPackItem.ProviderFunction=BackpackArmorRenderer::RendererProvider;
 		Handlers.init();
 		ComponentsRegister.init();
 		CustomHud.init();

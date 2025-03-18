@@ -1,0 +1,84 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+    <components>
+        <flow-layout direction="horizontal">
+            <children>
+                <player id="playerSkin"><!--Custom component to show the player, exactly the same as Entity but doesn't need a type param-->
+                    <sizing><horizontal method="fixed">80</horizontal><vertical method="fixed">80</vertical></sizing>
+                    <look-at-cursor>true</look-at-cursor>
+                    <scale-to-fit>true</scale-to-fit>
+                    <positioning type="absolute">0,0</positioning>
+                </player>
+                <flow-layout direction="vertical">
+                    <children>
+
+                    </children>
+                    <sizing><vertical method="fill">80</vertical><horizontal method="fill">20</horizontal></sizing>
+                </flow-layout>
+
+                    <flow-layout direction="horizontal"> <!---->
+                        <children>
+                            <flow-layout direction="vertical">
+                                <children>
+                                    <inventory name="disabled"  id="armor" width="1" height="4"/>
+                                    <inventory name="disabled"  id="offhand" width="1" height="1"/>
+                                    <inventory name="disabled"  id="bags" width="1" height="3"/>
+                                </children>
+                                <surface>
+                                    <gpanel/>
+                                </surface>
+                                <padding>
+                                    <all>5</all>
+                                </padding>
+                                <margins><right>5</right></margins>
+                            </flow-layout>
+                            <flow-layout direction="vertical">
+                                <children>
+                                    <inventory id="backpack" name="disabled" width="1" height="1" texture="blue.png">
+                                        <margins><bottom>5</bottom></margins>
+                                    </inventory>
+
+                                    <flow-layout direction="horizontal">
+                                        <children>
+                                            <inventory id="satchelLeft" name="disabled" width="1" height="3" texture="orange.png">
+                                            </inventory>
+                                            <inventory id="player" name="disabled" width="3" height="3">
+
+                                            </inventory>
+                                            <inventory id="satchelRight" name="disabled" width="1" height="3" texture="orange.png"/>
+                                        </children>
+                                        <gap>5</gap>
+                                        <margins><bottom>5</bottom></margins>
+                                    </flow-layout>
+                                    <inventory id="hotbar" width="9" height="1"/>
+                                </children>
+                                <surface>
+                                    <gpanel/>
+                                </surface>
+                                <padding>
+                                    <all>5</all>
+                                </padding>
+                                <horizontal-alignment>center</horizontal-alignment>
+                                <vertical-alignment>center</vertical-alignment>
+                            </flow-layout>
+                        </children>
+                        <horizontal-alignment>center</horizontal-alignment>
+                        <vertical-alignment>center</vertical-alignment>
+
+                        <margins><all>5</all></margins>
+                        <!---->
+
+                    </flow-layout>
+                <subscreen id="subcontainer" source="crafter" >
+                    <sizing><vertical method="fill">100</vertical><horizontal method="fill">30</horizontal></sizing>
+                </subscreen>
+            </children>
+            <surface>
+                <vanilla-translucent/>
+            </surface>
+            <vertical-alignment>center</vertical-alignment>
+            <horizontal-alignment>center</horizontal-alignment>
+            <sizing><vertical method="fill">100</vertical><horizontal method="fill">100</horizontal></sizing>
+        </flow-layout>
+    </components>
+</owo-ui>

@@ -51,7 +51,6 @@ public class ModularArmorItem extends Item implements Equipment, GeoItem {
     private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
     public static Supplier<Object> ProviderFunction;
 
-
     protected final ArmorItem.Type type;
     private final int protection;
     private final float toughness;

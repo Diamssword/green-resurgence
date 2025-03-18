@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.containers.GridContainerSyncer;
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
 import com.diamssword.greenresurgence.systems.crafting.CraftingProvider;
@@ -28,7 +29,7 @@ public class Channels {
             int z=read.readInt();
             return new Vec3i(x,y,z);
         });
-        PacketBufSerializer.register(MultiInvScreenHandler.Props.class, MultiInvScreenHandler.Props::serializer, MultiInvScreenHandler.Props::unserializer);
+        PacketBufSerializer.register(GridContainerSyncer.class, GridContainerSyncer::serializer, GridContainerSyncer::unserializer);
         PacketBufSerializer.register(LootablesReloader.class, LootablesReloader::serializer, LootablesReloader::unserializer);
         PacketBufSerializer.register(ClothingLoader.class, ClothingLoader::serializer, ClothingLoader::unserializer);
         PacketBufSerializer.register(RecipeLoader.class, RecipeLoader::serializer, RecipeLoader::unserializer);
@@ -43,5 +44,6 @@ public class Channels {
         CraftPackets.init();
         StatsPackets.init();
         PosesPackets.init();
+        EntitiesPackets.init();
     }
 }

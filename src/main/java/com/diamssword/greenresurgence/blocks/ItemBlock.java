@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.blocks;
 import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.containers.Containers;
+import com.diamssword.greenresurgence.containers.CreativeMultiInvScreenHandler;
 import com.diamssword.greenresurgence.containers.IGridContainer;
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import net.minecraft.block.*;
@@ -116,7 +117,7 @@ public class ItemBlock extends Block implements BlockEntityProvider,Waterloggabl
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if(!world.isClient && player.isCreative())
         {
-            Containers.createHandler(player,pos,(sync,inv,p1)-> new ScreenHandler( sync,inv,ItemBlock.this.getBlockEntity(pos,world).getContainer()));
+            Containers.createHandler(player,pos,(sync,inv,p1)-> new ScreenHandler( sync,player,ItemBlock.this.getBlockEntity(pos,world).getContainer()));
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
@@ -126,14 +127,14 @@ public class ItemBlock extends Block implements BlockEntityProvider,Waterloggabl
         return BlockRenderType.INVISIBLE;
     }
 
-    public static class ScreenHandler extends MultiInvScreenHandler {
+    public static class ScreenHandler extends CreativeMultiInvScreenHandler {
 
         public ScreenHandler(int syncId, PlayerInventory playerInventory) {
             super(syncId, playerInventory);
         }
 
-        public ScreenHandler( int syncId, PlayerInventory playerInventory, IGridContainer... inventories) {
-            super( syncId, playerInventory, inventories);
+        public ScreenHandler( int syncId, PlayerEntity player, IGridContainer... inventories) {
+            super( syncId, player.getInventory(), inventories);
         }
 
         @Override

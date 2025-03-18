@@ -6,7 +6,9 @@
     "EntityMixin",
     "PacketByteBufMixin",
     "PlayerEntityMixin",
-    "PlayerPlaceBlockMixin"
+    "PlayerInventoryMixin",
+    "PlayerPlaceBlockMixin",
+    "PlayerScreenHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

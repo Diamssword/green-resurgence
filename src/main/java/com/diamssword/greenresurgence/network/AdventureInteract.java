@@ -4,6 +4,7 @@ import com.diamssword.greenresurgence.MBlocks;
 import com.diamssword.greenresurgence.blockEntities.LootableItemBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootableShelfEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
+import com.diamssword.greenresurgence.entities.TwoPassengerVehicle;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.lootables.IAdvancedLootableBlock;
 import com.diamssword.greenresurgence.systems.lootables.LootableLogic;
