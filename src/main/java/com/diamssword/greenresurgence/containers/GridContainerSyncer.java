@@ -31,6 +31,7 @@ public class GridContainerSyncer {
         registerGridSerializer(ArmorGrid.class,"playerArmor", ArmorGrid::new);
         registerGridSerializer(OffHandGrid.class,"playerOffhand", OffHandGrid::new);
         registerGridSerializer(BagsGrid.class,"bagSlots", BagsGrid::new);
+        registerGridSerializer(BagsGrid.class,"bagSlots", BagsGrid::new);
     }
     public int count;
     public String[] names;

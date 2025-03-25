@@ -20,6 +20,7 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
@@ -27,13 +28,15 @@ import java.util.List;
 import java.util.Map;
 
 public class InventorySearchableComponent extends BaseComponent {
-    public static final Identifier SLOT_TEXTURE= GreenResurgence.asRessource("textures/gui/slot.png");
+    public static final Identifier SLOT_TEXTURE= GreenResurgence.asRessource("textures/gui/slots/slot.png");
     public final String inventoryId;
     public final String name;
     private final TextFieldWidget textField;
     protected AnimatableProperty<PositionedRectangle> visibleArea;
     private int regionWidth=18;
     private int regionHeight=18;
+    private int slotsWidth=2;
+    private int slotsHeight=2;
     protected boolean blend = false;
     private String lastResearch="";
     private List<Slot> displayedSlot=new ArrayList<>();
@@ -52,6 +55,11 @@ public class InventorySearchableComponent extends BaseComponent {
 
         this.setSize(width,height);
 
+    }
+
+    public Pair<Integer,Integer> getSlotsSize()
+    {
+        return new Pair<>(slotsWidth,slotsHeight);
     }
     @Override
     public boolean canFocus(FocusSource source) {
@@ -106,11 +114,13 @@ public class InventorySearchableComponent extends BaseComponent {
     private void refreshSlots()
     {
         this.displayedSlot=new ArrayList<>();
-        for(int i1=scroller.scroll*9;i1<Math.min((scroller.scroll*9)+(6*9),filteredSlots.size());i1++)
+
+        for(int i1=scroller.scroll*slotsWidth;i1<Math.min((scroller.scroll*slotsWidth)+(this.slotsHeight*slotsWidth),filteredSlots.size());i1++)
         {
             displayedSlot.add(filteredSlots.get(i1));
         }
-        while (displayedSlot.size()<54 && !displayedSlot.isEmpty())
+
+        while (displayedSlot.size()<slotsWidth*slotsHeight && !displayedSlot.isEmpty())
             displayedSlot.add(new FalseSlot(displayedSlot.size()+1,0,0));
 
     }
@@ -124,11 +134,13 @@ public class InventorySearchableComponent extends BaseComponent {
             this.filteredSlots=this.inventory;
         else
             this.filteredSlots= this.inventory.stream().filter(v->v.getStack().getName().getString().toLowerCase().trim().contains(lastResearch)).toList();
-        this.scroller.lines=Math.max(1,(this.filteredSlots.size()/9)-6+1);
+        this.scroller.lines=Math.max(1,(this.filteredSlots.size()/slotsWidth)-slotsHeight+1);
         refreshSlots();
     }
     public void setSize(int width,int height)
     {
+        this.slotsWidth=width;
+        this.slotsHeight=height;
         this.regionWidth=10+width*18;
         this.regionHeight=20+height*18;
         this.visibleArea = AnimatableProperty.of(PositionedRectangle.of(0, 0, this.regionWidth, this.regionHeight));

@@ -182,6 +182,7 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
         public ScreenHandler( int syncId, PlayerEntity player, IGridContainer... containers) {
             super( syncId, player, containers);
             ((FormattedInventory)containers[0].getInventory()).addListener(l->{
+
                 if(l.size()>this.getSlotForInventory("storage").size())
                 {
                     var c=createSlot(this.getInventory("storage"),l.size()-1,0,0);
@@ -214,14 +215,24 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
                 }
             }
             super.updateSlotStacks(revision,stacks,cursorStack);
+
             if(bl && handler !=null)
                 handler.run();
         }
         @Override
         public IGridContainer[] containersFromProps(GridContainerSyncer prop)
         {
-            var d=new FormattedInventory(new SimpleInventory(prop.sizes[0]*prop.sizes[1]));
-            return new IGridContainer[]{new GridContainer("storage",d,prop.sizes[0],prop.sizes[1])};
+            var conts=super.containersFromProps(prop);
+            for (int i = 0; i < conts.length; i++) {
+                if(conts[i].getName().equals("storage"))
+                {
+
+                    var d=new FormattedInventory(new SimpleInventory(prop.sizes[0]*prop.sizes[1]));
+                    conts[i]=new GridContainer("storage",d,prop.sizes[0],prop.sizes[1]);
+                    break;
+                }
+            }
+            return conts;
         }
         private Runnable handler;
         public void onSlotAdded(Runnable handler)
@@ -235,22 +246,6 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
         @Override
         public void setStackInSlot(int slot, int revision, ItemStack stack) {
                 super.setStackInSlot(slot,revision,stack);
-        }
-        @Override
-        protected void addSlotsFor(IGridContainer container)
-        {
-        /*    if(container.getName().equals("storage"))
-            {
-                var size=((FormattedInventory)container.getInventory()).parent.size();
-                for (int m = 0; m < size; ++m) {
-                        Slot s=createSlot(container, container.getStartIndex()+ m, m, m);
-                        this.addSlot(s);
-                        inventoriesMap.putIfAbsent(container.getName(),new ArrayList<>());
-                        inventoriesMap.get(container.getName()).add(s);
-                }
-            }
-            else*/
-                super.addSlotsFor(container);
         }
         @Override
         protected Slot createSlot(IGridContainer container,int index,int x,int y)
@@ -270,9 +265,6 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
                     this.insertItem(cont,originalStack, !cont.isPlayerContainer());
                     if (!originalStack.isEmpty())
                         slot.insertStack(originalStack);
-                    else {
-                        slot.setStack(ItemStack.EMPTY);
-                    }
                 }
             }
             return ItemStack.EMPTY;

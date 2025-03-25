@@ -36,9 +36,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.List;
 
-public class FactionStorageScreen extends MultiInvHandledScreen<FactionTerrainStorage.ScreenHandler,FlowLayout> {
+public class FactionStorageScreen extends PlayerBasedGui<FactionTerrainStorage.ScreenHandler> {
+
     public FactionStorageScreen(FactionTerrainStorage.ScreenHandler handler, PlayerInventory inv, Text title) {
-        super(handler,FlowLayout.class, BaseUIModelScreen.DataSource.asset(GreenResurgence.asRessource("faction_storage")));
+        super(handler, "faction_global_storage");
 
     }
     private static InventorySearchableComponent storage;
@@ -52,13 +53,15 @@ protected void findInvComps(BaseParentComponent root)
             var inv=this.handler.getInventory(par.inventoryId);
             if(inv !=null)
                 par.setSize(inv.getWidth(),inv.getHeight());
+            else
+                par.hidden(true);
         }
         else if(c instanceof InventorySearchableComponent par)
         {
             storage=par;
             var inv=this.handler.getInventory(par.inventoryId);
             if(inv !=null) {
-                par.setSize(9, 6);
+                par.setSize(6, 6);
                 par.setInventory(this.handler.getSlotForInventory(par.inventoryId));
                 this.handler.onSlotAdded(()->{
                     par.setInventory(this.handler.getSlotForInventory(par.inventoryId));
@@ -69,29 +72,29 @@ protected void findInvComps(BaseParentComponent root)
         else if(c instanceof BaseParentComponent c1)
             findInvComps(c1);
     });
+}
+protected void drawSlotList(List<Slot> slots,String id,DrawContext context, int mouseX, int mouseY)
+{
+    for (Slot slot : slots) {
 
+        if (slot.isEnabled()) {
+
+            this.drawSlot(context, slot,id);
+        }
+        if (!this.isPointOverSlot(slot, mouseX, mouseY) || !slot.isEnabled()) continue;
+        this.focusedSlot = slot;
+        var pos=getSlotPosition(slot,id);
+        if (!this.focusedSlot.canBeHighlighted()) continue;
+        MultiInvHandledScreen.drawSlotHighlight(context, pos.getFirst(), pos.getSecond(), 0);
+    }
 }
 @Override
 protected void drawSlots(DrawContext context, int mouseX, int mouseY, float delta)
 {
-    for (String id : this.handler.getInventoriesNames()) {
-        List<Slot> slots;
-        if("storage".equals(id))
-            slots=storage.getDisplayedSlots();
-        else
-            slots=this.handler.getSlotForInventory(id);
-        for (Slot slot : slots) {
-            if (slot.isEnabled()) {
-                this.drawSlot(context, slot,id);
-            }
-            if (!this.isPointOverSlot(slot, mouseX, mouseY) || !slot.isEnabled()) continue;
-            this.focusedSlot = slot;
-            var pos=getSlotPosition(slot,id);
-            if (!this.focusedSlot.canBeHighlighted()) continue;
-            MultiInvHandledScreen.drawSlotHighlight(context, pos.getFirst(), pos.getSecond(), 0);
-        }
-
+    for (String id : invsComps.keySet()) {
+        drawSlotList(this.handler.getSlotForInventory(id),id,context,mouseX,mouseY);
     }
+    drawSlotList(storage.getDisplayedSlots(),"storage",context,mouseX,mouseY);
 }
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -160,7 +163,7 @@ protected void drawSlots(DrawContext context, int mouseX, int mouseY, float delt
             List<Slot> slots=storage.getDisplayedSlots();
             var i=slots.indexOf(s);
             if(i>=0)
-                return new Pair<>(((i%9)*18)+storage.x()-this.x,((i/9)*18)+storage.y()-this.y+20);
+                return new Pair<>(((i%storage.getSlotsSize().getLeft())*18)+storage.x()-this.x,((i/storage.getSlotsSize().getLeft())*18)+storage.y()-this.y+20);
             return new Pair<>(0,0);
         }
         else
@@ -169,7 +172,7 @@ protected void drawSlots(DrawContext context, int mouseX, int mouseY, float delt
 
     @Override
     protected void build(FlowLayout rootComponent) {
-
+    super.build(rootComponent);
     }
 
     @Override

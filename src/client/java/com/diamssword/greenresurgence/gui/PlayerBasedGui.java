@@ -40,7 +40,6 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
         var dt1=player.getComponent(Components.PLAYER_INVENTORY);
         dt1.setBackpackStack(MinecraftClient.getInstance().player.getComponent(Components.PLAYER_INVENTORY).getBackpackStack());
         dt.appearance.refreshSkinData();
-    //inv.setSize(this.handler.getInventory("storage").getWidth(),this.handler.getInventory("storage").getHeight());
     }
 
     @Override

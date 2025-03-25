@@ -247,14 +247,11 @@ public abstract class MultiInvScreenHandler extends AbstractMultiInvScreenHandle
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();
             var cont=getContainerFor(invSlot);
-            if (cont != null && !cont.isPlayerContainer()) {
-                if (!this.insertItem(cont,originalStack,  true)) {
+            if (cont != null) {
+                if (!this.insertItem(cont,originalStack,  !cont.isPlayerContainer())) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(cont,originalStack,false)) {
-                return ItemStack.EMPTY;
             }
- 
             if (originalStack.isEmpty()) {
                 slot.setStack(ItemStack.EMPTY);
             } else {
