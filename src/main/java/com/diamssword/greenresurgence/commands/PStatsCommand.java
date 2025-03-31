@@ -1,11 +1,7 @@
 package com.diamssword.greenresurgence.commands;
 
-import com.diamssword.greenresurgence.http.APIService;
-import com.diamssword.greenresurgence.network.Channels;
-import com.diamssword.greenresurgence.network.CosmeticsPackets;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.character.stats.StatsDef;
-import com.diamssword.greenresurgence.systems.faction.perimeter.IFactionList;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -18,9 +14,6 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.world.World;
-
-import java.util.Arrays;
 
 public class PStatsCommand {
 

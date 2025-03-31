@@ -7,15 +7,15 @@ import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.faction.perimeter.FactionInstance;
-import com.diamssword.greenresurgence.systems.faction.perimeter.IFactionList;
+import com.diamssword.greenresurgence.systems.faction.perimeter.FactionList;
+import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionMember;
+import com.diamssword.greenresurgence.systems.faction.perimeter.components.Perms;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.SpecialPlacement;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -23,7 +23,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -62,8 +61,8 @@ public class BaseInteractions {
         {
             if(pl.interactionManager.getGameMode().equals(GameMode.SURVIVAL))
             {
-                IFactionList list=ctx.getWorld().getComponent(Components.BASE_LIST);
-                if(list.canEditAt(pl,ctx.getBlockPos())) {
+                FactionList list=ctx.getWorld().getComponent(Components.BASE_LIST);
+                if(list.isAllowedAt(ctx.getBlockPos(),new FactionMember(pl), Perms.PLACE)) {
                     if(allowedBlocks.contains(state.getBlock())) {
                         var sp=SpecialPlacement.REGISTRY.get(state.getBlock());
                         if(sp!=null) {
@@ -115,8 +114,8 @@ public class BaseInteractions {
             if(pl.interactionManager.getGameMode().equals(GameMode.SURVIVAL))
             {
 
-                IFactionList list=w.getComponent(Components.BASE_LIST);
-                if(list.canEditAt(pl,pos)) {
+                FactionList list=w.getComponent(Components.BASE_LIST);
+                if(list.isAllowedAt(pos, new FactionMember(pl),Perms.BREAK)) {
                     var st=w.getBlockState(pos).getBlock();
                     if(allowedBlocks.contains(st)) {
                         var sp=SpecialPlacement.REGISTRY.get(st);

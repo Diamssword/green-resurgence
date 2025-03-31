@@ -1,11 +1,8 @@
 package com.diamssword.greenresurgence.commands;
 
-import com.diamssword.greenresurgence.items.IStructureProvider;
 import com.diamssword.greenresurgence.systems.Components;
-import com.diamssword.greenresurgence.systems.faction.perimeter.FactionInstance;
-import com.diamssword.greenresurgence.systems.faction.perimeter.IFactionList;
+import com.diamssword.greenresurgence.systems.faction.perimeter.FactionList;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -17,26 +14,16 @@ import net.minecraft.block.entity.StructureBlockBlockEntity;
 import net.minecraft.block.pattern.CachedBlockPosition;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.argument.BlockPosArgumentType;
-import net.minecraft.command.argument.BlockStateArgument;
-import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.command.argument.EnumArgumentType;
 import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.FillCommand;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Clearable;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -44,7 +31,7 @@ public class StructureBlockHelperCommand {
 
     private static final SuggestionProvider<ServerCommandSource> SUGGESTION_PROVIDER = (context, builder) -> {
         World w=context.getSource().getWorld();
-        IFactionList ls=w.getComponent(Components.BASE_LIST);
+        FactionList ls=w.getComponent(Components.BASE_LIST);
         return CommandSource.suggestMatching(ls.getNames(), builder);
 
     };

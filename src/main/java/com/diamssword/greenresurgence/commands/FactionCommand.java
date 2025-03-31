@@ -3,7 +3,8 @@ package com.diamssword.greenresurgence.commands;
 import com.diamssword.greenresurgence.items.IStructureProvider;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.faction.perimeter.FactionInstance;
-import com.diamssword.greenresurgence.systems.faction.perimeter.IFactionList;
+import com.diamssword.greenresurgence.systems.faction.perimeter.FactionList;
+import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionGuild;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -22,14 +23,13 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 public class FactionCommand {
 
     private static final SuggestionProvider<ServerCommandSource> SUGGESTION_PROVIDER = (context, builder) -> {
         World w=context.getSource().getWorld();
-        IFactionList ls=w.getComponent(Components.BASE_LIST);
+        FactionList ls=w.getComponent(Components.BASE_LIST);
         return CommandSource.suggestMatching(ls.getNames(), builder);
 
     };
@@ -38,7 +38,7 @@ public class FactionCommand {
         if(name!=null)
         {
             World w=context.getSource().getWorld();
-            IFactionList ls=w.getComponent(Components.BASE_LIST);
+            FactionList ls=w.getComponent(Components.BASE_LIST);
             var op=ls.get(name);
             if(op.isPresent())
                 return CommandSource.suggestMatching(new ArrayList<>(op.get().getSubTerrains().keySet()),builder);
@@ -63,8 +63,8 @@ public class FactionCommand {
     private static int getExec(CommandContext<ServerCommandSource> ctx)
     {
         BlockPos p=BlockPosArgumentType.getBlockPos(ctx,"at");
-        IFactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
-        Optional<FactionInstance> b=base.getAt(p);
+        FactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
+        Optional<FactionGuild> b=base.getAt(p);
         b.ifPresentOrElse((i)->{
             ctx.getSource().sendFeedback(()->Text.literal("Base trouvée en ["+p.getX()+","+p.getY()+","+p.getZ()+"]: "+i.getName()),false);
         },()->{
@@ -79,7 +79,7 @@ public class FactionCommand {
         String confirm=StringArgumentType.getString(ctx,"confirm");
         if(confirm.equals("Confirm"))
         {
-            IFactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
+            FactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
             boolean t=base.delete(name);
             if(!t) {
                 ctx.getSource().sendFeedback(() -> Text.literal("Aucune faction trouvé avec ce nom"), false);
@@ -105,7 +105,7 @@ public class FactionCommand {
         String sub= StringArgumentType.getString(ctx,"subname");
         BlockPos p=BlockPosArgumentType.getBlockPos(ctx,"from");
         BlockPos p1=BlockPosArgumentType.getBlockPos(ctx,"to");
-        IFactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
+        FactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
 
         boolean re= base.add(new FactionInstance(ctx.getSource().getWorld(),name,sub,new BlockBox(p1.getX(),p1.getY(),p1.getZ(),p.getX(),p.getY(),p.getZ())));
             ctx.getSource().sendFeedback(()->Text.literal(re?"Faction '"+name+"' crée":"Impossible de créer la faction '"+name+"'. Elle existe peut être déja?"),false);
@@ -116,7 +116,7 @@ public class FactionCommand {
         String name= StringArgumentType.getString(ctx,"faction");
         Collection<ServerPlayerEntity> p=EntityArgumentType.getPlayers(ctx,"player");
 
-        IFactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
+        FactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
             Optional<FactionInstance> b=base.get(name);
             if(b.isPresent())
             {
@@ -135,8 +135,8 @@ public class FactionCommand {
         String name= StringArgumentType.getString(ctx,"faction");
         Collection<ServerPlayerEntity> p=EntityArgumentType.getPlayers(ctx,"player");
 
-        IFactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
-        Optional<FactionInstance> b=base.get(name);
+        FactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
+        Optional<FactionGuild> b=base.get(name);
         if(b.isPresent())
         {
             p.forEach(v->{
@@ -156,8 +156,8 @@ public class FactionCommand {
         String sub= StringArgumentType.getString(ctx,"subname");
         BlockPos p=BlockPosArgumentType.getBlockPos(ctx,"from");
         BlockPos p1=BlockPosArgumentType.getBlockPos(ctx,"to");
-        IFactionList bases=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
-        Optional<FactionInstance> base=bases.get(name);
+        FactionList bases=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
+        Optional<FactionGuild> base=bases.get(name);
         if(base.isPresent())
         {
             base.get().addArea(sub,new BlockBox(p1.getX(),p1.getY(),p1.getZ(),p.getX(),p.getY(),p.getZ()));
@@ -172,8 +172,8 @@ public class FactionCommand {
     private static int removeExec(CommandContext<ServerCommandSource> ctx)
     {
         BlockPos p=BlockPosArgumentType.getBlockPos(ctx,"at");
-        IFactionList bases=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
-        Optional<FactionInstance> base=bases.getAt(p);
+        FactionList bases=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
+        Optional<FactionGuild> base=bases.getAt(p);
         if(base.isPresent())
         {
                 boolean flg=base.get().removeAreaAt(p);
