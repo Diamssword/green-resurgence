@@ -1,13 +1,12 @@
 package com.diamssword.greenresurgence.blocks;
 
+import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
-import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
+import com.diamssword.greenresurgence.blockEntities.ModBlockEntity;
 import com.diamssword.greenresurgence.containers.Containers;
 import com.diamssword.greenresurgence.containers.CreativeMultiInvScreenHandler;
 import com.diamssword.greenresurgence.containers.IGridContainer;
-import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -23,10 +22,7 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -39,13 +35,23 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ItemBlock extends Block implements BlockEntityProvider,Waterloggable {
+public class ItemBlock extends ModBlockEntity<ItemBlockEntity> implements Waterloggable {
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
     public static final DirectionProperty FACING=Properties.HORIZONTAL_FACING;
     public static BooleanProperty COLLISION= BooleanProperty.of("collision");
     public ItemBlock(Settings settings) {
         super(settings);
         this.getDefaultState().with(COLLISION,true).with(FACING,Direction.NORTH).with(WATERLOGGED,false);
+    }
+
+    @Override
+    public Class<ItemBlockEntity> getBlockEntityClass() {
+        return ItemBlockEntity.class;
+    }
+    @Override
+    public Identifier getCustomBlockEntityName()
+    {
+        return GreenResurgence.asRessource("item_block");
     }
     @Override
     public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
@@ -96,15 +102,6 @@ public class ItemBlock extends Block implements BlockEntityProvider,Waterloggabl
         }
         return super.getFluidState(state);
     }
-    @Nullable
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new ItemBlockEntity(pos,state);
-    }
-    public ItemBlockEntity getBlockEntity(BlockPos pos, BlockView world)
-    {
-        return (ItemBlockEntity) world.getBlockEntity(pos);
-    }
     public BlockState rotate(BlockState state, BlockRotation rotation) {
         return (BlockState)state.with(FACING, rotation.rotate(state.get(FACING)));
     }
@@ -121,10 +118,6 @@ public class ItemBlock extends Block implements BlockEntityProvider,Waterloggabl
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
-    }
-    @Deprecated
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.INVISIBLE;
     }
 
     public static class ScreenHandler extends CreativeMultiInvScreenHandler {

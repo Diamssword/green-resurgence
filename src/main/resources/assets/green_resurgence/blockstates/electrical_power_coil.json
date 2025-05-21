@@ -1,0 +1,8 @@
+{
+  "variants": {
+	"facing=south":{"model": "green_resurgence:block/diams/electrical_power_coil","uvlock":false},
+	"facing=west":{"model": "green_resurgence:block/diams/electrical_power_coil","uvlock":false,"y":90},
+	"facing=north":{"model": "green_resurgence:block/diams/electrical_power_coil","uvlock":false,"y":180},
+	"facing=east":{"model": "green_resurgence:block/diams/electrical_power_coil","uvlock":false,"y":270}
+  }
+}

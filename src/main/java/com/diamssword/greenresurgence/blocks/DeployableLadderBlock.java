@@ -1,30 +1,19 @@
 package com.diamssword.greenresurgence.blocks;
 
-import com.diamssword.greenresurgence.MBlockEntities;
 import com.diamssword.greenresurgence.MBlocks;
 import com.diamssword.greenresurgence.MItems;
 import com.diamssword.greenresurgence.blockEntities.DeployableLadderEntity;
-import com.diamssword.greenresurgence.blockEntities.LootableItemBlockEntity;
-import com.diamssword.greenresurgence.containers.Containers;
+import com.diamssword.greenresurgence.blockEntities.ModBlockEntity;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
@@ -36,14 +25,9 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
-import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
-import java.util.List;
-
-public class DeployableLadderBlock extends BlockWithEntity {
+public class DeployableLadderBlock extends ModBlockEntity<DeployableLadderEntity> {
     public static final DirectionProperty FACING=Properties.FACING;
     public static final BooleanProperty MASTER=BooleanProperty.of("master");
     public static final VoxelShape SHAPE_N= Block.createCuboidShape(0,0,5,5,16,11);
@@ -54,10 +38,12 @@ public class DeployableLadderBlock extends BlockWithEntity {
     public DeployableLadderBlock(Settings settings) {
         super(settings);
         this.getDefaultState().with(FACING,Direction.NORTH).with(MASTER,false);
+        this.setTickerFactory((p,w)-> DeployableLadderEntity::tick);
     }
+
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, MBlockEntities.DEPLOYABLE_LADDER, DeployableLadderEntity::tick);
+    public Class<DeployableLadderEntity> getBlockEntityClass() {
+        return DeployableLadderEntity.class;
     }
 
     @Override
@@ -116,16 +102,6 @@ public class DeployableLadderBlock extends BlockWithEntity {
         builder.add(FACING, MASTER);
     }
 
-
-    @Nullable
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new DeployableLadderEntity(pos,state);
-    }
-    public DeployableLadderEntity getBlockEntity(BlockPos pos, BlockView world)
-    {
-        return (DeployableLadderEntity) world.getBlockEntity(pos);
-    }
     public BlockState rotate(BlockState state, BlockRotation rotation) {
         return (BlockState)state.with(FACING, rotation.rotate(state.get(FACING)));
     }

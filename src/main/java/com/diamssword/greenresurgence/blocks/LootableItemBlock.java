@@ -1,36 +1,24 @@
 package com.diamssword.greenresurgence.blocks;
 
-import com.diamssword.greenresurgence.MBlockEntities;
-import com.diamssword.greenresurgence.blockEntities.GeneratorBlockEntity;
-import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
+import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.blockEntities.LootableItemBlockEntity;
+import com.diamssword.greenresurgence.blockEntities.ModBlockEntity;
 import com.diamssword.greenresurgence.containers.Containers;
-import com.diamssword.greenresurgence.containers.IGridContainer;
-import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.BundleItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -43,17 +31,23 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LootableItemBlock extends BlockWithEntity implements Waterloggable {
+public class LootableItemBlock extends ModBlockEntity<LootableItemBlockEntity> implements Waterloggable {
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
     public static final DirectionProperty FACING=Properties.HORIZONTAL_FACING;
     public static final VoxelShape SHAPE= Block.createCuboidShape(0,0,0,16,5,16);
     public LootableItemBlock(Settings settings) {
         super(settings);
         this.getDefaultState().with(FACING,Direction.NORTH).with(WATERLOGGED,false);
+        this.setTickerFactory((w,b)->LootableItemBlockEntity::tick);
     }
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, MBlockEntities.LOOT_ITEM_BLOCK, LootableItemBlockEntity::tick);
+    public Identifier getCustomBlockEntityName()
+    {
+        return GreenResurgence.asRessource("loot_item_block");
+    }
+    @Override
+    public Class<LootableItemBlockEntity> getBlockEntityClass() {
+        return LootableItemBlockEntity.class;
     }
     @Override
     public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
@@ -109,15 +103,6 @@ public class LootableItemBlock extends BlockWithEntity implements Waterloggable 
         }
         return super.getFluidState(state);
     }
-    @Nullable
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new LootableItemBlockEntity(pos,state);
-    }
-    public LootableItemBlockEntity getBlockEntity(BlockPos pos, BlockView world)
-    {
-        return (LootableItemBlockEntity) world.getBlockEntity(pos);
-    }
     public BlockState rotate(BlockState state, BlockRotation rotation) {
         return (BlockState)state.with(FACING, rotation.rotate(state.get(FACING)));
     }
@@ -134,9 +119,5 @@ public class LootableItemBlock extends BlockWithEntity implements Waterloggable 
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
-    }
-    @Deprecated
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.INVISIBLE;
     }
 }

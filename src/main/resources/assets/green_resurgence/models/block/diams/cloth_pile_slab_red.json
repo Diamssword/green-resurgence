@@ -1,0 +1,5 @@
+{
+"parent":"green_resurgence:block/diams/cloth_pile_slab_white",
+"textures": {
+		"0": "green_resurgence:block/diams/cloth_pile_red"
+		}}

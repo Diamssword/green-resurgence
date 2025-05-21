@@ -7,6 +7,7 @@ import com.diamssword.greenresurgence.systems.lootables.Lootables;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SimpleInventory;
@@ -29,8 +30,9 @@ public class LootableShelfEntity extends BlockEntity implements IAdvancedLootabl
     private int selectedCount=0;
     private boolean isOff=false;
     private long lastBreak=0;
-    public LootableShelfEntity(BlockPos pos, BlockState state) {
-        super(MBlockEntities.LOOTABLE_SHELF,pos, state);
+
+    public LootableShelfEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
 
     @Override

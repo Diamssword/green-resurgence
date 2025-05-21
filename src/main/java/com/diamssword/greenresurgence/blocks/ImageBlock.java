@@ -1,35 +1,25 @@
 package com.diamssword.greenresurgence.blocks;
 
+import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
-import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
-import com.diamssword.greenresurgence.containers.Containers;
-import com.diamssword.greenresurgence.containers.IGridContainer;
-import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
+import com.diamssword.greenresurgence.blockEntities.ModBlockEntity;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.GuiPackets;
-import com.google.common.graph.Network;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -42,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ImageBlock extends Block implements BlockEntityProvider,Waterloggable {
+public class ImageBlock extends ModBlockEntity<ImageBlockEntity> implements Waterloggable {
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
     public static final DirectionProperty FACING=Properties.FACING;
     public static final VoxelShape SHAPE_D= Block.createCuboidShape(0,0,0,16,1,16);
@@ -56,6 +46,16 @@ public class ImageBlock extends Block implements BlockEntityProvider,Waterloggab
         this.getDefaultState().with(FACING,Direction.NORTH).with(WATERLOGGED,false);
 
     }
+    @Override
+    public Identifier getCustomBlockEntityName()
+    {
+        return GreenResurgence.asRessource("image_block");
+    }
+    @Override
+    public Class<ImageBlockEntity> getBlockEntityClass() {
+        return ImageBlockEntity.class;
+    }
+
     @Override
     public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
         NbtCompound nbtCompound = BlockItem.getBlockEntityNbt(stack);
@@ -107,10 +107,7 @@ public class ImageBlock extends Block implements BlockEntityProvider,Waterloggab
         }
         return VoxelShapes.fullCube();
     }
-   /* @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return VoxelShapes.empty();
-    }*/
+
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING, WATERLOGGED);
@@ -130,15 +127,7 @@ public class ImageBlock extends Block implements BlockEntityProvider,Waterloggab
         }
         return super.getFluidState(state);
     }
-    @Nullable
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new ImageBlockEntity(pos,state);
-    }
-    public ImageBlockEntity getBlockEntity(BlockPos pos, BlockView world)
-    {
-        return (ImageBlockEntity) world.getBlockEntity(pos);
-    }
+
     public BlockState rotate(BlockState state, BlockRotation rotation) {
         return (BlockState)state.with(FACING, rotation.rotate(state.get(FACING)));
     }
@@ -155,10 +144,6 @@ public class ImageBlock extends Block implements BlockEntityProvider,Waterloggab
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
-    }
-    @Deprecated
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.INVISIBLE;
     }
 
 }

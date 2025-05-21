@@ -7,6 +7,7 @@ import com.diamssword.greenresurgence.network.GuiPackets;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
@@ -28,25 +29,27 @@ import org.jetbrains.annotations.Nullable;
 public class GenericStorageBlockEntity extends BlockEntity implements Inventory {
     private int size=9;
     private SimpleInventory inventory;
-    public void addListener(InventoryChangedListener l)
-    {
-        this.inventory.addListener(l);
-    }
-    public GenericStorageBlockEntity(BlockPos pos, BlockState state) {
-        super(MBlockEntities.GENERIC_STORAGE, pos, state);
+
+    public GenericStorageBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
         this.inventory = new SimpleInventory(size);
         this.inventory.addListener(l->{
             markDirty();
         });
     }
-    public GenericStorageBlockEntity(BlockPos pos, BlockState state,int size) {
-        super(MBlockEntities.GENERIC_STORAGE, pos, state);
+    public GenericStorageBlockEntity(BlockEntityType<?> type,BlockPos pos, BlockState state,int size) {
+        super(type, pos, state);
         this.size=size;
         this.inventory=new SimpleInventory(size);
         this.inventory.addListener(l->{
             markDirty();
         });
     }
+    public void addListener(InventoryChangedListener l)
+    {
+        this.inventory.addListener(l);
+    }
+
     @Override
     public void writeNbt(NbtCompound nbt) {
         // Save the current value of the number to the nbt

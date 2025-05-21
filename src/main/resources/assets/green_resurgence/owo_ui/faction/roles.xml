@@ -1,0 +1,86 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+    <components>
+        <flow-layout direction="horizontal">
+            <children>
+                 <flow-layout direction="horizontal">
+                     <children>
+                        <flow-layout direction="vertical">
+                            <children>
+                                <button id="back">
+                                    <text>&lt; </text>
+                                    <tooltip-text>Retour</tooltip-text>
+                                    <sizing>
+                                        <horizontal method="fixed">20</horizontal>
+                                        <vertical method="fixed">20</vertical></sizing>
+                                </button>
+                                <flow-layout direction="vertical"><children/><sizing><vertical
+                                        method="fill">80</vertical></sizing></flow-layout>
+                                <button id="add">
+                                    <text>+</text>
+                                    <tooltip-text>Créer un rôle</tooltip-text>
+                                    <sizing>
+                                        <horizontal method="fixed">20</horizontal>
+                                        <vertical method="fixed">20</vertical>
+                                    </sizing>
+                                </button>
+                            </children>
+                            <padding><vertical>2</vertical></padding>
+                            <sizing><vertical method="fill">100</vertical></sizing>
+                        </flow-layout>
+                         <separator vertical="true">
+                            <margins><horizontal>2</horizontal></margins>
+                             <sizing>
+                                 <vertical method="fill">100</vertical>
+                                 <horizontal method="fixed">2</horizontal>
+                             </sizing>
+                         </separator>
+                        <scroll direction="vertical">
+                            <flow-layout direction="vertical" id="list">
+                                <children>
+                                    <button>
+                                    </button>
+                                </children>
+                                <sizing>
+                                    <horizontal method="fill">98</horizontal>
+                                </sizing>
+                                <padding>
+                                    <all>1</all>
+                                    <bottom>4</bottom>
+                                </padding>
+                                <surface>
+                                    <flat>#AA384239</flat>
+                                </surface>
+                            </flow-layout>
+
+                            <sizing>
+                                <horizontal method="fill">90</horizontal>
+                                <vertical method="fill">90</vertical>
+                            </sizing>
+                        </scroll>
+                    </children>
+                    <surface>
+                        <gpanel/>
+                    </surface>
+                    <padding>
+                        <all>5</all>
+                    </padding>
+                    <sizing>
+                        <vertical method="fill">100</vertical>
+                        <horizontal method="fixed">200</horizontal>
+                    </sizing>
+                 </flow-layout>
+            </children>
+            <sizing>
+                <vertical method="fill">100</vertical>
+                <horizontal method="fill">100</horizontal>
+            </sizing>
+            <vertical-alignment>center</vertical-alignment>
+            <padding>
+                <top>15</top>
+                <bottom>36</bottom>
+            </padding>
+            <horizontal-alignment>center</horizontal-alignment>
+        </flow-layout>
+    </components>
+</owo-ui>

@@ -6,6 +6,7 @@ import com.diamssword.greenresurgence.systems.lootables.IAdvancedLootableBlock;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SimpleInventory;
@@ -25,12 +26,14 @@ public class LootableItemBlockEntity extends ItemBlockEntity implements IAdvance
 
     private boolean isOff=false;
     private long lastBreak=0;
-    public LootableItemBlockEntity(BlockPos pos, BlockState state) {
-        super(MBlockEntities.LOOT_ITEM_BLOCK,pos, state);
+
+    public LootableItemBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
         this.position=new Vec3d(0,-10,0);
         this.rotation=new Vec3d(90,0,0);
         this.size=4;
     }
+
     @Override
     public void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);

@@ -1,6 +1,8 @@
 package com.diamssword.greenresurgence.render;
 
 import com.diamssword.greenresurgence.items.IStructureProvider;
+import com.diamssword.greenresurgence.network.AdventureInteract;
+import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.structure.StructureInfos;
 import com.diamssword.greenresurgence.systems.Components;
 import net.minecraft.block.BlockState;
@@ -133,8 +135,8 @@ public class BoxRenderers {
         MinecraftClient mc=MinecraftClient.getInstance();
 
         if(mc.world!=null && mc.getEntityRenderDispatcher().shouldRenderHitboxes()) {
-            List<Triple<String, String, BlockBox>> ls = mc.world.getComponent(Components.BASE_LIST).getBoxesForClient();
-            ls.forEach(b -> {
+
+            CurrentZonePacket.DebugViews.forEach(b -> {
                 VertexConsumerProvider.Immediate store= MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
                 VertexConsumerProvider.Immediate store1= MinecraftClient.getInstance().getBufferBuilders().getEffectVertexConsumers();
 
@@ -148,7 +150,7 @@ public class BoxRenderers {
                 DebugRenderer.drawBox(matrix,store,new BlockPos(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()),new BlockPos(b.getRight().getMaxX()+1, b.getRight().getMaxY()+1, b.getRight().getMaxZ()+1),red,green,blue,0.2f);
                 BlockPos p1=b.getRight().getCenter();
                 DebugRenderer.drawString(matrix,store1,"Camp: "+b.getLeft(),p1.getX(),p1.getY(),p1.getZ(),0xffffff,0.1f,true,0,true);
-                DebugRenderer.drawString(matrix,store1,"Sub: "+b.getMiddle(),p1.getX(),p1.getY()-1,p1.getZ(),0xffffff,0.1f,true,0,true);
+                DebugRenderer.drawString(matrix,store1,b.getMiddle().toString(),p1.getX(),p1.getY()-1,p1.getZ(),0xffffff,0.1f,true,0,true);
                 drawStructureBox(matrix, new Vec3d(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()), Vec3d.of(b.getRight().getDimensions().add(1,1,1)), red, green, blue, 1);
             });
         }

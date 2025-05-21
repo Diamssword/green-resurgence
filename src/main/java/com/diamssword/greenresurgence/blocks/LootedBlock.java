@@ -1,8 +1,7 @@
 package com.diamssword.greenresurgence.blocks;
 
-import com.diamssword.greenresurgence.MBlockEntities;
-import com.diamssword.greenresurgence.MBlocks;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
+import com.diamssword.greenresurgence.blockEntities.ModBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -11,18 +10,26 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class LootedBlock extends Block  implements BlockEntityProvider {
+public class LootedBlock extends ModBlockEntity<LootedBlockEntity> {
+
     public LootedBlock(Settings settings) {
         super(settings);
+        this.setTickerFactory((w,s)->w.isClient?null:LootedBlockEntity::tick);
     }
+
+    @Override
+    public Class<LootedBlockEntity> getBlockEntityClass() {
+        return LootedBlockEntity.class;
+    }
+
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         // With inheriting from BlockWithEntity this defaults to INVISIBLE, so we need to change that!
         return BlockRenderType.INVISIBLE;
     }
+    /*
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
@@ -36,7 +43,7 @@ public class LootedBlock extends Block  implements BlockEntityProvider {
     public LootedBlockEntity getBlockEntity(BlockPos pos, BlockView world)
     {
         return (LootedBlockEntity) world.getBlockEntity(pos);
-    }
+    }*/
     @Override
     public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
         return true;

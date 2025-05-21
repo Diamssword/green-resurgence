@@ -49,6 +49,7 @@ public class GreenResurgence implements ModInitializer {
 		registerSubCat(Weapons.class, ID,"tools/", false);
 		FieldRegistrationHandler.register(MBlocks.class, ID, false);
 		FieldRegistrationHandler.register(MBlockEntities.class, ID, false);
+		MBlockEntities.registerAll();
 		FieldRegistrationHandler.register(Containers.class, ID, false);
 		FieldRegistrationHandler.register(MEntities.class, ID, false);
 		ItemPlacers.init();

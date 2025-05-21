@@ -7,6 +7,7 @@ import io.wispforest.owo.nbt.NbtKey;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -28,9 +29,8 @@ public class ImageBlockEntity extends BlockEntity {
     private boolean stretch=false;
     private boolean offsetX=false;
     private boolean offsetY=false;
-
-    public ImageBlockEntity(BlockPos pos, BlockState state) {
-        super(MBlockEntities.IMAGE_BLOCK, pos, state);
+    public ImageBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
     @Override
     public void writeNbt(NbtCompound nbt) {

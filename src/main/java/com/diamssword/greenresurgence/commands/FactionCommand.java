@@ -1,206 +1,171 @@
 package com.diamssword.greenresurgence.commands;
 
-import com.diamssword.greenresurgence.items.IStructureProvider;
+import com.diamssword.greenresurgence.network.Channels;
+import com.diamssword.greenresurgence.network.GuildPackets;
 import com.diamssword.greenresurgence.systems.Components;
-import com.diamssword.greenresurgence.systems.faction.perimeter.FactionInstance;
 import com.diamssword.greenresurgence.systems.faction.perimeter.FactionList;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionGuild;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.suggestion.SuggestionProvider;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.argument.*;
+import net.minecraft.command.argument.BlockPosArgumentType;
+import net.minecraft.command.argument.UuidArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
-import net.minecraft.util.StringIdentifiable;
-import net.minecraft.util.math.BlockBox;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Comparator;
 import java.util.Optional;
 
 public class FactionCommand {
 
-    private static final SuggestionProvider<ServerCommandSource> SUGGESTION_PROVIDER = (context, builder) -> {
-        World w=context.getSource().getWorld();
-        FactionList ls=w.getComponent(Components.BASE_LIST);
-        return CommandSource.suggestMatching(ls.getNames(), builder);
+	/*private static final SuggestionProvider<ServerCommandSource> SUGGESTION_PROVIDER = (context, builder) -> {
+		World w = context.getSource().getWorld();
+		FactionList ls = w.getComponent(Components.BASE_LIST);
+		return CommandSource.suggestMatching(ls.getNames(), builder);
 
-    };
-    private static final SuggestionProvider<ServerCommandSource> SUGGESTION_PROVIDER1 = (context, builder) -> {
-        var name=StringArgumentType.getString(context,"name");
-        if(name!=null)
-        {
-            World w=context.getSource().getWorld();
-            FactionList ls=w.getComponent(Components.BASE_LIST);
-            var op=ls.get(name);
-            if(op.isPresent())
-                return CommandSource.suggestMatching(new ArrayList<>(op.get().getSubTerrains().keySet()),builder);
-        }
-        return CommandSource.suggestMatching(new ArrayList<>(), builder);
+	};
+	private static final SuggestionProvider<ServerCommandSource> SUGGESTION_PROVIDER1 = (context, builder) -> {
+		var name = StringArgumentType.getString(context, "name");
+		if (name != null) {
+			World w = context.getSource().getWorld();
+			FactionList ls = w.getComponent(Components.BASE_LIST);
+			var op = ls.get(name);
+			if (op.isPresent())
+				return CommandSource.suggestMatching(new ArrayList<>(op.get().getSubTerrains().keySet()), builder);
+		}
+		return CommandSource.suggestMatching(new ArrayList<>(), builder);
 
-    };
+	};
+*/
+	public static void register(LiteralArgumentBuilder<ServerCommandSource> builder) {
 
-    public static void register(LiteralArgumentBuilder<ServerCommandSource> builder)
-    {
-        builder.requires(ctx-> ctx.hasPermissionLevel(2))
-                .then(CommandManager.literal("create").then(CommandManager.argument("name",StringArgumentType.string()).then(CommandManager.argument("subname",StringArgumentType.string()).then(CommandManager.argument("from", BlockPosArgumentType.blockPos()).then(CommandManager.argument("to",BlockPosArgumentType.blockPos()).executes(FactionCommand::createExec))))))
-                .then(CommandManager.literal("get").then(CommandManager.argument("at", BlockPosArgumentType.blockPos()).executes(FactionCommand::getExec)))
-                .then(CommandManager.literal("addArea").then(CommandManager.argument("name",StringArgumentType.string()).suggests(SUGGESTION_PROVIDER).then(CommandManager.argument("subname",StringArgumentType.string()).suggests(SUGGESTION_PROVIDER1).then(CommandManager.argument("from", BlockPosArgumentType.blockPos()).then(CommandManager.argument("to",BlockPosArgumentType.blockPos()).executes(FactionCommand::addExec))))))
-                .then(CommandManager.literal("removeArea").then(CommandManager.argument("at", BlockPosArgumentType.blockPos()).executes(FactionCommand::removeExec)))
-                .then(CommandManager.literal("addMember").then(CommandManager.argument("faction",StringArgumentType.string()).suggests(SUGGESTION_PROVIDER).then(CommandManager.argument("player", EntityArgumentType.players()).executes(FactionCommand::addMemberExec))))
-                .then(CommandManager.literal("removeMember").then(CommandManager.argument("faction",StringArgumentType.string()).suggests(SUGGESTION_PROVIDER).then(CommandManager.argument("player", EntityArgumentType.players()).executes(FactionCommand::removeMemberExec))))
-                .then(CommandManager.literal("delete").then(CommandManager.argument("name",StringArgumentType.string()).suggests(SUGGESTION_PROVIDER).then(CommandManager.argument("confirm", StringArgumentType.string()).executes(FactionCommand::deleteExec))))
-                .then(CommandManager.literal("refresh").executes(ctx->{Components.BASE_LIST.sync(ctx.getSource().getWorld()); return 1;}));
+		builder.requires(ctx -> ctx.hasPermissionLevel(2))
+				.then(CommandManager.literal("get").then(CommandManager.argument("at", BlockPosArgumentType.blockPos()).executes(FactionCommand::getExec)))
+				.then(CommandManager.literal("list").then(CommandManager.argument("page", IntegerArgumentType.integer(0)).executes(FactionCommand::getList)).executes(FactionCommand::getList))
+				.then(CommandManager.literal("removeArea").then(CommandManager.argument("at", BlockPosArgumentType.blockPos()).executes(FactionCommand::removeExec)))
+				.then(CommandManager.literal("impersonate").then(CommandManager.argument("uuid", UuidArgumentType.uuid()).executes(FactionCommand::impersonateExec)))
+				.then(CommandManager.literal("delete").then(CommandManager.argument("uuid", UuidArgumentType.uuid()).then(CommandManager.argument("confirm", StringArgumentType.string()).executes(FactionCommand::deleteExec))))
+				.then(CommandManager.literal("refresh").executes(ctx -> {
+					Components.BASE_LIST.sync(ctx.getSource().getWorld());
+					return 1;
+				}));
 
-    }
-    private static int getExec(CommandContext<ServerCommandSource> ctx)
-    {
-        BlockPos p=BlockPosArgumentType.getBlockPos(ctx,"at");
-        FactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
-        Optional<FactionGuild> b=base.getAt(p);
-        b.ifPresentOrElse((i)->{
-            ctx.getSource().sendFeedback(()->Text.literal("Base trouvée en ["+p.getX()+","+p.getY()+","+p.getZ()+"]: "+i.getName()),false);
-        },()->{
-            ctx.getSource().sendFeedback(()->Text.literal("Aucune base trouvée en ["+p.getX()+","+p.getY()+","+p.getZ()+"]"),false);
-        });
-        return b.isPresent()?1:-1;
+	}
 
-    }
-    private static int deleteExec(CommandContext<ServerCommandSource> ctx)
-    {
-        String name= StringArgumentType.getString(ctx,"name");
-        String confirm=StringArgumentType.getString(ctx,"confirm");
-        if(confirm.equals("Confirm"))
-        {
-            FactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
-            boolean t=base.delete(name);
-            if(!t) {
-                ctx.getSource().sendFeedback(() -> Text.literal("Aucune faction trouvé avec ce nom"), false);
-                return -1;
-            }
-            else
-            {
-                ctx.getSource().sendFeedback(() -> Text.literal("Faction "+name+" supprimée!"), false);
-
-                Components.BASE_LIST.sync(ctx.getSource().getWorld());
-                return 1;
-            }
-        }
-        else {
-            ctx.getSource().sendFeedback(()->Text.literal("Cette action supprimera definitivement toute les zones d'une factions, pour confirmer tapez le text 'Confirm' (avec la maj) dans la commande"),false);
-            return 0;
-        }
-
-    }
-    private static int createExec(CommandContext<ServerCommandSource> ctx)
-    {
-        String name= StringArgumentType.getString(ctx,"name");
-        String sub= StringArgumentType.getString(ctx,"subname");
-        BlockPos p=BlockPosArgumentType.getBlockPos(ctx,"from");
-        BlockPos p1=BlockPosArgumentType.getBlockPos(ctx,"to");
-        FactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
-
-        boolean re= base.add(new FactionInstance(ctx.getSource().getWorld(),name,sub,new BlockBox(p1.getX(),p1.getY(),p1.getZ(),p.getX(),p.getY(),p.getZ())));
-            ctx.getSource().sendFeedback(()->Text.literal(re?"Faction '"+name+"' crée":"Impossible de créer la faction '"+name+"'. Elle existe peut être déja?"),false);
-        return re?1:0;
-
-    }
-    private static int addMemberExec(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
-        String name= StringArgumentType.getString(ctx,"faction");
-        Collection<ServerPlayerEntity> p=EntityArgumentType.getPlayers(ctx,"player");
-
-        FactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
-            Optional<FactionInstance> b=base.get(name);
-            if(b.isPresent())
-            {
-                p.forEach(v->{
-                    b.get().addMember(v);
-                    ctx.getSource().sendFeedback(()->Text.literal("Ajout de ").append(v.getName()).append(Text.literal(" à la faction '"+b.get().getName()+"'")),false);
-                });
-                return 1;
-            }
-        ctx.getSource().sendFeedback(()->Text.literal("Impossible de trouver cette faction"),false);
-            return -1;
+	private static int impersonateExec(CommandContext<ServerCommandSource> ctx) {
+		if (ctx.getSource().isExecutedByPlayer()) {
+			var id = UuidArgumentType.getUuid(ctx, "uuid");
+			if (id != null) {
+				var op = ctx.getSource().getWorld().getComponent(Components.BASE_LIST).get(id);
+				if (op.isPresent()) {
+					Channels.MAIN.serverHandle(ctx.getSource().getPlayer()).send(new GuildPackets.OpenFactionGui(op.get().getId(), op.get().getName()));
+					return 1;
+				} else {
+					ctx.getSource().sendFeedback(() -> Text.literal("Aucune faction trouvé avec cet id"), false);
+					return -1;
+				}
 
 
-    }
-    private static int removeMemberExec(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
-        String name= StringArgumentType.getString(ctx,"faction");
-        Collection<ServerPlayerEntity> p=EntityArgumentType.getPlayers(ctx,"player");
+			}
+			return -1;
+		}
+		return -1;
+	}
 
-        FactionList base=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
-        Optional<FactionGuild> b=base.get(name);
-        if(b.isPresent())
-        {
-            p.forEach(v->{
-                b.get().removeMember(v);
-                ctx.getSource().sendFeedback(()->Text.literal("Suppression de ").append(v.getName()).append(Text.literal(" à la faction '"+b.get().getName()+"'")),false);
-            });
-            return 1;
-        }
-        ctx.getSource().sendFeedback(()->Text.literal("Impossible de trouver cette faction"),false);
-        return -1;
+	private static int getList(CommandContext<ServerCommandSource> ctx) {
+		int page = 0;
+
+		try {
+			page = IntegerArgumentType.getInteger(ctx, "page");
+		} catch (IllegalArgumentException ignored) {
+		}
+		var base = Text.literal("====Liste des guilds [page " + page + "]====\n");
+		var ls = ctx.getSource().getWorld().getComponent(Components.BASE_LIST).getAll();
+		ls.sort(Comparator.comparing(FactionGuild::getName));
+		for (int i = page * 10; i < ls.size(); i++) {
+			var b = ls.get(i);
+			base = base.append(RecipeHelperCommand.copyable(Text.literal("[" + b.getName() + "]\n"), b.getId().toString()).styled(st -> st.withColor(Formatting.GREEN).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Gestionnaire: " + b.getOwner().getName() + "\nUuid: " + b.getId() + " (Cliquez pour copier)")))));
+		}
+		int finalPage = page;
+		var arrowA = Text.literal("[<]").styled(st -> st.withColor(Formatting.LIGHT_PURPLE).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal(("Précédent")))).withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/faction list " + (finalPage - 1))));
+		var arrowB = Text.literal("[>]").styled(st -> st.withColor(Formatting.LIGHT_PURPLE).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal(("Suivant")))).withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/faction list " + (finalPage + 1))));
+		base = base.append("====");
+		if (page > 0)
+			base = base.append(arrowA).append(Text.literal(" "));
+		base = base.append(arrowB).append("====");
+		net.minecraft.text.MutableText finalBase = base;
+		ctx.getSource().sendFeedback(() -> finalBase, false);
+		return 1;
+	}
+
+	private static int getExec(CommandContext<ServerCommandSource> ctx) {
+		BlockPos p = BlockPosArgumentType.getBlockPos(ctx, "at");
+		FactionList base = ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
+		Optional<FactionGuild> b = base.getAt(p);
+		b.ifPresentOrElse((i) -> {
+			var name = RecipeHelperCommand.copyable(Text.literal("[" + i.getName() + "]"), i.getId().toString()).styled(st -> st.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Cliquez pour copier l'id: " + i.getId().toString()))));
+			Text t = Text.literal("[Inconnu]");
+			var pl = i.getOwner().asPlayer(ctx.getSource().getWorld());
+			if (pl.isPresent())
+				t = pl.get().getDisplayName();
+			else {
+				t = RecipeHelperCommand.copyable(Text.literal("[" + i.getOwner().getName() + "]"), i.getOwner().getId().toString()).styled(st -> st.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Cliquez pour copier l'id: " + i.getId().toString() + "\n Type: " + (i.getOwner().isPlayer() ? "Player" : "Guild")))));
+
+			}
 
 
-    }
-    private static int addExec(CommandContext<ServerCommandSource> ctx)
-    {
-        String name= StringArgumentType.getString(ctx,"name");
-        String sub= StringArgumentType.getString(ctx,"subname");
-        BlockPos p=BlockPosArgumentType.getBlockPos(ctx,"from");
-        BlockPos p1=BlockPosArgumentType.getBlockPos(ctx,"to");
-        FactionList bases=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
-        Optional<FactionGuild> base=bases.get(name);
-        if(base.isPresent())
-        {
-            base.get().addArea(sub,new BlockBox(p1.getX(),p1.getY(),p1.getZ(),p.getX(),p.getY(),p.getZ()));
-            Components.BASE_LIST.sync(ctx.getSource().getWorld());
-            ctx.getSource().sendFeedback(()->Text.literal("Zone de ajoutée pour '"+name+"':["+p.getX()+","+p.getY()+","+p.getZ()+"] à ["+p1.getX()+","+p1.getY()+","+p1.getZ()+"]"),false);
-            return 1;
-        }
-        ctx.getSource().sendFeedback(()->Text.literal("Faction introuvable pour '"+name+"'"),false);
-        return -1;
+			Text finalT = t;
+			ctx.getSource().sendFeedback(() -> Text.literal("Guild trouvée en [" + p.getX() + "," + p.getY() + "," + p.getZ() + "]: ").append(name).append(Text.literal(" \nGerée par ").append(finalT)), false);
+		}, () -> {
+			ctx.getSource().sendFeedback(() -> Text.literal("Aucune guild trouvée en [" + p.getX() + "," + p.getY() + "," + p.getZ() + "]"), false);
+		});
+		return b.isPresent() ? 1 : -1;
 
-    }
-    private static int removeExec(CommandContext<ServerCommandSource> ctx)
-    {
-        BlockPos p=BlockPosArgumentType.getBlockPos(ctx,"at");
-        FactionList bases=ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
-        Optional<FactionGuild> base=bases.getAt(p);
-        if(base.isPresent())
-        {
-                boolean flg=base.get().removeAreaAt(p);
-                if(flg)
-                {
-                    ctx.getSource().sendFeedback(()->Text.literal("Zone supprimé pour '"+base.get().getName()+"'"),false);
-                    Components.BASE_LIST.sync(ctx.getSource().getWorld());
-                }
-                else
-                    ctx.getSource().sendFeedback(()->Text.literal("Faction introuvable pour en :["+p.getX()+","+p.getY()+","+p.getZ()+"]"),false);
-                return flg?1:-1;
-        }
-        ctx.getSource().sendFeedback(()->Text.literal("Faction introuvable pour en :["+p.getX()+","+p.getY()+","+p.getZ()+"]"),false);
-        return -1;
+	}
 
-    }
-    public static class StructureTypeArgumentType extends EnumArgumentType<IStructureProvider.StructureType> {
-        private StructureTypeArgumentType() {
-            super( StringIdentifiable.createCodec(IStructureProvider.StructureType::values), IStructureProvider.StructureType::values);
-        }
+	private static int deleteExec(CommandContext<ServerCommandSource> ctx) {
+		var id = UuidArgumentType.getUuid(ctx, "uuid");
+		String confirm = StringArgumentType.getString(ctx, "confirm");
+		if (confirm.equals("Confirm")) {
+			FactionList base = ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
+			boolean t = base.delete(id);
+			if (!t) {
+				ctx.getSource().sendFeedback(() -> Text.literal("Aucune faction trouvé avec cet id"), false);
+				return -1;
+			} else {
+				ctx.getSource().sendFeedback(() -> Text.literal("Faction " + id.toString() + " supprimée!"), false);
 
-        public static StructureTypeArgumentType structureType() {
-            return new StructureTypeArgumentType();
-        }
+				Components.BASE_LIST.sync(ctx.getSource().getWorld());
+				return 1;
+			}
+		} else {
+			ctx.getSource().sendFeedback(() -> Text.literal("Cette action supprimera definitivement toute les zones d'une factions, pour confirmer tapez le text 'Confirm' (avec la maj) dans la commande"), false);
+			return 0;
+		}
 
-        public static IStructureProvider.StructureType getStructureType(CommandContext<ServerCommandSource> context, String id) {
-            return context.getArgument(id, IStructureProvider.StructureType.class);
-        }
-    }
+	}
+
+	private static int removeExec(CommandContext<ServerCommandSource> ctx) {
+		BlockPos p = BlockPosArgumentType.getBlockPos(ctx, "at");
+		FactionList bases = ctx.getSource().getWorld().getComponent(Components.BASE_LIST);
+		Optional<FactionGuild> base = bases.getAt(p);
+		if (base.isPresent()) {
+			boolean flg = base.get().removeTerrainAt(p, ctx.getSource().getWorld());
+			if (flg) {
+				ctx.getSource().sendFeedback(() -> Text.literal("Zone supprimé pour '" + base.get().getName() + "'"), false);
+				Components.BASE_LIST.sync(ctx.getSource().getWorld());
+			} else
+				ctx.getSource().sendFeedback(() -> Text.literal("Faction introuvable en :[" + p.getX() + "," + p.getY() + "," + p.getZ() + "]"), false);
+			return flg ? 1 : -1;
+		}
+		ctx.getSource().sendFeedback(() -> Text.literal("Faction introuvable en :[" + p.getX() + "," + p.getY() + "," + p.getZ() + "]"), false);
+		return -1;
+
+	}
 }

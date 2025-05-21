@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SimpleInventory;
@@ -38,9 +39,11 @@ public class LootedBlockEntity extends BlockEntity {
     public SimpleInventory inventory;
     public BlockState block;
     public BlockState emptyBlock;
-    public LootedBlockEntity( BlockPos pos, BlockState state) {
-        super(MBlockEntities.LOOTED_BLOCk, pos, state);
+
+    public LootedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
+
     public BlockState getRealBlock()
     {
         return this.block !=null?this.block: Blocks.AIR.getDefaultState();

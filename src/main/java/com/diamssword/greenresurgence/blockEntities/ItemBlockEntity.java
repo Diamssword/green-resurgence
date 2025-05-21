@@ -31,9 +31,6 @@ public class ItemBlockEntity extends BlockEntity {
     protected double size=10;
     private ItemStack item= new ItemStack(Items.APPLE);
     public Direction baseDir;
-    public ItemBlockEntity(BlockPos pos, BlockState state) {
-        super(MBlockEntities.ITEM_BLOCK, pos, state);
-    }
     public ItemBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }

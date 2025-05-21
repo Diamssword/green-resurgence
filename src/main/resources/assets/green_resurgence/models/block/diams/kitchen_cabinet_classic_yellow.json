@@ -1,0 +1,5 @@
+{
+"parent":"green_resurgence:block/diams/kitchen_cabinet_classic_white",
+"textures": {
+		"0": "green_resurgence:block/diams/kitchen_cabinet_yellow"
+		}}

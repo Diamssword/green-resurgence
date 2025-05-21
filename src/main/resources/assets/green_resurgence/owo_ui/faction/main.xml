@@ -1,0 +1,47 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+    <components>
+        <flow-layout direction="horizontal">
+            <children>
+                <flow-layout direction="vertical">
+                    <children>
+                        <button id="members">
+                            <text>Membres</text>
+                        </button>
+                        <button id="roles">
+                            <text>Roles</text>
+                        </button>
+                        <label>
+                            <text>Taille de la zone</text>
+                        </label>
+                        <discrete-slider id="size" min="4" max="32">
+                            <sizing>
+                                <horizontal method="fill">90</horizontal>
+                            </sizing>
+                        </discrete-slider>
+                    </children>
+                    <padding>
+                        <all>5</all>
+                    </padding>
+                    <sizing>
+                        <vertical method="content">1</vertical>
+                        <horizontal method="fixed">170</horizontal>
+                    </sizing>
+                    <surface>
+                        <gpanel/>
+                    </surface>
+                </flow-layout>
+            </children>
+            <sizing>
+                <vertical method="fill">100</vertical>
+                <horizontal method="fill">100</horizontal>
+            </sizing>
+            <vertical-alignment>center</vertical-alignment>
+            <padding>
+                <top>15</top>
+                <bottom>36</bottom>
+            </padding>
+            <horizontal-alignment>center</horizontal-alignment>
+        </flow-layout>
+    </components>
+</owo-ui>

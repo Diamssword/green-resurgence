@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "green_resurgence:block/diams/ice_cooler_food_container_left",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "green_resurgence:block/diams/ice_cooler_food_container_left"
+    },
+    "facing=south": {
+      "model": "green_resurgence:block/diams/ice_cooler_food_container_left",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "green_resurgence:block/diams/ice_cooler_food_container_left",
+      "y": 270
+    }
+  }
+}

@@ -21,10 +21,10 @@ public class MItems implements ItemRegistryContainer {
         group.addTab(Icon.of(GreenResurgence.asRessource("textures/item/materials/wood_furniture.png"),0,0,16,16),"materials",null,false);
     }).build();
     public static final Item WIRE_SPOOL = new CableItem(withDiamsTab());
-    public static final Item MULTIBLOCK_LINKER = new MultiblockLinkerItem(new OwoItemSettings().group(GROUP));
     public static final Item RAIL = new Item(new OwoItemSettings().group(GROUP));
     public static final UniversalPlacerItem UNIVERSAL_PLACER= new UniversalPlacerItem(new Item.Settings().maxCount(1));
     public static final Item REMOVABLE_LADDER=new DeployableLadder(new OwoItemSettings().group(GROUP));
+    public static final Item CLAIM_PLACER=new ClaimBlockPlacerItem(new OwoItemSettings().group(GROUP));
 
 
     public static final Item MODULAR_HEAD = new ModularArmorItem(ArmorMaterials.CHAIN, ArmorItem.Type.HELMET,new OwoItemSettings().group(GROUP));
