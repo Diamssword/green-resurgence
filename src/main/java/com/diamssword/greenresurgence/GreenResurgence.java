@@ -18,7 +18,6 @@ import io.wispforest.owo.registration.reflect.FieldProcessingSubject;
 import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
 import io.wispforest.owo.util.ReflectionUtils;
 import net.fabricmc.api.ModInitializer;
-
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -33,20 +32,22 @@ import org.slf4j.LoggerFactory;
 import java.util.function.Consumer;
 
 public class GreenResurgence implements ModInitializer {
-	public static final String ID="green_resurgence";
+	public static final String ID = "green_resurgence";
 	public static final Logger LOGGER = LoggerFactory.getLogger("green_resurgence");
-	public static Identifier asRessource(String name)
-	{
-		return new Identifier(ID,name);
+
+	public static Identifier asRessource(String name) {
+		return new Identifier(ID, name);
 	}
-	public static final com.diamssword.greenresurgence.MyConfig CONFIG = com.diamssword.greenresurgence.MyConfig.createAndLoad();
+
+	public static final com.diamssword.greenresurgence.ResurgenceConfig CONFIG = com.diamssword.greenresurgence.ResurgenceConfig.createAndLoad();
+
 	@Override
 	public void onInitialize() {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(Lootables.loader);
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(ClothingLoader.instance);
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(Recipes.loader);
 		FieldRegistrationHandler.register(MItems.class, ID, false);
-		registerSubCat(Weapons.class, ID,"tools/", false);
+		registerSubCat(Weapons.class, ID, "tools/", false);
 		FieldRegistrationHandler.register(MBlocks.class, ID, false);
 		FieldRegistrationHandler.register(MBlockEntities.class, ID, false);
 		MBlockEntities.registerAll();
@@ -58,7 +59,7 @@ public class GreenResurgence implements ModInitializer {
 		GenericBlocks.register();
 		GenericBlocks.GENERIC_GROUP.initialize();
 		Materials.init();
-		registerCommand("giveStructureItem",StructureItemCommand::register);
+		registerCommand("giveStructureItem", StructureItemCommand::register);
 		registerCommand("faction", FactionCommand::register);
 		registerCommand("structureBlockHelper", StructureBlockHelperCommand::register);
 		registerCommand("resurgenceGui", OpenScreenCommand::register);
@@ -67,35 +68,35 @@ public class GreenResurgence implements ModInitializer {
 		registerCommand("pstats", PStatsCommand::register);
 		BaseInteractions.register();
 		Events.init();
-		ServerLifecycleEvents.SERVER_STARTING.register((server)->{
+		ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
 			onPostInit();
 		});
 
 	}
 
-	private static boolean havePostInited=false;
+	private static boolean havePostInited = false;
+
 	/**
 	 * Called when a client join a world
 	 * Called only once
 	 */
-	public static void onPostInit()
-	{
-		if(!havePostInited) {
+	public static void onPostInit() {
+		if (!havePostInited) {
 			havePostInited = true;
 		}
 	}
-	public void registerCommand(String name, Consumer<LiteralArgumentBuilder<ServerCommandSource>> builder)
-	{
-		LiteralArgumentBuilder<ServerCommandSource> l=CommandManager.literal(name);
+
+	public void registerCommand(String name, Consumer<LiteralArgumentBuilder<ServerCommandSource>> builder) {
+		LiteralArgumentBuilder<ServerCommandSource> l = CommandManager.literal(name);
 		builder.accept(l);
 		CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> dispatcher.register(l)));
 	}
 
-	public static <T> void registerSubCat(Class<? extends AutoRegistryContainer<T>> clazz, String namespace,String subname, boolean recurseIntoInnerClasses) {
+	public static <T> void registerSubCat(Class<? extends AutoRegistryContainer<T>> clazz, String namespace, String subname, boolean recurseIntoInnerClasses) {
 		AutoRegistryContainer<T> container = ReflectionUtils.tryInstantiateWithNoArgs(clazz);
 
 		ReflectionUtils.iterateAccessibleStaticFields(clazz, container.getTargetFieldType(), createProcessor((fieldValue, identifier, field) -> {
-			Registry.register(container.getRegistry(), new Identifier(namespace,subname+ identifier), fieldValue);
+			Registry.register(container.getRegistry(), new Identifier(namespace, subname + identifier), fieldValue);
 			container.postProcessField(namespace, fieldValue, identifier, field);
 		}, container));
 
@@ -103,12 +104,13 @@ public class GreenResurgence implements ModInitializer {
 			ReflectionUtils.forApplicableSubclasses(clazz, AutoRegistryContainer.class, subclass -> {
 				var classModId = namespace;
 				if (subclass.isAnnotationPresent(RegistryNamespace.class)) classModId = subclass.getAnnotation(RegistryNamespace.class).value();
-				registerSubCat((Class<? extends AutoRegistryContainer<T>>) subclass, classModId, subname,true);
+				registerSubCat((Class<? extends AutoRegistryContainer<T>>) subclass, classModId, subname, true);
 			});
 		}
 
 		container.afterFieldProcessing();
 	}
+
 	private static <T> ReflectionUtils.FieldConsumer<T> createProcessor(ReflectionUtils.FieldConsumer<T> delegate, FieldProcessingSubject<T> handler) {
 		return (value, name, field) -> {
 			if (!handler.shouldProcessField(value, name, field)) return;

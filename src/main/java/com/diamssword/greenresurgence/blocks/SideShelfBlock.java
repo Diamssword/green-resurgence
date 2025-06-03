@@ -47,7 +47,7 @@ public class SideShelfBlock extends ShelfBlock {
 	public static final EnumProperty<Model> MODEL = EnumProperty.of("model", Model.class);
 
 	public SideShelfBlock(Settings settings) {
-		super(settings, false, true);
+		super(settings, false);
 	}
 
 	@Override

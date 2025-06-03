@@ -151,14 +151,14 @@ public class GenericBlocks {
 		diams.create("toilet_white", "toilet_black").addSub(BlockType.PILLAR, ModelType.SLAB, HitBox.SLAB).togglable().setTransparency(Transparency.NOTFULL).disableGen(true);
 		diams.create("trash_can_big").addSub(BlockType.PILLAR).togglable().setTransparency(Transparency.CUTOUT).disableGen(true);
 
-		diams.create("big_plank", "small_wood_table", "plastic_fence", "fridge_bottom", "fridge_up", "fridge_up_square", "concrete_fence", "sink_noplate_ceramic", "sink_pedestal_ceramic", "air_vent", "kitchen_dish_washer", "kitchen_cloth_cleaning_machine")
+		diams.create("big_plank", "plastic_fence", "fridge_bottom", "fridge_up", "fridge_up_square", "concrete_fence", "sink_noplate_ceramic", "sink_pedestal_ceramic", "air_vent", "kitchen_dish_washer", "kitchen_cloth_cleaning_machine")
 				.addSub(BlockType.PILLAR).setTransparency(Transparency.NOTFULL).disableGen(true);
 		//table nap
 		diams.create(simpleList("table_square_nap_", new String[]{"blue_", "green_", "red_"}, new String[]{"center", "border", "corner", "end", "middle", "solo"})).addSub(BlockType.PILLAR).setTransparency(Transparency.CUTOUT).addGroup("table_square_nap").disableGen(true);
 		//chair wool
 		diams.create(allColors("chair_wool_")).addSub(BlockType.PILLAR).disableGen(true).seat(CHAIR_MEDIUM).setTransparency(Transparency.NOTFULL).addGroup("chair_wool");
 		//chair sofa
-		diams.create(simpleList("", allColors("chair_sofa_"), new String[]{"_left", "_right", "_middle", "_solo"})).addSub(BlockType.PILLAR, ModelType.SLAB, HitBox.SLAB).disableGen(true).seat(CHAIR_SLAB).setTransparency(Transparency.CUTOUT).addGroup("chair_sofa");
+		diams.create(simpleList("", allColors("chair_sofa_"), new String[]{"_left", "_right", "_middle", "_solo"})).addSub(BlockType.PILLAR, ModelType.SLAB, HitBox.FIXED_SLAB).disableGen(true).seat(CHAIR_SLAB).setTransparency(Transparency.CUTOUT).addGroup("chair_sofa");
 		//microwave
 		diams.create(allColors("microwave_")).addSub(BlockType.PILLAR, ModelType.SLAB, HitBox.MEDIUM).setTransparency(Transparency.NOTFULL).disableGen(true).addGroup("microwave");
 		diams.create(simpleList("barrel_", new String[]{"toxic", "rust", "red", "blue"}, new String[]{"_up", "_down"})).addSub(BlockType.PILLAR).setTransparency(Transparency.NOTFULL).disableGen(true).addGroup("barrels");
@@ -240,6 +240,8 @@ public class GenericBlocks {
 
 		diams.create(allColors("cloth_pile_slab_")).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.FIXED_SLAB).disableGen(true).addGroup("cloth_pile");
 		diams.create(allColors("cloth_pile_full_")).addSub(BlockType.PILLAR).disableGen(true).addGroup("cloth_pile");
+		diams.create(append(simpleList("table/folding_table/table_folding_", "", "spruce", "oak"), "small_wood_table")).addSub(BlockType.PILLAR).setTransparency(Transparency.NOTFULL).addGroup("table").disableGen(true);
+		diams.create("table/spruce_fancy", "table/oak_fancy").addSub(BlockType.TABLE, ModelType.SIMPLE, HitBox.FIXED_SLAB_TOP).setTransparency(Transparency.NOTFULL).disableGen(false).addGroup("table");
 		sets.add(diams);
 		//genericFurniture(diams, BlockType.PILLAR, Transparency.CUTOUT,"car_low_front_right","car_low_front_left","car_low_back_right","car_low_back_left");
 		//genericFurniture(diams, BlockType.TOGGLEABLE, Transparency.CUTOUT,"car_low_trunk","car_low_door","car_low_capot");

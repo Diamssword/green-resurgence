@@ -1,0 +1,27 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+<components>
+<flow-layout direction="vertical">
+    <children>
+        <flow-layout direction="horizontal">
+            <children>
+                <inventory id="armor_tinkerer" width="1" height="4" name="disabled"/>
+                <flow-layout direction="vertical" id="menu"><children>
+                </children></flow-layout>
+
+            </children>
+            <padding><all>5</all></padding>
+
+            <surface>
+                <panel/>
+            </surface>
+            <horizontal-alignment>center</horizontal-alignment>
+        </flow-layout>
+    </children>
+    <sizing><horizontal method="fill">30</horizontal></sizing>
+    <horizontal-alignment>left</horizontal-alignment>
+    <vertical-alignment>center</vertical-alignment>
+</flow-layout>
+
+</components>
+</owo-ui>

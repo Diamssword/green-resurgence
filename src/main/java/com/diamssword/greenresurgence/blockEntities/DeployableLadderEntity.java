@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.blockEntities;
 
+import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.MBlocks;
 import com.diamssword.greenresurgence.blocks.DeployableLadderBlock;
 import net.minecraft.block.BlockState;
@@ -16,7 +17,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
 public class DeployableLadderEntity extends BlockEntity {
-	public static final long DEPLOYABLE_EXPIRE = 30000; //604_800_000;
+	public static final long DEPLOYABLE_EXPIRE = GreenResurgence.CONFIG.serverOptions.cooldowns.deployableExpireInSec() * 1000L;
 	private BlockState originalState;
 	private long placedAt = 0;
 	private boolean shouldRemove = false;

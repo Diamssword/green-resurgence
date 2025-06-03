@@ -20,9 +20,9 @@
                         <children>
                             <flow-layout direction="vertical">
                                 <children>
-                                    <inventory name="disabled"  id="armor" width="1" height="4"/>
-                                    <inventory name="disabled"  id="offhand" width="1" height="1"/>
-                                    <inventory name="disabled"  id="bags" width="1" height="3"/>
+                                    <inventory name="disabled" id="armor" width="1" height="4"/>
+                                    <inventory name="disabled" id="offhand" width="1" height="1"/>
+                                    <inventory name="disabled" id="bags" width="1" height="3"/>
                                 </children>
                                 <surface>
                                     <gpanel/>
@@ -40,12 +40,14 @@
 
                                     <flow-layout direction="horizontal">
                                         <children>
-                                            <inventory id="satchelLeft" name="disabled" width="1" height="3" texture="orange.png">
+                                            <inventory id="satchelLeft" name="disabled" width="1" height="3"
+                                                       texture="orange.png">
                                             </inventory>
                                             <inventory id="player" name="disabled" width="3" height="3">
 
                                             </inventory>
-                                            <inventory id="satchelRight" name="disabled" width="1" height="3" texture="orange.png"/>
+                                            <inventory id="satchelRight" name="disabled" width="1" height="3"
+                                                       texture="orange.png"/>
                                         </children>
                                         <gap>5</gap>
                                         <margins><bottom>5</bottom></margins>
@@ -69,7 +71,7 @@
                         <!---->
 
                     </flow-layout>
-                <subscreen id="subcontainer" source="crafter" >
+                <subscreen id="subcontainer" source="survival/player_craft">
                     <sizing><vertical method="fill">100</vertical><horizontal method="fill">30</horizontal></sizing>
                 </subscreen>
             </children>

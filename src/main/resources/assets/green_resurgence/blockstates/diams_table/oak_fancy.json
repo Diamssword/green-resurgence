@@ -1,0 +1,263 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_plate"
+      }
+    },
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_feet_r",
+		"y": 0
+      },
+      "when": {
+		"AND":[
+			{"north": "false"},
+			{"west": "false"}
+		]
+      }
+    },
+    {
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_feet_l",
+		"y": 0
+      },
+      "when": {
+		"AND":[
+			{"north": "false"},
+			{"east": "false"}
+		]
+      }
+    },
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_feet_r",
+		"y": 180
+      },
+      "when": {
+		"AND":[
+			{"south": "false"},
+			{"east": "false"}
+		]
+      }
+    },
+    {
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_feet_l",
+		"y": 180
+      },
+      "when": {
+		"AND":[
+			{"south": "false"},
+			{"west": "false"}
+		]
+      }
+    },
+	
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_decor",
+		"y": 90
+      },
+      "when": {
+			"east": "false"
+      }
+    },
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_decor",
+		"y": 270
+      },
+      "when": {
+			"west": "false"
+      }
+    },
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_decor",
+		"y": 0
+      },
+      "when": {
+			"north": "false"
+      }
+    },
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_decor",
+		"y": 180
+      },
+      "when": {
+			"south": "false"
+      }
+    },
+	
+	
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_decor_l"
+      },
+      "when": {
+		"AND":[
+			{"north": "false"},
+			{"east":"true"}
+		]
+      }
+    },
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_decor_r"
+      },
+      "when": {
+		"AND":[
+			{"north": "false"},
+			{"west":"true"}
+		]
+      }
+    },
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_decor_l",
+		"y":180
+      },
+      "when": {
+		"AND":[
+			{"south": "false"},
+			{"west":"true"}
+		]
+      }
+    },
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_decor_r",
+		"y":180
+      },
+      "when": {
+		"AND":[
+			{"south": "false"},
+			{"east":"true"}
+		]
+      }
+    },
+	
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_decor_l",
+		"y":90
+      },
+      "when": {
+		"AND":[
+			{"east": "false"},
+			{"south":"true"}
+		]
+      }
+    },
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_decor_r",
+		"y":90
+      },
+      "when": {
+		"AND":[
+			{"east": "false"},
+			{"north":"true"}
+		]
+      }
+    },
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_decor_l",
+		"y":270
+      },
+      "when": {
+		"AND":[
+			{"west": "false"},
+			{"north":"true"}
+		]
+      }
+    },
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_decor_r",
+		"y":270
+      },
+      "when": {
+		"AND":[
+			{"west": "false"},
+			{"south":"true"}
+		]
+      }
+    },
+	
+	
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_feet_outer_r",
+		"y": 0
+      },
+      "when": {
+		  "AND":[
+			{"north_west":"false"},
+			{"north":"true"},
+			{"west":"true"}
+		  ]
+		 }
+    },
+	
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_feet_outer_r",
+		"y": 0
+      },
+      "when": {
+		  "AND":[
+			{"north_east":"false"},
+			{"north":"true"},
+			{"east":"true"}
+		  ]
+		 }
+    },
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_feet_outer_l",
+		"y": 0
+      },
+      "when": {
+		  "AND":[
+			{"north_east":"false"},
+			{"north":"true"},
+			{"east":"true"}
+		  ]
+		 }
+    },
+	
+	
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_feet_outer_l",
+		"y": 180
+      },
+      "when": {
+		  "AND":[
+			{"south_west":"false"},
+			{"south":"true"},
+			{"west":"true"}
+		  ]
+		 }
+    },
+	
+	
+	{
+      "apply": {
+        "model": "green_resurgence:block/diams/table/oak_fancy/table_fancy_oak_feet_outer_r",
+		"y": 180
+      },
+      "when": {
+		  "AND":[
+			{"south_east":"false"},
+			{"south":"true"},
+			{"east":"true"}
+		  ]
+		 }
+    }
+  ]
+}

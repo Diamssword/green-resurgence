@@ -47,15 +47,17 @@ public class ShelfBlock extends ModBlockEntity<LootableShelfEntity> implements W
 			VoxelShapes.union(SHAPE, Block.createCuboidShape(15, 0, 0, 16, 16, 16)),
 			VoxelShapes.union(SHAPE, Block.createCuboidShape(0, 0, 0, 1, 16, 16)),
 	};
-	private final boolean bottomLogic;
 	private final boolean fullHitbox;
 
-	public ShelfBlock(Settings settings, boolean bottomLogic, boolean fullHitBox) {
+	public ShelfBlock(Settings settings, boolean fullHitBox) {
 		super(settings);
-		this.bottomLogic = bottomLogic;
 		this.fullHitbox = fullHitBox;
 		this.getDefaultState().with(FACING, Direction.NORTH).with(WATERLOGGED, false);
 		this.setTickerFactory((w, p) -> LootableShelfEntity::tick);
+	}
+
+	public boolean hasBottomLogic() {
+		return false;
 	}
 
 	@Override
@@ -94,7 +96,7 @@ public class ShelfBlock extends ModBlockEntity<LootableShelfEntity> implements W
 		var bst = ctx.getWorld().getBlockState(ctx.getBlockPos().down());
 
 		var st = this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER).with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
-		if (bottomLogic) {
+		if (hasBottomLogic()) {
 			var bot = bst.isSideSolid(ctx.getWorld(), ctx.getBlockPos().down(), Direction.UP, SideShapeType.FULL) && bst.getBlock() != this;
 			st = st.with(BOTTOM, bot);
 		}
@@ -103,7 +105,7 @@ public class ShelfBlock extends ModBlockEntity<LootableShelfEntity> implements W
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		if (bottomLogic)
+		if (hasBottomLogic())
 			builder.add(FACING, BOTTOM, WATERLOGGED);
 		else
 			builder.add(FACING, WATERLOGGED);
@@ -114,7 +116,7 @@ public class ShelfBlock extends ModBlockEntity<LootableShelfEntity> implements W
 		if (state.get(WATERLOGGED)) {
 			world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
-		if (bottomLogic && direction == Direction.DOWN) {
+		if (hasBottomLogic() && direction == Direction.DOWN) {
 			var bot = neighborState.isSideSolid(world, pos.down(), Direction.UP, SideShapeType.FULL) && neighborState.getBlock() != this;
 			return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos).with(BOTTOM, bot);
 		}

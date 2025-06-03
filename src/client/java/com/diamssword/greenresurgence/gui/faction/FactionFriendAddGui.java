@@ -94,22 +94,21 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 	}
 
 	private void addPlayers(String filter, FlowLayout parent) {
-		var pls = client.world.getPlayers().stream().filter(v -> v != client.player);
+		var pls = client.player.networkHandler.getListedPlayerListEntries().stream().filter(v -> !v.getProfile().getId().equals(client.player.getUuid()));
 		if (!filter.isEmpty() && !filter.isBlank())
-			pls = pls.filter(v -> v.getEntityName().toLowerCase().contains(filter));
-
+			pls = pls.filter(v -> v.getProfile().getName().toLowerCase().contains(filter));
 		for (var n : pls.toList()) {
 			var l = new ClickableLayoutComponent(Sizing.fill(100), Sizing.fixed(20), FlowLayout.Algorithm.HORIZONTAL);
 			AtomicReference<Identifier> texture = new AtomicReference<>(MISSING_HEAD);
-			l.onPress(v -> updateSelectedMenu(new FactionMember(n.getUuid(), n.getEntityName(), false), texture.get()));
+			l.onPress(v -> updateSelectedMenu(new FactionMember(n.getProfile().getId(), n.getProfile().getName(), false), texture.get()));
 			var icon = Components.texture(texture.get(), 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(16));
 			l.child(icon);
 			l.gap(4).padding(Insets.horizontal(2));
-			l.child(Components.label(Text.literal(n.getEntityName())));
+			l.child(Components.label(Text.literal(n.getProfile().getName())));
 			l.surface(Surface.PANEL);
 			l.surface2(Surface.DARK_PANEL);
 			l.alignment(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
-			SkinsLoader.loadHead(n.getUuid(), v -> {
+			SkinsLoader.loadHead(n.getProfile().getId(), v -> {
 				texture.set(v);
 				l.removeChild(icon);
 				l.child(0, Components.texture(texture.get(), 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(16)));

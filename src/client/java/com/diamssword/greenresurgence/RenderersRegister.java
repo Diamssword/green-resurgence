@@ -4,10 +4,7 @@ import com.diamssword.greenresurgence.genericBlocks.GenericBlockSet;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.items.*;
 import com.diamssword.greenresurgence.items.weapons.GeckoActivated;
-import com.diamssword.greenresurgence.render.blockEntityRenderer.ImageBlockEntityRenderer;
-import com.diamssword.greenresurgence.render.blockEntityRenderer.ItemBlockEntityRenderer;
-import com.diamssword.greenresurgence.render.blockEntityRenderer.LootedBlockEntityRenderer;
-import com.diamssword.greenresurgence.render.blockEntityRenderer.ShelfBlockEntityRenderer;
+import com.diamssword.greenresurgence.render.blockEntityRenderer.*;
 import com.diamssword.greenresurgence.render.cosmetics.ModularArmorLayerRenderer;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
 import com.diamssword.greenresurgence.structure.MultiblockInstance;
@@ -61,5 +58,7 @@ public class RenderersRegister {
 		BlockEntityRendererFactories.register(MBlocks.IMAGE_BLOCK.getEntityType(), ImageBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(MBlocks.LOOT_ITEM_BLOCK.getEntityType(), ItemBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(MBlocks.SHELF_BLOCK.getEntityType(), ShelfBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(MBlocks.ARMOR_TINKERER.getEntityType(), ArmorTinkererBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(MBlocks.CRUMBELING_BLOCK.getEntityType(), CrumbelingBlockEntityRenderer::new);
 	}
 }

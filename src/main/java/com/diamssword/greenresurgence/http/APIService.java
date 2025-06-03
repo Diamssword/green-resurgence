@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class APIService {
-	public static final String url = GreenResurgence.CONFIG.SkinServerURL();
+	public static final String url = GreenResurgence.CONFIG.serverOptions.SkinServerURL();
 	private static String token;
 
 	/**
@@ -27,7 +27,7 @@ public class APIService {
 	 */
 	public static CompletableFuture<Boolean> login() {
 		var ob = new JsonObject();
-		ob.addProperty("key", GreenResurgence.CONFIG.ServerSideApiKey());
+		ob.addProperty("key", GreenResurgence.CONFIG.serverOptions.ServerSideApiKey());
 		return postRequest(url + "/api/auth", "", ob).thenApply(rep -> {
 			System.out.println(rep.statusCode());
 			if (rep.statusCode() == 200) {

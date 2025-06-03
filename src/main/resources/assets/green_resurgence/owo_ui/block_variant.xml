@@ -1,19 +1,45 @@
 <owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
 <components>
-<flow-layout direction="horizontal" >
+<flow-layout direction="horizontal">
     <children>
-        <flow-layout direction="vertical" >
+        <flow-layout direction="vertical">
             <children>
-                <buttoninventory id="main" collection="minecraft:empty">
+                <flow-layout direction="vertical">
+                    <children>
+                      <text-box id="search">
+                          <show-background>false</show-background>
+                          <sizing><horizontal method="fill">100</horizontal></sizing>
+                      </text-box>
+                    </children>
+                    <sizing><horizontal method="fixed">150</horizontal></sizing>
+                      <surface>
+                        <flat>#ffd6a56f</flat>
+                        <outline>#FFb38552</outline>
+                    </surface>
+                </flow-layout>
 
-                    <sizing><vertical method="fill">50</vertical><horizontal method="fill">100</horizontal></sizing>
-                </buttoninventory>
+                <scroll direction="vertical">
+                    <buttoninventory id="main" collection="minecraft:empty">
+                        <sizing><vertical method="content">1</vertical></sizing>
+                    </buttoninventory>
+                    <sizing>
+                        <vertical method="fill">50</vertical>
+                        <horizontal method="fixed">150</horizontal>
+                    </sizing>
+                    <surface>
+                        <flat>#ffd6a56f</flat>
+                        <outline>#FFb38552</outline>
+                    </surface>
+                    <padding><all>1</all></padding>
+                    <margins><bottom>4</bottom></margins>
+                </scroll>
                 <inventory id="player" name="disabled" width="9" height="3"/>
                 <inventory id="hotbar" width="9" height="1">
 
                 </inventory>
             </children>
+            <horizontal-alignment>center</horizontal-alignment>
             <padding><all>5</all></padding>
             <sizing><vertical method="content">1</vertical><horizontal method="fixed">170</horizontal></sizing>
             <surface>

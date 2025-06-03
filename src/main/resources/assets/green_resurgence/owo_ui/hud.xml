@@ -1,18 +1,21 @@
 <owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
     <components>
-        <flow-layout direction="vertical" >
+        <flow-layout direction="vertical">
             <children>
                 <flow-layout direction="horizontal">
                     <children>
                         <!-- Gauche -->
-                        <flow-layout direction="vertical" >
+                        <flow-layout direction="vertical">
                             <children>
                                 <flow-layout direction="vertical">
                                     <children>
-                                        <hudicon id="infectionIcon" texture="green_resurgence:hud/icons.png" texture-width="32" texture-height="32" region-height="16" region-width="16" u="16">
-                                            <sizing><vertical method="fixed">12</vertical><horizontal method="fixed">12</horizontal></sizing>
-                                            <blend >true</blend>
+                                        <hudicon id="infectionIcon" texture="green_resurgence:hud/icons.png"
+                                                 texture-width="32" texture-height="32" region-height="16"
+                                                 region-width="16" u="16">
+                                            <sizing><vertical method="fixed">12</vertical><horizontal
+                                                    method="fixed">12</horizontal></sizing>
+                                            <blend>true</blend>
                                         </hudicon>
                                         <label id="infectionText">
                                             <color>#54ceed</color>
@@ -26,9 +29,12 @@
                                 </flow-layout>
                                 <flow-layout direction="vertical">
                                     <children>
-                                        <hudicon id="armorIcon" texture="green_resurgence:hud/icons.png" texture-width="32" texture-height="32" region-height="9" region-width="9">
-                                            <sizing><vertical method="fixed">12</vertical><horizontal method="fixed">12</horizontal></sizing>
-                                            <blend >true</blend>
+                                        <hudicon id="armorIcon" texture="green_resurgence:hud/icons.png"
+                                                 texture-width="32" texture-height="32" region-height="9"
+                                                 region-width="9">
+                                            <sizing><vertical method="fixed">12</vertical><horizontal
+                                                    method="fixed">12</horizontal></sizing>
+                                            <blend>true</blend>
                                         </hudicon>
                                         <label id="armorText">
                                             <color>#54ceed</color>
@@ -48,7 +54,7 @@
                             <sizing><vertical method="fill">100</vertical><horizontal method="fill">20</horizontal></sizing>
                         </flow-layout>
                         <!-- Centre -->
-                        <flow-layout direction="vertical" >
+                        <flow-layout direction="vertical">
                             <children>
                             </children>
 
@@ -56,7 +62,7 @@
                             <sizing><vertical method="fill">100</vertical><horizontal method="fill">60</horizontal></sizing>
                         </flow-layout>
                         <!-- Droite -->
-                        <flow-layout direction="vertical" >
+                        <flow-layout direction="vertical">
                             <children>
                             </children>
                             <padding><top>5</top><right>2</right></padding>
@@ -75,25 +81,33 @@
                             <children>
                                 <flow-layout direction="horizontal">
                                     <children>
-                                        <hudicon id="airIcon" texture="green_resurgence:hud/air.png" texture-width="128" texture-height="64" region-height="24" region-width="24" v="40">
-                                            <sizing><vertical method="fixed">12</vertical><horizontal method="fixed">12</horizontal></sizing>
-                                            <blend >true</blend>
+                                        <hudicon id="airIcon" texture="green_resurgence:hud/air.png" texture-width="128"
+                                                 texture-height="64" region-height="24" region-width="24" v="40">
+                                            <sizing><vertical method="fixed">12</vertical><horizontal
+                                                    method="fixed">12</horizontal></sizing>
+                                            <blend>true</blend>
                                         </hudicon>
-                                        <hudbar id="air" texture="green_resurgence:hud/air.png" reversed="true" texture-width="128" texture-height="64" region-width="128" region-height="20" >
+                                        <hudbar id="air" texture="green_resurgence:hud/air.png" reversed="true"
+                                                texture-width="128" texture-height="64" region-width="128"
+                                                region-height="20">
                                             <sizing><vertical method="fixed">10</vertical></sizing>
-                                            <blend >true</blend>
+                                            <blend>true</blend>
                                         </hudbar>
                                     </children>
                                 </flow-layout>
                                 <flow-layout direction="horizontal">
                                     <children>
-                                        <hudicon texture="green_resurgence:hud/stamina.png" texture-width="128" texture-height="64" region-height="24" region-width="24" v="40">
-                                            <sizing><vertical method="fixed">12</vertical><horizontal method="fixed">12</horizontal></sizing>
-                                            <blend >true</blend>
+                                        <hudicon texture="green_resurgence:hud/stamina.png" texture-width="128"
+                                                 texture-height="64" region-height="24" region-width="24" v="40">
+                                            <sizing><vertical method="fixed">12</vertical><horizontal
+                                                    method="fixed">12</horizontal></sizing>
+                                            <blend>true</blend>
                                         </hudicon>
-                                        <hudbar id="stamina" texture="green_resurgence:hud/stamina.png" reversed="true" texture-width="128" texture-height="64" region-width="128" region-height="20" >
+                                        <hudbar id="stamina" texture="green_resurgence:hud/stamina.png" reversed="true"
+                                                texture-width="128" texture-height="64" region-width="128"
+                                                region-height="20">
                                             <sizing><vertical method="fixed">10</vertical></sizing>
-                                            <blend >true</blend>
+                                            <blend>true</blend>
                                         </hudbar>
                                     </children>
                                 </flow-layout>
@@ -110,24 +124,25 @@
                                 <heldtooltip id="heldtooltip">
                                     <sizing><horizontal method="fill">100</horizontal></sizing>
                                 </heldtooltip>
-                                <healthbar  id="health" texture="green_resurgence:hud/hearts.png" >
+                                <healthbar id="health" texture="green_resurgence:hud/hearts.png">
                                     <sizing><vertical method="fixed">9</vertical></sizing>
-                                    <blend >true</blend>
+                                    <blend>true</blend>
                                     <count>10</count>
                                 </healthbar>
                                 <flow-layout direction="horizontal">
                                     <children>
                                         <offhandslot id="offhandleft" texture="green_resurgence:hud/hotbar.png">
-                                            <blend >true</blend>
+                                            <blend>true</blend>
                                         </offhandslot>
                                         <hotbar id="hotbar" texture="green_resurgence:hud/hotbar.png">
-                                            <blend >true</blend>
+                                            <blend>true</blend>
                                             <size>10</size>
                                         </hotbar>
                                         <offhandslot id="offhandright" texture="green_resurgence:hud/hotbar.png">
-                                            <blend >true</blend>
+                                            <blend>true</blend>
                                         </offhandslot>
                                     </children>
+                                    <allow-overflow>true</allow-overflow>
                                     <horizontal-alignment>center</horizontal-alignment>
                                     <vertical-alignment>center</vertical-alignment>
                                     <gap>6</gap>
@@ -135,6 +150,8 @@
                                 </flow-layout>
 
                             </children>
+
+                            <allow-overflow>true</allow-overflow>
                             <sizing><vertical method="fill">100</vertical><horizontal method="fill">60</horizontal></sizing>
                             <horizontal-alignment>center</horizontal-alignment>
                             <vertical-alignment>bottom</vertical-alignment>
@@ -144,13 +161,15 @@
                         <!-- Bas Droite -->
                         <flow-layout direction="vertical">
                             <children>
-                                <hudbar id="mountHealth" texture="green_resurgence:hud/mount.png" reversed="false" texture-width="82" texture-height="18" region-width="82" region-height="9" >
+                                <hudbar id="mountHealth" texture="green_resurgence:hud/mount.png" reversed="false"
+                                        texture-width="82" texture-height="18" region-width="82" region-height="9">
                                     <sizing><horizontal method="fixed">82</horizontal></sizing>
-                                    <blend >true</blend>
+                                    <blend>true</blend>
                                 </hudbar>
-                                <hudbar id="mountJump" texture="green_resurgence:hud/jump.png" reversed="false" texture-width="82" texture-height="18" region-width="82" region-height="7" >
+                                <hudbar id="mountJump" texture="green_resurgence:hud/jump.png" reversed="false"
+                                        texture-width="82" texture-height="18" region-width="82" region-height="7">
                                     <sizing><horizontal method="fixed">82</horizontal></sizing>
-                                    <blend >true</blend>
+                                    <blend>true</blend>
                                 </hudbar>
                             </children>
                             <padding><bottom>5</bottom><right>2</right></padding>

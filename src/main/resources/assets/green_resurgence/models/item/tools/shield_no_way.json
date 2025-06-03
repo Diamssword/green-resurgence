@@ -5,6 +5,14 @@
 		"0": "green_resurgence:block/diams/sign_no_way",
 		"particle": "green_resurgence:block/diams/sign_no_way"
 	},
+		"overrides": [
+        {
+            "predicate": {
+                "blocking": 1
+            },
+            "model": "green_resurgence:item/tools/shield_no_way_blocking"
+        }
+    ],
 	"elements": [
 		{
 			"name": "hexadecagon",

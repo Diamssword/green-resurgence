@@ -6,6 +6,7 @@ import com.diamssword.greenresurgence.datagen.LangGenerator;
 import com.diamssword.greenresurgence.datagen.ModelHelper;
 import com.diamssword.greenresurgence.items.BlockVariantItem;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider.FabricTagBuilder;
 import net.minecraft.block.*;
@@ -19,6 +20,7 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 
@@ -106,7 +108,13 @@ public class GenericBlockSet {
 						case BED ->
 								genericRegisterHelper(name, v, new BedGeneric(processSettings(v, AbstractBlock.Settings.create().mapColor(MapColor.WHITE_GRAY).sounds(BlockSoundGroup.WOOD).strength(0.2f).nonOpaque().burnable().pistonBehavior(PistonBehavior.DESTROY))));
 						case TRAPDOOR ->
-								genericRegisterHelper(name, v, new TrapdoorBlock(processSettings(v, AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never)), BlockSetType.OAK));
+								genericRegisterHelper(name, v, new TrapdoorBlock(processSettings(v, AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never)), BlockSetType.OAK) {
+									@Override
+									public boolean isSideInvisible(BlockState state, BlockState stateFrom, Direction direction) {
+										return super.isSideInvisible(state, stateFrom, direction);
+									}
+								});
+						case TABLE -> genericRegisterHelper(name, v, new GenericTable(settings, v));
 					}
 				}
 			});
@@ -159,6 +167,14 @@ public class GenericBlockSet {
 		return res;
 	}
 
+	public void blockDropGenerator(FabricBlockLootTableProvider generator) {
+		for (GeneratedBlockInstance b : generatedBlocks) {
+			if (!b.props.noLoot) {
+				generator.addDrop(b.block);
+			}
+		}
+	}
+
 	public void tagGenerator(Function<TagKey<Block>, FabricTagBuilder> factory) {
 		for (GeneratedBlockInstance b : generatedBlocks) {
 			if (b.props.type == BlockType.FENCE)
@@ -175,6 +191,8 @@ public class GenericBlockSet {
 				factory.apply(BlockTags.STAIRS).add(b.block);
 			if (b.props.subtype == SubBlock.SLAB)
 				factory.apply(BlockTags.SLABS).add(b.block);
+			if (b.props.type == BlockType.TRAPDOOR)
+				factory.apply(BlockTags.TRAPDOORS).add(b.block);
 			for (TagKey<Block> tag : b.props.tags) {
 				factory.apply(tag).add(b.block);
 			}
@@ -185,11 +203,11 @@ public class GenericBlockSet {
 
 	public void langGenerator(FabricLanguageProvider.TranslationBuilder builder) {
 		for (GeneratedBlockInstance b : generatedBlocks) {
-			builder.add(b.block, LangGenerator.capitalizeString(b.name.replaceAll("_", " ")));
+			builder.add(b.block, LangGenerator.autoLocalizeString(b.name));
 		}
 		itemGroups.forEach((k, v) -> {
 			var f = generatedBlocks.stream().filter(v1 -> k.equals(v1.props.itemGroup)).findFirst();
-			f.ifPresent(generatedBlockInstance -> builder.add("item." + GreenResurgence.ID + "." + this.subdomain + "_" + k, "[" + LangGenerator.capitalizeString(generatedBlockInstance.name.replaceAll("_", " ")) + "]"));
+			f.ifPresent(generatedBlockInstance -> builder.add("item." + GreenResurgence.ID + "." + this.subdomain + "_" + k, "[" + LangGenerator.autoLocalizeString(generatedBlockInstance.name) + "]"));
 		});
 	}
 
@@ -204,12 +222,6 @@ public class GenericBlockSet {
 					new Model(Optional.of(new Identifier("block/fence_inventory")), Optional.empty(), TextureKey.TEXTURE).upload(ModelIds.getItemModelId(b.item), TextureMap.texture(new Identifier(GreenResurgence.ID, "block/" + this.subdomain + "/" + b.name.replace("_fence", b.type.variants > 0 ? "/" + b.name.replace("_fence", "") + "0" : ""))), generator.writer);
 				} else if (b.type.type == BlockType.DOOR)
 					generator.register(b.item, new Model(Optional.of(helper.getBlockModelId(b.name).withSuffixedPath("_left")), Optional.empty()));
-//                else if (b.type.type == BlockType.CONNECTED_V)
-					//       generator.register(b.item, new Model(Optional.of(helper.getBlockModelId(b.name).withSuffixedPath("_bottom")), Optional.empty()));
-					//  else if(b.type.subtype== SubBlock.CARPET)
-					//{
-					//  generator.register(b.item, new Model(Optional.of(helper.transformVariantModelId(helper.getBlockModelId(b.name.replace("_carpet","")),b.type.variants)), Optional.empty()));
-					//}
 				else {
 					generator.register(b.item, new Model(Optional.of(helper.transformVariantModelId(helper.getBlockModelId(b.name), b.type.variants)), Optional.empty()));
 				}
@@ -350,6 +362,7 @@ public class GenericBlockSet {
 			prop.genModel = true;
 			prop.genBlockState = true;
 			prop.transparency = Transparency.UNDEFINED;
+			prop.noLoot = false;
 			blocks.put(getSuffix(type, sub), prop);
 			return this;
 		}
@@ -434,6 +447,19 @@ public class GenericBlockSet {
 			return this;
 		}
 
+		public GenericBlockRegisterInstance noLoot() {
+			blocks.values().forEach(v -> v.noLoot = true);
+			return this;
+		}
+
+		public GenericBlockRegisterInstance noLoot(SubBlock sub) {
+			blocks.values().forEach(v -> {
+				if (v.subtype == sub)
+					v.noLoot = true;
+			});
+			return this;
+		}
+
 		public GenericBlockRegisterInstance seat(float level) {
 			blocks.values().forEach(v -> {
 				v.seatLevel = level;
@@ -471,6 +497,7 @@ public class GenericBlockSet {
 
 	public static class GenericBlockProp {
 		protected boolean solid;
+		protected boolean noLoot;
 		protected BlockSoundGroup sound;
 		protected SubBlock subtype;
 		protected Transparency transparency;
@@ -488,7 +515,6 @@ public class GenericBlockSet {
 		protected String itemGroup;
 		protected int variants;
 		protected List<TagKey<Block>> tags = new ArrayList<>();
-
 	}
 
 	private static String getSuffix(BlockType type, SubBlock sub) {
@@ -527,6 +553,7 @@ public class GenericBlockSet {
 		FULL(Block.createCuboidShape(0, 0, 0, 16, 16, 16)),
 		SLAB(Block.createCuboidShape(0, 0, 0, 16, 8, 16)),
 		FIXED_SLAB(Block.createCuboidShape(0, 0, 0, 16, 8, 16), false),
+		FIXED_SLAB_TOP(Block.createCuboidShape(0, 8, 0, 16, 16, 16), false),
 		CARPET(Block.createCuboidShape(0, 0, 0, 16, 1, 16)),
 		LARGE_CARPET(Block.createCuboidShape(0, 0, -16, 32, 1, 32)),
 		CARPET_FIXED(Block.createCuboidShape(0, 0, 0, 16, 1, 16), false),
@@ -595,6 +622,7 @@ public class GenericBlockSet {
 		OMNI_BLOCK,
 		LANTERN,
 		BED,
-		TRAPDOOR
+		TRAPDOOR,
+		TABLE
 	}
 }

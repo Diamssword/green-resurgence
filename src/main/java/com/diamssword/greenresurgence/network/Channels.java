@@ -48,5 +48,6 @@ public class Channels {
 		EntitiesPackets.init();
 		InventoryPackets.init();
 		GuildPackets.init();
+		ModularArmorPackets.init();
 	}
 }

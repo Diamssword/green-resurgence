@@ -2,11 +2,13 @@ package com.diamssword.greenresurgence;
 
 import com.diamssword.greenresurgence.blockEntities.ModBlockEntity;
 import com.diamssword.greenresurgence.blocks.*;
+import com.diamssword.greenresurgence.datagen.BlockLootGenerator;
 import com.diamssword.greenresurgence.datagen.ModelGenerator;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -63,17 +65,23 @@ public class MBlocks implements BlockRegistryContainer {
 	public static final ItemBlock ITEM_BLOCK = new ItemBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque());
 	public static final LootableItemBlock LOOT_ITEM_BLOCK = new LootableItemBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque());
 	@DiamsGroup
-	public static final ShelfBlock SHELF_BLOCK = new ShelfBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque(), true, false);
+	public static final ShelfBlock SHELF_BLOCK = new ShelfBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque(), false) {
+		@Override
+		public boolean hasBottomLogic() {
+			return true;
+		}
+
+	};
 	@DiamsGroup
 	public static final ShelfBlock SIDEWAY_SHELF_BLOCK = new SideShelfBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque());
 	@DiamsGroup
 	public static final ShelfBlock WOOD_CRATE_SHELF_BLOCK = new SideShelfBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque());
 	@DiamsGroup
-	public static final ShelfBlock ICE_COOLER_SHELF_RIGHT = new ShelfBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque(), false, true);
+	public static final ShelfBlock ICE_COOLER_SHELF_RIGHT = new ShelfBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque(), true);
 	@DiamsGroup
-	public static final ShelfBlock ICE_COOLER_SHELF_LEFT = new ShelfBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque(), false, true);
+	public static final ShelfBlock ICE_COOLER_SHELF_LEFT = new ShelfBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque(), true);
 	@DiamsGroup
-	public static final ShelfBlock PLASTIC_TRASH_CAN_BROWN = new ShelfBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque(), false, true);
+	public static final ShelfBlock PLASTIC_TRASH_CAN_BROWN = new ShelfBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque(), true);
 	public static final ImageBlock IMAGE_BLOCK = new ImageBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque());
 
 	public static final Block SHADOW_BLOCk = new TintedGlassBlock(FabricBlockSettings.create().nonOpaque().strength(-1.0F, 3600000.0F).dropsNothing().allowsSpawning(Blocks::never)) {
@@ -105,6 +113,11 @@ public class MBlocks implements BlockRegistryContainer {
 	public static final NanoGeneratorBlock NANOTEK_GENERATOR_SERVER = new NanoGeneratorBlock(FabricBlockSettings.create().nonOpaque().resistance(100).sounds(BlockSoundGroup.METAL), NanoGeneratorBlock.HITBOX.side_revert);
 	@ModelGen
 	public static final NanoGeneratorBlock NANOTEK_GENERATOR_SMALL_ANTENNA = new NanoGeneratorBlock(FabricBlockSettings.create().nonOpaque().resistance(100).sounds(BlockSoundGroup.METAL), NanoGeneratorBlock.HITBOX.pole);
+	@ModelGen
+	@NoDrop
+	public static final ArmorTinkererBlock ARMOR_TINKERER = new ArmorTinkererBlock(AbstractBlock.Settings.create().nonOpaque().strength(1, 100).suffocates(Blocks::never));
+	@ModelGen
+	public static final CrumbelingBlock CRUMBELING_BLOCK = new CrumbelingBlock(AbstractBlock.Settings.create().nonOpaque().dropsNothing().strength(99999, 99999).suffocates(Blocks::never));
 
 	@Override
 	public void afterFieldProcessing() {
@@ -126,6 +139,10 @@ public class MBlocks implements BlockRegistryContainer {
 			ModelGenerator.blockItems.put(new Identifier(namespace, identifier), i);
 		}
 		Registry.register(Registries.ITEM, new Identifier(namespace, identifier), i);
+		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+			if (!field.isAnnotationPresent(NoDrop.class))
+				BlockLootGenerator.blocks.add(value);
+		}
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
@@ -136,6 +153,11 @@ public class MBlocks implements BlockRegistryContainer {
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.FIELD)
 	public @interface DiamsGroup {
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.FIELD)
+	public @interface NoDrop {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

@@ -2,7 +2,6 @@ package com.diamssword.greenresurgence.blockEntities;
 
 import com.diamssword.greenresurgence.blocks.ConnectorBlock;
 import com.diamssword.greenresurgence.systems.CableNetwork;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -10,6 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
@@ -32,20 +32,23 @@ public class ConnectorBlockEntity extends BlockEntity {
 
 	public void addConnection(BlockPos from) {
 		this.connections.add(from);
+		markUpdate();
+	}
+
+	private void markUpdate() {
 		this.markDirty();
-		this.world.updateListeners(this.pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_ALL);
+		if (this.world instanceof ServerWorld sw)
+			sw.getChunkManager().markForUpdate(pos);
 	}
 
 	public void clearConnection(BlockPos from) {
 		this.connections.remove(from);
-		this.markDirty();
-		this.world.updateListeners(this.pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_ALL);
+		markUpdate();
 	}
 
 	public void clearConnections() {
 		this.connections.clear();
-		this.markDirty();
-		this.world.updateListeners(this.pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_ALL);
+		markUpdate();
 	}
 
 	public void markRemoved() {
@@ -104,7 +107,7 @@ public class ConnectorBlockEntity extends BlockEntity {
 			if (world.isClient)
 				loadClientCables();
 			else
-				this.world.updateListeners(this.pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_ALL);
+				markUpdate();
 		}
 
 	}
@@ -144,8 +147,7 @@ public class ConnectorBlockEntity extends BlockEntity {
 			if (this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
 				this.baseDir = this.getCachedState().get(Properties.HORIZONTAL_FACING);
 			}
-			this.markDirty();
-			this.world.updateListeners(this.pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_ALL);
+			markUpdate();
 		}
 	}
 

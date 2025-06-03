@@ -1,7 +1,6 @@
 package com.diamssword.greenresurgence.blockEntities;
 
-import com.diamssword.greenresurgence.MBlockEntities;
-import com.diamssword.greenresurgence.blocks.ItemBlock;
+import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.Containers;
 import com.diamssword.greenresurgence.containers.GridContainer;
 import com.diamssword.greenresurgence.containers.IGridContainer;
@@ -33,136 +32,133 @@ import net.minecraft.world.WorldEvents;
 import org.jetbrains.annotations.Nullable;
 
 public class LootedBlockEntity extends BlockEntity {
-    public static final int MAX=5;
-    public int durability=MAX;
-    public long lastBreak=0;
-    public SimpleInventory inventory;
-    public BlockState block;
-    public BlockState emptyBlock;
+	public static final int MAX = 5;
+	public int durability = MAX;
+	public long lastBreak = 0;
+	public SimpleInventory inventory;
+	public BlockState block;
+	public BlockState emptyBlock;
 
-    public LootedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        super(type, pos, state);
-    }
+	public LootedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+		super(type, pos, state);
+	}
 
-    public BlockState getRealBlock()
-    {
-        return this.block !=null?this.block: Blocks.AIR.getDefaultState();
-    }
-    public BlockState getDisplayBlock()
-    {
-        if(emptyBlock==null && this.block !=null)
-            emptyBlock= Lootables.getEmptyBlock(block.getBlock()).getDefaultState();
-        if(durability<=0)
-            return emptyBlock;
-        else
-            return getRealBlock();
+	public BlockState getRealBlock() {
+		return this.block != null ? this.block : Blocks.AIR.getDefaultState();
+	}
 
-    }
-    public void setRealBlock(BlockState state)
-    {
-        this.block=state;
-        this.emptyBlock= Lootables.getEmptyBlock(block.getBlock()).getDefaultState();
-        this.markDirty();
-        this.world.updateListeners(this.pos,this.getCachedState(),this.getCachedState(), Block.NOTIFY_ALL);
-    }
+	public BlockState getDisplayBlock() {
+		if (emptyBlock == null && this.block != null)
+			emptyBlock = Lootables.getEmptyBlock(block.getBlock()).getDefaultState();
+		if (durability <= 0)
+			return emptyBlock;
+		else
+			return getRealBlock();
 
-    public void restoreDurability()
-    {
-            this.world.setBlockState(pos,this.getRealBlock());
-    }
-    public void attackBlock(ServerPlayerEntity player)
-    {
+	}
 
-        if(this.durability>0)
-        {
-            LootableLogic.giveLoot(player,pos,getRealBlock());
-            getWorld().playSound(null,this.pos, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS,0.5f,1f+(float)Math.random());
-            getWorld().syncWorldEvent(WorldEvents.BLOCK_BROKEN, pos, Block.getRawIdFromState(getRealBlock()));
-            this.durability--;
-            if(this.durability==0)
-                this.inventory=null;
-            this.lastBreak=System.currentTimeMillis();
-            this.markDirty();
-            this.world.updateListeners(this.pos,this.getCachedState(),this.getCachedState(), Block.NOTIFY_ALL);
-        }
-    }
-    public void openInventory(ServerPlayerEntity player)
-    {
-        if(inventory ==null)
-            createInventory(player);
-        Containers.createHandler(player,pos,(sync,inv,p1)-> new Container( sync,player,new GridContainer("loot",inventory,3,3)));
+	public void setRealBlock(BlockState state) {
+		this.block = state;
+		this.emptyBlock = Lootables.getEmptyBlock(block.getBlock()).getDefaultState();
+		this.markDirty();
+		this.world.updateListeners(this.pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_ALL);
+	}
 
-    }
-    private void createInventory(ServerPlayerEntity player) {
-        this.lastBreak=System.currentTimeMillis();
-        inventory=new SimpleInventory(9);
-        inventory.addListener(ls-> this.markDirty());
-        LootableLogic.createLootInventory(player,pos,getRealBlock(),inventory);
-        this.markDirty();
-    }
+	public void restoreDurability() {
+		this.world.setBlockState(pos, this.getRealBlock());
+	}
 
-    @Override
-    public void writeNbt(NbtCompound nbt) {
-        // Save the current value of the number to the nbt
-        nbt.putInt("durability", durability);
-        nbt.putLong("lastBreak", lastBreak);
-        if(block ==null)
-            block=Blocks.AIR.getDefaultState();
-        nbt.put("block",NbtHelper.fromBlockState(block));
-        if(inventory !=null)
-        {
-            nbt.put("inventory",inventory.toNbtList());
-        }
-        super.writeNbt(nbt);
-    }
-    @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-        durability = nbt.getInt("durability");
-        lastBreak = nbt.getLong("lastBreak");
-        block=NbtHelper.toBlockState(Registries.BLOCK.getReadOnlyWrapper(),nbt.getCompound("block"));
-        emptyBlock= Lootables.getEmptyBlock(block.getBlock()).getDefaultState();
-        if(nbt.contains("inventory"))
-        {
-            inventory=new SimpleInventory(9);
-            inventory.readNbtList(nbt.getList("inventory", NbtElement.COMPOUND_TYPE));
-            inventory.addListener(ls-> this.markDirty());
-        }
-    }
-    @Nullable
-    @Override
-    public Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this);
-    }
+	public void attackBlock(ServerPlayerEntity player) {
 
-    @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
-    }
+		if (this.durability > 0) {
+			LootableLogic.giveLoot(player, pos, getRealBlock());
+			getWorld().playSound(null, this.pos, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 0.5f, 1f + (float) Math.random());
+			getWorld().syncWorldEvent(WorldEvents.BLOCK_BROKEN, pos, Block.getRawIdFromState(getRealBlock()));
+			this.durability--;
+			if (this.durability == 0)
+				this.inventory = null;
+			this.lastBreak = System.currentTimeMillis();
+			this.markDirty();
+			this.world.updateListeners(this.pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_ALL);
+		}
+	}
 
-    public static <T extends BlockEntity> void tick(World world, BlockPos pos, BlockState blockState, LootedBlockEntity t) {
-        if(world.getTime()%100==0)
-        {
-           if(System.currentTimeMillis() >t.lastBreak+Lootables.refreshPhase )
-           {
-               t.restoreDurability();
-           }
+	public void openInventory(ServerPlayerEntity player) {
+		if (inventory == null)
+			createInventory(player);
+		Containers.createHandler(player, pos, (sync, inv, p1) -> new Container(sync, player, new GridContainer("loot", inventory, 3, 3)));
 
-        }
-    }
-    public static class Container extends MultiInvScreenHandler {
-        public Container(int syncId, PlayerInventory playerInventory) {
-            super(syncId, playerInventory);
-        }
+	}
 
-        public Container(int syncId, PlayerEntity player, IGridContainer... inventories) {
-            super(syncId, player, inventories);
-        }
+	private void createInventory(ServerPlayerEntity player) {
+		this.lastBreak = System.currentTimeMillis();
+		inventory = new SimpleInventory(9);
+		inventory.addListener(ls -> this.markDirty());
+		LootableLogic.createLootInventory(player, pos, getRealBlock(), inventory);
+		this.markDirty();
+	}
 
-        @Override
-        public ScreenHandlerType<Container> type() {
-            return Containers.LOOTABLE_INV;
-        }
-    }
+	@Override
+	public void writeNbt(NbtCompound nbt) {
+		// Save the current value of the number to the nbt
+		nbt.putInt("durability", durability);
+		nbt.putLong("lastBreak", lastBreak);
+		if (block == null)
+			block = Blocks.AIR.getDefaultState();
+		nbt.put("block", NbtHelper.fromBlockState(block));
+		if (inventory != null) {
+			nbt.put("inventory", inventory.toNbtList());
+		}
+		super.writeNbt(nbt);
+	}
+
+	@Override
+	public void readNbt(NbtCompound nbt) {
+		super.readNbt(nbt);
+		durability = nbt.getInt("durability");
+		lastBreak = nbt.getLong("lastBreak");
+		block = NbtHelper.toBlockState(Registries.BLOCK.getReadOnlyWrapper(), nbt.getCompound("block"));
+		emptyBlock = Lootables.getEmptyBlock(block.getBlock()).getDefaultState();
+		if (nbt.contains("inventory")) {
+			inventory = new SimpleInventory(9);
+			inventory.readNbtList(nbt.getList("inventory", NbtElement.COMPOUND_TYPE));
+			inventory.addListener(ls -> this.markDirty());
+		}
+	}
+
+	@Nullable
+	@Override
+	public Packet<ClientPlayPacketListener> toUpdatePacket() {
+		return BlockEntityUpdateS2CPacket.create(this);
+	}
+
+	@Override
+	public NbtCompound toInitialChunkDataNbt() {
+		return createNbt();
+	}
+
+	public static <T extends BlockEntity> void tick(World world, BlockPos pos, BlockState blockState, LootedBlockEntity t) {
+		if (world.getTime() % 100 == 0) {
+			if (System.currentTimeMillis() > t.lastBreak + GreenResurgence.CONFIG.serverOptions.cooldowns.respawnLootedBlockInSec() * 1000L) {
+				t.restoreDurability();
+			}
+
+		}
+	}
+
+	public static class Container extends MultiInvScreenHandler {
+		public Container(int syncId, PlayerInventory playerInventory) {
+			super(syncId, playerInventory);
+		}
+
+		public Container(int syncId, PlayerEntity player, IGridContainer... inventories) {
+			super(syncId, player, inventories);
+		}
+
+		@Override
+		public ScreenHandlerType<Container> type() {
+			return Containers.LOOTABLE_INV;
+		}
+	}
 
 }

@@ -59,7 +59,10 @@ public class FactionGuild {
 	}
 
 	public Map<FactionMember, String> getMembersAndRoles() {
-		return members;
+		var m = new HashMap<FactionMember, String>();
+		m.putAll(members);
+		m.put(owner, "Chef");
+		return m;
 	}
 
 	public Map<String, FactionPerm> getRoles() {
@@ -148,6 +151,7 @@ public class FactionGuild {
 		f.setPerm(Perms.PLACE, true);
 		f.setPerm(Perms.INVENTORY, true);
 		roles.put(startingRole, f);
+		rolesPriority.put(startingRole, 1);
 	}
 
 	protected FactionGuild(UUID id) {

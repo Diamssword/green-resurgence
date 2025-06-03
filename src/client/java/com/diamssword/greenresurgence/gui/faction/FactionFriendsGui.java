@@ -9,8 +9,8 @@ import com.diamssword.greenresurgence.systems.faction.perimeter.components.Facti
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
-import io.wispforest.owo.ui.component.DropdownComponent;
 import io.wispforest.owo.ui.component.TextBoxComponent;
+import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.*;
 import net.minecraft.text.Text;
@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 public class FactionFriendsGui extends BaseUIModelScreen<FlowLayout> {
 
@@ -83,16 +84,41 @@ public class FactionFriendsGui extends BaseUIModelScreen<FlowLayout> {
 		if (member.getName().length() > 15)
 			t.horizontalSizing(Sizing.fill(100));
 		menu.child(t);
-		menu.child(Components.button(Text.literal(members.get(member)), (v) -> {
-			DropdownComponent.openContextMenu(this, menu, FlowLayout::child, v.x(), v.y(), b -> {
-				for (var d : roles.keySet()) {
-					b.button(Text.literal(d), (__) -> {
-						Channels.MAIN.clientHandle().send(new GuildPackets.ChangeRole(member, d));
-						b.remove();
-					});
-				}
-			});
-		}));
+		menu.allowOverflow(true);
+		menu.child(cutLongText(members.get(member), 20, (v) -> roleMenu(menu, v, member)).tooltip(Text.literal("Role")));
+	}
+
+	public void roleMenu(FlowLayout menu, ButtonComponent bt, FactionMember member) {
+		var flow = Containers.verticalFlow(Sizing.fill(100), Sizing.content());
+		var scroll = Containers.verticalScroll(Sizing.fill(100), Sizing.fill(50), flow);
+		var txt = bt.getMessage();
+		flow.surface(Surface.DARK_PANEL).padding(Insets.of(2));
+		bt.setMessage(Text.literal("[Annuler]"));
+		bt.onPress((b) -> {
+			scroll.remove();
+			bt.setMessage(txt);
+			bt.onPress(v -> roleMenu(menu, bt, member));
+		});
+		for (var d : roles.keySet()) {
+			flow.child(cutLongText(d, 20, (b) -> {
+				scroll.remove();
+				bt.setMessage(Text.literal(d));
+				bt.onPress(v -> roleMenu(menu, bt, member));
+				Channels.MAIN.clientHandle().send(new GuildPackets.ChangeRole(member, d));
+			}).horizontalSizing(Sizing.fill(100)));
+		}
+		menu.child(scroll);
+	}
+
+	public static ButtonComponent cutLongText(String text, int max, Consumer<ButtonComponent> consumer) {
+		var comp = Components.button(Text.literal(text), consumer);
+		if (text.length() > max) {
+			var t1 = text.substring(0, max - 3) + "...";
+			comp.setMessage(Text.literal(t1));
+			comp.tooltip(Text.literal(text));
+			return comp;
+		}
+		return comp;
 	}
 
 	private void updateList(List<FactionMember> names, FlowLayout parent) {

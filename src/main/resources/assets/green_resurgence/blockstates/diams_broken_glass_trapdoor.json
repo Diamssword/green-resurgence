@@ -15,7 +15,7 @@
       "y": 90
     },
     "facing=north,half=bottom,open=false": {
-      "model": "green_resurgence:block/diams/broken_glass_trapdoor"
+      "model": "green_resurgence:block/diams/broken_glass_trapdoor_bottom"
     },
     "facing=north,half=bottom,open=true": {
       "model": "green_resurgence:block/diams/broken_glass_trapdoor_open"
@@ -27,7 +27,7 @@
       "model": "green_resurgence:block/diams/broken_glass_trapdoor_open"
     },
     "facing=south,half=bottom,open=false": {
-      "model": "green_resurgence:block/diams/broken_glass_trapdoor"
+      "model": "green_resurgence:block/diams/broken_glass_trapdoor_bottom"
     },
     "facing=south,half=bottom,open=true": {
       "model": "green_resurgence:block/diams/broken_glass_trapdoor_open",
