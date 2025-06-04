@@ -6,28 +6,18 @@ import com.diamssword.greenresurgence.systems.Components;
 
 public class PlayerEvents {
 
-    public static void init()
-    {
-        PlayerTickEvent.onTick.register((pl,end)->{
-            if(!end && !pl.getWorld().isClient)
-            {
-                if(pl.getMainHandStack().getItem() instanceof ICustomPoseWeapon wep)
-                {
-                    if(wep.shouldRemoveOffHand() && !pl.getOffHandStack().isEmpty())
-                    {
-                        var st=pl.getOffHandStack().copyAndEmpty();
-                        if(!pl.giveItemStack(st))
+    public static void init() {
+        PlayerTickEvent.onTick.register((pl, end) -> {
+            if (!end && !pl.getWorld().isClient) {
+                if (pl.getMainHandStack().getItem() instanceof ICustomPoseWeapon wep) {
+                    if (wep.shouldRemoveOffHand() && !pl.getOffHandStack().isEmpty()) {
+                        var st = pl.getOffHandStack().copyAndEmpty();
+                        if (!pl.giveItemStack(st))
                             pl.dropStack(st);
                     }
-                    var comp=pl.getComponent(Components.PLAYER_DATA);
-                    if(!wep.customPoseId().equals(comp.getCustomPoseID()))
+                    var comp = pl.getComponent(Components.PLAYER_DATA);
+                    if (!wep.customPoseId().equals(comp.getCustomPoseID()))
                         comp.setCustomPose(wep.customPoseId());
-                }
-                if(pl.age%100==0)
-                {
-                    var rat=pl.getHealth()/pl.getMaxHealth();
-                    if(rat>=0.5f && rat<1f)
-                        pl.heal(1);
                 }
             }
         });
