@@ -117,14 +117,7 @@
                                     </sizing>
                                     <blend>true</blend>
                                 </healthicon>
-                                <healthicon id="shield" texture="green_resurgence:hud/shields.png" texture-width="360"
-                                            texture-height="18" region-height="18" region-width="18">
-                                    <sizing>
-                                        <horizontal method="fixed">36</horizontal>
-                                        <vertical method="fixed">36</vertical>
-                                    </sizing>
-                                    <blend>true</blend>
-                                </healthicon>
+                                
                             </children>
                             <padding>
                                 <bottom>5</bottom>

@@ -61,13 +61,10 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
         this.root = rootComponent;
         tickers.clear();
         attachWithTicker(HealthIconComponent.class, "health", (h) -> {
-            if (this.client.player != null)
+            if (this.client.player != null) {
                 h.animateForHealth(this.client.player);
-            h.hidden(hideBars());
-        });
-        attachWithTicker(HealthIconComponent.class, "shield", (h) -> {
-            if (this.client.player != null)
                 h.animateForShield(this.client.player);
+            }
             h.hidden(hideBars());
         });
         attachWithTicker(BarComponent.class, "mountHealth", (h) -> {

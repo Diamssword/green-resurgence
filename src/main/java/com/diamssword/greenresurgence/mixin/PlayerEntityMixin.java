@@ -94,7 +94,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                 float g = amount - var7;
                 if (g > 0.0F && g < 3.4028235E37F) {
                     this.increaseStat(Stats.DAMAGE_ABSORBED, Math.round(g * 10.0F));
-                    ci.cancel();
                 }
 
                 if (var7 != 0.0F) {
@@ -107,9 +106,10 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                     }
 
                     this.emitGameEvent(GameEvent.ENTITY_DAMAGE);
-                    if (r >= 0)
-                        ci.cancel();
+                    if (r < 0)
+                        this.setHealth(this.getHealth() + r);
                 }
+                ci.cancel();
             }
         }
     }

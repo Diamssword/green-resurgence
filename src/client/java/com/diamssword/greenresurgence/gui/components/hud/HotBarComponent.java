@@ -100,9 +100,7 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
         }
         context.drawTexture(this.texture, 2 + (20 * size), 1, 1, 22, 21, 0, 1, 22, textureSize, textureSize);
         context.drawTexture(this.texture, 20 * selected, 0, 24, 24, 22, 0, 24, 24, textureSize, textureSize);
-        if (this.blend) {
-            RenderSystem.disableBlend();
-        }
+
 
         matrices.pop();
         matrices.push();
@@ -114,6 +112,10 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
             DrawUtils.renderHotbarItem(mc, context, n, o, delta, mc.player, stacks.get(i), i);
         }
         matrices.pop();
+        if (this.blend) {
+            RenderSystem.disableBlend();
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1f);
+        }
     }
 
     public static void renderHotbarItem(MinecraftClient client, OwoUIDrawContext context, int x, int y, float f, PlayerEntity player, ItemStack stack, int seed) {

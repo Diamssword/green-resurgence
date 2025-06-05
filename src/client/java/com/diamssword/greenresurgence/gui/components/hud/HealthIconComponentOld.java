@@ -1,7 +1,6 @@
 package com.diamssword.greenresurgence.gui.components.hud;
 
 import com.diamssword.greenresurgence.DrawUtils;
-import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.systems.Components;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.component.TextureComponent;
@@ -16,12 +15,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.w3c.dom.Element;
 
-public class HealthIconComponent extends TextureComponent implements IHideableComponent {
+public class HealthIconComponentOld extends TextureComponent implements IHideableComponent {
     private static final int HEART_COUNT = 20;
-    private static final float HEART_SCALE = 0.7f;
-    private static final int SHIELD_T_W = 192;
-    private static final int SHIELD_T_H = 64;
-    private static final Identifier SHIELD_TEXTURE = GreenResurgence.asRessource("textures/gui/hud/shield.png");
     private boolean hidden;
     public boolean blink = false;
     public boolean shieldblink = false;
@@ -35,7 +30,7 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
     public int ticks;
     private HeartType type = HeartType.NORMAL;
 
-    protected HealthIconComponent(Identifier texture, int u, int v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
+    protected HealthIconComponentOld(Identifier texture, int u, int v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
         super(texture, u, v, regionWidth, regionHeight, textureWidth, textureHeight);
     }
 
@@ -125,24 +120,13 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
         matrices.translate(x, y, 0);
         var cl = MinecraftClient.getInstance();
         if (cl.player != null) {
-            drawShield(context, shieldblink, 64f, fillingShield);
-            DrawUtils.drawTexture(
-                    context,
-                    SHIELD_TEXTURE,
-                    0, 0,
-                    width, height,
-                    0, 0,
-                    SHIELD_T_H, SHIELD_T_H,           // UV size
-                    SHIELD_T_W, SHIELD_T_H
-            );
-            int a = (int) (this.width * HEART_SCALE);
-            matrices.translate((width - a) / 2f, (width - a) / 2f, 0);
-            drawGauge(context, getU(type, blink), 9f, filling, a, a);
+            drawGauge(context, getU(type, blink), 9f, filling);
+            drawGauge(context, getU(HeartType.SHIELD, shieldblink), 9f, fillingShield);
             context.drawTexture(this.texture,
                     0,
                     0,
-                    a,
-                    a,
+                    width,
+                    height,
                     getU(HeartType.CONTAINER, sideBlink),
                     this.v,
                     this.regionWidth,
@@ -163,28 +147,7 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
         return (type.textureIndex * 2 + i) * d;
     }
 
-    private void drawShield(DrawContext ctx, boolean blink, float pxSpace, float fill) {
-        float ipx = SHIELD_T_H / pxSpace;
-        int ih = (int) (height / pxSpace);
-        fill = MathHelper.clamp(fill, 0.0f, 1.0f);
-        var rh = SHIELD_T_H - (ipx * 2);
-        float uvHeight = (rh * fill);
-
-        float uvYOffset = (SHIELD_T_H - (ipx)) - uvHeight;
-        int drawHeightVisible = (int) ((height - (ih * 2)) * fill);
-        int yOffset = (height - (ih)) - (drawHeightVisible);
-        DrawUtils.drawTexture(
-                ctx,
-                SHIELD_TEXTURE,
-                0, yOffset,
-                width, drawHeightVisible,
-                SHIELD_T_H * (blink ? 2 : 1), uvYOffset,
-                SHIELD_T_H, uvHeight,           // UV size
-                SHIELD_T_W, SHIELD_T_H
-        );
-    }
-
-    private void drawGauge(DrawContext ctx, float uIndex, float pxSpace, float fill, float width, float height) {
+    private void drawGauge(DrawContext ctx, float uIndex, float pxSpace, float fill) {
         float ipx = textureHeight / pxSpace;
         int ih = (int) (height / pxSpace);
         fill = MathHelper.clamp(fill, 0.0f, 1.0f);
@@ -193,19 +156,19 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 
         float uvYOffset = (regionHeight - (ipx)) - uvHeight;
         int drawHeightVisible = (int) ((height - (ih * 2)) * fill);
-        int yOffset = (int) ((height - ih) - drawHeightVisible);
+        int yOffset = (height - (ih)) - (drawHeightVisible);
         DrawUtils.drawTexture(
                 ctx,
                 this.texture,
                 0, yOffset,
-                (int) width, drawHeightVisible,
+                width, drawHeightVisible,
                 uIndex, uvYOffset,
                 regionWidth, uvHeight,           // UV size
                 this.textureWidth, this.textureHeight
         );
     }
 
-    public static HealthIconComponent parse(Element element) {
+    public static HealthIconComponentOld parse(Element element) {
         UIParsing.expectAttributes(element, "texture");
         var textureId = UIParsing.parseIdentifier(element.getAttributeNode("texture"));
         int u = 0, v = 0, regionWidth = 0, regionHeight = 0, textureWidth = 256, textureHeight = 256;
@@ -232,7 +195,7 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
             textureHeight = UIParsing.parseSignedInt(element.getAttributeNode("texture-height"));
         }
 
-        return new HealthIconComponent(new Identifier(textureId.getNamespace(), "textures/gui/" + textureId.getPath()), u, v, regionWidth, regionHeight, textureWidth, textureHeight);
+        return new HealthIconComponentOld(new Identifier(textureId.getNamespace(), "textures/gui/" + textureId.getPath()), u, v, regionWidth, regionHeight, textureWidth, textureHeight);
     }
 
     @Override

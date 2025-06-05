@@ -26,6 +26,7 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
     protected boolean indicatorMode = false;
     protected static final Identifier textureAtt = GreenResurgence.asRessource("textures/gui/hud/attack.png");
     private boolean hidden;
+    private int hideTimer = 200;
 
     protected SingleSlotComponent(Identifier texture) {
         super();
@@ -78,13 +79,14 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
 
     @Override
     public void draw(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
-        if (hidden)
+        if (hidden || hideTimer <= 0)
             return;
         RenderSystem.enableDepthTest();
 
         if (this.blend) {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, this.hideTimer / 100f);
         }
 
         var matrices = context.getMatrices();
@@ -116,6 +118,7 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
         }
         if (this.blend) {
             RenderSystem.disableBlend();
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1f);
         }
 
     }
@@ -125,7 +128,11 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
     }
 
     public void setStacks(ItemStack stack) {
+        if (stack != this.stack)
+            hideTimer = 100;
         this.stack = stack;
+        if (hideTimer > 0)
+            hideTimer--;
     }
 
     public boolean isIndicatorMode() {
