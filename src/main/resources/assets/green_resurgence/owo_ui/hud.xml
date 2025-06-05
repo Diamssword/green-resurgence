@@ -74,8 +74,25 @@
                         <!-- Centre -->
                         <flow-layout direction="vertical">
                             <children>
+                                 <hudbar id="stamina" texture="green_resurgence:hud/stamina.png" reversed="true"
+                                         texture-width="256" texture-height="64" region-width="256"
+                                         region-height="10">
+                                            <sizing>
+                                                <vertical method="fixed">5</vertical>
+                                            </sizing>
+                                            <blend>true</blend>
+                                        </hudbar>
+                                 <hudbar id="air" texture="green_resurgence:hud/air.png" reversed="true"
+                                         texture-width="256" texture-height="64" region-width="256"
+                                         region-height="10">
+                                            <sizing>
+                                                <vertical method="fixed">5</vertical>
+                                            </sizing>
+                                            <blend>true</blend>
+                                 </hudbar>
                             </children>
-
+                            <gap>2</gap>
+                            <margins><top>10</top></margins>
                             <horizontal-alignment>center</horizontal-alignment>
                             <sizing>
                                 <vertical method="fill">100</vertical>
@@ -192,50 +209,6 @@
                                     </sizing>
                                     <blend>true</blend>
                                 </hudbar>
-                                <flow-layout direction="horizontal">
-                                    <children>
-                                        <hudicon id="airIcon" texture="green_resurgence:hud/air.png" texture-width="128"
-                                                 texture-height="64" region-height="24" region-width="24" v="40">
-                                            <sizing>
-                                                <vertical method="fixed">12</vertical>
-                                                <horizontal
-                                                        method="fixed">12
-                                                </horizontal>
-                                            </sizing>
-                                            <blend>true</blend>
-                                        </hudicon>
-                                        <hudbar id="air" texture="green_resurgence:hud/air.png" reversed="true"
-                                                texture-width="128" texture-height="64" region-width="128"
-                                                region-height="20">
-                                            <sizing>
-                                                <vertical method="fixed">10</vertical>
-                                            </sizing>
-                                            <blend>true</blend>
-                                        </hudbar>
-                                    </children>
-                                </flow-layout>
-                                <flow-layout direction="horizontal">
-                                    <children>
-                                        <hudicon texture="green_resurgence:hud/stamina.png" texture-width="128"
-                                                 texture-height="64" region-height="24" region-width="24" v="40">
-                                            <sizing>
-                                                <vertical method="fixed">12</vertical>
-                                                <horizontal
-                                                        method="fixed">12
-                                                </horizontal>
-                                            </sizing>
-                                            <blend>true</blend>
-                                        </hudicon>
-                                        <hudbar id="stamina" texture="green_resurgence:hud/stamina.png" reversed="true"
-                                                texture-width="128" texture-height="64" region-width="128"
-                                                region-height="20">
-                                            <sizing>
-                                                <vertical method="fixed">10</vertical>
-                                            </sizing>
-                                            <blend>true</blend>
-                                        </hudbar>
-                                    </children>
-                                </flow-layout>
                             </children>
                             <padding>
                                 <bottom>5</bottom>
