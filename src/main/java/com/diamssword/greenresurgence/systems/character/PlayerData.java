@@ -25,12 +25,13 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
     public PlayerApparence appearance;
     public PlayerStats stats;
     private NbtCompound carriedEntity;
-    public HealthManager healthManager = new HealthManager();
+    public final HealthManager healthManager;
 
     public PlayerData(PlayerEntity e) {
         this.player = e;
         this.appearance = new PlayerApparence(this);
         this.stats = new PlayerStats(this);
+        this.healthManager = new HealthManager(e);
     }
 
     public boolean isForcedPose() {
@@ -111,7 +112,7 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
                 customPose.tick(player);
             }
         }
-        healthManager.update(player);
+        healthManager.update();
     }
 
     @Override
@@ -139,7 +140,9 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
             player.calculateDimensions();
         }
         if (tag.contains("shieldAmount"))
-            healthManager.setShieldAmount(tag.getFloat("shieldAmount"));
+            healthManager.setShieldAmount(tag.getDouble("shieldAmount"));
+        if (tag.contains("energyAmount"))
+            healthManager.setEnergyAmount(tag.getDouble("energyAmount"));
     }
 
     @Override
@@ -155,7 +158,8 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
             tag.put("carriedEntity", carriedEntity);
         if (customPoseID != null)
             tag.putString("customPoseID", customPoseID);
-        tag.putFloat("shieldAmount", healthManager.getShieldAmount());
+        tag.putDouble("shieldAmount", healthManager.getShieldAmount());
+        tag.putDouble("energyAmount", healthManager.getEnergyAmount());
         buf.writeNbt(tag);
 
     }

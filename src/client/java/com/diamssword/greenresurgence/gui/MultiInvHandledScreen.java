@@ -4,18 +4,11 @@
 package com.diamssword.greenresurgence.gui;
 
 import com.diamssword.greenresurgence.containers.AbstractMultiInvScreenHandler;
-import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import com.diamssword.greenresurgence.gui.components.InventoryComponent;
 import com.diamssword.greenresurgence.systems.crafting.UniversalResource;
 import com.google.common.collect.Sets;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import io.wispforest.owo.Owo;
 import io.wispforest.owo.ui.base.BaseOwoScreen;
 import io.wispforest.owo.ui.base.BaseParentComponent;
@@ -36,8 +29,6 @@ import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
@@ -51,8 +42,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
-@Environment(value=EnvType.CLIENT)
-public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHandler<?>,R extends ParentComponent> extends Screen implements ScreenHandlerProvider<T> {
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+@Environment(value = EnvType.CLIENT)
+public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHandler<?>, R extends ParentComponent> extends Screen implements ScreenHandlerProvider<T> {
     protected int backgroundWidth = 176;
     protected int backgroundHeight = 166;
     protected final T handler;
@@ -99,13 +95,14 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
      * and managing component focus
      */
     protected OwoUIAdapter<R> uiAdapter = null;
-    protected Map<String, InventoryComponent> invsComps=new HashMap<>();
+    protected Map<String, InventoryComponent> invsComps = new HashMap<>();
     /**
      * Whether this screen has encountered an unrecoverable
      * error during its lifecycle and should thus close
      * itself on the next frame
      */
     protected boolean invalid = false;
+
     public MultiInvHandledScreen(T handler, Class<R> rootComponentClass, BaseUIModelScreen.DataSource source) {
         super(Text.literal(""));
         this.handler = handler;
@@ -121,14 +118,16 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
         this.modelId = source instanceof BaseUIModelScreen.DataSource.AssetDataSource assetSource
                 ? assetSource.assetPath()
                 : null;
-        this.handler.onReady(v->{
-            if(this.uiAdapter !=null && this.uiAdapter.rootComponent instanceof BaseParentComponent r)
+        this.handler.onReady(v -> {
+            if (this.uiAdapter != null && this.uiAdapter.rootComponent instanceof BaseParentComponent r)
                 findInvComps(r);
         });
     }
+
     protected MultiInvHandledScreen(T handler, Class<R> rootComponentClass, Identifier modelId) {
         this(handler, rootComponentClass, BaseUIModelScreen.DataSource.asset(modelId));
     }
+
     @Override
     protected void init() {
         invsComps.clear();
@@ -143,14 +142,14 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
             this.uiAdapter.moveAndResize(0, 0, this.width, this.height);
             // Re-add it as a child to circumvent vanilla clearing them
             this.addDrawableChild(this.uiAdapter);
-            if(this.uiAdapter.rootComponent instanceof BaseParentComponent r && this.handler.isReady())
+            if (this.uiAdapter.rootComponent instanceof BaseParentComponent r && this.handler.isReady())
                 findInvComps(r);
         } else {
             try {
                 this.uiAdapter = this.createAdapter();
                 this.build(this.uiAdapter.rootComponent);
                 this.uiAdapter.inflateAndMount();
-                if(this.uiAdapter.rootComponent instanceof BaseParentComponent r && this.handler.isReady())
+                if (this.uiAdapter.rootComponent instanceof BaseParentComponent r && this.handler.isReady())
                     findInvComps(r);
             } catch (Exception error) {
                 Owo.LOGGER.warn("Could not initialize owo screen", error);
@@ -160,26 +159,26 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
         }
 
     }
-    protected void findInvComps(BaseParentComponent root)
-    {
-        root.children().forEach(c->{
-            if(c instanceof InventoryComponent par)
-            {
-                invsComps.put(par.inventoryId,par);
-                var inv=this.handler.getInventory(par.inventoryId);
-                if(inv !=null)
-                    par.setSize(inv.getWidth(),inv.getHeight());
+
+    protected void findInvComps(BaseParentComponent root) {
+        root.children().forEach(c -> {
+            if (c instanceof InventoryComponent par) {
+                invsComps.put(par.inventoryId, par);
+                var inv = this.handler.getInventory(par.inventoryId);
+                if (inv != null)
+                    par.setSize(inv.getWidth(), inv.getHeight());
                 else
                     par.hidden(true);
-            }
-            else if(c instanceof BaseParentComponent c1)
+            } else if (c instanceof BaseParentComponent c1)
                 findInvComps(c1);
         });
 
     }
+
     protected <C extends Component> @Nullable C component(Class<C> expectedClass, String id) {
         return this.uiAdapter.rootComponent.childById(expectedClass, id);
     }
+
     protected @NotNull OwoUIAdapter<R> createAdapter() {
         return this.model.createAdapter(rootComponentClass, this);
     }
@@ -193,33 +192,34 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
      *                      in the previous initialization step
      */
     protected abstract void build(R rootComponent);
-    public Pair<Integer,Integer> getSlotPosition(Slot s, String inventory)
-    {
-        var comp=invsComps.get(inventory);
-        if(comp!=null) {
-            var b=comp.getInventoryName() !=null;
-            return new Pair<>(s.x + comp.x() - this.x, s.y + comp.y() - this.y + (b?10:1));
+
+    public Pair<Integer, Integer> getSlotPosition(Slot s, String inventory) {
+        var comp = invsComps.get(inventory);
+        if (comp != null) {
+            var b = comp.getInventoryName() != null;
+            return new Pair<>(s.x + comp.x() - this.x, s.y + comp.y() - this.y + (b ? 10 : 1));
         }
-        return  new Pair<>(0,0);
+        return new Pair<>(0, 0);
 
     }
-    protected void drawSlots(DrawContext context, int mouseX, int mouseY, float delta)
-    {
+
+    protected void drawSlots(DrawContext context, int mouseX, int mouseY, float delta) {
         for (String id : invsComps.keySet()) {
-            List<Slot> slots=this.handler.getSlotForInventory(id);
+            List<Slot> slots = this.handler.getSlotForInventory(id);
             for (Slot slot : slots) {
                 if (slot.isEnabled()) {
-                    this.drawSlot(context, slot,id);
+                    this.drawSlot(context, slot, id);
                 }
                 if (!this.isPointOverSlot(slot, mouseX, mouseY) || !slot.isEnabled()) continue;
                 this.focusedSlot = slot;
-                var pos=getSlotPosition(slot,id);
+                var pos = getSlotPosition(slot, id);
                 if (!this.focusedSlot.canBeHighlighted()) continue;
                 MultiInvHandledScreen.drawSlotHighlight(context, pos.getFirst(), pos.getSecond(), 0);
             }
 
         }
     }
+
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         if (this.invalid) {
@@ -229,13 +229,13 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
         var context1 = OwoUIDrawContext.of(context);
         if (this.uiAdapter.enableInspector) {
             context1.getMatrices().translate(0, 0, 500);
-            int i=0;
+            int i = 0;
             for (String id : invsComps.keySet()) {
-                List<Slot> slots=this.handler.getSlotForInventory(id);
+                List<Slot> slots = this.handler.getSlotForInventory(id);
                 for (Slot slot : slots) {
                     if (slot.isEnabled()) {
-                        var pos=getSlotPosition(slot,id);
-                        context1.drawText(Text.literal("H:" +i),
+                        var pos = getSlotPosition(slot, id);
+                        context1.drawText(Text.literal("H:" + i),
                                 this.x + pos.getFirst() + 15, this.y + pos.getSecond() + 9, .5f, 0x0096FF,
                                 OwoUIDrawContext.TextAnchor.BOTTOM_RIGHT
                         );
@@ -260,7 +260,7 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
         context.getMatrices().push();
         context.getMatrices().translate(i, j, 0.0f);
         this.focusedSlot = null;
-        drawSlots(context,mouseX,mouseY,delta);
+        drawSlots(context, mouseX, mouseY, delta);
         this.drawForeground(context, mouseX, mouseY);
         ItemStack itemStack2 = itemStack = this.touchDragStack.isEmpty() ? this.handler.getCursorStack() : this.touchDragStack;
         if (!itemStack.isEmpty()) {
@@ -268,22 +268,22 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
             l = this.touchDragStack.isEmpty() ? 8 : 16;
             String string = null;
             if (!this.touchDragStack.isEmpty() && this.touchIsRightClickDrag) {
-                itemStack = itemStack.copyWithCount(MathHelper.ceil((float)((float)itemStack.getCount() / 2.0f)));
+                itemStack = itemStack.copyWithCount(MathHelper.ceil((float) itemStack.getCount() / 2.0f));
             } else if (this.cursorDragging && this.cursorDragSlots.size() > 1 && (itemStack = itemStack.copyWithCount(this.draggedStackRemainder)).isEmpty()) {
                 string = Formatting.YELLOW + "0";
             }
             this.drawItem(context, itemStack, mouseX - i - 8, mouseY - j - l, string);
         }
         if (!this.touchDropReturningStack.isEmpty()) {
-            float f = (float)(Util.getMeasuringTimeMs() - this.touchDropTime) / 100.0f;
+            float f = (float) (Util.getMeasuringTimeMs() - this.touchDropTime) / 100.0f;
             if (f >= 1.0f) {
                 f = 1.0f;
                 this.touchDropReturningStack = ItemStack.EMPTY;
             }
             l = this.touchDropOriginSlot.x - this.touchDropX;
             int m = this.touchDropOriginSlot.y - this.touchDropY;
-            int o = this.touchDropX + (int)((float)l * f);
-            int p = this.touchDropY + (int)((float)m * f);
+            int o = this.touchDropX + (int) ((float) l * f);
+            int p = this.touchDropY + (int) ((float) m * f);
             this.drawItem(context, this.touchDropReturningStack, o, p, null);
         }
         context.getMatrices().pop();
@@ -311,10 +311,10 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
         context.getMatrices().push();
         context.getMatrices().translate(0.0f, 0.0f, 232.0f);
         context.drawItem(stack, x, y);
-        if(amountText !=null)
+        if (amountText != null)
             context.drawItemInSlot(this.textRenderer, stack, x, y - (this.touchDragStack.isEmpty() ? 0 : 8), amountText);
-        else if(!stack.isEmpty() && stack.getCount()>1)
-            RessourceGuiHelper.drawRessourceExtra(context, UniversalResource.fromItemOpti(stack),x,y,0,16777215);
+        else if (!stack.isEmpty() && stack.getCount() > 1)
+            RessourceGuiHelper.drawRessourceExtra(context, UniversalResource.fromItemOpti(stack), x, y, 0, 16777215);
         context.getMatrices().pop();
     }
 
@@ -327,7 +327,7 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
     protected void drawSlot(DrawContext context, Slot slot, String inventory) {
 
         Pair pair;
-        var pos=getSlotPosition(slot,inventory);
+        var pos = getSlotPosition(slot, inventory);
         ItemStack itemStack = slot.getStack();
         boolean bl = false;
         boolean bl2 = slot == this.touchDragSlotStart && !this.touchDragStack.isEmpty() && !this.touchIsRightClickDrag;
@@ -339,11 +339,11 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
             if (this.cursorDragSlots.size() == 1) {
                 return;
             }
-            if (ScreenHandler.canInsertItemIntoSlot((Slot)slot, (ItemStack)itemStack2, (boolean)true) && this.handler.canInsertIntoSlot(slot)) {
+            if (ScreenHandler.canInsertItemIntoSlot(slot, itemStack2, true) && this.handler.canInsertIntoSlot(slot)) {
                 bl = true;
                 int k = Math.min(itemStack2.getMaxCount(), slot.getMaxItemCount(itemStack2));
                 int l = slot.getStack().isEmpty() ? 0 : slot.getStack().getCount();
-                int m = ScreenHandler.calculateStackSize(this.cursorDragSlots, (int)this.heldButtonType, (ItemStack)itemStack2) + l;
+                int m = ScreenHandler.calculateStackSize(this.cursorDragSlots, this.heldButtonType, itemStack2) + l;
                 if (m > k) {
                     m = k;
                     string = Formatting.YELLOW.toString() + k;
@@ -357,20 +357,20 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
         context.getMatrices().push();
         context.getMatrices().translate(0.0f, 0.0f, 100.0f);
         if (itemStack.isEmpty() && slot.isEnabled() && (pair = slot.getBackgroundSprite()) != null) {
-            Sprite sprite = this.client.getSpriteAtlas((Identifier)pair.getFirst()).apply((Identifier)pair.getSecond());
+            Sprite sprite = this.client.getSpriteAtlas((Identifier) pair.getFirst()).apply((Identifier) pair.getSecond());
 
             context.drawSprite(pos.getFirst(), pos.getSecond(), 0, 16, 16, sprite);
             bl2 = true;
         }
         if (!bl2) {
             if (bl) {
-                context.fill(pos.getFirst(), pos.getSecond(), pos.getFirst()+ 16,pos.getSecond() + 16, -2130706433);
+                context.fill(pos.getFirst(), pos.getSecond(), pos.getFirst() + 16, pos.getSecond() + 16, -2130706433);
             }
             context.drawItem(itemStack, pos.getFirst(), pos.getSecond(), pos.getFirst() + pos.getSecond() * this.backgroundWidth);
-            if(string !=null)
+            if (string != null || itemStack.isItemBarVisible())
                 context.drawItemInSlot(this.textRenderer, itemStack, pos.getFirst(), pos.getSecond(), string);
-            else if(!itemStack.isEmpty() && itemStack.getCount()>1)
-                RessourceGuiHelper.drawRessourceExtra(context, UniversalResource.fromItemOpti(itemStack),pos.getFirst(),pos.getSecond(),0,16777215);
+            else if (!itemStack.isEmpty() && itemStack.getCount() > 1)
+                RessourceGuiHelper.drawRessourceExtra(context, UniversalResource.fromItemOpti(itemStack), pos.getFirst(), pos.getSecond(), 0, 16777215);
         }
         context.getMatrices().pop();
     }
@@ -389,15 +389,15 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
             ItemStack itemStack2 = slot.getStack();
             int i = itemStack2.isEmpty() ? 0 : itemStack2.getCount();
             int j = Math.min(itemStack.getMaxCount(), slot.getMaxItemCount(itemStack));
-            int k = Math.min(ScreenHandler.calculateStackSize(this.cursorDragSlots, (int)this.heldButtonType, (ItemStack)itemStack) + i, j);
+            int k = Math.min(ScreenHandler.calculateStackSize(this.cursorDragSlots, this.heldButtonType, itemStack) + i, j);
             this.draggedStackRemainder -= k - i;
         }
     }
 
     @Nullable
     protected Slot getSlotAt(double x, double y) {
-        for (int i = 0; i < ((ScreenHandler)this.handler).slots.size(); ++i) {
-            Slot slot = (Slot)((ScreenHandler)this.handler).slots.get(i);
+        for (int i = 0; i < this.handler.slots.size(); ++i) {
+            Slot slot = this.handler.slots.get(i);
             if (!this.isPointOverSlot(slot, x, y) || !slot.isEnabled()) continue;
             return slot;
         }
@@ -492,7 +492,7 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
 
     protected boolean isClickOutsideBounds(double mouseX, double mouseY, int left, int top, int button) {
         for (InventoryComponent value : this.invsComps.values()) {
-            if( value.isInBoundingBox(mouseX,mouseY))
+            if (value.isInBoundingBox(mouseX, mouseY))
                 return false;
         }
 
@@ -501,7 +501,7 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        if(this.uiAdapter.mouseDragged(mouseX, mouseY, button, deltaX, deltaY))
+        if (this.uiAdapter.mouseDragged(mouseX, mouseY, button, deltaX, deltaY))
             return true;
         Slot slot = this.getSlotAt(mouseX, mouseY);
         ItemStack itemStack = this.handler.getCursorStack();
@@ -511,7 +511,7 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
                     if (slot != this.touchDragSlotStart && !this.touchDragSlotStart.getStack().isEmpty()) {
                         this.touchDragStack = this.touchDragSlotStart.getStack().copy();
                     }
-                } else if (this.touchDragStack.getCount() > 1 && slot != null && ScreenHandler.canInsertItemIntoSlot((Slot)slot, (ItemStack)this.touchDragStack, (boolean)false)) {
+                } else if (this.touchDragStack.getCount() > 1 && slot != null && ScreenHandler.canInsertItemIntoSlot(slot, this.touchDragStack, false)) {
                     long l = Util.getMeasuringTimeMs();
                     if (this.touchHoveredSlot == slot) {
                         if (l - this.touchDropTimer > 500L) {
@@ -527,7 +527,7 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
                     }
                 }
             }
-        } else if (this.cursorDragging && slot != null && !itemStack.isEmpty() && (itemStack.getCount() > this.cursorDragSlots.size() || this.heldButtonType == 2) && ScreenHandler.canInsertItemIntoSlot((Slot)slot, (ItemStack)itemStack, (boolean)true) && slot.canInsert(itemStack) && this.handler.canInsertIntoSlot(slot)) {
+        } else if (this.cursorDragging && slot != null && !itemStack.isEmpty() && (itemStack.getCount() > this.cursorDragSlots.size() || this.heldButtonType == 2) && ScreenHandler.canInsertItemIntoSlot(slot, itemStack, true) && slot.canInsert(itemStack) && this.handler.canInsertIntoSlot(slot)) {
             this.cursorDragSlots.add(slot);
             this.calculateOffset();
         }
@@ -550,8 +550,9 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
         if (this.doubleClicking && slot != null && button == 0 && this.handler.canInsertIntoSlot(ItemStack.EMPTY, slot)) {
             if (MultiInvHandledScreen.hasShiftDown()) {
                 if (!this.quickMovingStack.isEmpty()) {
-                    for (Slot slot2 : ((ScreenHandler)this.handler).slots) {
-                        if (slot2 == null || !slot2.canTakeItems((PlayerEntity)this.client.player) || !slot2.hasStack() || slot2.inventory != slot.inventory || !ScreenHandler.canInsertItemIntoSlot((Slot)slot2, (ItemStack)this.quickMovingStack, (boolean)true)) continue;
+                    for (Slot slot2 : this.handler.slots) {
+                        if (slot2 == null || !slot2.canTakeItems(this.client.player) || !slot2.hasStack() || slot2.inventory != slot.inventory || !ScreenHandler.canInsertItemIntoSlot(slot2, this.quickMovingStack, true))
+                            continue;
                         this.onMouseClick(slot2, slot2.id, button, SlotActionType.QUICK_MOVE);
                     }
                 }
@@ -576,7 +577,7 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
                     if (this.touchDragStack.isEmpty() && slot != this.touchDragSlotStart) {
                         this.touchDragStack = this.touchDragSlotStart.getStack();
                     }
-                    boolean bl2 = ScreenHandler.canInsertItemIntoSlot((Slot)slot, (ItemStack)this.touchDragStack, (boolean)false);
+                    boolean bl2 = ScreenHandler.canInsertItemIntoSlot(slot, this.touchDragStack, false);
                     if (k != GLFW.GLFW_KEY_UNKNOWN && !this.touchDragStack.isEmpty() && bl2) {
                         this.onMouseClick(this.touchDragSlotStart, this.touchDragSlotStart.id, button, SlotActionType.PICKUP);
                         this.onMouseClick(slot, k, 0, SlotActionType.PICKUP);
@@ -584,15 +585,15 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
                             this.touchDropReturningStack = ItemStack.EMPTY;
                         } else {
                             this.onMouseClick(this.touchDragSlotStart, this.touchDragSlotStart.id, button, SlotActionType.PICKUP);
-                            this.touchDropX = MathHelper.floor((double)(mouseX - (double)i));
-                            this.touchDropY = MathHelper.floor((double)(mouseY - (double)j));
+                            this.touchDropX = MathHelper.floor(mouseX - (double) i);
+                            this.touchDropY = MathHelper.floor(mouseY - (double) j);
                             this.touchDropOriginSlot = this.touchDragSlotStart;
                             this.touchDropReturningStack = this.touchDragStack;
                             this.touchDropTime = Util.getMeasuringTimeMs();
                         }
                     } else if (!this.touchDragStack.isEmpty()) {
-                        this.touchDropX = MathHelper.floor((double)(mouseX - (double)i));
-                        this.touchDropY = MathHelper.floor((double)(mouseY - (double)j));
+                        this.touchDropX = MathHelper.floor(mouseX - (double) i);
+                        this.touchDropY = MathHelper.floor(mouseY - (double) j);
                         this.touchDropOriginSlot = this.touchDragSlotStart;
                         this.touchDropReturningStack = this.touchDragStack;
                         this.touchDropTime = Util.getMeasuringTimeMs();
@@ -600,11 +601,11 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
                     this.endTouchDrag();
                 }
             } else if (this.cursorDragging && !this.cursorDragSlots.isEmpty()) {
-                this.onMouseClick(null, -999, ScreenHandler.packQuickCraftData((int)0, (int)this.heldButtonType), SlotActionType.QUICK_CRAFT);
+                this.onMouseClick(null, -999, ScreenHandler.packQuickCraftData(0, this.heldButtonType), SlotActionType.QUICK_CRAFT);
                 for (Slot slot2 : this.cursorDragSlots) {
-                    this.onMouseClick(slot2, slot2.id, ScreenHandler.packQuickCraftData((int)1, (int)this.heldButtonType), SlotActionType.QUICK_CRAFT);
+                    this.onMouseClick(slot2, slot2.id, ScreenHandler.packQuickCraftData(1, this.heldButtonType), SlotActionType.QUICK_CRAFT);
                 }
-                this.onMouseClick(null, -999, ScreenHandler.packQuickCraftData((int)2, (int)this.heldButtonType), SlotActionType.QUICK_CRAFT);
+                this.onMouseClick(null, -999, ScreenHandler.packQuickCraftData(2, this.heldButtonType), SlotActionType.QUICK_CRAFT);
             } else if (!this.handler.getCursorStack().isEmpty()) {
                 if (this.client.options.pickItemKey.matchesMouse(button)) {
                     this.onMouseClick(slot, k, button, SlotActionType.CLONE);
@@ -626,20 +627,19 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
     }
 
     protected boolean isPointOverSlot(Slot slot, double pointX, double pointY) {
-        String id=this.handler.getInventoryForSlot(slot);
-        if(id !=null && invsComps.containsKey(id))
-        {
-            var pos= getSlotPosition(slot,id);
-            return this.isPointWithinBounds(pos.getFirst(),pos.getSecond(), 16, 16, pointX, pointY);
+        String id = this.handler.getInventoryForSlot(slot);
+        if (id != null && invsComps.containsKey(id)) {
+            var pos = getSlotPosition(slot, id);
+            return this.isPointWithinBounds(pos.getFirst(), pos.getSecond(), 16, 16, pointX, pointY);
         }
-        return  false;
+        return false;
 
     }
 
     protected boolean isPointWithinBounds(int x, int y, int width, int height, double pointX, double pointY) {
         int i = this.x;
         int j = this.y;
-        return (pointX -= (double)i) >= (double)(x - 1) && pointX < (double)(x + width + 1) && (pointY -= (double)j) >= (double)(y - 1) && pointY < (double)(y + height + 1);
+        return (pointX -= i) >= (double) (x - 1) && pointX < (double) (x + width + 1) && (pointY -= j) >= (double) (y - 1) && pointY < (double) (y + height + 1);
     }
 
     /**
@@ -649,7 +649,7 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
         if (slot != null) {
             slotId = slot.id;
         }
-        this.client.interactionManager.clickSlot(((ScreenHandler)this.handler).syncId, slotId, button, actionType, this.client.player);
+        this.client.interactionManager.clickSlot(this.handler.syncId, slotId, button, actionType, this.client.player);
     }
 
     @Override
@@ -696,7 +696,7 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
         if (this.client.player == null) {
             return;
         }
-        this.handler.onClosed((PlayerEntity)this.client.player);
+        this.handler.onClosed(this.client.player);
     }
 
     @Override

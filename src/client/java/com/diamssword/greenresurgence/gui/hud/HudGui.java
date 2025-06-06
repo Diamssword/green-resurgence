@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.gui.hud;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.gui.components.hud.*;
+import com.diamssword.greenresurgence.systems.Components;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.LabelComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
@@ -82,6 +83,12 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
         attachWithTicker(BarComponent.class, "air", (h) -> {
             var p = this.client.player.getAir() / (float) this.client.player.getMaxAir();
             h.setFillPercent(p);
+            h.hidden(hideBars() || p >= 1);
+        });
+        attachWithTicker(BarComponent.class, "stamina", (h) -> {
+            var dt = this.client.player.getComponent(Components.PLAYER_DATA);
+            var p = dt.healthManager.getEnergyAmount() / dt.healthManager.getMaxEnergyAmount();
+            h.setFillPercent((float) p);
             h.hidden(hideBars() || p >= 1);
         });
         attachWithTicker(IconComponent.class, "airIcon", (h) -> {

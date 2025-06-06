@@ -3,10 +3,12 @@ package com.diamssword.greenresurgence.mixin;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.PosesPackets;
 import com.diamssword.greenresurgence.systems.Components;
+import com.diamssword.greenresurgence.systems.attributs.Attributes;
 import com.diamssword.greenresurgence.systems.character.HealthManager;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -107,7 +109,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
                     this.emitGameEvent(GameEvent.ENTITY_DAMAGE);
                     if (r < 0)
-                        this.setHealth(this.getHealth() + r);
+                        this.setHealth((float) (this.getHealth() + r));
                 }
                 ci.cancel();
             }
@@ -186,6 +188,12 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             cir.setReturnValue(dimensions.height * 0.9f);
         else if (pose == EntityPose.CROUCHING)
             cir.setReturnValue(dimensions.height * 0.85f);
+
+    }
+
+    @Inject(at = @At("TAIL"), method = "createPlayerAttributes")
+    private static void createLivingAttributes(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
+        Attributes.plAttributes.values().forEach(v -> cir.getReturnValue().add(v, v.getDefaultValue()));
 
     }
 }

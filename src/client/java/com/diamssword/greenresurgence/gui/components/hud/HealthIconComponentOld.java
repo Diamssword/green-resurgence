@@ -97,7 +97,7 @@ public class HealthIconComponentOld extends TextureComponent implements IHideabl
         this.shieldblink = blinkTimeShield > 0;
         if (blinkTimeShield > 0)
             blinkTimeShield--;
-        this.goalShield = v;
+        this.goalShield = (float) v;
         if (this.fillingShield < goalShield)
             this.fillingShield = Math.min(goalShield, fillingShield + 0.1f);
         else if (this.fillingShield > goalShield)
