@@ -33,6 +33,7 @@ public class ComponentsRegister {
 		UIParsing.registerFactory("subscreen", SubScreenLayout::parse);
 		UIParsing.registerFactory("button-layout", ClickableLayoutComponent::parse);
 		UIParsing.registerFactory("search-box", (e) -> new SearchBoxComponent(Sizing.content()));
+		UIParsing.registerFactory("freerowgrid", FreeRowGridLayout::parse);
 
 
 	}
