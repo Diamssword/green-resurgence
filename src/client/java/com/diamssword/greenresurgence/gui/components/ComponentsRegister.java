@@ -17,7 +17,6 @@ public class ComponentsRegister {
 		UIParsing.registerFactory("buttoninventory", ButtonInventoryComponent::parse);
 		UIParsing.registerFactory("character", CharacterComponent::parse);
 		UIParsing.registerFactory("separator", SeparatorComponent::parse);
-		UIParsing.registerFactory("clothlist", ClothInventoryComponent::parse);
 		UIParsing.registerFactory("rbutton", (a) -> new RButtonComponent(Text.empty(), (RButtonComponent button) -> {
 		}));
 		UIParsing.registerFactory("arrowbutton", (a) -> new ArrowButtonComponent((ArrowButtonComponent button) -> {
