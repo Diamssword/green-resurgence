@@ -162,6 +162,15 @@ public class FreeRowGridLayout extends BaseParentComponent {
         return this;
     }
 
+    public FreeRowGridLayout clear() {
+        for (Component child : this.children) {
+            child.dismount(DismountReason.REMOVED);
+        }
+        children.clear();
+        this.updateLayout();
+        return this;
+    }
+
     @Override
     public List<Component> children() {
         return this.children;

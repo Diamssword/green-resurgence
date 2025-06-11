@@ -129,7 +129,6 @@ public class PlayerApparence {
             setCloth(layer, null);
             return true;
         }
-
         if (this.parent.player.getWorld().isClient || this.parent.player.isCreative() || this.unlockedCloths.contains(cloth.id())) {
             setCloth(layer, cloth);
             return true;
@@ -164,6 +163,7 @@ public class PlayerApparence {
 
     public void equipOutfit(int index) {
         if (index < this.outfits.length && index >= 0 && this.outfits[index] != null) {
+
             this.outfits[index].equipe();
         }
     }
@@ -264,7 +264,7 @@ public class PlayerApparence {
             cloths.clear();
             PlayerApparence.this.getCloths().forEach((l, c) -> {
                 if (c != null)
-                    cloths.add(c.id());
+                    cloths.add(l.name() + "_" + c.id());
             });
         }
 

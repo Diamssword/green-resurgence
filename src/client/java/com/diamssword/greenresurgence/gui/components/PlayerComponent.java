@@ -1,46 +1,27 @@
 package com.diamssword.greenresurgence.gui.components;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.wispforest.owo.ui.base.BaseComponent;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.parsing.UIModel;
-import io.wispforest.owo.ui.parsing.UIModelParsingException;
 import io.wispforest.owo.ui.parsing.UIParsing;
 import io.wispforest.owo.util.pond.OwoEntityRenderDispatcherExtension;
-import net.minecraft.client.network.OtherClientPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
-import org.lwjgl.glfw.GLFW;
-import org.w3c.dom.Element;
-
-import java.time.Duration;
-import java.util.Map;
-import java.util.function.Consumer;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.StringNbtReader;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.NetworkSide;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.RotationAxis;
+import org.joml.Vector3f;
+import org.lwjgl.glfw.GLFW;
+import org.w3c.dom.Element;
+
+import java.util.Map;
+import java.util.function.Consumer;
 
 public class PlayerComponent extends BaseComponent {
 
@@ -53,9 +34,10 @@ public class PlayerComponent extends BaseComponent {
     protected boolean lookAtCursor = false;
     protected boolean allowMouseRotation = false;
     protected boolean scaleToFit = false;
-    protected int rotation=0;
+    protected int rotation = 0;
     protected boolean showNametag = false;
-    protected Consumer<MatrixStack> transform = matrixStack -> {};
+    protected Consumer<MatrixStack> transform = matrixStack -> {
+    };
 
     protected PlayerComponent(Sizing sizing, PlayerEntity entity) {
         final var client = MinecraftClient.getInstance();
@@ -66,18 +48,19 @@ public class PlayerComponent extends BaseComponent {
 
         this.sizing(sizing);
     }
-    protected PlayerComponent(Sizing sizing) {
-   this(sizing,new OtherClientPlayerEntity(MinecraftClient.getInstance().world,MinecraftClient.getInstance().player.getGameProfile()) {
-       @Override
-       public boolean isSpectator() {
-           return false;
-       }
 
-       @Override
-       public boolean isCreative() {
-           return false;
-       }
-   });
+    protected PlayerComponent(Sizing sizing) {
+        this(sizing, new OtherClientPlayerEntity(MinecraftClient.getInstance().world, MinecraftClient.getInstance().player.getGameProfile()) {
+            @Override
+            public boolean isSpectator() {
+                return false;
+            }
+
+            @Override
+            public boolean isCreative() {
+                return false;
+            }
+        });
     }
 
 
@@ -86,7 +69,7 @@ public class PlayerComponent extends BaseComponent {
         var matrices = context.getMatrices();
         matrices.push();
 
-        matrices.translate(x + this.width / 2f, y + this.height / 2f, 100);
+        matrices.translate(x + this.width / 2f, y + this.height * 0.6f, 100);
         matrices.scale(75 * this.scale * this.width / 64f, -75 * this.scale * this.height / 64f, 75 * this.scale);
 
         matrices.translate(0, entity.getHeight() / -2f, 0);
@@ -96,7 +79,7 @@ public class PlayerComponent extends BaseComponent {
         if (this.lookAtCursor) {
             float xRotation = (float) Math.toDegrees(Math.atan((mouseY - this.y - this.height / 2f) / 40f));
             float yRotation = (float) Math.toDegrees(Math.atan((mouseX - this.x - this.width / 2f) / 40f));
-                this.entity.prevHeadYaw = -yRotation;
+            this.entity.prevHeadYaw = -yRotation;
             this.entity.prevYaw = -yRotation;
             this.entity.prevPitch = xRotation * .65f;
 
@@ -146,11 +129,12 @@ public class PlayerComponent extends BaseComponent {
         this.allowMouseRotation = allowMouseRotation;
         return this;
     }
-    public PlayerComponent rotation(int rotation)
-    {
-        this.rotation=rotation;
+
+    public PlayerComponent rotation(int rotation) {
+        this.rotation = rotation;
         return this;
     }
+
     public boolean allowMouseRotation() {
         return this.allowMouseRotation;
     }
@@ -177,8 +161,8 @@ public class PlayerComponent extends BaseComponent {
         this.scaleToFit = scaleToFit;
 
         if (scaleToFit) {
-            float xScale = .7f / entity.getWidth();
-            float yScale = .7f / entity.getHeight();
+            float xScale = .6f / entity.getWidth();
+            float yScale = .6f / entity.getHeight();
 
             this.scale(Math.min(xScale, yScale));
         }
