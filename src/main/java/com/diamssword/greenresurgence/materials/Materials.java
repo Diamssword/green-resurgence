@@ -1,5 +1,7 @@
 package com.diamssword.greenresurgence.materials;
 
+import com.diamssword.greenresurgence.items.BatteryItem;
+
 public class Materials {
 	public static MaterialSet wood;
 	public static MaterialSet paper;
@@ -110,7 +112,7 @@ public class Materials {
 
 		//Energy
 		energy = MaterialSet.createSet("energy")
-				.add(1, "battery", "Pile", "Une pile à usage unique")
+				.add(1, "battery", "Pile", "Une pile à usage unique", false, (a, b, c, d) -> new BatteryItem(a.maxCount(16), b, c, d, BatteryTiers.BATTERY, 1f))
 				.add(3, "cell", "Batterie", "Une batterie rechargable")
 				.add(5, "cell1", "Batterie Haute Capacitée", "Une batterie rechargable de haute capacitée");
 		//Chemical
