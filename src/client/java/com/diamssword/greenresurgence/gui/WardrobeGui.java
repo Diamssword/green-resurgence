@@ -116,7 +116,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 		MinecraftClient.getInstance().player.getComponent(Components.PLAYER_DATA).writeToNbt(cp);
 		var dt = player.getComponent(Components.PLAYER_DATA);
 		dt.readFromNbt(cp);
-		dt.appearance.refreshSkinData();
+		dt.appearance.refreshSkinDataForFakePlayer(MinecraftClient.getInstance().player);
 
 		loadCloths(wardLay, playerComp, "");
 		search.onChanged().subscribe(v -> loadCloths(wardLay, playerComp, v.toLowerCase()));

@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.GridContainerSyncer;
+import com.diamssword.greenresurgence.systems.character.SkinServerCache;
 import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
 import com.diamssword.greenresurgence.systems.crafting.CraftingResult;
 import com.diamssword.greenresurgence.systems.crafting.RecipeLoader;
@@ -49,5 +50,6 @@ public class Channels {
 		InventoryPackets.init();
 		GuildPackets.init();
 		ModularArmorPackets.init();
+		SkinServerCache.init();
 	}
 }

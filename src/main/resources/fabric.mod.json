@@ -1,55 +1,56 @@
 {
-	"schemaVersion": 1,
-	"id": "green_resurgence",
-	"version": "${version}",
-	"name": "Green Resurgence",
-	"description": "This is an example description! Tell everyone what your mod is about!",
-	"authors": [
-		"Diamssword",
-		"Credits for textures to : garlic(TEiEN), Santiago(TEiEN) "
-	],
-	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
-	},
-	"license": "CC0-1.0",
-	"icon": "assets/green_resurgence/icon.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"com.diamssword.greenresurgence.GreenResurgence"
-		],
-		"client": [
-			"com.diamssword.greenresurgence.GreenResurgenceClient"
-		],
-		"fabric-datagen": [
-			"com.diamssword.greenresurgence.GreenResurgenceDataGenerator"
-		],
-		"cardinal-components": [
-			"com.diamssword.greenresurgence.systems.Components"
-		]
-	},
-	"mixins": [
-		"green_resurgence.mixins.json",
-		{
-			"config": "green_resurgence.client.mixins.json",
-			"environment": "client"
-		}
-	],
-	"depends": {
-		"fabricloader": ">=0.15.6",
-		"minecraft": "~1.20.1",
-		"java": ">=17",
-		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
-	},
-	"custom": {
-		"cardinal-components": [
-			"green_resurgence:base_list",
-			"green_resurgence:player_data",
-			"green_resurgence:player_inventory"
-		]
-	}
+  "schemaVersion": 1,
+  "id": "green_resurgence",
+  "version": "${version}",
+  "name": "Green Resurgence",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "Diamssword",
+    "Credits for textures to : garlic(TEiEN), Santiago(TEiEN) "
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "CC0-1.0",
+  "icon": "assets/green_resurgence/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.diamssword.greenresurgence.GreenResurgence"
+    ],
+    "client": [
+      "com.diamssword.greenresurgence.GreenResurgenceClient"
+    ],
+    "fabric-datagen": [
+      "com.diamssword.greenresurgence.GreenResurgenceDataGenerator"
+    ],
+    "cardinal-components": [
+      "com.diamssword.greenresurgence.systems.Components"
+    ]
+  },
+  "mixins": [
+    "green_resurgence.mixins.json",
+    {
+      "config": "green_resurgence.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.6",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  },
+  "custom": {
+    "cardinal-components": [
+      "green_resurgence:base_list",
+      "green_resurgence:player_data",
+      "green_resurgence:player_inventory",
+      "green_resurgence:player_characters"
+    ]
+  }
 }
