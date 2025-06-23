@@ -12,11 +12,15 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 public class PlayerCharacters implements ComponentV3, AutoSyncedComponent {
 
 	private final PlayerEntity player;
 	private final Map<String, ApiCharacterValues> characters = new HashMap<>();
+	private final Map<String, NbtCompound> savedStats = new HashMap<>();
+	private final Map<String, NbtCompound> savedAppearence = new HashMap<>();
+
 	private String currentCharID;
 	private ApiCharacterValues currentCharacter;
 
@@ -27,13 +31,12 @@ public class PlayerCharacters implements ComponentV3, AutoSyncedComponent {
 	@Override
 	public void readFromNbt(NbtCompound tag) {
 		if (tag.contains("characters")) {
-			characters.clear();
-			var t1 = tag.getCompound("characters");
-			t1.getKeys().forEach(k -> {
-				var val = new ApiCharacterValues();
-				val.charactersfromNBT(t1.getCompound(k));
-				characters.put(k, val);
+			NBTToMap(characters, tag.getCompound("characters"), t -> {
+				var d = new ApiCharacterValues();
+				return d.charactersfromNBT(t);
 			});
+			NBTToMap(savedAppearence, tag.getCompound("appearance"), t -> t);
+			NBTToMap(savedStats, tag.getCompound("stats"), t -> t);
 		}
 		if (tag.contains("current")) {
 			currentCharID = tag.getString("current");
@@ -45,12 +48,30 @@ public class PlayerCharacters implements ComponentV3, AutoSyncedComponent {
 	@Override
 	public void writeToNbt(NbtCompound tag) {
 		var t1 = new NbtCompound();
+
 		characters.forEach((k, v) -> {
 			t1.put(k, v.toNBT());
 		});
-		tag.put("characters", t1);
+		tag.put("characters", mapToNBT(characters, ApiCharacterValues::toNBT));
+		tag.put("stats", mapToNBT(savedStats, t -> t));
+		tag.put("appearance", mapToNBT(savedAppearence, t -> t));
 		if (currentCharID != null)
 			tag.putString("current", currentCharID);
+	}
+
+	private <T> NbtCompound mapToNBT(Map<String, T> map, Function<T, NbtCompound> provider) {
+		var t1 = new NbtCompound();
+		map.forEach((k, v) -> {
+			t1.put(k, provider.apply(v));
+		});
+		return t1;
+	}
+
+	private <T> void NBTToMap(Map<String, T> map, NbtCompound tag, Function<NbtCompound, T> provider) {
+		map.clear();
+		tag.getKeys().forEach(k -> {
+			map.put(k, provider.apply(tag.getCompound(k)));
+		});
 	}
 
 	public Set<String> getCharactersNames() {
@@ -67,9 +88,21 @@ public class PlayerCharacters implements ComponentV3, AutoSyncedComponent {
 
 	public void switchCharacter(String id) {
 		var car = characters.get(id);
+		var oldChar = currentCharID;
 		if (car != null) {
 			currentCharacter = car;
 			currentCharID = id;
+			var dt = player.getComponent(Components.PLAYER_DATA);
+			var newAp = savedAppearence.remove(id);
+			if (newAp != null) {
+				savedAppearence.put(oldChar, dt.appearance.writeToNbt(new NbtCompound(), false));
+				dt.appearance.readFromNbt(newAp);
+			}
+			var newSt = savedStats.remove(id);
+			if (newSt != null) {
+				savedStats.put(id, dt.stats.write());
+				dt.stats.read(newSt);
+			}
 			SkinServerCache.serverCache.addToCache(player.getUuid(), car.base64Skin, car.base64SkinHead, car.appearence.slim);
 			player.syncComponent(Components.PLAYER_CHARACTERS);
 

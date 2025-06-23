@@ -29,6 +29,10 @@ public class PlayerApparence {
 			refreshSkinData();
 	}
 
+	public PlayerApparence() {
+		parent = null;
+	}
+
 	public void tick() {
 
 		if (skinDatas == null && !parent.player.getWorld().isClient && parent.player.age % 20 == 0 && parent.player.getGameProfile() != null)
@@ -227,7 +231,7 @@ public class PlayerApparence {
 
 	}
 
-	public void writeToNbt(NbtCompound tag, boolean forClient) {
+	public NbtCompound writeToNbt(NbtCompound tag, boolean forClient) {
 		if (skinDatas != null && forClient)
 			tag.put("default", skinDatas.toNBT());
 		if (hair_model != null && !hair_model.isEmpty())
@@ -258,6 +262,7 @@ public class PlayerApparence {
 				outLs.add(new NbtCompound());
 		}
 		tag.put("outfits", outLs);
+		return tag;
 	}
 
 	public float getRestrainedHeight() {
