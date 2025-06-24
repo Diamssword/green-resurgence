@@ -94,13 +94,14 @@ public class PlayerCharacters implements ComponentV3, AutoSyncedComponent {
 			currentCharID = id;
 			var dt = player.getComponent(Components.PLAYER_DATA);
 			var newAp = savedAppearence.remove(id);
+			savedAppearence.put(oldChar, dt.appearance.writeToNbt(new NbtCompound(), false));
 			if (newAp != null) {
-				savedAppearence.put(oldChar, dt.appearance.writeToNbt(new NbtCompound(), false));
+				System.out.println(savedAppearence.get(oldChar));
 				dt.appearance.readFromNbt(newAp);
 			}
 			var newSt = savedStats.remove(id);
+			savedStats.put(id, dt.stats.write());
 			if (newSt != null) {
-				savedStats.put(id, dt.stats.write());
 				dt.stats.read(newSt);
 			}
 			SkinServerCache.serverCache.addToCache(player.getUuid(), car.base64Skin, car.base64SkinHead, car.appearence.slim);
