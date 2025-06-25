@@ -4,7 +4,6 @@ import com.diamssword.greenresurgence.http.APIService;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.CosmeticsPackets;
 import com.diamssword.greenresurgence.systems.Components;
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -31,36 +30,14 @@ public class SkinCommand {
 
 	public static void register(LiteralArgumentBuilder<ServerCommandSource> builder) {
 		var root = builder.requires(ctx -> ctx.hasPermissionLevel(2));
-		var link = CommandManager.literal("link").then(CommandManager.argument("code", StringArgumentType.string()).executes(SkinCommand::linkExec).then(CommandManager.argument("player", EntityArgumentType.player()).executes(SkinCommand::linkExec)));
 		var add = CommandManager.literal("add").then(CommandManager.argument("code", StringArgumentType.string()).executes(SkinCommand::createExec1).then(CommandManager.argument("player", EntityArgumentType.player()).executes(SkinCommand::createExec1)));
 		var replace = CommandManager.literal("replace").then(CommandManager.argument("character", StringArgumentType.string()).suggests(SUGGESTION_PROVIDER).then(CommandManager.argument("code", StringArgumentType.string()).executes(SkinCommand::replaceExec).then(CommandManager.argument("player", EntityArgumentType.player()).executes(SkinCommand::replaceExec))));
 		var switc = CommandManager.literal("switch").then(CommandManager.argument("character", StringArgumentType.string()).suggests(SUGGESTION_PROVIDER).executes(SkinCommand::switchExec).then(CommandManager.argument("player", EntityArgumentType.player()).executes(SkinCommand::switchExec)));
 		var remov = CommandManager.literal("delete").then(CommandManager.argument("character", StringArgumentType.string()).suggests(SUGGESTION_PROVIDER).executes(SkinCommand::removeExec).then(CommandManager.argument("player", EntityArgumentType.player()).executes(SkinCommand::removeExec)));
-//		var player = CommandManager.literal("change").then(CommandManager.argument("code", StringArgumentType.string()).executes(SkinCommand::createExec).then(CommandManager.argument("player", EntityArgumentType.player()).executes(SkinCommand::createExec)));
-		//root.then(link);
 		root.then(add);
 		root.then(replace);
 		root.then(switc);
 		root.then(remov);
-	}
-
-	private static int linkExec(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
-		var entity = ctx.getSource().getPlayer();
-		try {
-			entity = EntityArgumentType.getPlayer(ctx, "player");
-		} catch (IllegalArgumentException ignored) {
-		}
-		String sub = StringArgumentType.getString(ctx, "code");
-		if (entity != null && sub != null) {
-			APIService.linkAccount(entity, sub).handle((b, t) -> {
-				if (t != null)
-					t.printStackTrace();
-				ctx.getSource().sendFeedback(() -> Text.literal(b ? "Compte lié!" : "Erreur, veuillez réessayer"), true);
-				return true;
-			});
-			return Command.SINGLE_SUCCESS;
-		}
-		return 0;
 	}
 
 	private static int switchExec(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
@@ -168,32 +145,6 @@ public class SkinCommand {
 			return -1;
 		}
 		return 0;
-	}
-
-	private static int createExec(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
-		var entity = ctx.getSource().getPlayer();
-		try {
-			entity = EntityArgumentType.getPlayer(ctx, "player");
-		} catch (IllegalArgumentException ignored) {
-		}
-		String sub = StringArgumentType.getString(ctx, "code");
-		if (entity != null) {
-			ServerPlayerEntity finalEntity = entity;
-			APIService.validateSkin(entity, sub).handle((b, t) -> {
-				if (t != null)
-					t.printStackTrace();
-				ctx.getSource().sendFeedback(() -> Text.literal(b ? "Skin sauvgardé!" : "Erreur, veuillez réessayer"), true);
-				if (b) {
-					ctx.getSource().getPlayer().getComponent(Components.PLAYER_DATA).appearance.refreshSkinData();
-					Channels.MAIN.serverHandle(ctx.getSource().getServer()).send(new CosmeticsPackets.RefreshSkin(finalEntity.getGameProfile().getId()));
-				}
-				return true;
-			});
-
-			return 1;
-		}
-		return 0;
-
 	}
 
 }

@@ -46,45 +46,12 @@ public class APIService {
 	 * @param code
 	 * @return true if the skin was processed
 	 */
-	public static CompletableFuture<Boolean> validateSkin(PlayerEntity player, String code) {
-		var ob = new JsonObject();
-		ob.addProperty("code", code);
-		ob.addProperty("uuid", player.getGameProfile().getId().toString());
-
-		return postRequest(url + "/api/player/validate", token, ob).thenApply(v -> {
-			if (v.statusCode() == 403) {
-				try {
-					return login().thenApply(c -> {
-						if (!c)
-							return false;
-						else {
-							try {
-								return validateSkin(player, code).get();
-							} catch (ExecutionException | InterruptedException e) {
-								return false;
-							}
-						}
-					}).get();
-				} catch (ExecutionException | InterruptedException e) {
-					return false;
-				}
-			} else return v.statusCode() == 200;
-		});
-	}
-
-	/**
-	 * Use a code to validate a skin to the api_server
-	 *
-	 * @param player
-	 * @param code
-	 * @return true if the skin was processed
-	 */
 	public static CompletableFuture<Optional<ApiCharacterValues>> importCharacter(PlayerEntity player, String code) {
 		var ob = new JsonObject();
 		ob.addProperty("code", code);
 		ob.addProperty("uuid", player.getGameProfile().getId().toString());
 
-		return postRequest(url + "/api/player/validate1", token, ob).thenApply(v -> {
+		return postRequest(url + "/api/player/validate", token, ob).thenApply(v -> {
 			if (v.statusCode() != 200) {
 				try {
 					return login().thenApply(c -> {
@@ -117,39 +84,6 @@ public class APIService {
 				return Optional.of(new Pair<>(b, Utils.parseUUID(uis)));
 			}
 			return Optional.empty();
-		});
-	}
-
-	/**
-	 * Use a code to link player account to the website
-	 *
-	 * @param player
-	 * @param code
-	 * @return true if succesfully linked
-	 */
-	public static CompletableFuture<Boolean> linkAccount(PlayerEntity player, String code) {
-		var ob = new JsonObject();
-		ob.addProperty("code", code);
-		ob.addProperty("uuid", player.getGameProfile().getId().toString());
-
-		return postRequest(url + "/api/player/link", token, ob).thenApply(v -> {
-			if (v.statusCode() == 403) {
-				try {
-					return login().thenApply(c -> {
-						if (!c)
-							return false;
-						else {
-							try {
-								return validateSkin(player, code).get();
-							} catch (ExecutionException | InterruptedException e) {
-								return false;
-							}
-						}
-					}).get();
-				} catch (ExecutionException | InterruptedException e) {
-					return false;
-				}
-			} else return v.statusCode() == 200;
 		});
 	}
 

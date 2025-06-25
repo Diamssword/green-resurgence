@@ -20,6 +20,7 @@ public class PlayerCharacters implements ComponentV3, AutoSyncedComponent {
 	private final Map<String, ApiCharacterValues> characters = new HashMap<>();
 	private final Map<String, NbtCompound> savedStats = new HashMap<>();
 	private final Map<String, NbtCompound> savedAppearence = new HashMap<>();
+	private final Map<String, NbtCompound> savedInventory = new HashMap<>();
 
 	private String currentCharID;
 	private ApiCharacterValues currentCharacter;
@@ -37,6 +38,7 @@ public class PlayerCharacters implements ComponentV3, AutoSyncedComponent {
 			});
 			NBTToMap(savedAppearence, tag.getCompound("appearance"), t -> t);
 			NBTToMap(savedStats, tag.getCompound("stats"), t -> t);
+			NBTToMap(savedInventory, tag.getCompound("inventory"), t -> t);
 		}
 		if (tag.contains("current")) {
 			currentCharID = tag.getString("current");
@@ -55,6 +57,7 @@ public class PlayerCharacters implements ComponentV3, AutoSyncedComponent {
 		tag.put("characters", mapToNBT(characters, ApiCharacterValues::toNBT));
 		tag.put("stats", mapToNBT(savedStats, t -> t));
 		tag.put("appearance", mapToNBT(savedAppearence, t -> t));
+		tag.put("inventory", mapToNBT(savedInventory, t -> t));
 		if (currentCharID != null)
 			tag.putString("current", currentCharID);
 	}
@@ -96,13 +99,19 @@ public class PlayerCharacters implements ComponentV3, AutoSyncedComponent {
 			var newAp = savedAppearence.remove(id);
 			savedAppearence.put(oldChar, dt.appearance.writeToNbt(new NbtCompound(), false));
 			if (newAp != null) {
-				System.out.println(savedAppearence.get(oldChar));
 				dt.appearance.readFromNbt(newAp);
 			}
 			var newSt = savedStats.remove(id);
 			savedStats.put(id, dt.stats.write());
 			if (newSt != null) {
 				dt.stats.read(newSt);
+			}
+			var inv = player.getComponent(Components.PLAYER_INVENTORY);
+			var newInv = savedInventory.remove(id);
+			savedInventory.put(oldChar, inv.getInventory().toNBTComplete());
+			if (newInv != null) {
+				inv.getInventory().clearCache();
+				inv.getInventory().fromNBTComplete(newInv, this.player);
 			}
 			SkinServerCache.serverCache.addToCache(player.getUuid(), car.base64Skin, car.base64SkinHead, car.appearence.slim);
 			player.syncComponent(Components.PLAYER_CHARACTERS);
@@ -112,6 +121,9 @@ public class PlayerCharacters implements ComponentV3, AutoSyncedComponent {
 
 	public void deleteCharacter(String id) {
 		characters.remove(id);
+		savedInventory.remove(id);
+		savedStats.remove(id);
+		savedAppearence.remove(id);
 		if (id.equals(currentCharID)) {
 			currentCharID = null;
 		}
