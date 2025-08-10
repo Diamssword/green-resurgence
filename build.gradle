@@ -17,12 +17,19 @@ repositories {
         url = 'https://maven.ladysnake.org/releases'
     }
     maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+    }
+    maven {
         name = 'GeckoLib'
         url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
         content {
             includeGroupByRegex("software\\.bernie.*")
             includeGroup("com.eliotlash.mclib")
         }
+    }
+    flatDir {
+        dirs rootProject.file('libs')
     }
     // Add repositories to retrieve artifacts from in here.
     // You should only use this when depending on other mods because
@@ -80,10 +87,9 @@ dependencies {
 
     include modApi("teamreborn:energy:${energyapi_version}")
 
-    // Uncomment the following line to enable the deprecated Fabric API modules.
-    // These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
+    modImplementation "maven.modrinth:continuity:${continuity_version}"
 
-    // modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
+    api name: 'character_sheet-api-fabric', version: '1.0.0'
 }
 
 processResources {

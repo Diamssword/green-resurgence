@@ -68,7 +68,8 @@ public class ArmorTinkererBlock extends ModBlockEntity<ArmorTinkererBlockEntity>
 	}
 
 	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-		world.setBlockState(pos.up(), state.with(BOTTOM, false));
+		FluidState fluidState = world.getFluidState(pos.up());
+		world.setBlockState(pos.up(), state.with(BOTTOM, false).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER));
 	}
 
 	@Override

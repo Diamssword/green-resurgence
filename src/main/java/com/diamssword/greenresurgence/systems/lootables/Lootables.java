@@ -3,9 +3,11 @@ package com.diamssword.greenresurgence.systems.lootables;
 import com.diamssword.greenresurgence.GreenResurgence;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class Lootables {
@@ -24,6 +26,23 @@ public class Lootables {
 
 	public static boolean isGoodTool(Block b, Identifier tool) {
 		return loader.getTable(b).map(lootable -> lootable.asTool(tool)).orElse(false);
+	}
+
+	public static boolean meetRequirement(Block b, Identifier tool, PlayerEntity player) {
+
+		return loader.getTable(b).map(lootable -> {
+					if (lootable.asTool(tool)) {
+						var req = lootable.playerMeetRequirement(tool, player);
+						if (req)
+							return true;
+						else {
+							player.sendMessage(Text.literal("Vous n'avez pas l'expertise pour récuperer ça."), true);
+							return false;
+						}
+					}
+					return false;
+				}
+		).orElse(false);
 	}
 
 	public static Identifier getTableForBlock(Block b, Identifier tool) {

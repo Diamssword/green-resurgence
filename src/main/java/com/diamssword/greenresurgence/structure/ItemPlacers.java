@@ -23,14 +23,17 @@ public class ItemPlacers {
 	//public static MultiblockInstance rusted_car=multiblock("rusted_car",false);
 	public static StructurePlacerItem electric_post = structure("electric_post", true);
 	public static JigsawPlacerItem road_droit = jigsaw("road_droit", new Identifier("build", "roads/droit"));
-	public static JigsawPlacerItem road_inter_d = jigsaw("road_inter_d", new Identifier("build", "roads/intersection_d"));
-	public static JigsawPlacerItem road_inter_g = jigsaw("road_inter_g", new Identifier("build", "roads/intersection_g"));
-	public static JigsawPlacerItem road_carrfour = jigsaw("road_carrfour", new Identifier("build", "roads/carrfour"));
+	//public static JigsawPlacerItem road_inter_d = jigsaw("road_inter_d", new Identifier("build", "roads/intersection_d"));
+	//public static JigsawPlacerItem road_inter_g = jigsaw("road_inter_g", new Identifier("build", "roads/intersection_g"));
+	public static JigsawPlacerItem road_inter = jigsaw("road_inter", new Identifier("build", "roads/intersection"));
+	public static JigsawPlacerItem road_carrfour = jigsaw("road_carrfour", new Identifier("build", "roads/carrefour"));
 
 	public static JigsawPlacerItem road_angle_d = jigsaw("road_angle_d", new Identifier("build", "roads/angle_d"));
 	public static JigsawPlacerItem road_angle_g = jigsaw("road_angle_g", new Identifier("build", "roads/angle_g"));
 	public static JigsawPlacerItem container = jigsaw("container", new Identifier("build", "deco/containers/small"));
 	public static JigsawPlacerItem small_house = jigsaw("small_house", new Identifier("build", "small_house"));
+	public static JigsawPlacerItem medium_house = jigsaw("medium_house", new Identifier("build", "medium_house"));
+	public static JigsawPlacerItem big_house = jigsaw("big_house", new Identifier("build", "big_house"));
 	public static JigsawPlacerItem tree = jigsaw("tree", new Identifier("build", "props/tree/basic"));
 
 	public static JigsawPlacerItem jigsaw(String name, Identifier pool) {

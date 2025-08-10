@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence;
 
-import com.diamssword.greenresurgence.gui.Handlers;
+import com.diamssword.greenresurgence.gui.ScreenHandlers;
 import com.diamssword.greenresurgence.gui.components.ComponentsRegister;
 import com.diamssword.greenresurgence.gui.hud.CustomHud;
 import com.diamssword.greenresurgence.items.ItemModelOverrideProvider;
@@ -18,7 +18,6 @@ public class GreenResurgenceClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-
 		Entities.init();
 		Keybinds.init();
 		RenderersRegister.init();
@@ -26,7 +25,7 @@ public class GreenResurgenceClient implements ClientModInitializer {
 		ClientEvents.initialize();
 		ItemModelOverrideProvider.init();
 
-		Handlers.init();
+		ScreenHandlers.init();
 		ComponentsRegister.init();
 		CustomHud.init();
 	}

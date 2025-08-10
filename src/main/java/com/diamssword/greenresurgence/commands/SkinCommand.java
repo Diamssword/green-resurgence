@@ -52,7 +52,7 @@ public class SkinCommand {
 			var chs = finalEntity.getComponent(Components.PLAYER_CHARACTERS);
 			if (chs.getCharactersNames().contains(sub)) {
 				chs.switchCharacter(sub);
-				ctx.getSource().getPlayer().getComponent(Components.PLAYER_DATA).appearance.refreshSkinData();
+				finalEntity.getComponent(Components.PLAYER_DATA).appearance.refreshSkinData();
 				Channels.MAIN.serverHandle(ctx.getSource().getServer()).send(new CosmeticsPackets.RefreshSkin(finalEntity.getGameProfile().getId()));
 				ctx.getSource().sendFeedback(() -> Text.literal("Personnage appliqué: " + chs.getCurrentCharacterID()), true);
 				return 1;
@@ -98,7 +98,7 @@ public class SkinCommand {
 				if (b.isPresent()) {
 					var chs = finalEntity.getComponent(Components.PLAYER_CHARACTERS);
 					chs.switchCharacter(chs.addNewCharacter(b.get()));
-					ctx.getSource().getPlayer().getComponent(Components.PLAYER_DATA).appearance.refreshSkinData();
+					finalEntity.getComponent(Components.PLAYER_DATA).appearance.refreshSkinData();
 					Channels.MAIN.serverHandle(ctx.getSource().getServer()).send(new CosmeticsPackets.RefreshSkin(finalEntity.getGameProfile().getId()));
 					ctx.getSource().sendFeedback(() -> Text.literal("Nouveau personnage appliqué avec succés: " + chs.getCurrentCharacterID()), true);
 					return 1;
@@ -130,7 +130,7 @@ public class SkinCommand {
 					if (b.isPresent()) {
 						chs.replaceCharacter(chara, b.get());
 						chs.switchCharacter(chara);
-						ctx.getSource().getPlayer().getComponent(Components.PLAYER_DATA).appearance.refreshSkinData();
+						finalEntity.getComponent(Components.PLAYER_DATA).appearance.refreshSkinData();
 						Channels.MAIN.serverHandle(ctx.getSource().getServer()).send(new CosmeticsPackets.RefreshSkin(finalEntity.getGameProfile().getId()));
 						ctx.getSource().sendFeedback(() -> Text.literal("Nouveau personnage appliqué avec succés: " + chs.getCurrentCharacterID()), true);
 						return 1;

@@ -55,6 +55,18 @@ public class MBlocks implements BlockRegistryContainer {
 		}
 	};
 	@DiamsGroup
+	public static final LayerModelBlock BOOK_VERTICAL_A = new LayerModelBlock(AbstractBlock.Settings.create().sounds(BlockSoundGroup.CANDLE)) {
+		public int layers() {
+			return 6;
+		}
+	};
+	@DiamsGroup
+	public static final LayerModelBlock BOOK_VERTICAL_B = new LayerModelBlock(AbstractBlock.Settings.create().sounds(BlockSoundGroup.CANDLE)) {
+		public int layers() {
+			return 6;
+		}
+	};
+	@DiamsGroup
 	public static final LayerModelBlock MILK_CARDBOARD = new LayerModelBlock(AbstractBlock.Settings.create().sounds(BlockSoundGroup.CANDLE)) {
 		public int layers() {
 			return 10;

@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.gui.faction;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.gui.ClickableLayoutComponent;
+import com.diamssword.greenresurgence.gui.components.ClickableLayoutComponent;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.GuildPackets;
 import com.diamssword.greenresurgence.render.cosmetics.SkinsLoader;

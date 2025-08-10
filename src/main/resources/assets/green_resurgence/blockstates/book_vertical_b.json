@@ -1,0 +1,125 @@
+{
+  "variants": 
+  {
+   "facing=north,layers=1": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_1",
+      "uvlock": false,
+      "y": 0
+   },
+   "facing=east,layers=1": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_1",
+      "uvlock": false,
+      "y": 90
+   },
+   "facing=south,layers=1": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_1",
+      "uvlock": false,
+      "y": 180
+   },
+   "facing=west,layers=1": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_1",
+      "uvlock": false,
+      "y": 270
+   },
+   "facing=north,layers=2": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_2",
+      "uvlock": false,
+      "y": 0
+   },
+   "facing=east,layers=2": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_2",
+      "uvlock": false,
+      "y": 90
+   },
+   "facing=south,layers=2": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_2",
+      "uvlock": false,
+      "y": 180
+   },
+   "facing=west,layers=2": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_2",
+      "uvlock": false,
+      "y": 270
+   },
+   "facing=north,layers=3": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_3",
+      "uvlock": false,
+      "y": 0
+   },
+   "facing=east,layers=3": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_3",
+      "uvlock": false,
+      "y": 90
+   },
+   "facing=south,layers=3": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_3",
+      "uvlock": false,
+      "y": 180
+   },
+   "facing=west,layers=3": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_3",
+      "uvlock": false,
+      "y": 270
+   },
+   "facing=north,layers=4": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_4",
+      "uvlock": false,
+      "y": 0
+   },
+   "facing=east,layers=4": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_4",
+      "uvlock": false,
+      "y": 90
+   },
+   "facing=south,layers=4": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_4",
+      "uvlock": false,
+      "y": 180
+   },
+   "facing=west,layers=4": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_4",
+      "uvlock": false,
+      "y": 270
+   },
+   "facing=north,layers=5": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_5",
+      "uvlock": false,
+      "y": 0
+   },
+   "facing=east,layers=5": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_5",
+      "uvlock": false,
+      "y": 90
+   },
+   "facing=south,layers=5": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_5",
+      "uvlock": false,
+      "y": 180
+   },
+   "facing=west,layers=5": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_5",
+      "uvlock": false,
+      "y": 270
+   },
+   "facing=north,layers=6": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_6",
+      "uvlock": false,
+      "y": 0
+   },
+   "facing=east,layers=6": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_6",
+      "uvlock": false,
+      "y": 90
+   },
+   "facing=south,layers=6": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_6",
+      "uvlock": false,
+      "y": 180
+   },
+   "facing=west,layers=6": {
+      "model": "green_resurgence:block/diams/book_vertical_b_layers_6",
+      "uvlock": false,
+      "y": 270
+   }
+}
+}

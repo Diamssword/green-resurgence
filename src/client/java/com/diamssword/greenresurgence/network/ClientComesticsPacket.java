@@ -1,11 +1,15 @@
 package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.render.cosmetics.SkinsLoader;
-import com.diamssword.greenresurgence.systems.character.SkinServerCache;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Consumer;
 
 public class ClientComesticsPacket {
-	public static void init() {
+	public static Consumer<Map<UUID, SkinServerCache.PlayerPresence>> PlayerProfilesRequestCallback = null;
 
+	public static void init() {
 		Channels.MAIN.registerClientbound(CosmeticsPackets.RefreshSkin.class, (message, access) -> {
 			SkinsLoader.clientSkinCache.removeFromCache(message.player());
 			SkinsLoader.instance.markReload(message.player(), true);
@@ -25,6 +29,13 @@ public class ClientComesticsPacket {
 			SkinsLoader.clientSkinCache.addToCache(msg.player(), msg.skin(), msg.skinHead(), msg.slim());
 			SkinsLoader.instance.markReload(msg.player(), true);
 		});
+		Channels.MAIN.registerClientbound(SkinServerCache.SendPlayerPresences.class, (msg, ctx) -> {
+			msg.presences().forEach((k, v) -> SkinsLoader.instance.loadSkinHeadOffline(k, v.head()));
+			if (PlayerProfilesRequestCallback != null)
+				PlayerProfilesRequestCallback.accept(msg.presences());
+			PlayerProfilesRequestCallback = null;
+		});
+
 	}
 
 }

@@ -26,6 +26,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
@@ -49,7 +50,7 @@ public class LootedBlockEntity extends BlockEntity {
 
 	public BlockState getDisplayBlock() {
 		if (emptyBlock == null && this.block != null)
-			emptyBlock = Lootables.getEmptyBlock(block.getBlock()).getDefaultState();
+			emptyBlock = LootableLogic.copyStateProperties(block, Lootables.getEmptyBlock(block.getBlock()));
 		if (durability <= 0)
 			return emptyBlock;
 		else
@@ -59,7 +60,13 @@ public class LootedBlockEntity extends BlockEntity {
 
 	public void setRealBlock(BlockState state) {
 		this.block = state;
-		this.emptyBlock = Lootables.getEmptyBlock(block.getBlock()).getDefaultState();
+		this.emptyBlock = LootableLogic.copyStateProperties(state, Lootables.getEmptyBlock(block.getBlock()));
+		boolean w = false;
+		var db = getDisplayBlock();
+		if (db.getProperties().contains(Properties.WATERLOGGED)) {
+			w = db.get(Properties.WATERLOGGED);
+		}
+		this.world.setBlockState(this.pos, this.getWorld().getBlockState(this.pos).with(Properties.WATERLOGGED, w));
 		this.markDirty();
 		this.world.updateListeners(this.pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_ALL);
 	}
@@ -118,7 +125,7 @@ public class LootedBlockEntity extends BlockEntity {
 		durability = nbt.getInt("durability");
 		lastBreak = nbt.getLong("lastBreak");
 		block = NbtHelper.toBlockState(Registries.BLOCK.getReadOnlyWrapper(), nbt.getCompound("block"));
-		emptyBlock = Lootables.getEmptyBlock(block.getBlock()).getDefaultState();
+		emptyBlock = LootableLogic.copyStateProperties(block, Lootables.getEmptyBlock(block.getBlock()));
 		if (nbt.contains("inventory")) {
 			inventory = new SimpleInventory(9);
 			inventory.readNbtList(nbt.getList("inventory", NbtElement.COMPOUND_TYPE));

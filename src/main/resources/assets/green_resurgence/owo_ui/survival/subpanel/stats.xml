@@ -1,0 +1,51 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+    <components>
+                <flow-layout direction="vertical">
+                    <children>
+                        <flow-layout direction="horizontal" id="flow1">
+                            <children>
+                                <player id="playerSkin">
+                                  <sizing>
+
+                                    <vertical method="fill">90</vertical>
+                                    </sizing>
+                                    <look-at-cursor>true</look-at-cursor>
+                                    <scale-to-fit>true</scale-to-fit>
+                                </player>
+                                <flow-layout direction="vertical" id="namePanel">
+                                    <children>
+
+                                    </children>
+                                </flow-layout>
+                                <flow-layout direction="horizontal">
+                                    <children>
+                                        <button id="openGui">
+                                            <text>Ouvrir</text>
+                                        </button>
+                                    </children>
+                                </flow-layout>
+                            </children>
+                            <sizing><horizontal method="fill">100</horizontal><vertical method="fixed">40</vertical></sizing>
+                            <surface><flat>#3F5427</flat></surface>
+                        </flow-layout>
+                        <scroll direction="vertical" id="scroll1">
+                             <freerowgrid columns="2" id="listPanel">
+                                 <children/>
+                                <sizing><horizontal method="fill">100</horizontal></sizing>
+                                <gap>2</gap>
+                             </freerowgrid>
+                            <surface><flat>#3F5427</flat></surface>
+                            <sizing><horizontal method="fill">100</horizontal><vertical method="fill">100</vertical></sizing>
+                        </scroll>
+
+                    </children>
+                    <padding><all>2</all></padding>
+                    <gap>2</gap>
+                    <surface>
+                        <outline>#3F5427</outline>
+                    </surface>
+                    <sizing><vertical method="fill">100</vertical><horizontal method="fill">100</horizontal></sizing>
+                </flow-layout>
+    </components>
+</owo-ui>

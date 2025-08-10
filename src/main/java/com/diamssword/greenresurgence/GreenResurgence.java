@@ -8,6 +8,7 @@ import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
 import com.diamssword.greenresurgence.systems.Events;
 import com.diamssword.greenresurgence.systems.attributs.Attributes;
+import com.diamssword.greenresurgence.systems.character.stats.ClassesLoader;
 import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
@@ -47,8 +48,10 @@ public class GreenResurgence implements ModInitializer {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(Lootables.loader);
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(ClothingLoader.instance);
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(Recipes.loader);
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(ClassesLoader.instance);
 		FieldRegistrationHandler.register(MItems.class, ID, false);
 		registerSubCat(Weapons.class, ID, "tools/", false);
+		registerSubCat(Shields.class, ID, "tools/shields/", false);
 		FieldRegistrationHandler.register(MBlocks.class, ID, false);
 		FieldRegistrationHandler.register(MBlockEntities.class, ID, false);
 		MBlockEntities.registerAll();

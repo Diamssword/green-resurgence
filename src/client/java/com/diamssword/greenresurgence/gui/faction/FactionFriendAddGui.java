@@ -1,9 +1,8 @@
 package com.diamssword.greenresurgence.gui.faction;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.gui.ClickableLayoutComponent;
 import com.diamssword.greenresurgence.gui.IPacketNotifiedChange;
-import com.diamssword.greenresurgence.http.APIService;
+import com.diamssword.greenresurgence.gui.components.ClickableLayoutComponent;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.GuildPackets;
 import com.diamssword.greenresurgence.render.cosmetics.SkinsLoader;
@@ -135,27 +134,24 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 	}
 
 	private void addOffline(String filter, FlowLayout parent) {
-		APIService.getInfosForUsername(filter).thenAccept(v -> {
-			if (v.isPresent()) {
-				if (v.get().getFirst()) {
-					AtomicReference<Identifier> texture = new AtomicReference<>(MISSING_HEAD);
-					var l = new ClickableLayoutComponent(Sizing.fill(100), Sizing.fixed(20), FlowLayout.Algorithm.HORIZONTAL);
-					var icon = Components.texture(MISSING_HEAD, 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(16));
-					l.child(icon);
-					l.onPress(v1 -> updateSelectedMenu(new FactionMember(v.get().getSecond(), filter, false), texture.get()));
-					l.gap(4).padding(Insets.horizontal(2));
-					l.child(Components.label(Text.literal(filter)));
-					l.surface(Surface.PANEL);
-					l.surface2(Surface.DARK_PANEL);
-					l.alignment(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
-					SkinsLoader.loadHead(v.get().getSecond(), v1 -> {
-						texture.set(v1);
-						l.removeChild(icon);
-						l.child(0, Components.texture(v1, 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(16)));
-					});
-					parent.child(0, l);
-
-				}
+		SkinsLoader.requestPlayerProfiles(filter).thenAccept(v -> {
+			for (var d : v.entrySet()) {
+				AtomicReference<Identifier> texture = new AtomicReference<>(MISSING_HEAD);
+				var l = new ClickableLayoutComponent(Sizing.fill(100), Sizing.fixed(20), FlowLayout.Algorithm.HORIZONTAL);
+				var icon = Components.texture(MISSING_HEAD, 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(16));
+				l.child(icon);
+				l.onPress(v1 -> updateSelectedMenu(new FactionMember(d.getKey(), d.getValue().username(), false), texture.get()));
+				l.gap(4).padding(Insets.horizontal(2));
+				l.child(Components.label(Text.literal(d.getValue().characterName())));
+				l.surface(Surface.PANEL);
+				l.surface2(Surface.DARK_PANEL);
+				l.alignment(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+				SkinsLoader.loadHead(d.getKey(), v1 -> {
+					texture.set(v1);
+					l.removeChild(icon);
+					l.child(0, Components.texture(v1, 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(16)));
+				});
+				parent.child(0, l);
 
 			}
 		});

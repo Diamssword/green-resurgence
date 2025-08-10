@@ -8,7 +8,6 @@ import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.parsing.UIModel;
 import io.wispforest.owo.ui.parsing.UIParsing;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -88,6 +87,7 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
 			RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, this.hideTimer / 100f);
+			RenderSystem.enableDepthTest();
 		}
 
 		var matrices = context.getMatrices();
@@ -118,25 +118,6 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 		}
 	}
 
-	public static void renderHotbarItem(MinecraftClient client, OwoUIDrawContext context, int x, int y, float f, PlayerEntity player, ItemStack stack, int seed) {
-		if (!stack.isEmpty()) {
-			float g = (float) stack.getBobbingAnimationTime() - f;
-			if (g > 0.0F) {
-				float h = 1.0F + g / 5.0F;
-				context.getMatrices().push();
-				context.getMatrices().translate((float) (x + 8), (float) (y + 12), 0.0F);
-				context.getMatrices().scale(1.0F / h, (h + 1.0F) / 2.0F, 1.0F);
-				context.getMatrices().translate((float) (-(x + 8)), (float) (-(y + 12)), 0.0F);
-			}
-
-			context.drawItem(player, stack, x, y, seed);
-			if (g > 0.0F) {
-				context.getMatrices().pop();
-			}
-
-			context.drawItemInSlot(client.textRenderer, stack, x, y);
-		}
-	}
 
 	public List<ItemStack> getStacks() {
 		return stacks;
@@ -144,7 +125,7 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 
 	public void setStacks(DefaultedList<ItemStack> stacks) {
 		if (!stacks.equals(this.stacks))
-			hideTimer = 100;
+			hideTimer = 110;
 		this.stacks = stacks;
 		if (this.size != stacks.size()) {
 			this.size = stacks.size();
@@ -152,7 +133,7 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 			this.applySizing();
 		} else
 			this.size = stacks.size();
-		hideTimer = Math.max(hideTimer - 1, 0);
+		hideTimer = MinecraftClient.getInstance().player.isCreative() ? 200 : Math.max(hideTimer - 1, 0);
 	}
 
 	public float getSelected() {
@@ -166,7 +147,7 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 	public void setSelected(int selected) {
 		var s = Math.min(selected, size - 1);
 		if (this.selected != s)
-			hideTimer = 100;
+			hideTimer = 110;
 		this.selected = s;
 	}
 

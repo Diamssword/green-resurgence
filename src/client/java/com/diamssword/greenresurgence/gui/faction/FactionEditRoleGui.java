@@ -1,8 +1,8 @@
 package com.diamssword.greenresurgence.gui.faction;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.gui.ClickableLayoutComponent;
 import com.diamssword.greenresurgence.gui.IPacketNotifiedChange;
+import com.diamssword.greenresurgence.gui.components.ClickableLayoutComponent;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.GuildPackets;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionPerm;

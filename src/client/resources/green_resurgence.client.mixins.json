@@ -3,20 +3,22 @@
   "package": "com.diamssword.greenresurgence.mixin.client",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "ClientAccessor",
     "ClientMixing",
     "ClientPlayerEntityMixin",
     "ClientWorldMixin",
+    "FontManagerAccessor",
     "InGameHudMixin",
     "LivingRendererAccessor",
     "OwOSurfaceMixin",
     "PlayerListEntryMixin",
     "PlayerModelMixin",
     "PlayerRenderMixin",
-    "PlayerSkinProviderAcessor",
+    "PlayerSkinProviderAccessor",
     "UserAttackBlockMixin",
     "WorldRenderMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-	}
+  }
 }

@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence.items;
 
-import com.diamssword.greenresurgence.Weapons;
+import com.diamssword.greenresurgence.Shields;
 import net.minecraft.client.item.ClampedModelPredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.util.Identifier;
@@ -10,10 +10,7 @@ public class ItemModelOverrideProvider {
 	private static final ClampedModelPredicateProvider activated_predicate = (stack, world, entity, seed) -> stack != null && stack.getOrCreateNbt().getBoolean("activated") ? 1.0F : 0.0F;
 
 	public static void init() {
-		ModelPredicateProviderRegistry.register(Weapons.TRASH_SHIELD, new Identifier("blocking"), shield_predicate);
-		ModelPredicateProviderRegistry.register(Weapons.TRASH_SHIELD_GREEN, new Identifier("blocking"), shield_predicate);
-		ModelPredicateProviderRegistry.register(Weapons.SHIELD_WOOD_PLANK, new Identifier("blocking"), shield_predicate);
-		ModelPredicateProviderRegistry.register(Weapons.SHIELD_NO_WAY, new Identifier("blocking"), shield_predicate);
-		// ModelPredicateProviderRegistry.register(Weapons.FLAME_SWORD_ONE_HANDED, new Identifier("activated"), activated_predicate);
+		Shields.specialRenderRegister.forEach(v -> ModelPredicateProviderRegistry.register(v, new Identifier("blocking"), shield_predicate));
+		Shields.specialRenderRegister.clear();
 	}
 }

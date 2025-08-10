@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.systems.character;
 
 import com.diamssword.greenresurgence.http.ApiCharacterValues;
+import com.diamssword.greenresurgence.network.SkinServerCache;
 import com.diamssword.greenresurgence.systems.Components;
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -49,11 +50,6 @@ public class PlayerCharacters implements ComponentV3, AutoSyncedComponent {
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		var t1 = new NbtCompound();
-
-		characters.forEach((k, v) -> {
-			t1.put(k, v.toNBT());
-		});
 		tag.put("characters", mapToNBT(characters, ApiCharacterValues::toNBT));
 		tag.put("stats", mapToNBT(savedStats, t -> t));
 		tag.put("appearance", mapToNBT(savedAppearence, t -> t));
@@ -97,25 +93,28 @@ public class PlayerCharacters implements ComponentV3, AutoSyncedComponent {
 			currentCharID = id;
 			var dt = player.getComponent(Components.PLAYER_DATA);
 			var newAp = savedAppearence.remove(id);
-			savedAppearence.put(oldChar, dt.appearance.writeToNbt(new NbtCompound(), false));
+			if (oldChar != null)
+				savedAppearence.put(oldChar, dt.appearance.writeToNbt(new NbtCompound(), false));
 			if (newAp != null) {
 				dt.appearance.readFromNbt(newAp);
 			}
 			var newSt = savedStats.remove(id);
-			savedStats.put(id, dt.stats.write());
+			if (oldChar != null)
+				savedStats.put(oldChar, dt.stats.write());
 			if (newSt != null) {
 				dt.stats.read(newSt);
 			}
 			var inv = player.getComponent(Components.PLAYER_INVENTORY);
 			var newInv = savedInventory.remove(id);
-			savedInventory.put(oldChar, inv.getInventory().toNBTComplete());
+			if (oldChar != null)
+				savedInventory.put(oldChar, inv.getInventory().toNBTComplete());
 			if (newInv != null) {
 				inv.getInventory().clearCache();
 				inv.getInventory().fromNBTComplete(newInv, this.player);
 			}
-			SkinServerCache.serverCache.addToCache(player.getUuid(), car.base64Skin, car.base64SkinHead, car.appearence.slim);
+			SkinServerCache.get(player.getServer()).addToCache(player.getUuid(), car.base64Skin, car.base64SkinHead, car.appearence.slim);
 			player.syncComponent(Components.PLAYER_CHARACTERS);
-
+			SkinServerCache.get(player.getServer()).setActiveCharacter(player, currentCharacter.stats.firstname + " " + currentCharacter.stats.lastname, currentCharacter.base64SkinHead);
 		}
 	}
 

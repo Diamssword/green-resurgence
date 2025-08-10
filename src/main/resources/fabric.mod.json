@@ -40,7 +40,9 @@
     "fabricloader": ">=0.15.6",
     "minecraft": "~1.20.1",
     "java": ">=17",
-    "fabric-api": "*"
+    "fabric-api": "*",
+    "geckolib": ">=4.7.2",
+    "team_reborn_energy": ">=3.0.0"
   },
   "suggests": {
     "another-mod": "*"
@@ -50,7 +52,8 @@
       "green_resurgence:base_list",
       "green_resurgence:player_data",
       "green_resurgence:player_inventory",
-      "green_resurgence:player_characters"
+      "green_resurgence:player_characters",
+      "green_resurgence:player_cache"
     ]
   }
 }

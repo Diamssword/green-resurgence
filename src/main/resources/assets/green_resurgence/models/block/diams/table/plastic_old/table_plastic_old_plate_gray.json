@@ -1,0 +1,5 @@
+{
+"parent":"green_resurgence:block/diams/table/plastic_old/table_plastic_old_plate_white",
+"textures": {
+		"0": "green_resurgence:block/diams/plastic_gray"
+		}}

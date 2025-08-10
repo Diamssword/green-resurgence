@@ -2,7 +2,7 @@ package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.GridContainerSyncer;
-import com.diamssword.greenresurgence.systems.character.SkinServerCache;
+import com.diamssword.greenresurgence.systems.character.stats.ClassesLoader;
 import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
 import com.diamssword.greenresurgence.systems.crafting.CraftingResult;
 import com.diamssword.greenresurgence.systems.crafting.RecipeLoader;
@@ -12,6 +12,9 @@ import com.diamssword.greenresurgence.systems.faction.perimeter.components.Facti
 import com.diamssword.greenresurgence.systems.lootables.LootablesReloader;
 import io.wispforest.owo.network.OwoNetChannel;
 import io.wispforest.owo.network.serialization.PacketBufSerializer;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3i;
 
@@ -37,6 +40,7 @@ public class Channels {
 		PacketBufSerializer.register(SimpleRecipe.class, SimpleRecipe::serializer, SimpleRecipe::unserializer);
 		PacketBufSerializer.register(FactionMember.class, FactionMember::serializer, FactionMember::unserializer);
 		PacketBufSerializer.register(FactionPerm.class, FactionPerm::serializer, FactionPerm::unserializer);
+		PacketBufSerializer.register(ClassesLoader.class, ClassesLoader::serializer, ClassesLoader::unserializer);
 		AdventureInteract.init();
 		StructureSizePacket.init();
 		CurrentZonePacket.init();
@@ -51,5 +55,31 @@ public class Channels {
 		GuildPackets.init();
 		ModularArmorPackets.init();
 		SkinServerCache.init();
+	}
+
+	public static boolean isSelfHost(MinecraftServer server, PlayerEntity player) {
+		return server.isHost(player.getGameProfile());
+	}
+
+	/**
+	 * IntegratedServer safe version, doesn't send packet to the player hosting;
+	 *
+	 * @param server
+	 * @return
+	 */
+	public static OwoNetChannel.ServerHandle serverHandle(MinecraftServer server) {
+		return MAIN.serverHandle(PlayerLookup.all(server).stream().filter(v -> !Channels.isSelfHost(server, v)).toList());
+	}
+
+	/**
+	 * IntegratedServer safe version, doesn't send packet to the player if he his hosting;
+	 *
+	 * @param player
+	 * @return
+	 */
+	public static <R extends Record> void sendToNonHost(PlayerEntity player, R... messages) {
+		if (!isSelfHost(player.getServer(), player)) {
+			MAIN.serverHandle(player).send(messages);
+		}
 	}
 }

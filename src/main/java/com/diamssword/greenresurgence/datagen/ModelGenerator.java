@@ -16,11 +16,12 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ModelGenerator extends FabricModelProvider {
-	public static Map<Identifier, Item> blockItems=new HashMap<>();
+	public static Map<Identifier, Item> blockItems = new HashMap<>();
+
 	public ModelGenerator(FabricDataOutput generator) {
 		super(generator);
 	}
- 
+
 	@Override
 	public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
 
@@ -29,14 +30,14 @@ public class ModelGenerator extends FabricModelProvider {
 		}
 
 	}
- 
+
 	@Override
 	public void generateItemModels(ItemModelGenerator itemModelGenerator) {
 		for (GenericBlockSet set : GenericBlocks.sets) {
 			set.modelGenerator(itemModelGenerator);
 		}
-		blockItems.forEach((k,v)->{
-			itemModelGenerator.register(v, new Model(Optional.of(new Identifier(k.getNamespace(),"block/"+k.getPath())), Optional.empty()));
+		blockItems.forEach((k, v) -> {
+			itemModelGenerator.register(v, new Model(Optional.of(new Identifier(k.getNamespace(), "block/" + k.getPath())), Optional.empty()));
 		});
 
 		MaterialSet.registerModels(itemModelGenerator);

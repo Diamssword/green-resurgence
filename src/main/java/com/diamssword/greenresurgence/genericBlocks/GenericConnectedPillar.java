@@ -1,15 +1,16 @@
 package com.diamssword.greenresurgence.genericBlocks;
 
 import com.diamssword.greenresurgence.blocks.SideShelfBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.GlazedTerracottaBlock;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -21,8 +22,10 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
-public class GenericConnectedPillar extends GlazedTerracottaBlock implements IChairable {
+public class GenericConnectedPillar extends GlazedTerracottaBlock implements IChairable, Waterloggable {
 	public static final EnumProperty<SideShelfBlock.Model> MODEL = SideShelfBlock.MODEL;
+
+	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 	private final GenericBlockSet.Transparency transparency;
 	private final VoxelShape[] boxes;
 	private final boolean noHitbox;
@@ -38,11 +41,21 @@ public class GenericConnectedPillar extends GlazedTerracottaBlock implements ICh
 		this.damage = props.damage;
 		this.isChair = props.isSeat;
 		this.chairLvl = props.seatLevel;
+		this.setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false));
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		if (state.get(WATERLOGGED)) {
+			return Fluids.WATER.getStill(false);
+		}
+		return super.getFluidState(state);
 	}
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return super.getPlacementState(ctx).with(MODEL, getModelFor(ctx.getBlockPos(), ctx.getWorld(), ctx.getHorizontalPlayerFacing().getOpposite()));
+		FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
+		return super.getPlacementState(ctx).with(MODEL, getModelFor(ctx.getBlockPos(), ctx.getWorld(), ctx.getHorizontalPlayerFacing().getOpposite())).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 	}
 
 	private SideShelfBlock.Model getModelFor(BlockPos pos, WorldAccess world, Direction facing) {
@@ -72,6 +85,9 @@ public class GenericConnectedPillar extends GlazedTerracottaBlock implements ICh
 
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+		if (state.get(WATERLOGGED)) {
+			world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		}
 		if (direction.getHorizontal() > -1) {
 			return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos).with(MODEL, getModelFor(pos, world, state.get(FACING)));
 		}
@@ -81,7 +97,7 @@ public class GenericConnectedPillar extends GlazedTerracottaBlock implements ICh
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
-		builder.add(MODEL);
+		builder.add(MODEL, WATERLOGGED);
 	}
 
 	@Override

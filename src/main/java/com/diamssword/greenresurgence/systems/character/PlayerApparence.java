@@ -49,7 +49,7 @@ public class PlayerApparence {
 			skinDatas = car.appearence;
 			if (skinDatas != null) {
 				scaledHeight = ApiSkinValues.HeightMToMCScale(1, skinDatas.size);
-				Components.PLAYER_DATA.sync(parent.player);
+				PlayerData.syncApparence(parent.player);
 			}
 
 		}
@@ -161,7 +161,7 @@ public class PlayerApparence {
 			this.cloths.remove(layer);
 		else
 			this.cloths.put(layer, cloth);
-		Components.PLAYER_DATA.sync(parent.player);
+		PlayerData.syncApparence(parent.player);
 
 	}
 

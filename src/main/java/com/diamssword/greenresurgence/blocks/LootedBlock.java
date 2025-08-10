@@ -6,101 +6,123 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.Nullable;
 
-public class LootedBlock extends ModBlockEntity<LootedBlockEntity> {
+public class LootedBlock extends ModBlockEntity<LootedBlockEntity> implements Waterloggable {
 
-    public LootedBlock(Settings settings) {
-        super(settings);
-        this.setTickerFactory((w,s)->w.isClient?null:LootedBlockEntity::tick);
-    }
 
-    @Override
-    public Class<LootedBlockEntity> getBlockEntityClass() {
-        return LootedBlockEntity.class;
-    }
+	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
-    @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        // With inheriting from BlockWithEntity this defaults to INVISIBLE, so we need to change that!
-        return BlockRenderType.INVISIBLE;
-    }
-    /*
-    @Override
-    @Nullable
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return world.isClient?null: LootedBlock.checkType(type, MBlockEntities.LOOTED_BLOCk, LootedBlockEntity::tick);
-    }
-    @Nullable
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new LootedBlockEntity(pos,state);
-    }
-    public LootedBlockEntity getBlockEntity(BlockPos pos, BlockView world)
-    {
-        return (LootedBlockEntity) world.getBlockEntity(pos);
-    }*/
-    @Override
-    public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
-        return true;
-    }
-    @Override
-    public boolean hasSidedTransparency(BlockState state) {
-        return true;
-    }
+	public LootedBlock(Settings settings) {
+		super(settings);
+		this.setTickerFactory((w, s) -> w.isClient ? null : LootedBlockEntity::tick);
+	}
 
-    @Override
-    public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
-        return 1f;
-    }
-    @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+	@Override
+	public Class<LootedBlockEntity> getBlockEntityClass() {
+		return LootedBlockEntity.class;
+	}
 
-        LootedBlockEntity et=getBlockEntity(pos,world);
-        if(et!=null && et.getDisplayBlock() !=null)
-        {
-            return et.getDisplayBlock().getOutlineShape(world,pos,context);
-        }
+	@Override
+	public BlockRenderType getRenderType(BlockState state) {
+		// With inheriting from BlockWithEntity this defaults to INVISIBLE, so we need to change that!
+		return BlockRenderType.INVISIBLE;
+	}
 
-        return VoxelShapes.fullCube();
-    }
+	@Override
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		builder.add(WATERLOGGED);
+	}
 
-    @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        LootedBlockEntity et=getBlockEntity(pos,world);
-        if(et!=null && et.getDisplayBlock() !=null)
-        {
-            return getBlockEntity(pos,world).getDisplayBlock().getCollisionShape(world,pos,context);
-        }
-        return VoxelShapes.fullCube();
-    }
-    @Override
-    public VoxelShape getSidesShape(BlockState state, BlockView world, BlockPos pos) {
-        LootedBlockEntity et=getBlockEntity(pos,world);
-        if(et!=null && et.getDisplayBlock() !=null)
-        {
-            return getBlockEntity(pos,world).getDisplayBlock().getSidesShape(world,pos);
-        }
-        return VoxelShapes.fullCube();
-    }
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		if (state.get(WATERLOGGED)) {
+			return Fluids.WATER.getStill(false);
+		}
+		return super.getFluidState(state);
+	}
 
-    @Override
-    public VoxelShape getCameraCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        LootedBlockEntity et=getBlockEntity(pos,world);
-        if(et!=null)
-        {
-            if(et.durability<=0)
-                return VoxelShapes.empty();
-            return getBlockEntity(pos,world).getRealBlock().getCameraCollisionShape(world,pos,context);
-        }
-        return VoxelShapes.fullCube();
-    }
-    @Nullable
-    public static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> checkType(BlockEntityType<A> givenType, BlockEntityType<E> expectedType, BlockEntityTicker<? super E> ticker) {
-        return expectedType == givenType ? (BlockEntityTicker<A>) ticker : null;
-    }
+	/*
+	@Override
+	@Nullable
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return world.isClient?null: LootedBlock.checkType(type, MBlockEntities.LOOTED_BLOCk, LootedBlockEntity::tick);
+	}
+	@Nullable
+	@Override
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new LootedBlockEntity(pos,state);
+	}
+	public LootedBlockEntity getBlockEntity(BlockPos pos, BlockView world)
+	{
+		return (LootedBlockEntity) world.getBlockEntity(pos);
+	}*/
+	@Override
+	public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
+		return true;
+	}
+
+	@Override
+	public boolean hasSidedTransparency(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
+		return 1f;
+	}
+
+	@Override
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+
+		LootedBlockEntity et = getBlockEntity(pos, world);
+		if (et != null && et.getDisplayBlock() != null) {
+			return et.getDisplayBlock().getOutlineShape(world, pos, context);
+		}
+
+		return VoxelShapes.fullCube();
+	}
+
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		LootedBlockEntity et = getBlockEntity(pos, world);
+		if (et != null && et.getDisplayBlock() != null) {
+			return getBlockEntity(pos, world).getDisplayBlock().getCollisionShape(world, pos, context);
+		}
+		return VoxelShapes.fullCube();
+	}
+
+	@Override
+	public VoxelShape getSidesShape(BlockState state, BlockView world, BlockPos pos) {
+		LootedBlockEntity et = getBlockEntity(pos, world);
+		if (et != null && et.getDisplayBlock() != null) {
+			return getBlockEntity(pos, world).getDisplayBlock().getSidesShape(world, pos);
+		}
+		return VoxelShapes.fullCube();
+	}
+
+	@Override
+	public VoxelShape getCameraCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		LootedBlockEntity et = getBlockEntity(pos, world);
+		if (et != null) {
+			if (et.durability <= 0)
+				return VoxelShapes.empty();
+			return getBlockEntity(pos, world).getRealBlock().getCameraCollisionShape(world, pos, context);
+		}
+		return VoxelShapes.fullCube();
+	}
+
+	@Nullable
+	public static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> checkType(BlockEntityType<A> givenType, BlockEntityType<E> expectedType, BlockEntityTicker<? super E> ticker) {
+		return expectedType == givenType ? (BlockEntityTicker<A>) ticker : null;
+	}
 }

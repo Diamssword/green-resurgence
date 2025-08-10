@@ -5,13 +5,12 @@ loadStructureDir("structures")
 setupFolder()
 function loadStructureDir(mainDir) {
     const bundles = {};
-    const subBundles = []
-    flag = false;
+    var subBundles = []
     fs.readdirSync(mainDir).forEach(dir => {
         if (fs.statSync(mainDir + "/" + dir).isDirectory()) {
             const sub = loadStructureDir(mainDir + "/" + dir)
-            if (Object.keys(sub).length > 0)
-                subBundles.push(sub)
+            if (sub.length > 0)
+                subBundles=[...subBundles,...sub];
         }
         else if (dir.endsWith(".nbt")) {
             const ind = dir.lastIndexOf("_");
@@ -23,12 +22,12 @@ function loadStructureDir(mainDir) {
             }
 
         }
-    })
-    var ret={};
+    });
+    var ret=[];
         for (const ind in bundles) {
             var path = mainDir.replace("structures/", "build:") + "/" + ind;
             if (ind == "main")
-                ret["main"]=bundles[ind];
+                ret=bundles[ind];
             else
             {
                 if (!allBundles[path]) {
@@ -41,22 +40,30 @@ function loadStructureDir(mainDir) {
                 })
             }
         }
-        subBundles.forEach(v=>{
-            for (const ind in v) {
-                var path = mainDir.replace("structures/", "build:") + "/" + ind;
-                if (ind == "main")
-                    path = mainDir.replace("structures/", "build:");
-                if (!allBundles[path]) {
-                    allBundles[path] = [];
+        if(subBundles.length>0)
+        {
+            path = mainDir.replace("structures/", "build:");
+            var s="".split("/")
+            s[s.length-2]
+            subBundles.forEach(v=>{
+                let sp=v.split("/")
+                if(sp.length>=2)
+                {
+                    let p1=path+"/"+sp[sp.length-2];
+                    if (!allBundles[p1]) {
+                        allBundles[p1] = [];
+                    }
+                    allBundles[p1].push(v);
                 }
-                else
-                    console.warn("Conflit path " + path)
-                    v[ind].forEach(v1 => {
-                    allBundles[path].push(v1)
-                })
+            })
+            console.log(path)
+            if (!allBundles[path]) {
+                allBundles[path] = [];
             }
-        })
-           
+            subBundles.forEach(v1 => {
+                allBundles[path].push(v1)
+            })
+        }
     return ret;
 }
 

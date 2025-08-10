@@ -11,7 +11,6 @@ public class OpenScreenCommand {
 
 	public static void register(LiteralArgumentBuilder<ServerCommandSource> builder) {
 		builder.requires(ctx -> ctx.hasPermissionLevel(2))
-				.then(CommandManager.literal("customizer").executes(OpenScreenCommand::openCustomizer))
 				.then(CommandManager.literal("wardrobe").executes(OpenScreenCommand::openWardrobe))
 				.then(CommandManager.literal("stats").executes((ctx) -> openGuiPacket(ctx, GuiPackets.GUI.Stats)));
 
@@ -26,15 +25,8 @@ public class OpenScreenCommand {
 		return 0;
 	}
 
-	private static int openCustomizer(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
-		openGuiPacket(ctx, GuiPackets.GUI.Customizer);
-		return 1;
-
-	}
-
 	private static int openWardrobe(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
 		openGuiPacket(ctx, GuiPackets.GUI.Wardrobe);
 		return 1;
-
 	}
 }

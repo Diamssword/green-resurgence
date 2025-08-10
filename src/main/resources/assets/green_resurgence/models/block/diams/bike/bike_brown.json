@@ -1,0 +1,6 @@
+
+{
+"parent":"green_resurgence:block/diams/bike/bike_white",
+"textures": {
+		"1": "green_resurgence:block/diams/bike/bike_brown"
+		}}

@@ -3,10 +3,14 @@ package com.diamssword.greenresurgence.genericBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.Waterloggable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
@@ -20,9 +24,12 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
-public class OmniBlock extends Block implements IChairable {
+public class OmniBlock extends Block implements IChairable, Waterloggable {
+
+	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 	public static final EnumProperty<Direction> TYPE = Properties.FACING;
 	private final GenericBlockSet.Transparency transparency;
 	private final boolean noHitbox;
@@ -40,6 +47,7 @@ public class OmniBlock extends Block implements IChairable {
 		this.damage = props.damage;
 		this.isChair = props.isSeat;
 		this.chairLvl = props.seatLevel;
+		this.setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false));
 	}
 
 	public OmniBlock(Settings settings) {
@@ -51,18 +59,35 @@ public class OmniBlock extends Block implements IChairable {
 		this.damage = 0;
 		this.isChair = false;
 		this.chairLvl = 0;
+		this.setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false));
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		if (state.get(WATERLOGGED)) {
+			return Fluids.WATER.getStill(false);
+		}
+		return super.getFluidState(state);
+	}
+
+	@Override
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+		if (state.get(WATERLOGGED)) {
+			world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		}
+		return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
 	}
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(TYPE);
+		builder.add(TYPE, WATERLOGGED);
 	}
 
 	@Override
 	@Nullable
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		BlockPos blockPos = ctx.getBlockPos();
-		return this.getDefaultState().with(TYPE, ctx.getPlayerLookDirection());
+		FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
+		return this.getDefaultState().with(TYPE, ctx.getPlayerLookDirection()).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 	}
 
 	@Override

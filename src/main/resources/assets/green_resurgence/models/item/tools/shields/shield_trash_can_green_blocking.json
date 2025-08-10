@@ -1,0 +1,6 @@
+{
+  "parent":"green_resurgence:item/tools/shields/shield_trash_can_blocking",
+  "textures": {
+		"0": "green_resurgence:block/diams/trash_can_green"
+		}
+}

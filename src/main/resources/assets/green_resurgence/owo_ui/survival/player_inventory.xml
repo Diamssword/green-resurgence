@@ -3,29 +3,45 @@
     <components>
         <flow-layout direction="horizontal">
             <children>
-                <player id="playerSkin"><!--Custom component to show the player, exactly the same as Entity but doesn't need a type param-->
-                    <sizing>
-                        <horizontal method="fixed">80</horizontal>
-                        <vertical method="fixed">80</vertical>
-                    </sizing>
-                    <look-at-cursor>true</look-at-cursor>
-                    <scale-to-fit>true</scale-to-fit>
-                    <positioning type="absolute">0,0</positioning>
-                </player>
-                <flow-layout direction="vertical">
-                    <children>
 
+                <flow-layout direction="horizontal">
+                    <children>
+                        <flow-layout direction="vertical" id="subPanelButtons">
+                            <children>
+                            </children>
+                            <sizing><horizontal method="fill">10</horizontal></sizing>
+                        </flow-layout>
+                        <flow-layout direction="vertical" id="layoutSubPanels">
+                            <children>
+                                <subscreen id="subpanels" source="survival/empty">
+                                <sizing>
+                                    <vertical method="fill">100</vertical>
+                                    <horizontal method="fill">100</horizontal>
+                                </sizing>
+                              </subscreen>
+                            </children>
+                            <sizing>
+                            <vertical method="fill">100</vertical>
+                            <horizontal method="fill">90</horizontal>
+                        </sizing>
+                        </flow-layout>
                     </children>
-                    <sizing>
+                     <sizing>
                         <vertical method="fill">80</vertical>
-                        <horizontal method="fill">20</horizontal>
+                        <horizontal method="fill">30</horizontal>
                     </sizing>
+                    <positioning type="relative">0,50</positioning>
+                </flow-layout>
+                <flow-layout direction="horizontal">
+                    <children/>
+                    <sizing><horizontal method="fill">30</horizontal></sizing>
                 </flow-layout>
 
                 <flow-layout direction="horizontal" id="flow1"> <!---->
                     <children>
                         <flow-layout direction="vertical">
                             <children>
+
                                 <inventory name="disabled" id="armor" width="1" height="4"/>
                                 <inventory name="disabled" id="offhand" width="1" height="1"/>
                                 <inventory name="disabled" id="bags" width="1" height="3"/>

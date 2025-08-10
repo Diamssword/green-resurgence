@@ -1,0 +1,8 @@
+{
+  "green_resurgence.gui.stats.global_bonus": "Bonus Généraux :",
+  "green_resurgence.gui.stats.palier.title": "Palier %d (Niv %d) :",
+  "green_resurgence.gui.stats.desc.brute": "La brute est là pour casser des trucs, que ce soit des gueules ou des meubles. Ce sont des montagnes de muscles qui peuvent utiliser leur force de multiples manières.",
+  "attribute.name.green_resurgence.craft_speed": "Craft Speed",
+  "attribute.name.green_resurgence.player_knockback": "Knockback Power",
+  "attribute.name.green_resurgence.alcool_resistance": "Alcool Resistance"
+}

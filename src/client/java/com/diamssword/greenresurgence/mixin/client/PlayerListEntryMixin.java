@@ -47,7 +47,7 @@ public abstract class PlayerListEntryMixin {
 		synchronized (this) {
 			if (!this.texturesLoaded || SkinsLoader.instance.doesNeedReload(this.getProfile().getId())) {
 				this.texturesLoaded = true;
-				SkinsLoader.instance.loadSkinNew(this.getProfile(), (type, id, texture) -> {
+				SkinsLoader.instance.loadSkin(this.getProfile(), (type, id, texture) -> {
 					this.textures.put(type, id);
 					if (type == MinecraftProfileTexture.Type.SKIN) {
 						this.model = "true".equals(texture.getMetadata("slim")) ? "slim" : "default";

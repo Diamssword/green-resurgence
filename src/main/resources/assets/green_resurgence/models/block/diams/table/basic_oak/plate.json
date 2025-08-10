@@ -1,0 +1,91 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "green_resurgence:block/diams/table_basic_oak",
+		"particle": "green_resurgence:block/diams/table_basic_oak"
+	},
+	"elements": [
+		{
+			"from": [0, 16, 0],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 2, 0]},
+			"faces": {
+				"up": {"uv": [0, 0, 8, 8], "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 14, 0],
+			"to": [16, 14, 16],
+			"faces": {
+				"down": {"uv": [0, 0, 8, 8], "texture": "#0"}
+			}
+		},
+		{
+			"from": [2, 14, 0],
+			"to": [14, 16, 0],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 9, -8]},
+			"faces": {
+				"north": {"uv": [15, 0, 9, 1], "texture": "#0"}
+			}
+		},
+		{
+			"from": [16, 14, 2],
+			"to": [16, 16, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [24, 9, 8]},
+			"faces": {
+				"east": {"uv": [15, 0, 9, 1], "texture": "#0"}
+			}
+		},
+		{
+			"from": [2, 14, 16],
+			"to": [14, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 9, 24]},
+			"faces": {
+				"south": {"uv": [15, 0, 9, 1], "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 14, 2],
+			"to": [0, 16, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [-8, 9, 8]},
+			"faces": {
+				"west": {"uv": [15, 0, 9, 1], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [17, 0, 0],
+			"translation": [0, -3.75, -4],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [17, 0, 0],
+			"translation": [0, -3.75, -4],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"rotation": [-4, 0, 0],
+			"translation": [14, -7.25, -4],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-4, 0, 0],
+			"translation": [14, -7.25, -4],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"ground": {
+			"translation": [0, 1.5, 0],
+			"scale": [0.3, 0.3, 0.3]
+		},
+		"gui": {
+			"rotation": [27, 23, 0],
+			"translation": [0, -0.25, 0],
+			"scale": [0.6, 0.6, 0.6]
+		},
+		"head": {
+			"translation": [0, 0.5, 0]
+		}
+	}
+}

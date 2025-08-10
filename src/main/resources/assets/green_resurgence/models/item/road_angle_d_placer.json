@@ -1,4 +1,5 @@
 {
+	"format_version": "1.21.6",
 	"credit": "Made with Blockbench",
 	"textures": {
 		"1": "green_resurgence:item/road"
@@ -53,19 +54,21 @@
 			"scale": [0.39, 0.39, 0.39]
 		},
 		"firstperson_righthand": {
-			"translation": [1.25, 4, 0],
+			"rotation": [0, 82, 0],
+			"translation": [1.25, 4, -2.5],
 			"scale": [0.54, 0.54, 0.54]
 		},
 		"firstperson_lefthand": {
-			"translation": [0, 4, 0],
+			"rotation": [0, -109, 0],
+			"translation": [2, 4, -2.75],
 			"scale": [0.54, 0.54, 0.54]
 		},
 		"ground": {
 			"translation": [0, 4.5, 0]
 		},
 		"gui": {
-			"rotation": [41.54, -29.49, 6.46],
-			"translation": [0.25, 2.75, 0],
+			"rotation": [41.54, 89, 6.46],
+			"translation": [-1.75, 4.75, 0],
 			"scale": [0.82, 0.82, 0.82]
 		},
 		"head": {

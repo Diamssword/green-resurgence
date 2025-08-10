@@ -1,6 +1,5 @@
 package com.diamssword.greenresurgence.gui.components;
 
-import com.diamssword.greenresurgence.gui.ClickableLayoutComponent;
 import com.diamssword.greenresurgence.gui.components.hud.*;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.parsing.UIParsing;

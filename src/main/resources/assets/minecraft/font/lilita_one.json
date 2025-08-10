@@ -1,0 +1,14 @@
+{
+  "providers": [
+    {
+      "type": "ttf",
+      "file": "lilita_one.ttf",
+      "shift": [
+        0,
+        3
+      ],
+      "size": 5,
+      "oversample": 20
+    }
+  ]
+} 

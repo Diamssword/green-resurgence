@@ -1,0 +1,101 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+    <components>
+        <flow-layout direction="horizontal">
+            <children>
+                <flow-layout direction="vertical">
+                    <children>
+                        <flow-layout direction="horizontal" id="flow1">
+                            <children>
+                                <flow-layout direction="horizontal">
+                                    <children>
+                                        <player id="playerSkin">
+                                          <sizing>
+
+                                            <vertical method="fill">90</vertical>
+                                            </sizing>
+                                            <look-at-cursor>true</look-at-cursor>
+                                            <scale-to-fit>true</scale-to-fit>
+                                        </player>
+                                    </children>
+                                    <margins><all>2</all></margins>
+                                    <surface>
+                                        <flat>#bb7d25</flat>
+                                    </surface>
+                                </flow-layout>
+                                <flow-layout direction="vertical" id="namePanel">
+                                    <children>
+
+                                    </children>
+                                    <padding><top>3</top></padding>
+                                    <sizing><horizontal method="fill">50</horizontal></sizing>
+                                </flow-layout>
+                                 <flow-layout direction="vertical">
+                                    <children/>
+
+                                </flow-layout>
+                                <freerowgrid columns="2" id="statsPanel">
+                                    <children/>
+                                    <gap>2</gap>
+                                    <padding><all>2</all></padding>
+                                    <margins><all>2</all></margins>
+                                    <surface>
+                                        <flat>#bb7d25</flat>
+                                    </surface>
+                                </freerowgrid>
+                            </children>
+                            <vertical-alignment>center</vertical-alignment>
+
+                            <sizing><horizontal method="fill">100</horizontal><vertical method="fill">20</vertical></sizing>
+                            <surface><flat>#3F5427</flat></surface>
+                        </flow-layout>
+                        <flow-layout direction="horizontal">
+                            <children>
+                                <scroll direction="vertical" id="scroll1">
+                                     <flow-layout direction="vertical" id="listPanel">
+                                         <children/>
+                                        <sizing><horizontal method="fill">100</horizontal></sizing>
+                                        <gap>2</gap>
+                                     </flow-layout>
+                                    <surface><flat>#3F5427</flat></surface>
+                                    <sizing>
+                                        <horizontal method="fill">40</horizontal>
+                                        <vertical method="fill">100</vertical>
+                                    </sizing>
+                                </scroll>
+                                <scroll direction="vertical" id="scroll1">
+                                     <flow-layout direction="vertical" id="infosPanel">
+                                         <children/>
+                                        <sizing><horizontal method="fill">100</horizontal></sizing>
+                                        <gap>2</gap>
+                                         <padding><horizontal>2</horizontal></padding>
+                                         <horizontal-alignment>center</horizontal-alignment>
+                                     </flow-layout>
+                                    <surface><flat>#3F5427</flat></surface>
+                                    <sizing>
+                                        <horizontal method="fill">60</horizontal>
+                                        <vertical method="fill">100</vertical>
+                                    </sizing>
+                                </scroll>
+                            </children>
+                            <gap>2</gap>
+                            <sizing><vertical method="fill">80</vertical><horizontal method="fill">100</horizontal></sizing>
+                        </flow-layout>
+
+
+                    </children>
+                    <padding><all>2</all></padding>
+                    <gap>2</gap>
+                    <surface>
+                        <outline>#3F5427</outline>
+                    </surface>
+                    <sizing><vertical method="fill">80</vertical><horizontal method="fill">60</horizontal></sizing>
+                </flow-layout>
+            </children>
+            <surface><vanilla-translucent/></surface>
+            <vertical-alignment>center</vertical-alignment>
+            <horizontal-alignment>center</horizontal-alignment>
+            <sizing><vertical method="fill">100</vertical><horizontal method="fill">100</horizontal></sizing>
+        </flow-layout>
+    </components>
+</owo-ui>

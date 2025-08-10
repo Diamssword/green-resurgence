@@ -1,24 +1,19 @@
 package com.diamssword.greenresurgence.render.cosmetics;
 
-import com.diamssword.greenresurgence.http.APIService;
-import com.diamssword.greenresurgence.mixin.client.PlayerSkinProviderAcessor;
+import com.diamssword.greenresurgence.mixin.client.PlayerSkinProviderAccessor;
 import com.diamssword.greenresurgence.network.Channels;
-import com.diamssword.greenresurgence.render.images.TextureCache;
-import com.diamssword.greenresurgence.systems.character.SkinServerCache;
+import com.diamssword.greenresurgence.network.ClientComesticsPacket;
+import com.diamssword.greenresurgence.network.SkinServerCache;
 import com.diamssword.greenresurgence.textures.B64PlayerSkinTexture;
 import com.google.common.hash.Hashing;
-import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.MissingSprite;
-import net.minecraft.client.texture.PlayerSkinProvider;
-import net.minecraft.client.texture.PlayerSkinTexture;
 import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
@@ -30,13 +25,16 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class SkinsLoader {
-	public static final SkinServerCache clientSkinCache = new SkinServerCache();
-	private final MinecraftSessionService sessionService = MinecraftClient.getInstance().getSessionService();
+	public static final SkinServerCache clientSkinCache = new SkinServerCache(null);
 	private final Set<UUID> needReload = new HashSet<>();
 	private final Set<UUID> requested = new HashSet<>();
+	private final Set<UUID> requestedOfflineHead = new HashSet<>();
+	private final Map<UUID, Set<Consumer<Identifier>>> pendingOfflineheadRequest = new HashMap<>();
+	private final Map<UUID, Identifier> offlineHeadCache = new HashMap<>();
 	private final File cacheDir;
 	public static SkinsLoader instance = new SkinsLoader();
 
@@ -47,7 +45,9 @@ public class SkinsLoader {
 	public boolean markReload(UUID playerid, boolean needed) {
 		if (needed) {
 			this.requested.remove(playerid);
+			this.offlineHeadCache.remove(playerid);
 			this.needReload.add(playerid);
+
 		} else {
 			if (needReload.contains(playerid)) {
 				this.needReload.remove(playerid);
@@ -58,30 +58,57 @@ public class SkinsLoader {
 	}
 
 	public SkinsLoader() {
-		cacheDir = ((PlayerSkinProviderAcessor) MinecraftClient.getInstance().getSkinProvider()).getCacheDir();
+		cacheDir = ((PlayerSkinProviderAccessor) MinecraftClient.getInstance().getSkinProvider()).getCacheDir();
 	}
 
 	public static void loadHead(UUID playerID, Consumer<Identifier> callback) {
-		TextureCache.instance().getImage(APIService.url + "/files/skin/" + playerID.toString().replaceAll("-", "") + "_head.png", callback);
+		var profile = MinecraftClient.getInstance().getNetworkHandler().getPlayerListEntry(playerID);
+		if (profile != null) {
+			instance.loadSkin(profile.getProfile().getId(), true, (a, b, c) -> callback.accept(b));
+			return;
+		}
+		instance.getOfflineHead(playerID, callback);
 	}
 
-	public void loadSkinNew(GameProfile profile, SkinTextureAvailableCallback callback) {
-		var force = markReload(profile.getId(), false);
+	public void loadSkinHeadOffline(UUID player, String base64) {
 		Runnable runnable = () -> {
 			MinecraftClient.getInstance().execute(() -> {
 				RenderSystem.recordRenderCall(() -> {
-					var skin = clientSkinCache.getSkin(profile.getId());
+					var txt = new B64MinecraftProfileTexture(base64, new HashMap<>());
+					String string = Hashing.sha1().hashUnencodedChars(txt.getHash()).toString();
+					Identifier identifier = new Identifier("heads/" + string);
+					B64PlayerSkinTexture playerSkinTexture = new B64PlayerSkinTexture(null, base64, DefaultSkinHelper.getTexture(), () -> {
+						offlineHeadCache.put(player, identifier);
+						var k = pendingOfflineheadRequest.get(player);
+						if (k != null) {
+							k.forEach(x -> x.accept(identifier));
+							pendingOfflineheadRequest.remove(player);
+						}
+					});
+					MinecraftClient.getInstance().getTextureManager().registerTexture(identifier, playerSkinTexture);
+				});
+			});
+		};
+		Util.getMainWorkerExecutor().execute(runnable);
+	}
+
+	public void loadSkin(UUID userid, boolean isHead, SkinTextureAvailableCallback callback) {
+		var force = markReload(userid, false);
+		Runnable runnable = () -> {
+			MinecraftClient.getInstance().execute(() -> {
+				RenderSystem.recordRenderCall(() -> {
+					var skin = clientSkinCache.getSkin(userid);
 					if (skin.isPresent()) {
-						requested.remove(profile.getId());
+						requested.remove(userid);
 						var map1 = new HashMap<String, String>();
 						map1.put("slim", skin.get().slim() ? "true" : "false");
 						//  CustomPlayerModel.playerProps.put(profile.getId(),new CustomPlayerModel.PlayerProps(map1));
-						this.loadSkin(new B64MinecraftProfileTexture(skin.get().skin(), map1), callback, force);
+						this.loadSkin(new B64MinecraftProfileTexture(isHead ? skin.get().head() : skin.get().skin(), map1), callback, force, isHead ? "heads" : "skins");
 
 					} else {
-						if (!requested.contains(profile.getId())) {
-							Channels.MAIN.clientHandle().send(new SkinServerCache.RequestPlayerInfos(profile.getId()));
-							requested.add(profile.getId());
+						if (!requested.contains(userid)) {
+							Channels.MAIN.clientHandle().send(new SkinServerCache.RequestPlayerInfos(userid));
+							requested.add(userid);
 						}
 					}
 				});
@@ -90,59 +117,37 @@ public class SkinsLoader {
 		Util.getMainWorkerExecutor().execute(runnable);
 	}
 
-	public void loadSkin(GameProfile profile, PlayerSkinProvider.SkinTextureAvailableCallback callback, boolean requireSecure) {
-		var force = markReload(profile.getId(), false);
+	private void getOfflineHead(UUID userid, Consumer<Identifier> callback) {
 		Runnable runnable = () -> {
 			MinecraftClient.getInstance().execute(() -> {
 				RenderSystem.recordRenderCall(() -> {
-					var partUrl = APIService.url + "/files/skin/" + profile.getId().toString().replaceAll("-", "");
-					APIService.getRequest(partUrl + ".json", "").thenAccept(d -> {
-						if (d.statusCode() == 200) {
-							var datas = JsonParser.parseString(d.body()).getAsJsonObject();
-							var map1 = new HashMap<String, String>();
-							datas.keySet().forEach(v -> {
-								map1.put(v, datas.get(v).getAsString());
-							});
-							//  CustomPlayerModel.playerProps.put(profile.getId(),new CustomPlayerModel.PlayerProps(map1));
-							this.loadSkin(new MinecraftProfileTexture(partUrl + ".png", map1), MinecraftProfileTexture.Type.SKIN, callback, force);
-
+					var skin = offlineHeadCache.get(userid);
+					if (skin != null) {
+						requestedOfflineHead.remove(userid);
+						callback.accept(offlineHeadCache.get(userid));
+					} else {
+						if (!requestedOfflineHead.contains(userid)) {
+							Channels.MAIN.clientHandle().send(new SkinServerCache.RequestPlayerPresence(userid));
+							if (!pendingOfflineheadRequest.containsKey(userid))
+								pendingOfflineheadRequest.put(userid, new HashSet<>());
+							pendingOfflineheadRequest.get(userid).add(callback);
+							requestedOfflineHead.add(userid);
 						}
-					});
-
+					}
 				});
 			});
 		};
 		Util.getMainWorkerExecutor().execute(runnable);
 	}
 
-	private Identifier loadSkin(MinecraftProfileTexture profileTexture, MinecraftProfileTexture.Type type, @Nullable PlayerSkinProvider.SkinTextureAvailableCallback callback, boolean force) {
-
-		String string = Hashing.sha1().hashUnencodedChars(profileTexture.getHash()).toString();
-		Identifier identifier = getSkinId(type, string);
-		AbstractTexture abstractTexture = MinecraftClient.getInstance().getTextureManager().getOrDefault(identifier, MissingSprite.getMissingSpriteTexture());
-		if (force || abstractTexture == MissingSprite.getMissingSpriteTexture()) {
-			File file = new File(cacheDir, string.length() > 2 ? string.substring(0, 2) : "xx");
-			File file2 = new File(file, string);
-			if (force && file2.exists())
-				file2.delete();
-			PlayerSkinTexture playerSkinTexture = new PlayerSkinTexture(file2, profileTexture.getUrl(), DefaultSkinHelper.getTexture(), false, () -> {
-				if (callback != null) {
-					callback.onSkinTextureAvailable(type, identifier, profileTexture);
-				}
-
-			});
-			MinecraftClient.getInstance().getTextureManager().registerTexture(identifier, playerSkinTexture);
-		} else if (callback != null) {
-			callback.onSkinTextureAvailable(type, identifier, profileTexture);
-		}
-
-		return identifier;
+	public void loadSkin(GameProfile profile, SkinTextureAvailableCallback callback) {
+		this.loadSkin(profile.getId(), false, callback);
 	}
 
-	private Identifier loadSkin(B64MinecraftProfileTexture profileTexture, @Nullable SkinTextureAvailableCallback callback, boolean force) {
+	private Identifier loadSkin(B64MinecraftProfileTexture profileTexture, @Nullable SkinTextureAvailableCallback callback, boolean force, String type) {
 
 		String string = Hashing.sha1().hashUnencodedChars(profileTexture.getHash()).toString();
-		Identifier identifier = getSkinId(MinecraftProfileTexture.Type.SKIN, string);
+		Identifier identifier = new Identifier(type + "/" + string);
 		AbstractTexture abstractTexture = MinecraftClient.getInstance().getTextureManager().getOrDefault(identifier, MissingSprite.getMissingSpriteTexture());
 		if (force || abstractTexture == MissingSprite.getMissingSpriteTexture()) {
 			File file = new File(cacheDir, string.length() > 2 ? string.substring(0, 2) : "xx");
@@ -163,30 +168,18 @@ public class SkinsLoader {
 		return identifier;
 	}
 
+	public static CompletableFuture<Map<UUID, SkinServerCache.PlayerPresence>> requestPlayerProfiles(String query) {
+		Channels.MAIN.clientHandle().send(new SkinServerCache.RequestPlayersMatching(query));
+		var future = new CompletableFuture<Map<UUID, SkinServerCache.PlayerPresence>>();
+		ClientComesticsPacket.PlayerProfilesRequestCallback = future::complete;
+		return future;
+	}
+
 	@Environment(EnvType.CLIENT)
 	public interface SkinTextureAvailableCallback {
 		void onSkinTextureAvailable(MinecraftProfileTexture.Type type, Identifier id, B64MinecraftProfileTexture texture);
 	}
 
-	private static Identifier getSkinId(MinecraftProfileTexture.Type skinType, String hash) {
-		String var10000;
-		switch (skinType) {
-			case SKIN:
-				var10000 = "skins";
-				break;
-			case CAPE:
-				var10000 = "capes";
-				break;
-			case ELYTRA:
-				var10000 = "elytra";
-				break;
-			default:
-				throw new IncompatibleClassChangeError();
-		}
-
-		String string = var10000;
-		return new Identifier(string + "/" + hash);
-	}
 
 	public class B64MinecraftProfileTexture {
 

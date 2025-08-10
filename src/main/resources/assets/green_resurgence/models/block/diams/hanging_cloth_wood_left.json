@@ -1,0 +1,147 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"1": "green_resurgence:block/diams/hanging_cloth_wood",
+		"particle": "green_resurgence:block/diams/hanging_cloth_empty"
+	},
+	"elements": [
+		{
+			"from": [0, 29, 7.5],
+			"to": [14, 30, 8.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 17, 0]},
+			"faces": {
+				"north": {"uv": [0, 12.5, 7, 13], "texture": "#1"},
+				"south": {"uv": [1, 13, 8, 12.5], "texture": "#1"},
+				"up": {"uv": [1, 13, 8, 13.5], "texture": "#1"},
+				"down": {"uv": [1, 13, 8, 13.5], "texture": "#1"}
+			}
+		},
+		{
+			"from": [14, 26, 7],
+			"to": [16, 31, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [14, 26, 7]},
+			"faces": {
+				"north": {"uv": [2, 1, 3, 3.5], "texture": "#1"},
+				"east": {"uv": [3, 1, 4, 3.5], "texture": "#1"},
+				"south": {"uv": [2, 1, 3, 3.5], "texture": "#1"},
+				"west": {"uv": [3, 1, 4, 3.5], "texture": "#1"},
+				"up": {"uv": [3, 0, 4, 1], "texture": "#1"},
+				"down": {"uv": [3, 0, 4, 1], "texture": "#1"}
+			}
+		},
+		{
+			"from": [14.5, 5, 7.5],
+			"to": [15.5, 26, 8.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [14, 5, 7]},
+			"faces": {
+				"north": {"uv": [0.5, 0, 1, 10.5], "texture": "#1"},
+				"east": {"uv": [1, 0, 1.5, 10.5], "texture": "#1"},
+				"south": {"uv": [1.5, 0, 2, 10.5], "texture": "#1"},
+				"west": {"uv": [0, 0, 0.5, 10.5], "texture": "#1"}
+			}
+		},
+		{
+			"from": [0, 1, 7.5],
+			"to": [14, 3, 8.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, -11, 0]},
+			"faces": {
+				"north": {"uv": [8, 13.5, 14, 14.5], "texture": "#1"},
+				"south": {"uv": [14, 13.5, 8, 14.5], "texture": "#1"},
+				"up": {"uv": [14, 13, 8, 13.5], "texture": "#1"},
+				"down": {"uv": [14, 12.5, 8, 13], "texture": "#1"}
+			}
+		},
+		{
+			"from": [14, 0, 7],
+			"to": [16, 5, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [14, 0, 7]},
+			"faces": {
+				"north": {"uv": [4, 0, 5, 2.5], "texture": "#1"},
+				"east": {"uv": [5, 0, 6, 2.5], "texture": "#1"},
+				"south": {"uv": [4, 0, 5, 2.5], "texture": "#1"},
+				"west": {"uv": [5, 0, 6, 2.5], "texture": "#1"},
+				"up": {"uv": [3, 0, 4, 1], "texture": "#1"},
+				"down": {"uv": [4, 2.5, 5, 3.5], "texture": "#1"}
+			}
+		},
+		{
+			"from": [14.25, 0, 9],
+			"to": [15.75, 2, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 0, 14]},
+			"faces": {
+				"east": {"uv": [2.5, 4, 5, 5], "texture": "#1"},
+				"south": {"uv": [2, 4, 2.5, 5], "texture": "#1"},
+				"west": {"uv": [5, 5, 2.5, 6], "texture": "#1"},
+				"up": {"uv": [5, 6.75, 2.5, 6], "rotation": 90, "texture": "#1"},
+				"down": {"uv": [2.5, 7.5, 5, 6.75], "rotation": 90, "texture": "#1"}
+			}
+		},
+		{
+			"from": [14.25, 0, 2],
+			"to": [15.75, 2, 7],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 0, 2]},
+			"faces": {
+				"north": {"uv": [2.5, 4, 2, 5], "texture": "#1"},
+				"east": {"uv": [5, 4, 2.5, 5], "texture": "#1"},
+				"west": {"uv": [2.5, 5, 5, 6], "texture": "#1"},
+				"up": {"uv": [2.5, 6.75, 5, 6], "rotation": 90, "texture": "#1"},
+				"down": {"uv": [5, 7.5, 2.5, 6.75], "rotation": 90, "texture": "#1"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [46, 0, 0],
+			"translation": [0, -2.5, -0.75],
+			"scale": [0.3, 0.3, 0.3]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [46, 0, 0],
+			"translation": [0, -2.5, -0.75],
+			"scale": [0.3, 0.3, 0.3]
+		},
+		"firstperson_righthand": {
+			"translation": [8.25, 0, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_lefthand": {
+			"translation": [8.25, 0, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"ground": {
+			"rotation": [90, 0, 90],
+			"translation": [0, 1.75, 0],
+			"scale": [0.3, 0.3, 0.3]
+		},
+		"gui": {
+			"rotation": [13, 31, 0],
+			"translation": [0, 4.5, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"head": {
+			"translation": [0, 18.25, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"fixed": {
+			"translation": [0, 8.75, 0],
+			"scale": [0.7, 0.7, 0.7]
+		}
+	},
+	"groups": [
+		{
+			"name": "Porte manteau",
+			"origin": [2, 1, 0],
+			"color": 0,
+			"children": [
+				{
+					"name": "Right",
+					"origin": [16, 1, 0],
+					"color": 0,
+					"children": [0, 1, 2, 3, 4, 5, 6]
+				}
+			]
+		}
+	],
+	"format_version": "1.9.0"
+}
