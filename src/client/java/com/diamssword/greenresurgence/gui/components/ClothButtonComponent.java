@@ -1,8 +1,7 @@
 package com.diamssword.greenresurgence.gui.components;
 
-import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.characters.api.appearence.Cloth;
 import com.diamssword.greenresurgence.render.cosmetics.ClothingModel;
-import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.mixin.ui.access.ClickableWidgetAccessor;
 import io.wispforest.owo.ui.component.ButtonComponent;
@@ -22,11 +21,13 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
 import org.joml.Vector3f;
 
 public class ClothButtonComponent extends ButtonComponent {
-	private ClothingLoader.Cloth cloth;
+	private static final String CLOTH_MOD_ID = "character_sheet";
+	private Cloth cloth;
 	private final ClothingModel<AbstractClientPlayerEntity> model = new ClothingModel<>(false, 0, false);
 	private final ClothingModel<AbstractClientPlayerEntity> model1 = new ClothingModel<>(false, 1, true);
 	protected final EntityRenderDispatcher dispatcher;
@@ -35,7 +36,7 @@ public class ClothButtonComponent extends ButtonComponent {
 	private boolean selected = false;
 	private final EventStream<ClothPicked> onHovered = ClothPicked.newPickStream();
 
-	public ClothButtonComponent(ClothingLoader.Cloth cloth) {
+	public ClothButtonComponent(Cloth cloth) {
 		super(Text.literal(""), a -> {
 		});
 		setCloth(cloth);
@@ -44,12 +45,12 @@ public class ClothButtonComponent extends ButtonComponent {
 		this.entityBuffers = client.getBufferBuilders().getEntityVertexConsumers();
 	}
 
-	public void setCloth(ClothingLoader.Cloth cloth) {
+	public void setCloth(Cloth cloth) {
 		this.cloth = cloth;
 		this.tooltip(Text.literal((cloth.name())));
 	}
 
-	public ClothingLoader.Cloth getCloth() {
+	public Cloth getCloth() {
 		return cloth;
 	}
 
@@ -93,11 +94,10 @@ public class ClothButtonComponent extends ButtonComponent {
 	public void drawClothing(OwoUIDrawContext context, int mouseX) {
 		var matrices = context.getMatrices();
 		matrices.push();
-		var bigger = cloth.layer() == ClothingLoader.Layer.shoes || cloth.layer() == ClothingLoader.Layer.hat || cloth.layer() == ClothingLoader.Layer.glasses || cloth.layer() == ClothingLoader.Layer.accessories;
-		float scale = bigger ? (cloth.layer() == ClothingLoader.Layer.shoes ? 40 : 30) : 20;
+		float scale = cloth.layer().getDisplayMode() == 1 ? (cloth.layer().getDisplayMode() == 2 ? 40 : 30) : 20;
 		matrices.translate(this.x() + (this.width / 2f), this.y() + (this.height / 2f) - 8, 100);
-		if (bigger) {
-			if (cloth.layer() == ClothingLoader.Layer.shoes) {
+		if (cloth.layer().getDisplayMode() != 0) {
+			if (cloth.layer().getDisplayMode() == 2) {
 				matrices.translate(0, -(this.height * 0.8f), 0);
 			} else {
 				matrices.translate(0, this.height / 3f, 0);
@@ -130,16 +130,16 @@ public class ClothButtonComponent extends ButtonComponent {
 		model.child = false;
 		model1.child = false;
 		var pack = OverlayTexture.packUv(OverlayTexture.getU(0), OverlayTexture.getV(false));
-		model.render(matrices, vertexConsumers.getBuffer(model.getLayer(GreenResurgence.asRessource("textures/cloth/" + cloth.layer() + "/" + cloth.id() + ".png"))), light, pack, 1, 1, 1, 1);
-		model1.render(matrices, vertexConsumers.getBuffer(model1.getLayer(GreenResurgence.asRessource("textures/cloth/" + cloth.layer() + "/" + cloth.id() + ".png"))), light, pack, 1, 1, 1, 1);
+		model.render(matrices, vertexConsumers.getBuffer(model.getLayer(new Identifier(CLOTH_MOD_ID, "textures/cloth/" + cloth.layer().getId() + "/" + cloth.id() + ".png"))), light, pack, 1, 1, 1, 1);
+		model1.render(matrices, vertexConsumers.getBuffer(model1.getLayer(new Identifier(CLOTH_MOD_ID, "textures/cloth/" + cloth.layer().getId() + "/" + cloth.id() + ".png"))), light, pack, 1, 1, 1, 1);
 
 	}
 
 	public interface ClothPicked {
-		void onPicked(ClothingLoader.Cloth cloth);
+		void onPicked(Cloth cloth);
 
 		static EventStream<ClothPicked> newPickStream() {
-			return new EventStream<>(subscribers -> (ClothingLoader.Cloth cloth) -> {
+			return new EventStream<>(subscribers -> (Cloth cloth) -> {
 				for (var subscriber : subscribers) {
 					subscriber.onPicked(cloth);
 				}

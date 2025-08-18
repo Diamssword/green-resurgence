@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence.systems.lootables;
 
-import com.diamssword.greenresurgence.systems.Components;
+import com.diamssword.characters.api.ComponentManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
@@ -70,9 +70,8 @@ public class Lootable {
 	public boolean playerMeetRequirement(Identifier tool, PlayerEntity player) {
 		var req = statRequirement.get(tool);
 		if (req != null) {
-			var dt = player.getComponent(Components.PLAYER_DATA);
 			for (var v : req) {
-				if (v.getRight() <= dt.stats.getPalier(v.getLeft()))
+				if (v.getRight() <= ComponentManager.getPlayerDatas(player).getStats().getPalier(v.getLeft()))
 					return true;
 			}
 			return req.isEmpty();

@@ -176,23 +176,11 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 	@Inject(at = @At("HEAD"), method = "getDimensions", cancellable = true)
 	public void getDimensions(EntityPose pose, CallbackInfoReturnable<EntityDimensions> cir) {
-		if (pose == EntityPose.STANDING || pose == EntityPose.CROUCHING || pose == EntityPose.SITTING) {
-			var comp = this.getComponent(Components.PLAYER_DATA);
-			var h = comp.appearance.getRestrainedHeight();
-			//Disabled for now var w = comp.appearance.getRestrainedWidth();
-			var baseH = pose == EntityPose.CROUCHING ? 1.5f : 1.8f;
-			var dim = EntityDimensions.changing(0.6f/* * w*/, baseH * h);
-			var custpo = comp.getCustomPose();
-			if (custpo != null)
-				dim = custpo.changeHitBox(comp.player, dim);
-			cir.setReturnValue(dim);
-		} else {
-			var comp = this.getComponent(Components.PLAYER_DATA);
-			var custpo = comp.getCustomPose();
-			if (custpo != null)
-				cir.setReturnValue(custpo.changeHitBox(comp.player, POSE_DIMENSIONS.get(pose)));
-		}
 
+		var comp = this.getComponent(Components.PLAYER_DATA);
+		var custpo = comp.getCustomPose();
+		if (custpo != null)
+			cir.setReturnValue(custpo.changeHitBox(comp.player, POSE_DIMENSIONS.get(pose)));
 	}
 
 	@Inject(at = @At("HEAD"), method = "getActiveEyeHeight", cancellable = true)

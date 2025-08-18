@@ -1,5 +1,7 @@
 package com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel;
 
+import com.diamssword.characters.api.CharactersApi;
+import com.diamssword.characters.api.ComponentManager;
 import com.diamssword.greenresurgence.DrawUtils;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.gui.PlayerStatsGui;
@@ -9,7 +11,6 @@ import com.diamssword.greenresurgence.gui.components.SubScreenLayout;
 import com.diamssword.greenresurgence.gui.playerContainers.PlayerBasedGui;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.StatsPackets;
-import com.diamssword.greenresurgence.systems.character.stats.ClassesLoader;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.container.Containers;
@@ -43,15 +44,12 @@ public class CharacterStatsPanel extends SimpleSubPanel {
 		var playerComp = root.childById(PlayerComponent.class, "playerSkin");
 		var player = playerComp.entity();
 		var cp = new NbtCompound();
-		MinecraftClient.getInstance().player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_DATA).writeToNbt(cp);
-		var dt = player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_DATA);
-		dt.readFromNbt(cp);
+		var dt = ComponentManager.getPlayerDatas(player);
 		var dt1 = player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_INVENTORY);
 		dt1.setBackpackStack(MinecraftClient.getInstance().player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_INVENTORY).getBackpackStack());
-		dt.appearance.refreshSkinDataForFakePlayer(MinecraftClient.getInstance().player);
-
+		dt.getAppearence().clonePlayerAppearance(MinecraftClient.getInstance().player);
 		var np = root.childById(FlowLayout.class, "namePanel");
-		var chara = MinecraftClient.getInstance().player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_CHARACTERS).getCurrentCharacter();
+		var chara = ComponentManager.getPlayerCharacter(MinecraftClient.getInstance().player).getCurrentCharacter();
 		if (chara != null) {
 			np.child(Components.label(DrawUtils.whiteText(chara.stats.firstname + " " + chara.stats.lastname)));
 			np.child(Components.label(DrawUtils.whiteText(chara.stats.origine)));
@@ -59,11 +57,11 @@ public class CharacterStatsPanel extends SimpleSubPanel {
 			np.child(Components.label(DrawUtils.whiteText(chara.stats.job)));
 		}
 		var pane = root.childById(FreeRowGridLayout.class, "listPanel");
-		for (var k : ClassesLoader.getRoles().keySet()) {
+		for (var k : CharactersApi.stats().getRoles().keySet()) {
 			var c = Containers.horizontalFlow(Sizing.fill(49), Sizing.fixed(20));
 			c.surface(Surface.flat(DrawUtils.whithAlpha(DrawUtils.GRAY_GREEN, 0xFF))).padding(Insets.of(2)).margins(Insets.of(1));
 			c.verticalAlignment(VerticalAlignment.CENTER);
-			var r = ClassesLoader.getRole(k);
+			var r = CharactersApi.stats().getRole(k);
 			c.child(Components.label(DrawUtils.whiteText(r.get().name)).horizontalSizing(Sizing.fill(50)));
 			var btr = ButtonComponent.Renderer.texture(GreenResurgence.asRessource("textures/gui/dice.png"), 0, 0, 20, 40);
 			var bt = io.wispforest.owo.ui.component.Components.button(Text.literal("\uD83C\uDFB2"), (r1) -> {

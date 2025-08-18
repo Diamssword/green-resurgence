@@ -1,10 +1,10 @@
 package com.diamssword.greenresurgence.gui.faction;
 
+import com.diamssword.characters.api.CharactersApi;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.gui.components.ClickableLayoutComponent;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.GuildPackets;
-import com.diamssword.greenresurgence.render.cosmetics.SkinsLoader;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionMember;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
@@ -137,7 +137,7 @@ public class FactionFriendsGui extends BaseUIModelScreen<FlowLayout> {
 			l.alignment(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
 			l.onPress(v -> updateSelectedMenu(n, texture.get()));
 			if (n.isPlayer()) {
-				SkinsLoader.loadHead(n.getId(), v -> {
+				CharactersApi.skin().getHeadTexture(n.getId(), v -> {
 					texture.set(v);
 					l.removeChild(icon);
 					l.child(0, Components.texture(texture.get(), 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(16)));

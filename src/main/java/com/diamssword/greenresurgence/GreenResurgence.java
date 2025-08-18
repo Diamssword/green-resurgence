@@ -1,15 +1,17 @@
 package com.diamssword.greenresurgence;
 
+import com.diamssword.characters.api.CharactersApi;
 import com.diamssword.greenresurgence.commands.*;
 import com.diamssword.greenresurgence.containers.Containers;
+import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.materials.Materials;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
+import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.Events;
 import com.diamssword.greenresurgence.systems.attributs.Attributes;
-import com.diamssword.greenresurgence.systems.character.stats.ClassesLoader;
-import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
+import com.diamssword.greenresurgence.systems.character.classes.ClassesRegister;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
@@ -46,9 +48,7 @@ public class GreenResurgence implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(Lootables.loader);
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(ClothingLoader.instance);
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(Recipes.loader);
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(ClassesLoader.instance);
 		FieldRegistrationHandler.register(MItems.class, ID, false);
 		registerSubCat(Weapons.class, ID, "tools/", false);
 		registerSubCat(Shields.class, ID, "tools/shields/", false);
@@ -63,16 +63,16 @@ public class GreenResurgence implements ModInitializer {
 		GenericBlocks.register();
 		GenericBlocks.GENERIC_GROUP.initialize();
 		Materials.init();
+		BaseInteractions.register();
+		Attributes.init();
+		Events.init();
+
 		registerCommand("giveStructureItem", StructureItemCommand::register);
 		registerCommand("faction", FactionCommand::register);
 		registerCommand("structureBlockHelper", StructureBlockHelperCommand::register);
 		registerCommand("resurgenceGui", OpenScreenCommand::register);
 		registerCommand("recipeHelper", RecipeHelperCommand::register);
-		registerCommand("character", SkinCommand::register);
-		registerCommand("pstats", PStatsCommand::register);
-		BaseInteractions.register();
-		Attributes.init();
-		Events.init();
+
 		ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
 			onPostInit();
 		});
@@ -89,6 +89,10 @@ public class GreenResurgence implements ModInitializer {
 		if (!havePostInited) {
 			havePostInited = true;
 		}
+		ClassesRegister.init();
+		CharactersApi.instance.unattachComponentFromCharacters(CharactersApi.CHARACTER_ATTACHED_COMPONENT_INVENTORY);
+		CharactersApi.instance.attachComponentToCharacters(asRessource("inventory"), p -> p.getComponent(Components.PLAYER_INVENTORY).getInventory(), CustomPlayerInventory::serializer, CustomPlayerInventory::unserializer);
+
 	}
 
 	public void registerCommand(String name, Consumer<LiteralArgumentBuilder<ServerCommandSource>> builder) {

@@ -4,6 +4,8 @@ import com.diamssword.greenresurgence.events.PlayerTickEvent;
 import com.diamssword.greenresurgence.items.SimpleEnergyItemTiered;
 import com.diamssword.greenresurgence.items.weapons.ICustomPoseWeapon;
 import com.diamssword.greenresurgence.systems.Components;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.minecraft.entity.attribute.EntityAttributes;
 
 public class PlayerEvents {
 
@@ -20,6 +22,12 @@ public class PlayerEvents {
 					if (!wep.customPoseId().equals(comp.getCustomPoseID()))
 						comp.setCustomPose(wep.customPoseId());
 				}
+			}
+		});
+		ServerPlayerEvents.AFTER_RESPAWN.register((old, newP, wasAlive) -> {
+			if (!wasAlive) {
+				newP.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(50);
+				newP.setHealth(newP.getMaxHealth());
 			}
 		});
 	}

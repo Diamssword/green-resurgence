@@ -1,5 +1,7 @@
 package com.diamssword.greenresurgence.containers.player;
 
+import com.diamssword.characters.api.ICharacterStored;
+import com.diamssword.characters.api.http.ApiCharacterValues;
 import com.diamssword.greenresurgence.containers.IGridContainer;
 import com.diamssword.greenresurgence.containers.SlotedSimpleInventory;
 import com.diamssword.greenresurgence.containers.player.grids.ArmorGrid;
@@ -28,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.Supplier;
 
-public class CustomPlayerInventory {
+public class CustomPlayerInventory implements ICharacterStored {
 
 	private PlayerEntity parent;
 	private SlotedSimpleInventory bags;
@@ -352,6 +354,19 @@ public class CustomPlayerInventory {
 			}
 		}
 		return -1;
+	}
+
+	@Override
+	public void onCharacterLoad(PlayerEntity playerEntity, String s, ApiCharacterValues apiCharacterValues, @Nullable String s1) {
+		this.clearCache();
+	}
+
+	public static NbtCompound serializer(CustomPlayerInventory inst) {
+		return inst.toNBTComplete();
+	}
+
+	public static void unserializer(CustomPlayerInventory inst, NbtCompound nbt) {
+		inst.fromNBTComplete(nbt, inst.getPlayer());
 	}
 
 	public static class PlayerLinkedInventory extends SlotedSimpleInventory {

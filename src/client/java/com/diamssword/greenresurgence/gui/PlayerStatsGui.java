@@ -1,5 +1,8 @@
 package com.diamssword.greenresurgence.gui;
 
+import com.diamssword.characters.api.CharactersApi;
+import com.diamssword.characters.api.ComponentManager;
+import com.diamssword.characters.api.stats.StatsRole;
 import com.diamssword.greenresurgence.DrawUtils;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.gui.components.ClickableLayoutComponent;
@@ -8,8 +11,6 @@ import com.diamssword.greenresurgence.gui.components.PlayerComponent;
 import com.diamssword.greenresurgence.gui.components.hud.BarComponent;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.StatsPackets;
-import com.diamssword.greenresurgence.systems.character.stats.ClassesLoader;
-import com.diamssword.greenresurgence.systems.character.stats.StatsRole;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
@@ -20,7 +21,6 @@ import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.core.Surface;
 import io.wispforest.owo.ui.core.VerticalAlignment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 
 import java.text.DecimalFormat;
@@ -43,15 +43,13 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 	protected void build(FlowLayout root) {
 		var playerComp = root.childById(PlayerComponent.class, "playerSkin");
 		var player = playerComp.entity();
-		var cp = new NbtCompound();
-		MinecraftClient.getInstance().player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_DATA).writeToNbt(cp);
-		var dt = player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_DATA);
-		dt.readFromNbt(cp);
+		var dt = ComponentManager.getPlayerDatas(player);
 		var dt1 = player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_INVENTORY);
 		dt1.setBackpackStack(MinecraftClient.getInstance().player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_INVENTORY).getBackpackStack());
-		dt.appearance.refreshSkinDataForFakePlayer(MinecraftClient.getInstance().player);
+		dt.getAppearence().clonePlayerAppearance(MinecraftClient.getInstance().player);
 		var np = root.childById(FlowLayout.class, "namePanel");
-		var chara = MinecraftClient.getInstance().player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_CHARACTERS).getCurrentCharacter();
+
+		var chara = ComponentManager.getPlayerCharacter(MinecraftClient.getInstance().player).getCurrentCharacter();
 		if (chara != null) {
 			np.child(Components.label(DrawUtils.whiteText(chara.stats.firstname + " " + chara.stats.lastname)).lineHeight(8));
 			np.child(Components.label(DrawUtils.whiteText(chara.stats.origine)).lineHeight(8));
@@ -59,13 +57,14 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 			np.child(Components.label(DrawUtils.whiteText(chara.stats.job)).lineHeight(8));
 		}
 		var pane = root.childById(FlowLayout.class, "listPanel");
-		for (var k : ClassesLoader.getRoles().keySet()) {
+		for (var k : CharactersApi.stats().getRoles().keySet()) {
 			var c = new ClickableLayoutComponent(Sizing.fill(98), Sizing.fixed(20), FlowLayout.Algorithm.HORIZONTAL);
 			c.surface(Surface.flat(DrawUtils.whithAlpha(DrawUtils.GRAY_GREEN, 0xFF))).padding(Insets.of(2)).margins(Insets.of(1));
 			c.verticalAlignment(VerticalAlignment.CENTER);
-			var r = ClassesLoader.getRole(k);
+			var r = CharactersApi.stats().getRole(k);
+			var dtC = ComponentManager.getPlayerDatas(client.player);
 			c.onPress(v -> loadInfos(root.childById(FlowLayout.class, "infosPanel"), k, r.get()));
-			c.child(Components.label(DrawUtils.whiteTitle(r.get().name + "   Niv." + dt.stats.getLevel(k))).horizontalSizing(Sizing.fill(80)));
+			c.child(Components.label(DrawUtils.whiteTitle(r.get().name + "   Niv." + dtC.getStats().getLevel(k))).horizontalSizing(Sizing.fill(80)));
 			var btr = ButtonComponent.Renderer.texture(GreenResurgence.asRessource("textures/gui/dice.png"), 0, 0, 20, 40);
 			var bt = io.wispforest.owo.ui.component.Components.button(Text.literal("\uD83C\uDFB2"), (r1) -> {
 				Channels.MAIN.clientHandle().send(new StatsPackets.RollStat(k));
@@ -83,12 +82,12 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 	}
 
 	private void loadInfos(FlowLayout parent, String roleId, StatsRole role) {
-		var st = client.player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_DATA).stats;
+		var st = ComponentManager.getPlayerDatas(client.player).getStats();
 		parent.clearChildren();
 		parent.child(Components.label(DrawUtils.whiteTitle(role.name)));
 		var bar = new BarComponent(GreenResurgence.asRessource("textures/gui/hud/stamina.png"), 0, 0, 256, 10, 256, 64, true);
-		bar.setFillPercent(ClassesLoader.instance.percentOfXpForNext(client.player, roleId));
-		bar.tooltip(DrawUtils.whiteText(st.getXp(roleId) + "/" + ClassesLoader.instance.getXpCostForLevel(st.getLevel(roleId) + 1) + " xp"));
+		bar.setFillPercent(CharactersApi.stats().percentOfXpForNext(client.player, roleId));
+		bar.tooltip(DrawUtils.whiteText(st.getXp(roleId) + "/" + CharactersApi.stats().getXpCostForLevel(st.getLevel(roleId) + 1) + " xp"));
 		bar.horizontalSizing(Sizing.fill(90));
 		parent.child(bar);
 		parent.child(paragraph(DrawUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.stats.desc." + roleId)));

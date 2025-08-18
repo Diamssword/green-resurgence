@@ -42,7 +42,8 @@
     "java": ">=17",
     "fabric-api": "*",
     "geckolib": ">=4.7.2",
-    "team_reborn_energy": ">=3.0.0"
+    "team_reborn_energy": ">=3.0.0",
+    "character_sheet": ">=1.0.0"
   },
   "suggests": {
     "another-mod": "*"
@@ -51,9 +52,7 @@
     "cardinal-components": [
       "green_resurgence:base_list",
       "green_resurgence:player_data",
-      "green_resurgence:player_inventory",
-      "green_resurgence:player_characters",
-      "green_resurgence:player_cache"
+      "green_resurgence:player_inventory"
     ]
   }
 }

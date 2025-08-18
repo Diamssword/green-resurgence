@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence.network;
 
-import com.diamssword.greenresurgence.systems.Components;
+import com.diamssword.characters.api.ComponentManager;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -16,7 +16,7 @@ public class StatsPackets {
 
 	public static void init() {
 		Channels.MAIN.registerServerbound(RollStat.class, (msg, ctx) -> {
-			var stats = ctx.player().getComponent(Components.PLAYER_DATA).stats;
+			var stats = ComponentManager.getPlayerDatas(ctx.player()).getStats();
 			var stat = stats.getLevel(msg.role);
 			var pname = ctx.player().getDisplayName().copy().formatted(Formatting.BOLD, Formatting.LIGHT_PURPLE);
 			var res = 1 + random.nextInt(100);

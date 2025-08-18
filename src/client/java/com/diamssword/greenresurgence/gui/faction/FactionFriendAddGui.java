@@ -1,11 +1,11 @@
 package com.diamssword.greenresurgence.gui.faction;
 
+import com.diamssword.characters.api.CharactersApi;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.gui.IPacketNotifiedChange;
 import com.diamssword.greenresurgence.gui.components.ClickableLayoutComponent;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.GuildPackets;
-import com.diamssword.greenresurgence.render.cosmetics.SkinsLoader;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionMember;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
@@ -107,7 +107,7 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 			l.surface(Surface.PANEL);
 			l.surface2(Surface.DARK_PANEL);
 			l.alignment(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
-			SkinsLoader.loadHead(n.getProfile().getId(), v -> {
+			CharactersApi.skin().getHeadTexture(n.getProfile().getId(), v -> {
 				texture.set(v);
 				l.removeChild(icon);
 				l.child(0, Components.texture(texture.get(), 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(16)));
@@ -134,7 +134,7 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 	}
 
 	private void addOffline(String filter, FlowLayout parent) {
-		SkinsLoader.requestPlayerProfiles(filter).thenAccept(v -> {
+		CharactersApi.skin().requestPlayerProfiles(filter).thenAccept(v -> {
 			for (var d : v.entrySet()) {
 				AtomicReference<Identifier> texture = new AtomicReference<>(MISSING_HEAD);
 				var l = new ClickableLayoutComponent(Sizing.fill(100), Sizing.fixed(20), FlowLayout.Algorithm.HORIZONTAL);
@@ -146,7 +146,7 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 				l.surface(Surface.PANEL);
 				l.surface2(Surface.DARK_PANEL);
 				l.alignment(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
-				SkinsLoader.loadHead(d.getKey(), v1 -> {
+				CharactersApi.skin().getHeadTexture(d.getKey(), v1 -> {
 					texture.set(v1);
 					l.removeChild(icon);
 					l.child(0, Components.texture(v1, 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(16)));

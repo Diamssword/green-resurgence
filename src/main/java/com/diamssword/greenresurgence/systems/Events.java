@@ -6,10 +6,7 @@ import com.diamssword.greenresurgence.items.AbstractBackpackItem;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.network.DictionaryPackets;
-import com.diamssword.greenresurgence.network.SkinServerCache;
 import com.diamssword.greenresurgence.systems.character.PlayerEvents;
-import com.diamssword.greenresurgence.systems.character.stats.ClassesLoader;
-import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.lootables.LootableLogic;
@@ -29,17 +26,9 @@ public class Events {
 		List<PlayerEntity> scheluded = new ArrayList<>();
 		ServerPlayConnectionEvents.JOIN.register((h, s, serv) -> {
 			scheluded.add(h.player);
-			var car = h.player.getComponent(Components.PLAYER_CHARACTERS).getCurrentCharacter();
-			if (car != null)
-				SkinServerCache.get(serv).addToCache(h.player.getUuid(), car.base64Skin, car.base64SkinHead, car.appearence.slim);
 		});
-		ServerPlayConnectionEvents.DISCONNECT.register(((handler, server) -> {
-			SkinServerCache.get(server).removeFromCache(handler.player.getUuid());
-		}));
 		ServerTickEvents.END_SERVER_TICK.register(Lootables.loader::worldTick);
 		ServerTickEvents.END_SERVER_TICK.register(Recipes.loader::worldTick);
-		ServerTickEvents.END_SERVER_TICK.register(ClassesLoader.instance::worldTick);
-		ServerTickEvents.END_SERVER_TICK.register(ClothingLoader.instance::worldTick);
 		ServerTickEvents.START_WORLD_TICK.register(w -> {
 			w.getEntitiesByType(TypeFilter.instanceOf(ItemEntity.class), i -> i.getStack().getItem() instanceof AbstractBackpackItem).forEach(v -> {
 
@@ -54,7 +43,7 @@ public class Events {
 				var ls = new ArrayList<>(scheluded);
 
 				ls.forEach(l1 -> {//on laisse le temps a MC d'envoyer les tags et autres données avant
-					Channels.sendToNonHost(l1, new DictionaryPackets.LootableList(Lootables.loader), new DictionaryPackets.ClothingList(ClothingLoader.instance), new DictionaryPackets.RecipeList(Recipes.loader), new DictionaryPackets.RoleList(ClassesLoader.instance));
+					Channels.sendToNonHost(l1, new DictionaryPackets.LootableList(Lootables.loader), new DictionaryPackets.RecipeList(Recipes.loader));
 					Channels.MAIN.serverHandle(l1).send(BaseInteractions.getPacket());
 					CurrentZonePacket.sendDebugZone(l1.getWorld(), l1);
 					var g = l1.getWorld().getComponent(Components.BASE_LIST).getForPlayer(l1.getUuid(), false);

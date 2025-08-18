@@ -1,12 +1,13 @@
-package com.diamssword.greenresurgence.systems.character.stats.classes;
+package com.diamssword.greenresurgence.systems.character.classes;
 
+import com.diamssword.characters.api.ComponentManager;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.PosesPackets;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.attributs.Attributes;
 import com.diamssword.greenresurgence.systems.character.PosesManager;
-import com.diamssword.greenresurgence.systems.character.stats.StatsRole;
 import com.google.gson.JsonObject;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.entity.EntityGroup;
@@ -14,9 +15,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 
-public class ClasseBrute extends StatsRole {
+public class ClasseBrute extends com.diamssword.characters.api.stats.StatsRole {
 
 	public ClasseBrute(String id, JsonObject data) {
 		super(id, data);
@@ -26,15 +28,15 @@ public class ClasseBrute extends StatsRole {
 	@Override
 	public void init() {
 		create(2, (t) -> {
-			t.addModifier(Attributes.PLAYER_KNOCKBACK, 0.2f, EntityAttributeModifier.Operation.ADDITION);
-			t.addModifier(Attributes.ALCOOL_RESISTANCE, 0.1f, EntityAttributeModifier.Operation.ADDITION);
+			t.addModifier(Attributes.PLAYER_KNOCKBACK, Attributes.modifier(Attributes.PLAYER_KNOCKBACK, 0.2f, EntityAttributeModifier.Operation.ADDITION));
+			t.addModifier(Attributes.ALCOOL_RESISTANCE, Attributes.modifier(Attributes.ALCOOL_RESISTANCE, 0.1f, EntityAttributeModifier.Operation.ADDITION));
 		});
 		create(4, (t) -> {
-			t.addModifier(Attributes.PLAYER_KNOCKBACK, 0.4f, EntityAttributeModifier.Operation.ADDITION);
+			t.addModifier(Attributes.PLAYER_KNOCKBACK, Attributes.modifier(Attributes.PLAYER_KNOCKBACK, 0.4f, EntityAttributeModifier.Operation.ADDITION));
 		});
-		addGlobalModifier(EntityAttributes.GENERIC_MAX_HEALTH, (l) -> StatsRole.modifier(EntityAttributes.GENERIC_MAX_HEALTH, l * 0.005f, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-		addGlobalModifier(EntityAttributes.GENERIC_ATTACK_DAMAGE, (l) -> StatsRole.modifier(EntityAttributes.GENERIC_ATTACK_DAMAGE, l * 0.005f, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
-		addGlobalModifier(Attributes.CRAFT_SPEED, (l) -> StatsRole.modifier(Attributes.CRAFT_SPEED, l * 0.01f, EntityAttributeModifier.Operation.ADDITION));
+		addGlobalModifier(EntityAttributes.GENERIC_MAX_HEALTH, (l) -> Attributes.modifier(EntityAttributes.GENERIC_MAX_HEALTH, l * 0.005f, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+		addGlobalModifier(EntityAttributes.GENERIC_ATTACK_DAMAGE, (l) -> Attributes.modifier(EntityAttributes.GENERIC_ATTACK_DAMAGE, l * 0.005f, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+		addGlobalModifier(Attributes.CRAFT_SPEED, (l) -> Attributes.modifier(Attributes.CRAFT_SPEED, l * 0.01f, EntityAttributeModifier.Operation.ADDITION));
 		eventsRegister();
 	}
 
@@ -51,10 +53,16 @@ public class ClasseBrute extends StatsRole {
 			}
 			return ActionResult.PASS;
 		});
+		ServerLivingEntityEvents.AFTER_DEATH.register((e, i) -> {
+			if (e instanceof ServerPlayerEntity player) {
+				player.getComponent(Components.PLAYER_DATA).placeCarriedEntity();
+			}
+
+		});
 		UseEntityCallback.EVENT.register((pl, world, hand, ent, hit) -> {
 
 			if (!world.isClient && pl.isSneaking()) {
-				var st = pl.getComponent(Components.PLAYER_DATA).stats.getPalier(id);
+				var st = ComponentManager.getPlayerDatas(pl).getStats().getPalier(id);
 				if (st >= 1) {
 					if (ent instanceof PlayerEntity pl1) {
 						pl1.startRiding(pl, true);

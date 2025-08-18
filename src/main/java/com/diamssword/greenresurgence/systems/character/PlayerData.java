@@ -2,7 +2,6 @@ package com.diamssword.greenresurgence.systems.character;
 
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.character.customPoses.IPlayerCustomPose;
-import com.diamssword.greenresurgence.systems.character.stats.PlayerStats;
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ClientTickingComponent;
@@ -25,15 +24,11 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 	private String customPoseID;
 	private IPlayerCustomPose customPose;
 	public final PlayerEntity player;
-	public PlayerApparence appearance;
-	public PlayerStats stats;
 	private NbtCompound carriedEntity;
 	public final HealthManager healthManager;
 
 	public PlayerData(PlayerEntity e) {
 		this.player = e;
-		this.appearance = new PlayerApparence(this);
-		this.stats = new PlayerStats(this);
 		this.healthManager = new HealthManager(e);
 	}
 
@@ -107,7 +102,6 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 
 	@Override
 	public void serverTick() {
-		this.appearance.tick();
 		if (customPose != null) {
 			if (customPose.shouldExitPose(player)) {
 				setCustomPose(null);
@@ -124,23 +118,19 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 			healthManager.readNbt(tag.getCompound("health"));
 		if (tag.contains("pose"))
 			forcedPose = EntityPose.valueOf(tag.getString("pose"));
-		if (tag.contains("appearance"))
-			appearance.readFromNbt(tag.getCompound("appearance"));
-		if (tag.contains("stats"))
-			stats.read(tag.getCompound("stats"));
 		if (tag.contains("carriedEntity"))
 			this.carriedEntity = tag.getCompound("carriedEntity");
 		if (tag.contains("customPoseID")) {
 			var d = tag.getString("customPoseID");
-			if (!d.equals(customPoseID) || customPose == null) {
+			if (d.equals("null")) {
+				customPose = null;
+				customPoseID = null;
+				player.calculateDimensions();
+			} else if (!d.equals(customPoseID) || customPose == null) {
 				customPose = PosesManager.createPose(d, player);
 				player.calculateDimensions();
 			}
 			customPoseID = d;
-		} else {
-			customPose = null;
-			customPoseID = null;
-			player.calculateDimensions();
 		}
 		if (tag.contains("shieldAmount"))
 			healthManager.setShieldAmount(tag.getDouble("shieldAmount"));
@@ -159,16 +149,13 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 		if (mode == SYNC_MODE_FULL || mode == SYNC_MODE_CLOTH) {
 			if (forcedPose != null)
 				tag.putString("pose", forcedPose.toString());
-			var ap = new NbtCompound();
-			appearance.writeToNbt(ap, true);
-			tag.put("appearance", ap);
 			if (carriedEntity != null)
 				tag.put("carriedEntity", carriedEntity);
 			if (customPoseID != null)
 				tag.putString("customPoseID", customPoseID);
+			else
+				tag.putString("customPoseID", "null");
 		}
-		if (mode == SYNC_MODE_FULL)
-			tag.put("stats", stats.write());
 		if (mode == SYNC_MODE_FULL || mode == SYNC_MODE_HUD) {
 			tag.putDouble("shieldAmount", healthManager.getShieldAmount());
 			tag.putDouble("energyAmount", healthManager.getEnergyAmount());
@@ -189,10 +176,6 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 	public void writeToNbt(NbtCompound tag) {
 		if (forcedPose != null)
 			tag.putString("pose", forcedPose.toString());
-		var ap = new NbtCompound();
-		appearance.writeToNbt(ap, false);
-		tag.put("appearance", ap);
-		tag.put("stats", stats.write());
 		if (customPoseID != null)
 			tag.putString("customPoseID", customPoseID);
 		if (carriedEntity != null)

@@ -1,14 +1,14 @@
 package com.diamssword.greenresurgence.gui;
 
+import com.diamssword.characters.api.CharactersApi;
+import com.diamssword.characters.api.ComponentManager;
+import com.diamssword.characters.api.appearence.Cloth;
+import com.diamssword.characters.api.appearence.LayerDef;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.gui.components.ClothButtonComponent;
 import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
 import com.diamssword.greenresurgence.gui.components.PlayerComponent;
 import com.diamssword.greenresurgence.gui.components.RButtonComponent;
-import com.diamssword.greenresurgence.network.Channels;
-import com.diamssword.greenresurgence.network.CosmeticsPackets;
-import com.diamssword.greenresurgence.systems.Components;
-import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.LabelComponent;
 import io.wispforest.owo.ui.component.SlimSliderComponent;
@@ -19,7 +19,6 @@ import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Pair;
@@ -31,18 +30,19 @@ import java.util.Objects;
 
 public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 
-	private static final List<Pair<String, ClothingLoader.Layer[]>> layerBts = new ArrayList<>();
+	private static final List<Pair<String, LayerDef[]>> layerBts = new ArrayList<>();
 
 	static {
-		layerBts.add(new Pair<>("all", ClothingLoader.Layer.clothLayers()));
-		layerBts.add(new Pair<>("current", ClothingLoader.Layer.clothLayers()));
-		for (var l : ClothingLoader.Layer.clothLayers()) {
-			layerBts.add(new Pair<>(l.name(), new ClothingLoader.Layer[]{l}));
+		var ls = CharactersApi.clothing().getClothLayers();
+		layerBts.add(new Pair<>("all", ls.toArray(new LayerDef[0])));
+		layerBts.add(new Pair<>("current", ls.toArray(new LayerDef[0])));
+		for (var l : ls) {
+			layerBts.add(new Pair<>(l.getId(), new LayerDef[]{l}));
 		}
 	}
 
-	private Pair<String, ClothingLoader.Layer[]> currentLayer = layerBts.get(0);
-	private Map<ClothingLoader.Layer, ClothingLoader.Cloth> oldCloths;
+	private Pair<String, LayerDef[]> currentLayer = layerBts.get(0);
+	private Map<String, Cloth> oldCloths;
 
 	private String lastSearch = "";
 	private final String currentCol = "all";
@@ -54,14 +54,14 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 	private void loadCloths(FreeRowGridLayout layout, PlayerComponent playerComp, String filter) {
 		lastSearch = filter;
 		var player = playerComp.entity();
-		var dt = player.getComponent(Components.PLAYER_DATA);
-		oldCloths = dt.appearance.getCloths();
+		var dt = ComponentManager.getPlayerDatas(player);
+		oldCloths = dt.getAppearence().getEquippedCloths();
 		var equip = oldCloths.values().stream().filter(Objects::nonNull).toList();
-		List<ClothingLoader.Cloth> list;
+		List<Cloth> list;
 		if (currentLayer.getLeft().equals("current"))
 			list = equip;
 		else
-			list = ClothingLoader.instance.getAvailablesClothsCollectionForPlayer(MinecraftClient.getInstance().player, "all", currentLayer.getRight());
+			list = CharactersApi.clothing().getAvailablesClothsCollectionForPlayer(MinecraftClient.getInstance().player, "all", currentLayer.getRight());
 		if (!filter.isEmpty())
 			list = list.stream().filter(v -> v.name().toLowerCase().contains(filter)).toList();
 		layout.clear();
@@ -70,22 +70,22 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 			bt.onPress((__) -> {
 				var v = bt.getCloth();
 				if (oldCloths.containsValue(v)) {
-					dt.appearance.setCloth(v.layer(), null);
-					Channels.MAIN.clientHandle().send(new CosmeticsPackets.EquipCloth("null", v.layer().toString()));
+					dt.getAppearence().setCloth(v.layer().id, null);
+					CharactersApi.clothing().clientAskEquipCloth("null", v.layer().getId());
 				} else {
-					dt.appearance.setCloth(v.layer(), v);
-					Channels.MAIN.clientHandle().send(new CosmeticsPackets.EquipCloth(v.layer() + "_" + v.id(), v.layer().toString()));
+					dt.getAppearence().setCloth(v.layer().id, v);
+					CharactersApi.clothing().clientAskEquipCloth(v.layer().getId() + "_" + v.id(), v.layer().toString());
 				}
-				oldCloths = dt.appearance.getCloths();
+				oldCloths = dt.getAppearence().getEquippedCloths();
 				updateSelected(layout, oldCloths.values().stream().filter(Objects::nonNull).toList());
 
 			});
 			bt.onClothHovered().subscribe(v -> {
 				if (v != null)
-					dt.appearance.setCloth(v.layer(), v);
+					dt.getAppearence().setCloth(v);
 				else {
 					oldCloths.forEach((a, v1) -> {
-						dt.appearance.setCloth(a, v1);
+						dt.getAppearence().setCloth(a, v1);
 					});
 				}
 			});
@@ -94,7 +94,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 		updateSelected(layout, equip);
 	}
 
-	private void updateSelected(FreeRowGridLayout layout, List<ClothingLoader.Cloth> equipped) {
+	private void updateSelected(FreeRowGridLayout layout, List<Cloth> equipped) {
 		for (Component child : layout.children()) {
 			if (child instanceof ClothButtonComponent cb) {
 				cb.setSelected(equipped.stream().anyMatch(v -> v.id().equals(cb.getCloth().id())));
@@ -112,12 +112,8 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 		var playerComp = rootComponent.childById(PlayerComponent.class, "player");
 		var slider = rootComponent.childById(SlimSliderComponent.class, "slider");
 		var player = playerComp.entity();
-		var cp = new NbtCompound();
-		MinecraftClient.getInstance().player.getComponent(Components.PLAYER_DATA).writeToNbt(cp);
-		var dt = player.getComponent(Components.PLAYER_DATA);
-		dt.readFromNbt(cp);
-		dt.appearance.refreshSkinDataForFakePlayer(MinecraftClient.getInstance().player);
-
+		var dt = ComponentManager.getPlayerDatas(player);
+		dt.getAppearence().clonePlayerAppearance(MinecraftClient.getInstance().player);
 		loadCloths(wardLay, playerComp, "");
 		search.onChanged().subscribe(v -> loadCloths(wardLay, playerComp, v.toLowerCase()));
 		search.setPlaceholder(Text.literal("Recherche"));
@@ -125,7 +121,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 		wardLay.focusGained().subscribe(v -> {
 			this.setFocused(search);
 		});
-		var outfits = dt.appearance.getOutfits();
+		var outfits = dt.getAppearence().getOutfits();
 		slider.value(0.5);
 		slider.onChanged().subscribe(v -> {
 			playerComp.rotation((int) (-180 + (v * 360f)));
@@ -134,7 +130,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 			var v = Text.literal("Outfit " + i);
 			final var i1 = i - 1;
 			if (i1 < outfits.size())
-				v = Text.literal(outfits.get(i1));
+				v = Text.literal(outfits.get(i1).getLeft());
 			var ar = new ArrayList<Text>();
 			ar.add(v);
 			ar.add(Text.literal("[maj] + [clique] pour modifier cette tenue").formatted(Formatting.GRAY, Formatting.ITALIC));
@@ -142,14 +138,14 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 				if (Screen.hasShiftDown()) {
 					createOutfitWindow(v1, i1);
 				} else {
-					Channels.MAIN.clientHandle().send(new CosmeticsPackets.EquipOutfit(i1));
-					dt.appearance.equipOutfit(i1);
+					CharactersApi.clothing().clientAskEquipOutfit(i1);
+					dt.getAppearence().equipOutfit(i1);
 				}
 			}).tooltip(ar);
 		}
 		if (flow != null) {
 			final List<RButtonComponent> bts = new ArrayList<>();
-			for (Pair<String, ClothingLoader.Layer[]> value : layerBts) {
+			for (Pair<String, LayerDef[]> value : layerBts) {
 				var bt = new RButtonComponent(Text.empty(), (o) -> {
 					for (var d : bts) {
 						d.setActivated(false);

@@ -2,8 +2,6 @@ package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.GridContainerSyncer;
-import com.diamssword.greenresurgence.systems.character.stats.ClassesLoader;
-import com.diamssword.greenresurgence.systems.clothing.ClothingLoader;
 import com.diamssword.greenresurgence.systems.crafting.CraftingResult;
 import com.diamssword.greenresurgence.systems.crafting.RecipeLoader;
 import com.diamssword.greenresurgence.systems.crafting.SimpleRecipe;
@@ -34,18 +32,15 @@ public class Channels {
 		});
 		PacketBufSerializer.register(GridContainerSyncer.class, GridContainerSyncer::serializer, GridContainerSyncer::unserializer);
 		PacketBufSerializer.register(LootablesReloader.class, LootablesReloader::serializer, LootablesReloader::unserializer);
-		PacketBufSerializer.register(ClothingLoader.class, ClothingLoader::serializer, ClothingLoader::unserializer);
 		PacketBufSerializer.register(RecipeLoader.class, RecipeLoader::serializer, RecipeLoader::unserializer);
 		PacketBufSerializer.register(CraftingResult.class, CraftingResult::serializer, CraftingResult::unserializer);
 		PacketBufSerializer.register(SimpleRecipe.class, SimpleRecipe::serializer, SimpleRecipe::unserializer);
 		PacketBufSerializer.register(FactionMember.class, FactionMember::serializer, FactionMember::unserializer);
 		PacketBufSerializer.register(FactionPerm.class, FactionPerm::serializer, FactionPerm::unserializer);
-		PacketBufSerializer.register(ClassesLoader.class, ClassesLoader::serializer, ClassesLoader::unserializer);
 		AdventureInteract.init();
 		StructureSizePacket.init();
 		CurrentZonePacket.init();
 		DictionaryPackets.init();
-		CosmeticsPackets.init();
 		GuiPackets.init();
 		CraftPackets.init();
 		StatsPackets.init();
@@ -54,7 +49,6 @@ public class Channels {
 		InventoryPackets.init();
 		GuildPackets.init();
 		ModularArmorPackets.init();
-		SkinServerCache.init();
 	}
 
 	public static boolean isSelfHost(MinecraftServer server, PlayerEntity player) {

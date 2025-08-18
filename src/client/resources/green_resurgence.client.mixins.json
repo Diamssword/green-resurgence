@@ -11,7 +11,6 @@
     "InGameHudMixin",
     "LivingRendererAccessor",
     "OwOSurfaceMixin",
-    "PlayerListEntryMixin",
     "PlayerModelMixin",
     "PlayerRenderMixin",
     "PlayerSkinProviderAccessor",
