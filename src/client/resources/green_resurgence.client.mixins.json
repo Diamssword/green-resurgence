@@ -13,7 +13,6 @@
     "OwOSurfaceMixin",
     "PlayerModelMixin",
     "PlayerRenderMixin",
-    "PlayerSkinProviderAccessor",
     "UserAttackBlockMixin",
     "WorldRenderMixin"
   ],

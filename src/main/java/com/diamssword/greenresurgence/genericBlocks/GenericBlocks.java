@@ -145,15 +145,16 @@ public class GenericBlocks {
 		//register
 		diams.create("register_black", "circulation_plot").addSub(BlockType.PILLAR, ModelType.SLAB, HitBox.SMALL_BOTTOM).setTransparency(Transparency.NOTFULL).disableGen(true);
 		diams.create("gaz_bottle", "gaz_bottle_big", "gaz_bottle_pile", "fire_extinguisher").addSub(BlockType.PILLAR, ModelType.SLAB, HitBox.SMALL_BOTTOM).setTransparency(Transparency.CUTOUT).disableGen(true);
+		diams.create("fire_extinguisher_wall").addSub(BlockType.OMNI_BLOCK, ModelType.SLAB, HitBox.CARPET).setTransparency(Transparency.CUTOUT).disableGen(true);
 		//photo_frame
 		diams.create(simpleList("photo_frame_", new String[]{"tree_", "portrait_", "zen_"}, new String[]{"table"})).addSub(BlockType.PILLAR, ModelType.SLAB, HitBox.SMALL_BOTTOM).addGroup("photo_frame").setTransparency(Transparency.NOTFULL).disableGen(true);
 		diams.create(simpleList("photo_frame_", new String[]{"tree_", "portrait_", "zen_"}, new String[]{"wall"})).addSub(BlockType.PILLAR, ModelType.SLAB, HitBox.CARPET).addGroup("photo_frame").setTransparency(Transparency.NOTFULL).disableGen(true);
 		//radiator
 		diams.create("radiator_white_central", "radiator_white_left", "radiator_white_right", "radiator_white_solo").addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.SLAB).setTransparency(Transparency.NOTFULL).notSolid().addGroup("radiator").disableGen(true);
 		//tire
-		diams.create(append(simpleList("tire_car_", "", "flat_triple", "up_double", "up_triple"), "tire_truck_full")).addSub(BlockType.PILLAR).setTransparency(Transparency.NOTFULL).addGroup("tire_car").disableGen(true);
-		diams.create(append(simpleList("tire_car_", "", "brake_disc", "full", "jante", "up"), "tire_truck_disk")).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.SLAB).setTransparency(Transparency.NOTFULL).addGroup("tire_car").disableGen(true);
-		diams.create("tire_truck_flat").addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.FIXED_SLAB).setTransparency(Transparency.NOTFULL).addGroup("tire_car").disableGen(true);
+		diams.create(append(simpleList("tire_car_", "", "flat_triple", "up_double", "up_triple"), "tire_truck_full")).addSub(BlockType.PILLAR).setTransparency(Transparency.NOTFULL).addGroup("car_parts").disableGen(true);
+		diams.create(append(simpleList("tire_car_", "", "brake_disc", "full", "jante", "up"), "tire_truck_disk", "tire_truck_disk_broken")).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.SLAB).setTransparency(Transparency.NOTFULL).addGroup("car_parts").disableGen(true);
+		diams.create("tire_truck_flat").addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.FIXED_SLAB).setTransparency(Transparency.NOTFULL).addGroup("car_parts").disableGen(true);
 		//toggleable
 		diams.create("toilet_white", "toilet_black").addSub(BlockType.PILLAR, ModelType.SLAB, HitBox.SLAB).togglable().setTransparency(Transparency.NOTFULL).disableGen(true);
 		diams.create("trash_can_big").addSub(BlockType.PILLAR).togglable().setTransparency(Transparency.CUTOUT).disableGen(true);
@@ -180,7 +181,7 @@ public class GenericBlocks {
 		diams.create("chair_dining_waterhyacinth", "chair_stool_vintage", "chair_stool_military", "chair_wood_oak", "chair_wood_oak_b", "chair_wood_spruce", "chair_wood_spruce_b")
 				.addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.MEDIUM).seat(CHAIR_MEDIUM).setTransparency(Transparency.NOTFULL).disableGen(true);
 		//shower
-		diams.create(simpleList("shower_", "", "wall_head", "round_wall_head", "round_head_with_hand", "round_head", "round_ceiling_head", "only_with_hand", "mixer", "head_with_hand", "head", "ceiling_head"))
+		diams.create(simpleList("shower_", "", "wall_head", "round_wall_head", "round_head_with_hand", "round_head", "round_ceiling_head", "mixer", "head_with_hand", "head", "ceiling_head"))
 				.addSub(BlockType.PILLAR, ModelType.CARPET, HitBox.CARPET).notSolid().setTransparency(Transparency.CUTOUT).disableGen(true).addGroup("shower");
 		diams.create("pendantlight_rattan_light", "pendantlight_rattan_dark", "trash_can_round_green", "trash_can_round_iron", "dino_meat_mascot", "trash_can_fast_food_red", "trash_can_fast_food_green", "trash_can_fast_food_gray", "trash_can_fast_food_black", "trash_can_square_exterior_wood", "trash_can_square_exterior_green", "restaurant_display_light", "restaurant_display_dark").addSub(BlockType.PILLAR).setTransparency(Transparency.CUTOUT).disableGen(true);
 		diams.create(simpleList("luggage_", "", "antique_small_brown", "antique_small_white", "basket", "basket_stand", "picnic")).addSub(BlockType.PILLAR, ModelType.SLAB, HitBox.SLAB).setTransparency(Transparency.NOTFULL).disableGen(true);
@@ -231,14 +232,18 @@ public class GenericBlocks {
 		diams.create("barrier_plastic").addSub(BlockType.CONNECTED_PILLAR).setTransparency(Transparency.NOTFULL).disableGen(true);
 		diams.create("barrier_plastic_angle").addSub(BlockType.PILLAR).setTransparency(Transparency.NOTFULL).disableGen(true);
 		//car
-		diams.create(simpleList("car_", new String[]{"1_"}, new String[]{"tire_protection_full", "tire_protection_broken", "sidewalk", "front_bumper_right", "front_bumper_left", "back_bumper_right", "back_bumper_left"})).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.SLAB).disableGen(true).addGroup("car_parts");
-		diams.create(simpleList("car_", new String[]{"1_"}, new String[]{"headlight_right", "headlight_left"})).addSub(BlockType.OMNI_BLOCK, ModelType.SIMPLE, HitBox.CARPET).disableGen(true).addGroup("car_parts");
-		diams.create(simpleList("car_", new String[]{"1_"}, new String[]{"front_right_gray", "front_left_gray"})).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.STAIR).disableGen(true).setTransparency(Transparency.TRANSPARENT).addGroup("car_parts");
-		diams.create(simpleList("car_", new String[]{"1_"}, new String[]{"chair_small_black"})).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.CARPET_FIXED).disableGen(true).seat(CHAIR_SLAB).addGroup("car_parts");
-		diams.create(simpleList("car_1_front_hood_", "", "right_gray_open", "left_gray_open")).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.SMALL_SIDE_CARPET).disableGen(true).addGroup("car_parts");
-		diams.create(simpleList("car_1_front_hood_", "", "right_gray", "left_gray")).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.CARPET_FIXED).disableGen(true).addGroup("car_parts");
-		diams.create("car_1_window").addSub(BlockType.OMNI_BLOCK, ModelType.SIMPLE, HitBox.CARPET).setTransparency(Transparency.TRANSPARENT).disableGen(true).addGroup("car_parts");
-		diams.create("car_1_door").addSub(BlockType.DOOR_TWO).setTransparency(Transparency.TRANSPARENT).disableGen(true).addGroup("car_parts");
+		diams.create(simpleList("car/car_1/car_", new String[]{"1_"}, new String[]{"tire_protection_full", "tire_protection_broken", "sidewalk", "front_bumper_right", "front_bumper_left", "back_bumper_right", "back_bumper_left"})).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.SLAB).disableGen(true).addGroup("car_parts");
+		diams.create(simpleList("car/car_1/car_", new String[]{"1_"}, new String[]{"headlight_right", "headlight_left", "headlight_back_left", "headlight_back_right"})).addSub(BlockType.OMNI_BLOCK, ModelType.SIMPLE, HitBox.CARPET).disableGen(true).addGroup("car_parts");
+		diams.create(simpleList("car/car_1/car_", new String[]{"1_"}, new String[]{"front_right_gray", "front_left_gray"})).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.STAIR).disableGen(true).setTransparency(Transparency.TRANSPARENT).addGroup("car_parts");
+		diams.create(simpleList("car/car_1/car_", new String[]{"1_"}, new String[]{"chair_small_black"})).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.CARPET_FIXED).disableGen(true).seat(CHAIR_SLAB).addGroup("car_parts");
+		diams.create(simpleList("car/car_1/car_1_front_hood_", "", "right_gray_open", "left_gray_open")).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.SMALL_SIDE_CARPET).disableGen(true).addGroup("car_parts");
+		diams.create(simpleList("car/car_1/car_1_front_hood_", "", "right_gray", "left_gray")).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.CARPET_FIXED).disableGen(true).addGroup("car_parts");
+		diams.create(simpleList("car/car_1/car_1_back_trunk_", "", "right_open", "left_open")).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.SMALL_SIDE_CARPET).setTransparency(Transparency.CUTOUT).disableGen(true).addGroup("car_parts");
+		diams.create(simpleList("car/car_1/car_1_back_trunk_", "", "right", "left")).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.CARPET).setTransparency(Transparency.CUTOUT).disableGen(true).addGroup("car_parts");
+		diams.create(simpleList("car/car_2/car_2_truck_front_", new String[]{"left", "right", "middle_right", "middle_left"}, new String[]{"_gray"})).addSub(BlockType.PILLAR).setTransparency(Transparency.TRANSPARENT).disableGen(true).addGroup("car_parts");
+		diams.create("car/car_2/car_2_truck_licence_plate").addSub(BlockType.OMNI_BLOCK, ModelType.CARPET, HitBox.CARPET).setTransparency(Transparency.NOTFULL).disableGen(true).addGroup("car_parts");
+		diams.create("car/car_1/car_1_window").addSub(BlockType.OMNI_BLOCK, ModelType.SIMPLE, HitBox.CARPET).setTransparency(Transparency.TRANSPARENT).disableGen(true).addGroup("car_parts");
+		diams.create("car/car_1/car_1_door").addSub(BlockType.DOOR_TWO).setTransparency(Transparency.TRANSPARENT).disableGen(true).addGroup("car_parts");
 
 		diams.create("scooter").addSub(BlockType.PILLAR).seat(HIGH_CHAIR).setTransparency(Transparency.TRANSPARENT).disableGen(true);
 		diams.create(allColors("bike/bike_")).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.WALL).seat(HIGH_CHAIR).setTransparency(Transparency.TRANSPARENT).disableGen(true).addGroup("bikes");

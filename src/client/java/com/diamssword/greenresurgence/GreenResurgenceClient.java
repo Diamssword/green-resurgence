@@ -1,11 +1,17 @@
 package com.diamssword.greenresurgence;
 
+import com.diamssword.characters.api.CharactersApi;
 import com.diamssword.greenresurgence.gui.ScreenHandlers;
+import com.diamssword.greenresurgence.gui.WardrobeGui;
 import com.diamssword.greenresurgence.gui.components.ComponentsRegister;
 import com.diamssword.greenresurgence.gui.hud.CustomHud;
 import com.diamssword.greenresurgence.items.ItemModelOverrideProvider;
 import com.diamssword.greenresurgence.render.Entities;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
 
 public class GreenResurgenceClient implements ClientModInitializer {
@@ -28,6 +34,13 @@ public class GreenResurgenceClient implements ClientModInitializer {
 		ScreenHandlers.init();
 		ComponentsRegister.init();
 		CustomHud.init();
+		ClientLifecycleEvents.CLIENT_STARTED.register(GreenResurgenceClient::postInit);
+
+	}
+
+	@Environment(EnvType.CLIENT)
+	private static void postInit(MinecraftClient client) {
+		CharactersApi.instance.overrideWardrobeGui(WardrobeGui::new);
 	}
 
 }

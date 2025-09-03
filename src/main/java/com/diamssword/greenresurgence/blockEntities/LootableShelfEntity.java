@@ -22,9 +22,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+
 public class LootableShelfEntity extends BlockEntity implements IAdvancedLootableBlock {
 	private final DefaultedList<ItemStack> items = DefaultedList.ofSize(9, ItemStack.EMPTY);
-	private int selectedIndex = 0;
+	private int selectedIndex = -1;
 	private int selectedCount = 0;
 	private boolean isOff = false;
 	private long lastBreak = 0;
@@ -87,7 +89,7 @@ public class LootableShelfEntity extends BlockEntity implements IAdvancedLootabl
 
 				t.isOff = false;
 				for (int i = 0; i < 100; i++) {
-					t.selectedIndex = (int) (Math.random() * t.items.size());
+					t.selectedIndex = t.selectASlot();
 					t.selectedCount = (int) (1 + (Math.random() * t.items.get(t.selectedIndex).getCount()));
 					if (!t.getItem().isEmpty())
 						break;
@@ -98,6 +100,17 @@ public class LootableShelfEntity extends BlockEntity implements IAdvancedLootabl
 		}
 	}
 
+	private int selectASlot() {
+		var ls = new ArrayList<Integer>();
+		for (int i = 0; i < items.size(); i++) {
+			if (!items.get(i).isEmpty())
+				ls.add(i);
+		}
+		if (ls.isEmpty())
+			return -1;
+		return ls.get((int) (Math.random() * ls.size()));
+	}
+
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
@@ -105,12 +118,12 @@ public class LootableShelfEntity extends BlockEntity implements IAdvancedLootabl
 		selectedIndex = Math.min(nbt.getInt("selected"), items.size());
 		selectedCount = nbt.getInt("selectedCount");
 		isOff = nbt.getBoolean("isOff");
-		if (selectedIndex != 0 && getItem().isEmpty())
-			selectedIndex = 0;
+		if (selectedIndex < 0 || getItem().isEmpty())
+			selectedIndex = selectASlot();
 	}
 
 	public ItemStack getItem() {
-		if (this.isOff)
+		if (this.isOff || selectedIndex < 0 || selectedIndex >= this.items.size())
 			return ItemStack.EMPTY;
 		return this.items.get(selectedIndex).copyWithCount(selectedCount);
 	}
@@ -120,7 +133,7 @@ public class LootableShelfEntity extends BlockEntity implements IAdvancedLootabl
 		inv.addListener((c) -> {
 			for (int i = 0; i < c.size(); i++) {
 				this.items.set(i, c.getStack(i));
-				this.selectedCount = (int) (1 + (Math.random() * this.items.get(this.selectedIndex).getCount()));
+				this.selectedCount = (int) (1 + (Math.random() * getItem().getCount()));
 			}
 			this.saveAndUpdate();
 		});

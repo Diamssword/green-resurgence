@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.GridContainerSyncer;
+import com.diamssword.greenresurgence.systems.armor.ArmorLoader;
 import com.diamssword.greenresurgence.systems.crafting.CraftingResult;
 import com.diamssword.greenresurgence.systems.crafting.RecipeLoader;
 import com.diamssword.greenresurgence.systems.crafting.SimpleRecipe;
@@ -32,6 +33,7 @@ public class Channels {
 		});
 		PacketBufSerializer.register(GridContainerSyncer.class, GridContainerSyncer::serializer, GridContainerSyncer::unserializer);
 		PacketBufSerializer.register(LootablesReloader.class, LootablesReloader::serializer, LootablesReloader::unserializer);
+		PacketBufSerializer.register(ArmorLoader.class, ArmorLoader::serializer, ArmorLoader::unserializer);
 		PacketBufSerializer.register(RecipeLoader.class, RecipeLoader::serializer, RecipeLoader::unserializer);
 		PacketBufSerializer.register(CraftingResult.class, CraftingResult::serializer, CraftingResult::unserializer);
 		PacketBufSerializer.register(SimpleRecipe.class, SimpleRecipe::serializer, SimpleRecipe::unserializer);

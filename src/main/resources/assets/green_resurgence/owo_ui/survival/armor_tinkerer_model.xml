@@ -11,6 +11,20 @@
                             <children><button id="back"><text>&lt;</text><tooltip-text>Retour</tooltip-text></button></children>
                             <sizing><vertical method="fill">100</vertical></sizing>
                         </flow-layout>
+                        <item id="item">
+                            <sizing><horizontal method="fixed">100</horizontal><vertical method="fixed">100</vertical></sizing>
+                        </item>
+                         <scroll direction="vertical">
+                            <freerowgrid columns="2" id="grid">
+                                <children/>
+                                <padding>1</padding>
+                            </freerowgrid>
+                            <sizing>
+                                <vertical method="fill">100</vertical>
+                                <horizontal method="fill">50</horizontal>
+                            </sizing>
+                             <vertical-alignment>center</vertical-alignment>
+                        </scroll>
                     </children>
                      <vertical-alignment>center</vertical-alignment>
                     <sizing><vertical method="fill">85</vertical></sizing>

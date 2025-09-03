@@ -3,16 +3,16 @@ package com.diamssword.greenresurgence.gui;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.MItems;
 import com.diamssword.greenresurgence.blockEntities.ArmorTinkererBlockEntity;
+import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.ModularArmorPackets;
+import com.diamssword.greenresurgence.systems.armor.ArmorLoader;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
-import io.wispforest.owo.ui.container.Containers;
+import io.wispforest.owo.ui.component.ItemComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
-import io.wispforest.owo.ui.core.HorizontalAlignment;
 import io.wispforest.owo.ui.core.Sizing;
-import io.wispforest.owo.ui.core.VerticalAlignment;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -39,7 +39,6 @@ public class ArmorTinkererModelGui extends BaseUIModelScreen<FlowLayout> {
 	@Override
 	protected void build(FlowLayout rootComponent) {
 		rootComponent.childById(ButtonComponent.class, "back").onPress(v -> Channels.MAIN.clientHandle().send(new ModularArmorPackets.RequestGui(tilePos)));
-		var lay = rootComponent.childById(FlowLayout.class, "layout");
 		switch (slot) {
 			case HEAD -> stack = new ItemStack(MItems.MODULAR_HEAD);
 			case CHEST -> stack = new ItemStack(MItems.MODULAR_CHEST);
@@ -48,20 +47,13 @@ public class ArmorTinkererModelGui extends BaseUIModelScreen<FlowLayout> {
 		}
 
 		stack.getOrCreateNbt().putString("model", model);
-		lay.child(Components.item(stack).sizing(Sizing.fixed(100)));
-		var cont1 = Containers.verticalFlow(Sizing.fill(100), Sizing.content()).gap(2);
-		var scroll = Containers.verticalScroll(Sizing.fill(50), Sizing.fill(100), cont1);
-		scroll.verticalAlignment(VerticalAlignment.CENTER);
-		lay.child(scroll);
-		for (int i = 1; i < ModularArmorPackets.modeles.length; i += 2) {
-			var c2 = Containers.horizontalFlow(Sizing.fill(100), Sizing.content()).gap(2);
-			c2.horizontalAlignment(HorizontalAlignment.CENTER);
-			var model = ModularArmorPackets.modeles[i];
-			var model1 = ModularArmorPackets.modeles[i - 1];
-			c2.child(Components.button(Text.literal(model), (d) -> setModel(model)).horizontalSizing(Sizing.fill(48)));
-			c2.child(Components.button(Text.literal(model1), (d) -> setModel(model1)).horizontalSizing(Sizing.fill(48)));
-			cont1.child(c2);
-		}
+		rootComponent.childById(ItemComponent.class, "item").stack(stack);
+		var grid = rootComponent.childById(FreeRowGridLayout.class, "grid");
+		ArmorLoader.loader.getModels().forEach((k, v) -> {
+			if (ArmorLoader.isSLotValidFor(v, slot))
+				grid.child(Components.button(Text.literal(v.model()), (d) -> setModel(k)).horizontalSizing(Sizing.fill(48)));
+		});
+
 		rootComponent.childById(ButtonComponent.class, "confirm").onPress(v -> Channels.MAIN.clientHandle().send(new ModularArmorPackets.ChangeModel(tilePos, ArmorTinkererBlockEntity.revertedArmorIndex(slot), model)));
 	}
 

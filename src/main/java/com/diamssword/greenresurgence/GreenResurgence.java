@@ -10,6 +10,7 @@ import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.Events;
+import com.diamssword.greenresurgence.systems.armor.ArmorLoader;
 import com.diamssword.greenresurgence.systems.attributs.Attributes;
 import com.diamssword.greenresurgence.systems.character.classes.ClassesRegister;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
@@ -49,6 +50,7 @@ public class GreenResurgence implements ModInitializer {
 	public void onInitialize() {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(Lootables.loader);
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(Recipes.loader);
+		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(ArmorLoader.loader);
 		FieldRegistrationHandler.register(MItems.class, ID, false);
 		registerSubCat(Weapons.class, ID, "tools/", false);
 		registerSubCat(Shields.class, ID, "tools/shields/", false);

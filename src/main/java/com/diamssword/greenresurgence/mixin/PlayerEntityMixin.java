@@ -179,8 +179,12 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 		var comp = this.getComponent(Components.PLAYER_DATA);
 		var custpo = comp.getCustomPose();
-		if (custpo != null)
-			cir.setReturnValue(custpo.changeHitBox(comp.player, POSE_DIMENSIONS.get(pose)));
+		if (custpo != null) {
+			var p = POSE_DIMENSIONS.get(pose);
+			var p1 = custpo.changeHitBox(comp.player, p);
+			if (p1 != p)
+				cir.setReturnValue(p1);
+		}
 	}
 
 	@Inject(at = @At("HEAD"), method = "getActiveEyeHeight", cancellable = true)

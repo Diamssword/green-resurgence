@@ -4,8 +4,6 @@ import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import team.reborn.energy.api.EnergyStorage;
 
 import java.util.ArrayList;
@@ -13,17 +11,19 @@ import java.util.List;
 
 public class TerrainEnergyStorage extends SnapshotParticipant<Long> implements EnergyStorage {
 	public long amount = 0;
-	private long capacity=0;
-	private List<Long> poses=new ArrayList<>();
+	private long capacity = 0;
+	private final List<Long> poses = new ArrayList<>();
+
 	public TerrainEnergyStorage() {
 
 	}
-	public void addCapacity(int amount)
-	{
-		capacity=Math.max(0,capacity+amount);
-		if(this.amount>capacity)
-			this.amount=capacity;
+
+	public void addCapacity(int amount) {
+		capacity = Math.max(0, capacity + amount);
+		if (this.amount > capacity)
+			this.amount = capacity;
 	}
+
 	@Override
 	protected Long createSnapshot() {
 		return amount;
@@ -34,21 +34,20 @@ public class TerrainEnergyStorage extends SnapshotParticipant<Long> implements E
 		amount = snapshot;
 	}
 
-    @Override
+	@Override
 	public long insert(long maxAmount, TransactionContext transaction) {
 		StoragePreconditions.notNegative(maxAmount);
-		long inserted =  Math.min(maxAmount, capacity - amount);
+		long inserted = Math.min(maxAmount, capacity - amount);
 
 		if (inserted > 0) {
 			updateSnapshots(transaction);
 			amount += inserted;
-			System.out.println(inserted+";"+amount);
 			return inserted;
 		}
 		return 0;
 	}
 
-    @Override
+	@Override
 	public long extract(long maxAmount, TransactionContext transaction) {
 		StoragePreconditions.notNegative(maxAmount);
 
@@ -72,14 +71,14 @@ public class TerrainEnergyStorage extends SnapshotParticipant<Long> implements E
 	public long getCapacity() {
 		return capacity;
 	}
-	public void toNBT(NbtCompound tag)
-	{
-		tag.putLong("amount",this.amount);
-		tag.putLong("capacity",this.capacity);
+
+	public void toNBT(NbtCompound tag) {
+		tag.putLong("amount", this.amount);
+		tag.putLong("capacity", this.capacity);
 	}
-	public void fromNBT(NbtCompound tag)
-	{
-		this.capacity=tag.getLong("capacity");
-		this.amount=tag.getLong("amount");
+
+	public void fromNBT(NbtCompound tag) {
+		this.capacity = tag.getLong("capacity");
+		this.amount = tag.getLong("amount");
 	}
 }

@@ -23,7 +23,6 @@ public class GuiPackets {
 
 	public enum GUI {
 		ImageBlock,
-		Wardrobe,
 		Stats,
 		FactionClaimAntenna,
 	}

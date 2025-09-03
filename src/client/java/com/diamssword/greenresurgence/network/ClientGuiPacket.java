@@ -5,7 +5,6 @@ import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
 import com.diamssword.greenresurgence.gui.IPacketNotifiedChange;
 import com.diamssword.greenresurgence.gui.ImageBlockGui;
 import com.diamssword.greenresurgence.gui.PlayerStatsGui;
-import com.diamssword.greenresurgence.gui.WardrobeGui;
 import com.diamssword.greenresurgence.gui.faction.ClaimAntennaGui;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -20,9 +19,6 @@ public class ClientGuiPacket {
 
 				case ImageBlock -> {
 					openGui(new ImageBlockGui(getTile(ImageBlockEntity.class, message.pos())));
-				}
-				case Wardrobe -> {
-					openGui(new WardrobeGui());
 				}
 				case Stats -> {
 					openGui(new PlayerStatsGui());

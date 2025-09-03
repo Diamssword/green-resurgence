@@ -6,6 +6,7 @@ import com.diamssword.greenresurgence.items.AbstractBackpackItem;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.network.DictionaryPackets;
+import com.diamssword.greenresurgence.systems.armor.ArmorLoader;
 import com.diamssword.greenresurgence.systems.character.PlayerEvents;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
@@ -29,6 +30,7 @@ public class Events {
 		});
 		ServerTickEvents.END_SERVER_TICK.register(Lootables.loader::worldTick);
 		ServerTickEvents.END_SERVER_TICK.register(Recipes.loader::worldTick);
+		ServerTickEvents.END_SERVER_TICK.register(ArmorLoader.loader::worldTick);
 		ServerTickEvents.START_WORLD_TICK.register(w -> {
 			w.getEntitiesByType(TypeFilter.instanceOf(ItemEntity.class), i -> i.getStack().getItem() instanceof AbstractBackpackItem).forEach(v -> {
 

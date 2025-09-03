@@ -619,19 +619,35 @@
     }
   },
   {
-    "block": "green_resurgence:diams_car_1_front_hood_left_gray",
-    "empty": "green_resurgence:diams_car_1_front_hood_left_gray_open",
+    "block": "green_resurgence:diams_car/car_1/car_1_front_hood_left_gray",
+    "empty": "green_resurgence:diams_car/car_1/car_1_front_hood_left_gray_open",
     "tables": {
       "hand": "minecraft:empty"
     },
-    "connected": "green_resurgence:diams_car_1_front_hood_right_gray"
+    "connected": "green_resurgence:diams_car/car_1/car_1_front_hood_right_gray"
   },
   {
-    "block": "green_resurgence:diams_car_1_front_hood_right_gray",
-    "empty": "green_resurgence:diams_car_1_front_hood_right_gray_open",
+    "block": "green_resurgence:diams_car/car_1/car_1_front_hood_right_gray",
+    "empty": "green_resurgence:diams_car/car_1/car_1_front_hood_right_gray_open",
     "tables": {
       "hand": "minecraft:empty"
     },
-    "connected": "green_resurgence:diams_car_1_front_hood_left_gray"
+    "connected": "green_resurgence:diams_car/car_1/car_1_front_hood_left_gray"
+  },
+  {
+    "block": "green_resurgence:diams_car/car_1/car_1_back_trunk_left",
+    "empty": "green_resurgence:diams_car/car_1/car_1_back_trunk_left_open",
+    "tables": {
+      "hand": "minecraft:empty"
+    },
+    "connected": "green_resurgence:diams_car/car_1/car_1_back_trunk_right"
+  },
+  {
+    "block": "green_resurgence:diams_car/car_1/car_1_back_trunk_right",
+    "empty": "green_resurgence:diams_car/car_1/car_1_back_trunk_right_open",
+    "tables": {
+      "hand": "minecraft:empty"
+    },
+    "connected": "green_resurgence:diams_car/car_1/car_1_back_trunk_left"
   }
 ]

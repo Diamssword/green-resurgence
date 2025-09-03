@@ -1,0 +1,67 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "green_resurgence:block/diams/car_headlight_back",
+		"particle": "green_resurgence:block/diams/car_headlight_back"
+	},
+	"elements": [
+		{
+			"from": [12.5, 6, 0],
+			"to": [16, 11.5, 3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [13.25, -2.75, 1]},
+			"faces": {
+				"north": {"uv": [3.5, 5.5, 0, 11], "texture": "#0"},
+				"east": {"uv": [13, 0, 10, 5.5], "texture": "#0"},
+				"south": {"uv": [3.5, 0, 0, 5.5], "texture": "#0"},
+				"west": {"uv": [10, 0, 7, 5.5], "texture": "#0"},
+				"up": {"uv": [10, 5.5, 7, 9], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [13, 5.5, 10, 9], "rotation": 90, "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [24, -180, 0],
+			"translation": [5.25, 0.75, -6.5],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [24, -180, 0],
+			"translation": [-4.75, 0.75, -6.5],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"firstperson_righthand": {
+			"translation": [16, -8.75, -7.25],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"firstperson_lefthand": {
+			"translation": [25, -8.75, -7.25],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"ground": {
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"gui": {
+			"rotation": [17, -32, 0],
+			"translation": [-5.25, -3.25, 0]
+		},
+		"head": {
+			"rotation": [0, -180, 0],
+			"translation": [2, -0.25, -13.5]
+		},
+		"fixed": {
+			"rotation": [0, -180, 0],
+			"translation": [5.75, -6, -7.75]
+		}
+	},
+	"groups": [
+		{
+			"name": "right",
+			"origin": [18.75, 10.25, 0],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}

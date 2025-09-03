@@ -18,9 +18,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+
 public class LootableItemBlockEntity extends ItemBlockEntity implements IAdvancedLootableBlock {
 	private final DefaultedList<ItemStack> items = DefaultedList.ofSize(9, ItemStack.EMPTY);
-	private int selectedIndex = 0;
+	private int selectedIndex = -1;
 
 	private boolean isOff = false;
 	private long lastBreak = 0;
@@ -61,13 +63,24 @@ public class LootableItemBlockEntity extends ItemBlockEntity implements IAdvance
 
 	}
 
+	private int selectASlot() {
+		var ls = new ArrayList<Integer>();
+		for (int i = 0; i < items.size(); i++) {
+			if (!items.get(i).isEmpty())
+				ls.add(i);
+		}
+		if (ls.isEmpty())
+			return -1;
+		return ls.get((int) (Math.random() * ls.size()));
+	}
+
 	public static <T extends BlockEntity> void tick(World world, BlockPos pos, BlockState blockState, LootableItemBlockEntity t) {
 		if (world.getTime() % 100 == 0 && t.isOff && !world.isClient) {
 			if (System.currentTimeMillis() > t.lastBreak + GreenResurgence.CONFIG.serverOptions.cooldowns.respawnGroundLootInSec() * 1000L) {
 
 				t.isOff = false;
 				for (int i = 0; i < 100; i++) {
-					t.selectedIndex = (int) (Math.random() * t.items.size());
+					t.selectedIndex = t.selectASlot();
 					if (!t.getItem().isEmpty())
 						break;
 				}
@@ -83,13 +96,13 @@ public class LootableItemBlockEntity extends ItemBlockEntity implements IAdvance
 		Inventories.readNbt(nbt, items);
 		selectedIndex = Math.min(nbt.getInt("selected"), items.size());
 		isOff = nbt.getBoolean("isOff");
-		if (selectedIndex != 0 && getItem().isEmpty())
-			selectedIndex = 0;
+		if (selectedIndex < 0 || getItem().isEmpty())
+			selectedIndex = selectASlot();
 	}
 
 	@Override
 	public ItemStack getItem() {
-		if (this.isOff)
+		if (this.isOff || selectedIndex < 0 || selectedIndex >= this.items.size())
 			return ItemStack.EMPTY;
 		return this.items.get(selectedIndex);
 	}

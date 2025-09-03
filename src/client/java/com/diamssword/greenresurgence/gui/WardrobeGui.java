@@ -17,45 +17,58 @@ import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Component;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
+import io.wispforest.owo.ui.core.Surface;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 
-	private static final List<Pair<String, LayerDef[]>> layerBts = new ArrayList<>();
+	public static final String CHSHEET_ID = "character_sheet";
+	private final List<Pair<String, LayerDef[]>> layerBts = new ArrayList<>();
+	private final boolean shouldShowOutifits;
+	private final Function<PlayerEntity, Map<String, Cloth>> equippedProvider;
 
-	static {
-		var ls = CharactersApi.clothing().getClothLayers();
-		layerBts.add(new Pair<>("all", ls.toArray(new LayerDef[0])));
-		layerBts.add(new Pair<>("current", ls.toArray(new LayerDef[0])));
-		for (var l : ls) {
-			layerBts.add(new Pair<>(l.getId(), new LayerDef[]{l}));
-		}
-	}
-
-	private Pair<String, LayerDef[]> currentLayer = layerBts.get(0);
+	private Pair<String, LayerDef[]> currentLayer;
 	private Map<String, Cloth> oldCloths;
 
 	private String lastSearch = "";
-	private final String currentCol = "all";
 
-	public WardrobeGui() {
+	public WardrobeGui(String type) {
 		super(FlowLayout.class, DataSource.asset(GreenResurgence.asRessource("wardrobe")));
+		List<LayerDef> layers;
+		if (type == null || type.equals("default")) {
+			shouldShowOutifits = true;
+			layers = CharactersApi.clothing().getClothLayers();
+			layerBts.add(new Pair<>("all", layers.toArray(new LayerDef[0])));
+			layerBts.add(new Pair<>("current", layers.toArray(new LayerDef[0])));
+			equippedProvider = (p) -> ComponentManager.getPlayerDatas(p).getAppearence().getEquippedCloths();
+		} else {
+			shouldShowOutifits = false;
+			layers = CharactersApi.clothing().getLayers().values().stream().filter(v -> type.equals(v.getSpecialEditor())).toList();
+			equippedProvider = (p) -> ComponentManager.getPlayerDatas(p).getAppearence().getEquippedLayers();
+		}
+		for (var l : layers) {
+			layerBts.add(new Pair<>(l.getId(), new LayerDef[]{l}));
+		}
+		currentLayer = layerBts.get(0);
 	}
 
 	private void loadCloths(FreeRowGridLayout layout, PlayerComponent playerComp, String filter) {
 		lastSearch = filter;
 		var player = playerComp.entity();
 		var dt = ComponentManager.getPlayerDatas(player);
-		oldCloths = dt.getAppearence().getEquippedCloths();
+		oldCloths = equippedProvider.apply(player);
 		var equip = oldCloths.values().stream().filter(Objects::nonNull).toList();
 		List<Cloth> list;
 		if (currentLayer.getLeft().equals("current"))
@@ -63,7 +76,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 		else
 			list = CharactersApi.clothing().getAvailablesClothsCollectionForPlayer(MinecraftClient.getInstance().player, "all", currentLayer.getRight());
 		if (!filter.isEmpty())
-			list = list.stream().filter(v -> v.name().toLowerCase().contains(filter)).toList();
+			list = list.stream().filter(v -> v.name().toLowerCase().contains(filter) || (!v.collection().equals("default") && v.collection().toLowerCase().contains(filter))).toList();
 		layout.clear();
 		for (var c : list) {
 			var bt = new ClothButtonComponent(c);
@@ -71,12 +84,12 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 				var v = bt.getCloth();
 				if (oldCloths.containsValue(v)) {
 					dt.getAppearence().setCloth(v.layer().id, null);
-					CharactersApi.clothing().clientAskEquipCloth("null", v.layer().getId());
+					CharactersApi.clothing().clientAskEquipCloth(new Identifier("null", "null"), v.layer().getId());
 				} else {
 					dt.getAppearence().setCloth(v.layer().id, v);
-					CharactersApi.clothing().clientAskEquipCloth(v.layer().getId() + "_" + v.id(), v.layer().toString());
+					CharactersApi.clothing().clientAskEquipCloth(v.id(), v.layer().toString());
 				}
-				oldCloths = dt.getAppearence().getEquippedCloths();
+				oldCloths = equippedProvider.apply(player);
 				updateSelected(layout, oldCloths.values().stream().filter(Objects::nonNull).toList());
 
 			});
@@ -117,7 +130,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 		loadCloths(wardLay, playerComp, "");
 		search.onChanged().subscribe(v -> loadCloths(wardLay, playerComp, v.toLowerCase()));
 		search.setPlaceholder(Text.literal("Recherche"));
-		this.setFocused(search);
+		//this.setFocused(search);
 		wardLay.focusGained().subscribe(v -> {
 			this.setFocused(search);
 		});
@@ -126,22 +139,32 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 		slider.onChanged().subscribe(v -> {
 			playerComp.rotation((int) (-180 + (v * 360f)));
 		});
-		for (int i = 1; i <= 7; i++) {
-			var v = Text.literal("Outfit " + i);
-			final var i1 = i - 1;
-			if (i1 < outfits.size())
-				v = Text.literal(outfits.get(i1).getLeft());
-			var ar = new ArrayList<Text>();
-			ar.add(v);
-			ar.add(Text.literal("[maj] + [clique] pour modifier cette tenue").formatted(Formatting.GRAY, Formatting.ITALIC));
-			rootComponent.childById(RButtonComponent.class, "memory" + i).onPress(v1 -> {
-				if (Screen.hasShiftDown()) {
-					createOutfitWindow(v1, i1);
-				} else {
-					CharactersApi.clothing().clientAskEquipOutfit(i1);
-					dt.getAppearence().equipOutfit(i1);
-				}
-			}).tooltip(ar);
+		if (!shouldShowOutifits) {
+			var c = rootComponent.childById(FlowLayout.class, "outfits");
+			c.clearChildren();
+			c.surface(Surface.flat(0));
+		} else {
+			for (int i = 1; i <= 7; i++) {
+				var v = Text.translatable(CHSHEET_ID + ".wardrobe.outfitbt", i);
+				final var i1 = i - 1;
+				if (i1 < outfits.size())
+					v = Text.literal(outfits.get(i1).getLeft());
+				var ar = new ArrayList<Text>();
+				ar.add(v);
+				ar.add(Text.translatable(CHSHEET_ID + ".wardrobe.outfitbt.tooltip").formatted(Formatting.GRAY, Formatting.ITALIC));
+				var bt = rootComponent.childById(RButtonComponent.class, "memory" + i);
+
+				bt.onPress(v1 -> {
+					if (Screen.hasShiftDown()) {
+						createOutfitWindow(v1, i1);
+					} else {
+						CharactersApi.clothing().clientAskEquipOutfit(i1);
+						dt.getAppearence().equipOutfit(i1);
+						loadCloths(wardLay, playerComp, lastSearch);
+					}
+				}).tooltip(ar);
+				bt.setMessage(v);
+			}
 		}
 		if (flow != null) {
 			final List<RButtonComponent> bts = new ArrayList<>();

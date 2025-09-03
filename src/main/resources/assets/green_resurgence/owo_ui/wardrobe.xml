@@ -3,7 +3,7 @@
     <components>
         <flow-layout direction="horizontal">
             <children>
-                <flow-layout direction="vertical">
+                <flow-layout direction="vertical" id="outfits">
                     <children>
                         <label>
                             <horizontal-text-alignment>center</horizontal-text-alignment>
@@ -198,7 +198,10 @@
                         <scroll direction="vertical">
                             <freerowgrid columns="6" id="clothContainer">
                                 <children/>
-                                <padding>1</padding>
+                                <padding>2</padding>
+                                <sizing>
+                                    <horizontal method="fill">100</horizontal>
+                                </sizing>
                             </freerowgrid>
                             <sizing>
                                 <vertical method="fill">80</vertical>

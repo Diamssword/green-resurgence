@@ -1,0 +1,77 @@
+[
+  {
+    "model": "makeshift_light"
+  },
+  {
+    "models": [
+      "makeshift_medium",
+      "makeshift_heavy"
+    ],
+    "textures": [
+      "makeshift_medium"
+    ]
+  },
+  {
+    "models": [
+      "bone_light",
+      "bone_medium",
+      "bone_heavy"
+    ],
+    "textures": [
+      "bone_armor"
+    ]
+  },
+  {
+    "models": [
+      "welding_mask",
+      "welding_mask_strip"
+    ],
+    "slots": [
+      "head"
+    ],
+    "textures": [
+      "welding_mask"
+    ]
+  },
+  {
+    "model": "circulation_plot_hat",
+    "slots": [
+      "head"
+    ]
+  },
+  {
+    "model": "gladiator_helmet_open",
+    "textures": [
+      "gladiator"
+    ],
+    "slots": [
+      "head"
+    ]
+  },
+  {
+    "model": "gladiator"
+  },
+  {
+    "model": "trash",
+    "slots": [
+      "chest",
+      "feet",
+      "legs"
+    ]
+  },
+  {
+    "model": "radiation_suit"
+  },
+  {
+    "model": "gas_mask",
+    "textures": [
+      "radiation_suit"
+    ],
+    "slots": [
+      "head"
+    ]
+  },
+  {
+    "model": "wolf_raider"
+  }
+]

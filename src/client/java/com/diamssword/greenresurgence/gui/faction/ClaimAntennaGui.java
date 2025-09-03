@@ -44,9 +44,7 @@ public class ClaimAntennaGui extends BaseUIModelScreen<FlowLayout> {
 		});
 		var unclaim = rootComponent.childById(ButtonComponent.class, "unclaim");
 		var sizeS = rootComponent.childById(DiscreteSliderComponent.class, "size");
-		sizeS.onChanged().subscribe((v) -> {
-			System.out.println(v);
-		});
+		
 
 	}
 }

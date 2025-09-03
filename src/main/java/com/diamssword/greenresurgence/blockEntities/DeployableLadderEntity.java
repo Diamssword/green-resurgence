@@ -73,7 +73,7 @@ public class DeployableLadderEntity extends BlockEntity {
 					world.playSound(null, pos, blockSoundGroup.getBreakSound(), SoundCategory.BLOCKS, (blockSoundGroup.getVolume() + 1.0F) / 4.0F, blockSoundGroup.getPitch() * 0.8F);
 					world.emitGameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Emitter.of(MBlocks.DEPLOYABLE_LADDER.getDefaultState()));
 				}
-			} else if (state1.getBlock() != MBlocks.DEPLOYABLE_LADDER && !state1.isFullCube(world, p1) && !world.isWater(p1) && p1.getY() > -63) {
+			} else if (state1.getBlock() != MBlocks.DEPLOYABLE_LADDER && !state1.isFullCube(world, p1) && !world.isWater(p1) && p1.getY() > -63 && !state1.hasBlockEntity()) {
 				world.setBlockState(p1, MBlocks.DEPLOYABLE_LADDER.getDefaultState().with(DeployableLadderBlock.FACING, state.get(DeployableLadderBlock.FACING)).with(DeployableLadderBlock.MASTER, false));
 				MBlocks.DEPLOYABLE_LADDER.getBlockEntity(p1, world).setOriginalState(state1);
 				BlockSoundGroup blockSoundGroup = MBlocks.DEPLOYABLE_LADDER.getDefaultState().getSoundGroup();

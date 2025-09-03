@@ -86,8 +86,8 @@ dependencies {
 
     modImplementation "maven.modrinth:continuity:${continuity_version}"
 
-    api name: 'character_sheet-api-1.0.0-transformProductionFabric'
-    modLocalRuntime name: 'character_sheet-fabric-1.0.0'
+    api name: "character_sheet-api-${character_version}-transformProductionFabric"
+    modLocalRuntime name: "character_sheet-fabric-${character_version}"
     modLocalRuntime "dev.architectury:architectury-fabric:$project.architectury_api_version"
 
 }

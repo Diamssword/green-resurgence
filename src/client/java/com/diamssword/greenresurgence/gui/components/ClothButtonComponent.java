@@ -21,6 +21,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
 import org.joml.Vector3f;
@@ -47,7 +48,10 @@ public class ClothButtonComponent extends ButtonComponent {
 
 	public void setCloth(Cloth cloth) {
 		this.cloth = cloth;
-		this.tooltip(Text.literal((cloth.name())));
+		var tool = Text.literal((cloth.name().replaceAll("/", " ").replaceAll("_", " ")));
+		if (!cloth.collection().equals("default"))
+			tool.append(Text.literal("\n" + cloth.collection()).formatted(Formatting.BLUE, Formatting.ITALIC));
+		this.tooltip(tool);
 	}
 
 	public Cloth getCloth() {
@@ -130,8 +134,8 @@ public class ClothButtonComponent extends ButtonComponent {
 		model.child = false;
 		model1.child = false;
 		var pack = OverlayTexture.packUv(OverlayTexture.getU(0), OverlayTexture.getV(false));
-		model.render(matrices, vertexConsumers.getBuffer(model.getLayer(new Identifier(CLOTH_MOD_ID, "textures/cloth/" + cloth.layer().getId() + "/" + cloth.id() + ".png"))), light, pack, 1, 1, 1, 1);
-		model1.render(matrices, vertexConsumers.getBuffer(model1.getLayer(new Identifier(CLOTH_MOD_ID, "textures/cloth/" + cloth.layer().getId() + "/" + cloth.id() + ".png"))), light, pack, 1, 1, 1, 1);
+		model.render(matrices, vertexConsumers.getBuffer(model.getLayer(new Identifier(cloth.id().getNamespace(), "textures/cloth/" + cloth.id().getPath() + ".png"))), light, pack, 1, 1, 1, 1);
+		model1.render(matrices, vertexConsumers.getBuffer(model1.getLayer(new Identifier(cloth.id().getNamespace(), "textures/cloth/" + cloth.id().getPath() + ".png"))), light, pack, 1, 1, 1, 1);
 
 	}
 

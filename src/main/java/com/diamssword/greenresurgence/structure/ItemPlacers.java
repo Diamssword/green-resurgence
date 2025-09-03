@@ -30,7 +30,7 @@ public class ItemPlacers {
 
 	public static JigsawPlacerItem road_angle_d = jigsaw("road_angle_d", new Identifier("build", "roads/angle_d"));
 	public static JigsawPlacerItem road_angle_g = jigsaw("road_angle_g", new Identifier("build", "roads/angle_g"));
-	public static JigsawPlacerItem container = jigsaw("container", new Identifier("build", "deco/containers/small"));
+	public static JigsawPlacerItem container = jigsaw("container", new Identifier("build", "containers/small"));
 	public static JigsawPlacerItem small_house = jigsaw("small_house", new Identifier("build", "small_house"));
 	public static JigsawPlacerItem medium_house = jigsaw("medium_house", new Identifier("build", "medium_house"));
 	public static JigsawPlacerItem big_house = jigsaw("big_house", new Identifier("build", "big_house"));

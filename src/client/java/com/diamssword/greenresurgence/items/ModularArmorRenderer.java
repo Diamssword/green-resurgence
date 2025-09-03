@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.items;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.systems.armor.ArmorLoader;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderLayer;
@@ -32,10 +33,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class ModularArmorRenderer extends GeoArmorRenderer<ModularArmorItem> {
-	private static final ModularArmorGeoModel<GeoAnimatable> FALLBACKMODEL = new ModularArmorGeoModel<>(GreenResurgence.asRessource("default"), true);
+	private static final ModularArmorGeoModel<ModularArmorItem> FALLBACKMODEL = new ModularArmorGeoModel<>(GreenResurgence.asRessource("default"), true);
 
-	public ModularArmorRenderer(String model) {
-		super(new ModularArmorGeoModel<>(GreenResurgence.asRessource(model)));
+	public ModularArmorRenderer(String model, String texture) {
+		super((ModularArmorGeoModel) new ModularArmorGeoModel<>(GreenResurgence.asRessource(model)).withAltTexture(GreenResurgence.asRessource(texture)));
 	}
 
 	public static RenderProvider RendererProvider() {
@@ -58,13 +59,13 @@ public final class ModularArmorRenderer extends GeoArmorRenderer<ModularArmorIte
 					ModularArmorRenderer rend;
 					if (!(cachedIds.containsKey(pl) && cachedIds.get(pl).equals(model))) {
 						cachedIds.put(pl, model);
-						cachedRenders.put(pl, rend = new ModularArmorRenderer(model));
+						cachedRenders.put(pl, rend = createRenderer(model));
 					} else
 						rend = cachedRenders.get(pl);
 					rend.prepForRender(livingEntity, itemStack, equipmentSlot, original);
 					return rend;
 				}
-				var rend = new ModularArmorRenderer(model);
+				var rend = createRenderer(model);
 				rend.prepForRender(livingEntity, itemStack, equipmentSlot, original);
 				return rend;
 			}
@@ -76,6 +77,11 @@ public final class ModularArmorRenderer extends GeoArmorRenderer<ModularArmorIte
 				return itemRendered;
 			}
 		};
+	}
+
+	private static ModularArmorRenderer createRenderer(String model) {
+		var op = ArmorLoader.loader.getModel(model).map(a -> new ModularArmorRenderer(a.model(), a.texture()));
+		return op.orElse(new ModularArmorRenderer("default", "default"));
 	}
 
 	@Override
@@ -155,6 +161,12 @@ public final class ModularArmorRenderer extends GeoArmorRenderer<ModularArmorIte
 
 		}
 
+		private static GeoModel<ModularArmorItem> getModel(String model_id) {
+			var op = ArmorLoader.loader.getModel(model_id).map(a -> new ModularArmorGeoModel<ModularArmorItem>(GreenResurgence.asRessource(a.model())).withAltTexture(GreenResurgence.asRessource(a.texture())));
+			return op.orElse(FALLBACKMODEL);
+
+		}
+
 		@Override
 		public GeoModel<ModularArmorItem> getGeoModel() {
 			if (this.currentItemStack != null) {
@@ -162,7 +174,7 @@ public final class ModularArmorRenderer extends GeoArmorRenderer<ModularArmorIte
 				if (model == null || model.isEmpty())
 					model = "default";
 				if (!cachedRenders.containsKey(model))
-					cachedRenders.put(model, new ModularArmorGeoModel<>(GreenResurgence.asRessource(model)));
+					cachedRenders.put(model, getModel(model));
 				return cachedRenders.get(model);
 			}
 			return this.model;
@@ -290,7 +302,7 @@ public final class ModularArmorRenderer extends GeoArmorRenderer<ModularArmorIte
 				if (defaut)
 					throw ex;
 				else
-					return FALLBACKMODEL.getAnimation(animatable, name);
+					return FALLBACKMODEL.getAnimation((ModularArmorItem) animatable, name);
 			}
 		}
 
