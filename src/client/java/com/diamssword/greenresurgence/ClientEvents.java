@@ -6,7 +6,7 @@ import com.diamssword.greenresurgence.entities.TwoPassengerVehicle;
 import com.diamssword.greenresurgence.event.AttackBlockCallback;
 import com.diamssword.greenresurgence.events.PlaceBlockCallback;
 import com.diamssword.greenresurgence.gui.playerContainers.PlayerInventoryGui;
-import com.diamssword.greenresurgence.mixin.client.ClientPlayerEntityMixin;
+import com.diamssword.greenresurgence.mixin.client.ClientPlayerAccessor;
 import com.diamssword.greenresurgence.network.AdventureInteract;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
@@ -151,9 +151,8 @@ public class ClientEvents {
 		if (client.player != null) {
 			var p = client.player;
 			if (p.getControllingVehicle() instanceof TwoPassengerVehicle boatEntity) {
-				//Channels.MAIN.clientHandle().send(new AdventureInteract.VehicleControl(p.input.pressingForward,p.input.pressingBack,p.input.pressingLeft,p.input.pressingRight));
 				boatEntity.setInputs(p.input.pressingLeft, p.input.pressingRight, p.input.pressingForward, p.input.pressingBack);
-				((ClientPlayerEntityMixin) p).setRiding(p.isRiding() | (p.input.pressingLeft || p.input.pressingRight || p.input.pressingForward || p.input.pressingBack));
+				((ClientPlayerAccessor) p).setRiding(p.isRiding() | (p.input.pressingLeft || p.input.pressingRight || p.input.pressingForward || p.input.pressingBack));
 			}
 		}
 	}

@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public class AttributeModifiers {
 
+	public static final UUID BASE_SPEED_ID = UUID.fromString("9e2555cc-b3b1-494e-a137-0bbfbca960d3");
 
 	public static Map<EntityAttribute, UUID> BaseIdMap = new HashMap<>();
 	public static final UUID SPEED_ID = create(EntityAttributes.GENERIC_MOVEMENT_SPEED, "8465a342-771e-4768-94b2-24870de90183");

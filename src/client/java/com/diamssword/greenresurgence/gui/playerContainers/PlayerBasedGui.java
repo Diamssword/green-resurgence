@@ -32,6 +32,7 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 	private final Map<StatusEffect, EffectComponent> activeBonus = new HashMap<>();
 	private final Map<StatusEffect, EffectComponent> activeMalus = new HashMap<>();
 	public static List<SubPanel> subpanels = new ArrayList<>();
+	protected boolean openSubPanelOnLoad = false;
 
 	static {
 		subpanels.add(new CharacterStatsPanel());
@@ -73,7 +74,9 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 			d.horizontalSizing(Sizing.fill(100));
 			subBtPanel.child(d);
 		});
-		recreatePanels(subPan);
+
+		if (openSubPanelOnLoad)
+			recreatePanels(subPan);
 	}
 
 	public void closePanel(boolean bottom, FlowLayout parent) {

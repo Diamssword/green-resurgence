@@ -4,8 +4,9 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "ClientAccessor",
-    "ClientMixing",
-    "ClientPlayerEntityMixin",
+    "ClientMixin",
+    "ClientPlayerAccessor",
+    "ClientPlayerMixin",
     "ClientWorldMixin",
     "FontManagerAccessor",
     "InGameHudMixin",

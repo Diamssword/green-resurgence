@@ -190,6 +190,7 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 		if (customPose != null) {
 			customPose.tick(player);
 		}
+		healthManager.update();
 	}
 
 	public static void syncFull(PlayerEntity player) {

@@ -95,7 +95,6 @@ public class GuiPackets {
 			switch (msg.key) {
 
 				case Inventory -> {
-					// MovementManager.toggleCrawl(ctx.player());
 					var ls = ctx.player().getWorld().getComponent(Components.BASE_LIST);
 					var terr = ls.getTerrainAt(ctx.player().getBlockPos());
 					terr.ifPresent(v -> {

@@ -11,6 +11,7 @@ import org.w3c.dom.Element;
 public class BarComponent extends TextureComponent implements IHideableComponent {
 
 	private float fillPercent = 1;
+	private float goal = 1;
 	private boolean hidden;
 	public boolean reversedIndex = false;
 
@@ -19,10 +20,15 @@ public class BarComponent extends TextureComponent implements IHideableComponent
 		this.reversedIndex = reversed;
 	}
 
-	@Override
-	public void update(float delta, int mouseX, int mouseY) {
-		super.update(delta, mouseX, mouseY);
+	public void tick() {
 
+		if (goal > fillPercent) {
+			float d = Math.max((goal - fillPercent) / 10f, 0.005f);
+			fillPercent = Math.min(goal, fillPercent + d);
+		} else if (goal < fillPercent) {
+			float d = Math.max((fillPercent - goal) / 10f, 0.005f);
+			fillPercent = Math.max(goal, fillPercent - d);
+		}
 	}
 
 	@Override
@@ -129,6 +135,11 @@ public class BarComponent extends TextureComponent implements IHideableComponent
 
 	public void setFillPercent(float fillPercent) {
 		this.fillPercent = fillPercent;
+		this.goal = fillPercent;
+	}
+
+	public void animateFillPercent(float fillPercent) {
+		this.goal = fillPercent;
 	}
 
 	public static BarComponent parse(Element element) {

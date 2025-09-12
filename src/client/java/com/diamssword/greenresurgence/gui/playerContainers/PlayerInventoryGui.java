@@ -30,6 +30,7 @@ public class PlayerInventoryGui extends PlayerBasedGui<VanillaPlayerInvMokup> {
 
 	public PlayerInventoryGui(VanillaPlayerInvMokup handler, PlayerInventory inv, Text title) {
 		super(handler, "survival/player_craft");
+		openSubPanelOnLoad = true;
 
 	}
 

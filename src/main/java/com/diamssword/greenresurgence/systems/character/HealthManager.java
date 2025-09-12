@@ -1,29 +1,67 @@
 package com.diamssword.greenresurgence.systems.character;
 
+import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.systems.attributs.AttributeModifiers;
 import com.diamssword.greenresurgence.systems.attributs.Attributes;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.GameRules;
 
 public class HealthManager {
 	private final float shieldHealAmount = 1f;
-	private final float energyHealAmount = 0.5f;
 	private int shieldTickTimer;
 	private int energyTickTimer;
+	private boolean energyBurnout;
 	private double shieldAmount = 20;
 	private double energyAmount = 100;
 	public final PlayerEntity player;
+	private int refreshTicks = 5;
 
 	public HealthManager(PlayerEntity pl) {
 		this.player = pl;
 	}
 
+	private void speedLogic() {
+		if (player.isSprinting()) {
+			this.energyTickTimer = 0;
+			if (this.energyAmount > 0 && !energyBurnout) {
+				energyAmount = Math.max(energyAmount - 1f, 0);
+				markDirty();
+			} else {
+				player.setSprinting(false);
+				this.energyBurnout = true;
+			}
+		} else {
+			this.energyTickTimer++;
+			if (this.energyTickTimer >= 5) {
+				double f = 5.0 * getEnergyRateAmount();
+				var old = this.energyAmount;
+				if (player.isSneaking())
+					f = f * 1.5;
+				this.energyAmount = Math.min(energyAmount + f, getMaxEnergyAmount());
+				if (energyBurnout && energyAmount / getMaxEnergyAmount() >= 0.1)
+					energyBurnout = false;
+				if (old != this.energyAmount)
+					markDirty();
+				this.energyTickTimer = 0;
+			}
+		}
+	}
+
+	public boolean isEnergyBurnout() {
+		return energyBurnout;
+	}
+
+	private void markDirty() {
+		if (refreshTicks < 0)
+			refreshTicks = 20;
+	}
+
 	public void update() {
-		boolean needRefresh = false;
 		boolean bl = player.getWorld().getGameRules().getBoolean(GameRules.NATURAL_REGENERATION);
 		if (bl) {
 			this.shieldTickTimer++;
@@ -31,35 +69,28 @@ public class HealthManager {
 				float f = Math.min(this.shieldHealAmount, 6.0F);
 				var old = shieldAmount;
 				healShield(f / 6.0F);
-				needRefresh = old != shieldAmount;
+				if (old != shieldAmount)
+					markDirty();
 				this.shieldTickTimer = 0;
 			}
 		} else {
 			this.shieldTickTimer = 0;
 		}
-		if (player.isSprinting()) {
-			this.energyTickTimer = 0;
-			if (this.energyAmount > 0) {
-				energyAmount -= 0.5f;
-				needRefresh = true;
-				player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 20, 1));
-			}
-		} else {
-			this.energyTickTimer++;
-			if (this.energyTickTimer >= 5) {
-				float f = Math.min(this.energyHealAmount, 6.0F);
-				var old = this.energyAmount;
-				this.energyAmount = Math.min(energyAmount + f, getMaxEnergyAmount());
-				if (!needRefresh)
-					needRefresh = old != this.energyAmount;
-				this.energyTickTimer = 0;
-			}
-		}
-
-		if (needRefresh) {
+		speedLogic();
+		if (refreshTicks > -1)
+			refreshTicks--;
+		if (refreshTicks == 0 && !player.getWorld().isClient)
 			PlayerData.syncHUD(player);
-		}
 
+
+	}
+
+	public void onRespawn() {
+		player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(50);
+		player.setHealth(player.getMaxHealth());
+		player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addPersistentModifier(new EntityAttributeModifier(AttributeModifiers.BASE_SPEED_ID, GreenResurgence.ID + ".base_speed_modifier", 0.2, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+		this.energyAmount = this.getMaxEnergyAmount();
+		this.shieldAmount = this.getMaxShieldAmount();
 	}
 
 	public double attackShield(double amount, PlayerEntity owner) {
@@ -99,6 +130,10 @@ public class HealthManager {
 
 	public double getMaxShieldAmount() {
 		return player.getAttributeValue(Attributes.MAX_SHIELD);
+	}
+
+	public double getEnergyRateAmount() {
+		return player.getAttributeValue(Attributes.ENERGY_RATE);
 	}
 
 	public double getMaxEnergyAmount() {

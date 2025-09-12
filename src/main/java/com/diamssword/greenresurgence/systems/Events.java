@@ -45,7 +45,7 @@ public class Events {
 				var ls = new ArrayList<>(scheluded);
 
 				ls.forEach(l1 -> {//on laisse le temps a MC d'envoyer les tags et autres données avant
-					Channels.sendToNonHost(l1, new DictionaryPackets.LootableList(Lootables.loader), new DictionaryPackets.RecipeList(Recipes.loader));
+					Channels.sendToNonHost(l1, new DictionaryPackets.LootableList(Lootables.loader), new DictionaryPackets.RecipeList(Recipes.loader), new DictionaryPackets.ArmorList(ArmorLoader.loader));
 					Channels.MAIN.serverHandle(l1).send(BaseInteractions.getPacket());
 					CurrentZonePacket.sendDebugZone(l1.getWorld(), l1);
 					var g = l1.getWorld().getComponent(Components.BASE_LIST).getForPlayer(l1.getUuid(), false);
