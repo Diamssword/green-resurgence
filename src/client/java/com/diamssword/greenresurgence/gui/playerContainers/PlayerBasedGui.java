@@ -8,7 +8,6 @@ import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
 import com.diamssword.greenresurgence.gui.components.RButtonComponent;
 import com.diamssword.greenresurgence.gui.components.SubScreenLayout;
 import com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel.CharacterStatsPanel;
-import com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel.SimpleSubPanel;
 import com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel.SubPanel;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.Components;
@@ -33,15 +32,11 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 	private final Map<StatusEffect, EffectComponent> activeMalus = new HashMap<>();
 	public static List<SubPanel> subpanels = new ArrayList<>();
 	protected boolean openSubPanelOnLoad = false;
+	protected int subScreenSize = 30;
 
 	static {
 		subpanels.add(new CharacterStatsPanel());
-		subpanels.add(new SimpleSubPanel("test", "test", "character/size") {
-			@Override
-			public void build(FlowLayout root, PlayerBasedGui<?> gui, boolean fullSize) {
 
-			}
-		});
 	}
 
 	public static SubPanel subPanelTop = subpanels.get(0);
@@ -52,13 +47,21 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 		this.subscreen = subscreen;
 	}
 
+	public void setSubScreenSize(int percent) {
+		this.subScreenSize = percent;
+	}
 
 	@Override
 	protected void build(FlowLayout rootComponent) {
 		var sub = rootComponent.childById(SubScreenLayout.class, "subcontainer");
-		if (sub != null) {
+		if(sub != null) {
 			sub.setLayout(subscreen);
+			sub.horizontalSizing(Sizing.fill(subScreenSize));
 			rootComponent.onChildMutated(sub);
+		}
+		var bl = rootComponent.childById(FlowLayout.class, "blank_space");
+		if(bl != null) {
+			bl.horizontalSizing(Sizing.fill(30 - (subScreenSize - 30)));
 		}
 		gridBonus = rootComponent.childById(FreeRowGridLayout.class, "bonusLayout");
 		gridMalus = rootComponent.childById(FreeRowGridLayout.class, "malusLayout");
@@ -75,15 +78,14 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 			subBtPanel.child(d);
 		});
 
-		if (openSubPanelOnLoad)
-			recreatePanels(subPan);
+		if(openSubPanelOnLoad) {recreatePanels(subPan);}
 	}
 
 	public void closePanel(boolean bottom, FlowLayout parent) {
-		if (!bottom && subPanelTop != null) {
+		if(!bottom && subPanelTop != null) {
 			subPanelTop = subPanelBot;
 			subPanelBot = null;
-		} else if (bottom && subPanelBot != null) {
+		} else if(bottom && subPanelBot != null) {
 			subPanelBot = null;
 		}
 		recreatePanels(parent);
@@ -91,14 +93,14 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 
 	private void recreatePanels(FlowLayout parent) {
 		parent.clearChildren();
-		if (subPanelTop != null) {
+		if(subPanelTop != null) {
 			var r1 = new SubScreenLayout(Sizing.fill(100), Sizing.fill(subPanelBot == null ? 100 : 50), FlowLayout.Algorithm.VERTICAL, subPanelTop.guiLocation());
 			parent.child(r1);
 			var b = Components.button(Text.literal("x"), (u) -> closePanel(false, parent));
 			b.positioning(Positioning.across(90, 1)).sizing(Sizing.fixed(10)).zIndex(100);
 			parent.child(b);
 			subPanelTop.build(r1.getRoot(), this, subPanelBot == null);
-			if (subPanelBot != null) {
+			if(subPanelBot != null) {
 				var r2 = new SubScreenLayout(Sizing.fill(100), Sizing.fill(50), FlowLayout.Algorithm.VERTICAL, subPanelBot.guiLocation());
 				parent.child(r2);
 				var b1 = Components.button(Text.literal("x"), (u) -> closePanel(true, parent));
@@ -111,29 +113,25 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 	}
 
 	public void pickPanel(SubPanel panel, FlowLayout parent) {
-		if (hasShiftDown()) {
-			if (subPanelTop == panel) {
+		if(hasShiftDown()) {
+			if(subPanelTop == panel) {
 				subPanelTop = subPanelBot;
 				subPanelBot = null;
-			} else if (subPanelBot == panel) {
+			} else if(subPanelBot == panel) {
 				subPanelBot = null;
 			}
-		} else if (subPanelTop == panel) {
-			if (panel.isFullHeight()) {
+		} else if(subPanelTop == panel) {
+			if(panel.isFullHeight()) {
 				subPanelTop = null;
 			} else {
 				subPanelTop = panel;
 			}
 			subPanelBot = null;
-		} else if (subPanelBot == panel) {
+		} else if(subPanelBot == panel) {
 			subPanelTop = panel;
 			subPanelBot = null;
 		} else {
-			if (subPanelTop == null)
-				subPanelTop = panel;
-			else if (subPanelBot == null && !panel.isFullHeight())
-				subPanelBot = panel;
-			else {
+			if(subPanelTop == null) {subPanelTop = panel;} else if(subPanelBot == null && !panel.isFullHeight()) {subPanelBot = panel;} else {
 				subPanelBot = subPanelTop;
 				subPanelTop = panel;
 			}
@@ -145,7 +143,7 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 	@Override
 	protected void handledScreenTick() {
 		super.handledScreenTick();
-		if (gridBonus != null && gridMalus != null) {
+		if(gridBonus != null && gridMalus != null) {
 			Collection<StatusEffectInstance> collection = this.client.player.getStatusEffects();
 			drawEffects(collection.stream().filter(v -> v.getEffectType().isBeneficial()).collect(Collectors.toList()), gridBonus, activeBonus);
 			drawEffects(collection.stream().filter(v -> !v.getEffectType().isBeneficial()).collect(Collectors.toList()), gridMalus, activeMalus);
@@ -156,15 +154,15 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 	private void drawEffects(Collection<StatusEffectInstance> effects, FreeRowGridLayout grid, Map<StatusEffect, EffectComponent> tracker) {
 		var d1 = effects.stream().map(StatusEffectInstance::getEffectType).toList();
 		var it = tracker.entrySet().iterator();
-		while (it.hasNext()) {
+		while(it.hasNext()) {
 			var a = it.next();
-			if (!d1.contains(a.getKey())) {
+			if(!d1.contains(a.getKey())) {
 				a.getValue().remove();
 				it.remove();
 			}
 		}
-		for (var eff : effects) {
-			if (!tracker.containsKey(eff.getEffectType())) {
+		for(var eff : effects) {
+			if(!tracker.containsKey(eff.getEffectType())) {
 				var d = new EffectComponent(eff);
 				d.sizing(Sizing.fixed(22));
 				d.margins(Insets.of(1));

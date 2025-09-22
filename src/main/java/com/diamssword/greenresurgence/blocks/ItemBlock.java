@@ -5,7 +5,7 @@ import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.ModBlockEntity;
 import com.diamssword.greenresurgence.containers.Containers;
 import com.diamssword.greenresurgence.containers.CreativeMultiInvScreenHandler;
-import com.diamssword.greenresurgence.containers.IGridContainer;
+import com.diamssword.greenresurgence.containers.grids.IGridContainer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -61,18 +61,18 @@ public class ItemBlock extends ModBlockEntity<ItemBlockEntity> implements Waterl
 	@Override
 	public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
 		NbtCompound nbtCompound = BlockItem.getBlockEntityNbt(stack);
-		if (nbtCompound != null) {
-			if (nbtCompound.contains("item")) {
+		if(nbtCompound != null) {
+			if(nbtCompound.contains("item")) {
 				var item = ItemStack.fromNbt(nbtCompound.getCompound("item"));
 				tooltip.add(Text.literal("Item: ").append(item.getName()));
 			}
-			if (nbtCompound.contains("positionX")) {
+			if(nbtCompound.contains("positionX")) {
 				tooltip.add(Text.literal("Position: " + nbtCompound.getInt("positionX") + "," + nbtCompound.getInt("positionY") + "," + nbtCompound.getInt("positionZ")));
 			}
-			if (nbtCompound.contains("rotationX")) {
+			if(nbtCompound.contains("rotationX")) {
 				tooltip.add(Text.literal("Rotation: " + nbtCompound.getInt("rotationX") + "," + nbtCompound.getInt("rotationY") + "," + nbtCompound.getInt("rotationZ")));
 			}
-			if (nbtCompound.contains("size")) {
+			if(nbtCompound.contains("size")) {
 				tooltip.add(Text.literal("Taille: " + nbtCompound.getDouble("size")));
 			}
 		}
@@ -97,7 +97,7 @@ public class ItemBlock extends ModBlockEntity<ItemBlockEntity> implements Waterl
 
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-		if (state.get(WATERLOGGED)) {
+		if(state.get(WATERLOGGED)) {
 			world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 		return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
@@ -105,7 +105,7 @@ public class ItemBlock extends ModBlockEntity<ItemBlockEntity> implements Waterl
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		if (state.get(WATERLOGGED)) {
+		if(state.get(WATERLOGGED)) {
 			return Fluids.WATER.getStill(false);
 		}
 		return super.getFluidState(state);
@@ -122,7 +122,7 @@ public class ItemBlock extends ModBlockEntity<ItemBlockEntity> implements Waterl
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!world.isClient && player.isCreative()) {
+		if(!world.isClient && player.isCreative()) {
 			Containers.createHandler(player, pos, (sync, inv, p1) -> new ScreenHandler(sync, player, ItemBlock.this.getBlockEntity(pos, world).getContainer()));
 			return ActionResult.SUCCESS;
 		}

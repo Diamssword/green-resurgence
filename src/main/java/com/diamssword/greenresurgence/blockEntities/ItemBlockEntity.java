@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.blockEntities;
 
 import com.diamssword.greenresurgence.blocks.ItemBlock;
-import com.diamssword.greenresurgence.containers.GridContainer;
+import com.diamssword.greenresurgence.containers.grids.GridContainer;
 import com.diamssword.greenresurgence.network.GuiPackets;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -44,13 +44,12 @@ public class ItemBlockEntity extends BlockEntity {
 		nbt.putBoolean("lightOffset", lightOffset);
 		nbt.put("item", item.writeNbt(new NbtCompound()));
 		nbt.putDouble("size", size);
-		if (this.baseDir == null) {
-			if (this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
+		if(this.baseDir == null) {
+			if(this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
 				this.baseDir = this.getCachedState().get(Properties.HORIZONTAL_FACING);
 			}
 		}
-		if (this.baseDir != null)
-			nbt.putInt("baseDir", this.baseDir.getId());
+		if(this.baseDir != null) {nbt.putInt("baseDir", this.baseDir.getId());}
 		super.writeNbt(nbt);
 	}
 
@@ -58,10 +57,8 @@ public class ItemBlockEntity extends BlockEntity {
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
 
-		if (nbt.contains("baseDir"))
-			this.baseDir = Direction.byId(nbt.getInt("baseDir"));
-		else {
-			if (this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
+		if(nbt.contains("baseDir")) {this.baseDir = Direction.byId(nbt.getInt("baseDir"));} else {
+			if(this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
 				this.baseDir = this.getCachedState().get(Properties.HORIZONTAL_FACING);
 				this.markDirty();
 			}
@@ -70,11 +67,11 @@ public class ItemBlockEntity extends BlockEntity {
 		rotation = new Vec3d(nbt.getDouble("rotationX"), nbt.getDouble("rotationY"), nbt.getDouble("rotationZ"));
 		lightOffset = nbt.getBoolean("lightOffset");
 		size = Math.max(1, nbt.getDouble("size"));
-		if (nbt.contains("item")) {
+		if(nbt.contains("item")) {
 			item = ItemStack.fromNbt(nbt.getCompound("item"));
 
 		}
-		if (this.world != null && !this.world.isClient) {
+		if(this.world != null && !this.world.isClient) {
 			rotateStates();
 		}
 	}
@@ -82,7 +79,7 @@ public class ItemBlockEntity extends BlockEntity {
 	public void receiveGuiPacket(GuiPackets.GuiTileValue msg) {
 		var pos = this.getPosition();
 		var rot = this.getRotation();
-		switch (msg.key()) {
+		switch(msg.key()) {
 			case "posX" -> this.setPosition(new Vec3d(msg.asDouble(), pos.y, pos.z));
 			case "posY" -> this.setPosition(new Vec3d(pos.x, msg.asDouble(), pos.z));
 			case "posZ" -> this.setPosition(new Vec3d(pos.x, pos.y, msg.asDouble()));
@@ -155,27 +152,26 @@ public class ItemBlockEntity extends BlockEntity {
 
 	protected void saveAndUpdate() {
 		this.markDirty();
-		if (this.world instanceof ServerWorld sw)
-			sw.getChunkManager().markForUpdate(pos);
+		if(this.world instanceof ServerWorld sw) {sw.getChunkManager().markForUpdate(pos);}
 	}
 
 	private void rotateStates() {
 
-		if (this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
+		if(this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
 			Direction newDir = this.getCachedState().get(Properties.HORIZONTAL_FACING);
 			var p = this.getPosition();
 			var p1 = this.getRotation();
-			if (this.baseDir.getOpposite() == newDir) {
+			if(this.baseDir.getOpposite() == newDir) {
 				this.setPosition(new Vec3d(-p.getX(), p.getY(), -p.getZ()));
 				this.setRotation(new Vec3d(p1.x, p1.y + 180, p1.z));
 				this.baseDir = newDir;
 				saveAndUpdate();
-			} else if (this.baseDir.rotateYClockwise() == newDir) {
+			} else if(this.baseDir.rotateYClockwise() == newDir) {
 				this.setPosition(new Vec3d(-p.getZ(), p.getY(), p.getX()));
 				this.setRotation(new Vec3d(p1.x, p1.y - 90, p1.z));
 				this.baseDir = newDir;
 				saveAndUpdate();
-			} else if (this.baseDir.rotateYCounterclockwise() == newDir) {
+			} else if(this.baseDir.rotateYCounterclockwise() == newDir) {
 				this.setPosition(new Vec3d(p.getZ(), p.getY(), -p.getX()));
 				this.setRotation(new Vec3d(p1.x, p1.y + 90, p1.z));
 				this.baseDir = newDir;

@@ -2,9 +2,9 @@ package com.diamssword.greenresurgence.blockEntities;
 
 import com.diamssword.greenresurgence.blocks.ArmorTinkererBlock;
 import com.diamssword.greenresurgence.containers.Containers;
-import com.diamssword.greenresurgence.containers.IGridContainer;
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import com.diamssword.greenresurgence.containers.grids.ContainerArmorGrid;
+import com.diamssword.greenresurgence.containers.grids.IGridContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -33,8 +33,7 @@ public class ArmorTinkererBlockEntity extends BlockEntity {
 	}
 
 	public void openInventory(ServerPlayerEntity player) {
-		if (inventory == null)
-			createInventory();
+		if(inventory == null) {createInventory();}
 		Containers.createHandler(player, pos, (sync, inv, p1) -> new Container(sync, player, new ContainerArmorGrid("armor_tinkerer", inventory, 1, 4)));
 
 	}
@@ -44,14 +43,14 @@ public class ArmorTinkererBlockEntity extends BlockEntity {
 	}
 
 	public ItemStack getArmorStack(EquipmentSlot slot) {
-		if (inventory != null) {
+		if(inventory != null) {
 			return inventory.getStack(revertedArmorIndex(slot));
 		}
 		return ItemStack.EMPTY;
 	}
 
 	public static int revertedArmorIndex(EquipmentSlot slot) {
-		switch (slot) {
+		switch(slot) {
 			case FEET -> {
 				return 3;
 			}
@@ -75,17 +74,16 @@ public class ArmorTinkererBlockEntity extends BlockEntity {
 
 	protected void markUpdate() {
 		this.markDirty();
-		if (this.world instanceof ServerWorld sw)
-			sw.getChunkManager().markForUpdate(pos);
+		if(this.world instanceof ServerWorld sw) {sw.getChunkManager().markForUpdate(pos);}
 	}
 
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		if (!this.getCachedState().get(ArmorTinkererBlock.BOTTOM)) {
+		if(!this.getCachedState().get(ArmorTinkererBlock.BOTTOM)) {
 			super.writeNbt(nbt);
 			return;
 		}
-		if (inventory != null) {
+		if(inventory != null) {
 
 			nbt.put("inventory", Inventories.writeNbt(new NbtCompound(), inventory.stacks));
 		}
@@ -95,9 +93,8 @@ public class ArmorTinkererBlockEntity extends BlockEntity {
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
-		if (!this.getCachedState().get(ArmorTinkererBlock.BOTTOM))
-			return;
-		if (nbt.contains("inventory")) {
+		if(!this.getCachedState().get(ArmorTinkererBlock.BOTTOM)) {return;}
+		if(nbt.contains("inventory")) {
 			inventory = new SimpleInventory(4);
 			Inventories.readNbt(nbt.getCompound("inventory"), inventory.stacks);
 			inventory.addListener(ls -> markUpdate());

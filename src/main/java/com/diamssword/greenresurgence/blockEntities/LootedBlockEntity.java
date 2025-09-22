@@ -2,9 +2,9 @@ package com.diamssword.greenresurgence.blockEntities;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.Containers;
-import com.diamssword.greenresurgence.containers.GridContainer;
-import com.diamssword.greenresurgence.containers.IGridContainer;
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
+import com.diamssword.greenresurgence.containers.grids.GridContainer;
+import com.diamssword.greenresurgence.containers.grids.IGridContainer;
 import com.diamssword.greenresurgence.systems.lootables.LootableLogic;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
 import net.minecraft.block.Block;
@@ -49,12 +49,8 @@ public class LootedBlockEntity extends BlockEntity {
 	}
 
 	public BlockState getDisplayBlock() {
-		if (emptyBlock == null && this.block != null)
-			emptyBlock = LootableLogic.copyStateProperties(block, Lootables.getEmptyBlock(block.getBlock()));
-		if (durability <= 0)
-			return emptyBlock;
-		else
-			return getRealBlock();
+		if(emptyBlock == null && this.block != null) {emptyBlock = LootableLogic.copyStateProperties(block, Lootables.getEmptyBlock(block.getBlock()));}
+		if(durability <= 0) {return emptyBlock;} else {return getRealBlock();}
 
 	}
 
@@ -63,7 +59,7 @@ public class LootedBlockEntity extends BlockEntity {
 		this.emptyBlock = LootableLogic.copyStateProperties(state, Lootables.getEmptyBlock(block.getBlock()));
 		boolean w = false;
 		var db = getDisplayBlock();
-		if (db.getProperties().contains(Properties.WATERLOGGED)) {
+		if(db.getProperties().contains(Properties.WATERLOGGED)) {
 			w = db.get(Properties.WATERLOGGED);
 		}
 		this.world.setBlockState(this.pos, this.getWorld().getBlockState(this.pos).with(Properties.WATERLOGGED, w));
@@ -77,13 +73,12 @@ public class LootedBlockEntity extends BlockEntity {
 
 	public void attackBlock(ServerPlayerEntity player) {
 
-		if (this.durability > 0) {
+		if(this.durability > 0) {
 			LootableLogic.giveLoot(player, pos, getRealBlock());
 			getWorld().playSound(null, this.pos, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 0.5f, 1f + (float) Math.random());
 			getWorld().syncWorldEvent(WorldEvents.BLOCK_BROKEN, pos, Block.getRawIdFromState(getRealBlock()));
 			this.durability--;
-			if (this.durability == 0)
-				this.inventory = null;
+			if(this.durability == 0) {this.inventory = null;}
 			this.lastBreak = System.currentTimeMillis();
 			this.markDirty();
 			this.world.updateListeners(this.pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_ALL);
@@ -91,8 +86,7 @@ public class LootedBlockEntity extends BlockEntity {
 	}
 
 	public void openInventory(ServerPlayerEntity player) {
-		if (inventory == null)
-			createInventory(player);
+		if(inventory == null) {createInventory(player);}
 		Containers.createHandler(player, pos, (sync, inv, p1) -> new Container(sync, player, new GridContainer("loot", inventory, 3, 3)));
 
 	}
@@ -110,10 +104,9 @@ public class LootedBlockEntity extends BlockEntity {
 		// Save the current value of the number to the nbt
 		nbt.putInt("durability", durability);
 		nbt.putLong("lastBreak", lastBreak);
-		if (block == null)
-			block = Blocks.AIR.getDefaultState();
+		if(block == null) {block = Blocks.AIR.getDefaultState();}
 		nbt.put("block", NbtHelper.fromBlockState(block));
-		if (inventory != null) {
+		if(inventory != null) {
 			nbt.put("inventory", inventory.toNbtList());
 		}
 		super.writeNbt(nbt);
@@ -126,7 +119,7 @@ public class LootedBlockEntity extends BlockEntity {
 		lastBreak = nbt.getLong("lastBreak");
 		block = NbtHelper.toBlockState(Registries.BLOCK.getReadOnlyWrapper(), nbt.getCompound("block"));
 		emptyBlock = LootableLogic.copyStateProperties(block, Lootables.getEmptyBlock(block.getBlock()));
-		if (nbt.contains("inventory")) {
+		if(nbt.contains("inventory")) {
 			inventory = new SimpleInventory(9);
 			inventory.readNbtList(nbt.getList("inventory", NbtElement.COMPOUND_TYPE));
 			inventory.addListener(ls -> this.markDirty());
@@ -145,8 +138,8 @@ public class LootedBlockEntity extends BlockEntity {
 	}
 
 	public static <T extends BlockEntity> void tick(World world, BlockPos pos, BlockState blockState, LootedBlockEntity t) {
-		if (world.getTime() % 100 == 0) {
-			if (System.currentTimeMillis() > t.lastBreak + GreenResurgence.CONFIG.serverOptions.cooldowns.respawnLootedBlockInSec() * 1000L) {
+		if(world.getTime() % 100 == 0) {
+			if(System.currentTimeMillis() > t.lastBreak + GreenResurgence.CONFIG.serverOptions.cooldowns.respawnLootedBlockInSec() * 1000L) {
 				t.restoreDurability();
 			}
 

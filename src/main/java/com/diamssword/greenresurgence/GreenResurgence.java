@@ -5,6 +5,7 @@ import com.diamssword.greenresurgence.commands.*;
 import com.diamssword.greenresurgence.containers.Containers;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
+import com.diamssword.greenresurgence.items.equipment.EquipmentItems;
 import com.diamssword.greenresurgence.materials.Materials;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
@@ -14,6 +15,7 @@ import com.diamssword.greenresurgence.systems.armor.ArmorLoader;
 import com.diamssword.greenresurgence.systems.attributs.Attributes;
 import com.diamssword.greenresurgence.systems.character.classes.ClassesRegister;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
+import com.diamssword.greenresurgence.systems.equipement.Equipments;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -54,6 +56,7 @@ public class GreenResurgence implements ModInitializer {
 		FieldRegistrationHandler.register(MItems.class, ID, false);
 		registerSubCat(Weapons.class, ID, "tools/", false);
 		registerSubCat(Shields.class, ID, "tools/shields/", false);
+		registerSubCat(EquipmentItems.class, ID, "equipments/", false);
 		FieldRegistrationHandler.register(MBlocks.class, ID, false);
 		FieldRegistrationHandler.register(MBlockEntities.class, ID, false);
 		MBlockEntities.registerAll();
@@ -68,7 +71,7 @@ public class GreenResurgence implements ModInitializer {
 		BaseInteractions.register();
 		Attributes.init();
 		Events.init();
-
+		Equipments.init();
 		registerCommand("giveStructureItem", StructureItemCommand::register);
 		registerCommand("faction", FactionCommand::register);
 		registerCommand("structureBlockHelper", StructureBlockHelperCommand::register);
@@ -88,7 +91,7 @@ public class GreenResurgence implements ModInitializer {
 	 * Called only once
 	 */
 	public static void onPostInit() {
-		if (!havePostInited) {
+		if(!havePostInited) {
 			havePostInited = true;
 		}
 		ClassesRegister.init();
@@ -111,10 +114,10 @@ public class GreenResurgence implements ModInitializer {
 			container.postProcessField(namespace, fieldValue, identifier, field);
 		}, container));
 
-		if (recurseIntoInnerClasses) {
+		if(recurseIntoInnerClasses) {
 			ReflectionUtils.forApplicableSubclasses(clazz, AutoRegistryContainer.class, subclass -> {
 				var classModId = namespace;
-				if (subclass.isAnnotationPresent(RegistryNamespace.class))
+				if(subclass.isAnnotationPresent(RegistryNamespace.class))
 					classModId = subclass.getAnnotation(RegistryNamespace.class).value();
 				registerSubCat((Class<? extends AutoRegistryContainer<T>>) subclass, classModId, subname, true);
 			});
@@ -125,7 +128,7 @@ public class GreenResurgence implements ModInitializer {
 
 	private static <T> ReflectionUtils.FieldConsumer<T> createProcessor(ReflectionUtils.FieldConsumer<T> delegate, FieldProcessingSubject<T> handler) {
 		return (value, name, field) -> {
-			if (!handler.shouldProcessField(value, name, field)) return;
+			if(!handler.shouldProcessField(value, name, field)) return;
 			delegate.accept(value, name, field);
 		};
 	}

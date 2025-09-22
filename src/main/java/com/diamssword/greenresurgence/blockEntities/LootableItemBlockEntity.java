@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.blockEntities;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.containers.GridContainer;
+import com.diamssword.greenresurgence.containers.grids.GridContainer;
 import com.diamssword.greenresurgence.systems.lootables.IAdvancedLootableBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -49,14 +49,13 @@ public class LootableItemBlockEntity extends ItemBlockEntity implements IAdvance
 	}
 
 	public void lootBlock(PlayerEntity pl) {
-		if (!isOff) {
+		if(!isOff) {
 			var st = getItem().copy();
 			st.setCount((int) (1 + (Math.random() * st.getCount())));
 			this.isOff = true;
 			this.lastBreak = System.currentTimeMillis();
 
-			if (!pl.giveItemStack(st))
-				pl.dropStack(st);
+			if(!pl.giveItemStack(st)) {pl.dropStack(st);}
 			getWorld().playSound(null, this.pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3f, 0.5f + (float) Math.random());
 			this.saveAndUpdate();
 		}
@@ -65,24 +64,21 @@ public class LootableItemBlockEntity extends ItemBlockEntity implements IAdvance
 
 	private int selectASlot() {
 		var ls = new ArrayList<Integer>();
-		for (int i = 0; i < items.size(); i++) {
-			if (!items.get(i).isEmpty())
-				ls.add(i);
+		for(int i = 0; i < items.size(); i++) {
+			if(!items.get(i).isEmpty()) {ls.add(i);}
 		}
-		if (ls.isEmpty())
-			return -1;
+		if(ls.isEmpty()) {return -1;}
 		return ls.get((int) (Math.random() * ls.size()));
 	}
 
 	public static <T extends BlockEntity> void tick(World world, BlockPos pos, BlockState blockState, LootableItemBlockEntity t) {
-		if (world.getTime() % 100 == 0 && t.isOff && !world.isClient) {
-			if (System.currentTimeMillis() > t.lastBreak + GreenResurgence.CONFIG.serverOptions.cooldowns.respawnGroundLootInSec() * 1000L) {
+		if(world.getTime() % 100 == 0 && t.isOff && !world.isClient) {
+			if(System.currentTimeMillis() > t.lastBreak + GreenResurgence.CONFIG.serverOptions.cooldowns.respawnGroundLootInSec() * 1000L) {
 
 				t.isOff = false;
-				for (int i = 0; i < 100; i++) {
+				for(int i = 0; i < 100; i++) {
 					t.selectedIndex = t.selectASlot();
-					if (!t.getItem().isEmpty())
-						break;
+					if(!t.getItem().isEmpty()) {break;}
 				}
 				t.saveAndUpdate();
 			}
@@ -96,14 +92,12 @@ public class LootableItemBlockEntity extends ItemBlockEntity implements IAdvance
 		Inventories.readNbt(nbt, items);
 		selectedIndex = Math.min(nbt.getInt("selected"), items.size());
 		isOff = nbt.getBoolean("isOff");
-		if (selectedIndex < 0 || getItem().isEmpty())
-			selectedIndex = selectASlot();
+		if(selectedIndex < 0 || getItem().isEmpty()) {selectedIndex = selectASlot();}
 	}
 
 	@Override
 	public ItemStack getItem() {
-		if (this.isOff || selectedIndex < 0 || selectedIndex >= this.items.size())
-			return ItemStack.EMPTY;
+		if(this.isOff || selectedIndex < 0 || selectedIndex >= this.items.size()) {return ItemStack.EMPTY;}
 		return this.items.get(selectedIndex);
 	}
 
@@ -111,7 +105,7 @@ public class LootableItemBlockEntity extends ItemBlockEntity implements IAdvance
 	public GridContainer getContainer() {
 		SimpleInventory inv = new SimpleInventory(this.items.toArray(new ItemStack[0]));
 		inv.addListener((c) -> {
-			for (int i = 0; i < c.size(); i++) {
+			for(int i = 0; i < c.size(); i++) {
 				this.items.set(i, c.getStack(i));
 			}
 			this.saveAndUpdate();

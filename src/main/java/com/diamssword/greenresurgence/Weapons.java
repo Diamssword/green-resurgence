@@ -77,7 +77,6 @@ public class Weapons implements ItemRegistryContainer {
 	public static final Item WEEDWACKER = new GeckoActivatedTwoHand(ToolMaterials.WOOD, 1, SLOW, 1, FASTEST, false, defaut());
 	public static final Item MACE_TWO_HANDED_STOP = new TwoHandedSword(ToolMaterials.IRON, 6, NORMAL, defaut(), true);
 
-
 	private static OwoItemSettings defaut() {
 		return new OwoItemSettings().group(GROUP).tab(1);
 	}

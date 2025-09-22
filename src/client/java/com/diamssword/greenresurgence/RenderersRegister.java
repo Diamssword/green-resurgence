@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlockSet;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.items.*;
+import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinItem;
 import com.diamssword.greenresurgence.items.weapons.GeckoActivated;
 import com.diamssword.greenresurgence.render.blockEntityRenderer.*;
 import com.diamssword.greenresurgence.render.cosmetics.ModularArmorLayerRenderer;
@@ -23,19 +24,21 @@ public class RenderersRegister {
 		);
 		ModularArmorItem.ProviderFunction = ModularArmorRenderer::RendererProvider;
 		GeckoActivated.ProviderFunction = GeckoItemRenderer::RendererProvider;
+		StackBasedGeckoItem.ProviderFunction = GeckoToolEquipmentRenderer::RendererProvider;
+		EquipmentSkinItem.ProviderFunction = GeckoToolEquipmentRenderer::RendererProvider;
 		BackPackItem.ProviderFunction = BackpackArmorRenderer::RendererProvider;
 	}
 
 	private static void blocksRenderers() {
 
-		for (MultiblockInstance structuresPlacer : ItemPlacers.multiblocksStructure) {
+		for(MultiblockInstance structuresPlacer : ItemPlacers.multiblocksStructure) {
 			BlockRenderLayerMap.INSTANCE.putBlock(structuresPlacer.block, RenderLayer.getCutout());
 		}
 		GenericBlocks.sets.forEach(set -> {
 			set.getGlasses().forEach((b, t) -> {
-				if (t == GenericBlockSet.Transparency.CUTOUT)
+				if(t == GenericBlockSet.Transparency.CUTOUT)
 					BlockRenderLayerMap.INSTANCE.putBlock(b, RenderLayer.getCutout());
-				else if (t == GenericBlockSet.Transparency.TRANSPARENT)
+				else if(t == GenericBlockSet.Transparency.TRANSPARENT)
 					BlockRenderLayerMap.INSTANCE.putBlock(b, RenderLayer.getTranslucent());
 			});
 		});

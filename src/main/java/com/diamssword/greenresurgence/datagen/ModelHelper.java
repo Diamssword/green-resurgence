@@ -3,6 +3,8 @@ package com.diamssword.greenresurgence.datagen;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.blocks.SideShelfBlock;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlockSet;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.enums.DoorHinge;
 import net.minecraft.data.client.*;
@@ -10,6 +12,10 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -23,14 +29,14 @@ public class ModelHelper {
 	}
 
 	public BlockStateSupplier createVariantsStates(BlockStateSupplier base, int count) {
-		if (count > 0)
+		if(count > 0)
 			return new MyVariantsBlockStateSupplier(base, count);
 		else
 			return base;
 	}
 
 	public Identifier transformVariantModelId(Identifier parent, int variants) {
-		if (variants > 0) {
+		if(variants > 0) {
 			return parent.withSuffixedPath("/0");
 		} else
 			return parent;
@@ -40,12 +46,12 @@ public class ModelHelper {
 		var tm = factory.get(block);
 		var mod = tm.getModel();
 		//  var map=createTextureMap(Stream.of(getTextureKeysFor(model,name)),factory.get(block).getTextures());
-		if (variants <= 0) {
+		if(variants <= 0) {
 			mod.upload(getBlockModelId(name), factory.get(block).getTextures(), generator.modelCollector);
 		} else {
-			for (int i = 0; i < variants; i++) {
+			for(int i = 0; i < variants; i++) {
 				var map = new TextureMap();
-				for (TextureKey textureKey : keys) {
+				for(TextureKey textureKey : keys) {
 					var path = tm.getTextures().getTexture(textureKey);
 					var st = path.getPath().substring(0, path.getPath().lastIndexOf("/"));
 					var st1 = path.getPath().substring(path.getPath().lastIndexOf("/"));
@@ -59,12 +65,12 @@ public class ModelHelper {
 
 	private void registerModel(Model model, String name, String suffix, BlockStateModelGenerator generator, int variants, TextureMap map, TextureKey... keys) {
 
-		if (variants <= 0) {
+		if(variants <= 0) {
 			model.upload(getBlockModelId(name + suffix), map, generator.modelCollector);
 		} else {
-			for (int i = 0; i < variants; i++) {
+			for(int i = 0; i < variants; i++) {
 				var map1 = new TextureMap();
-				for (TextureKey textureKey : keys) {
+				for(TextureKey textureKey : keys) {
 					var path = map.getTexture(textureKey);
 					var st = path.getPath().substring(0, path.getPath().lastIndexOf("/"));
 					var st1 = path.getPath().substring(path.getPath().lastIndexOf("/"));
@@ -80,7 +86,7 @@ public class ModelHelper {
 	}
 
 	public TextureKey[] getTextureKeysFor(GenericBlockSet.ModelType type) {
-		switch (type) {
+		switch(type) {
 			case SIMPLE:
 				return new TextureKey[]{TextureKey.ALL};
 
@@ -105,7 +111,7 @@ public class ModelHelper {
 	}
 
 	public TexturedModel.Factory getModeleFactoryFor(GenericBlockSet.ModelType type, String name) {
-		switch (type) {
+		switch(type) {
 
 			case SIMPLE -> {
 				return TexturedModel.makeFactory(b1 -> TextureMap.all(this.getBlockModelId(name)), new Model(Optional.of(new Identifier("minecraft", "block/cube_all")), Optional.empty(), getTextureKeysFor(type)));
@@ -181,17 +187,17 @@ public class ModelHelper {
 	public TextureMap textureMapMachine(String name, boolean noBottom, boolean noTop) {
 		TextureMap map = new TextureMap();
 		map.put(TextureKey.SIDE, getBlockModelId(name).withSuffixedPath("_side"));
-		if (!noTop)
+		if(!noTop)
 			map.put(TextureKey.TOP, getBlockModelId(name).withSuffixedPath("_top"));
 		map.put(TextureKey.FRONT, getBlockModelId(name).withSuffixedPath("_front"));
-		if (!noBottom)
+		if(!noBottom)
 			map.put(TextureKey.BOTTOM, getBlockModelId(name).withSuffixedPath("_bottom"));
 		return map;
 	}
 
 	public TextureMap textureOmniSlab(String name, GenericBlockSet.ModelType type) {
 		TextureMap map = new TextureMap();
-		if (type == GenericBlockSet.ModelType.SIMPLE) {
+		if(type == GenericBlockSet.ModelType.SIMPLE) {
 			map.put(TextureKey.SIDE, getBlockModelId(name));
 			map.put(TextureKey.FRONT, getBlockModelId(name));
 			map.put(TextureKey.BACK, getBlockModelId(name));
@@ -207,7 +213,7 @@ public class ModelHelper {
 
 	public TextureMap textureMapStairs(String name, GenericBlockSet.ModelType type) {
 		TextureMap map = new TextureMap();
-		if (type == GenericBlockSet.ModelType.SIMPLE) {
+		if(type == GenericBlockSet.ModelType.SIMPLE) {
 			map.put(TextureKey.SIDE, getBlockModelId(name));
 			map.put(TextureKey.BOTTOM, getBlockModelId(name));
 			map.put(TextureKey.TOP, getBlockModelId(name));
@@ -387,7 +393,7 @@ public class ModelHelper {
 				.register(Direction.NORTH, false, BlockStateVariant.create().put(VariantSettings.MODEL, normal).put(VariantSettings.Y, VariantSettings.Rotation.R0))
 				.register(Direction.SOUTH, false, BlockStateVariant.create().put(VariantSettings.MODEL, normal).put(VariantSettings.Y, VariantSettings.Rotation.R180))
 				.register(Direction.EAST, false, BlockStateVariant.create().put(VariantSettings.MODEL, normal).put(VariantSettings.Y, VariantSettings.Rotation.R90));
-		if (allrotation) {
+		if(allrotation) {
 			res.register(Direction.UP, true, BlockStateVariant.create().put(VariantSettings.MODEL, toggled).put(VariantSettings.X, VariantSettings.Rotation.R270));
 			res.register(Direction.DOWN, true, BlockStateVariant.create().put(VariantSettings.MODEL, toggled).put(VariantSettings.X, VariantSettings.Rotation.R90));
 			res.register(Direction.UP, false, BlockStateVariant.create().put(VariantSettings.MODEL, normal).put(VariantSettings.X, VariantSettings.Rotation.R270));
@@ -397,7 +403,7 @@ public class ModelHelper {
 	}
 
 	public static BlockStateVariantMap.DoubleProperty<Direction, Integer> fillMultistateVariantMap(BlockStateVariantMap.DoubleProperty<Direction, Integer> variantMap, Identifier base, int max) {
-		for (int i = 1; i <= max; i++) {
+		for(int i = 1; i <= max; i++) {
 			variantMap
 					.register(Direction.WEST, i, BlockStateVariant.create().put(VariantSettings.MODEL, base.withSuffixedPath("_" + i)).put(VariantSettings.Y, VariantSettings.Rotation.R270))
 					.register(Direction.NORTH, i, BlockStateVariant.create().put(VariantSettings.MODEL, base.withSuffixedPath("_" + i)).put(VariantSettings.Y, VariantSettings.Rotation.R0))
@@ -425,5 +431,16 @@ public class ModelHelper {
 
 	public SchematicBlockStateSupplier alterSchematic(Block b, String schemName, Map<String, String> keys) {
 		return new SchematicBlockStateSupplier(b, schemName, keys);
+	}
+
+	public static JsonObject readDevModel(String name) {
+		Gson gson = new Gson();
+		Path path = LangGenerator.getDevPath(name);
+		try(Reader reader = Files.newBufferedReader(path)) {
+			return gson.fromJson(reader, JsonObject.class);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

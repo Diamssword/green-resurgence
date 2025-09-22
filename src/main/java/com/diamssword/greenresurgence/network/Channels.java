@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.containers.GridContainerSyncer;
+import com.diamssword.greenresurgence.containers.grids.GridContainerSyncer;
 import com.diamssword.greenresurgence.systems.armor.ArmorLoader;
 import com.diamssword.greenresurgence.systems.crafting.CraftingResult;
 import com.diamssword.greenresurgence.systems.crafting.RecipeLoader;
@@ -74,7 +74,7 @@ public class Channels {
 	 * @return
 	 */
 	public static <R extends Record> void sendToNonHost(PlayerEntity player, R... messages) {
-		if (!isSelfHost(player.getServer(), player)) {
+		if(!isSelfHost(player.getServer(), player)) {
 			MAIN.serverHandle(player).send(messages);
 		}
 	}

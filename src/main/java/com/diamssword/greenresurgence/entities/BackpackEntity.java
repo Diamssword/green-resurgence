@@ -2,7 +2,7 @@ package com.diamssword.greenresurgence.entities;
 
 import com.diamssword.greenresurgence.MEntities;
 import com.diamssword.greenresurgence.containers.GenericContainer;
-import com.diamssword.greenresurgence.containers.GridContainer;
+import com.diamssword.greenresurgence.containers.grids.GridContainer;
 import com.diamssword.greenresurgence.items.AbstractBackpackItem;
 import com.diamssword.greenresurgence.systems.Components;
 import net.minecraft.entity.Entity;
@@ -104,18 +104,18 @@ public class BackpackEntity extends Entity implements Ownable, NamedScreenHandle
 
 	@Override
 	public void pushAwayFrom(Entity entity) {
-		if (entity instanceof BackpackEntity) {
-			if (entity.getBoundingBox().minY < this.getBoundingBox().maxY) {
+		if(entity instanceof BackpackEntity) {
+			if(entity.getBoundingBox().minY < this.getBoundingBox().maxY) {
 				super.pushAwayFrom(entity);
 			}
-		} else if (entity.getBoundingBox().minY <= this.getBoundingBox().minY) {
+		} else if(entity.getBoundingBox().minY <= this.getBoundingBox().minY) {
 			super.pushAwayFrom(entity);
 		}
 	}
 
 	@Override
 	public void tick() {
-		if (this.getStack().isEmpty()) {
+		if(this.getStack().isEmpty()) {
 			this.discard();
 		} else {
 			super.tick();
@@ -124,58 +124,58 @@ public class BackpackEntity extends Entity implements Ownable, NamedScreenHandle
 			this.prevZ = this.getZ();
 			Vec3d vec3d = this.getVelocity();
 			float f = this.getStandingEyeHeight() - 0.11111111F;
-			if (this.isTouchingWater() && this.getFluidHeight(FluidTags.WATER) > (double) f) {
+			if(this.isTouchingWater() && this.getFluidHeight(FluidTags.WATER) > (double) f) {
 				this.applyWaterBuoyancy();
-			} else if (this.isInLava() && this.getFluidHeight(FluidTags.LAVA) > (double) f) {
+			} else if(this.isInLava() && this.getFluidHeight(FluidTags.LAVA) > (double) f) {
 				this.applyLavaBuoyancy();
-			} else if (!this.hasNoGravity()) {
+			} else if(!this.hasNoGravity()) {
 				this.setVelocity(this.getVelocity().add(0.0, -0.04, 0.0));
 			}
 
-			if (this.getWorld().isClient) {
+			if(this.getWorld().isClient) {
 				this.noClip = false;
 			} else {
 
-				if (this.getStack().getItem() instanceof AbstractBackpackItem be) {
-					if (be.isInventoryEmpty(this.getStack())) {
+				if(this.getStack().getItem() instanceof AbstractBackpackItem be) {
+					if(be.isInventoryEmpty(this.getStack())) {
 						this.discard();
 						this.dropStack(this.getStack().copy());
 					}
 				}
 				this.noClip = !this.getWorld().isSpaceEmpty(this, this.getBoundingBox().contract(1.0E-7));
-				if (this.noClip) {
+				if(this.noClip) {
 					this.pushOutOfBlocks(this.getX(), (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0, this.getZ());
 				}
 			}
 
-			if (!this.isOnGround() || this.getVelocity().horizontalLengthSquared() > 1.0E-5F || (this.age + this.getId()) % 4 == 0) {
+			if(!this.isOnGround() || this.getVelocity().horizontalLengthSquared() > 1.0E-5F || (this.age + this.getId()) % 4 == 0) {
 				this.move(MovementType.SELF, this.getVelocity());
 				float g = 0.98F;
-				if (this.isOnGround()) {
+				if(this.isOnGround()) {
 					g = this.getWorld().getBlockState(this.getVelocityAffectingPos()).getBlock().getSlipperiness() * 0.98F;
 				}
 
 				this.setVelocity(this.getVelocity().multiply(g, 0.98, g));
-				if (this.isOnGround()) {
+				if(this.isOnGround()) {
 					Vec3d vec3d2 = this.getVelocity();
-					if (vec3d2.y < 0.0) {
+					if(vec3d2.y < 0.0) {
 						this.setVelocity(vec3d2.multiply(1.0, -0.5, 1.0));
 					}
 				}
 			}
 			this.velocityDirty = this.velocityDirty | this.updateWaterState();
-			if (!this.getWorld().isClient) {
+			if(!this.getWorld().isClient) {
 				double d = this.getVelocity().subtract(vec3d).lengthSquared();
-				if (d > 0.01) {
+				if(d > 0.01) {
 					this.velocityDirty = true;
 				}
 			}
 			this.checkBlockCollision();
 			List<Entity> list = this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(0.2F, -0.01F, 0.2F), EntityPredicates.canBePushedBy(this));
-			if (!list.isEmpty()) {
-				for (int j = 0; j < list.size(); j++) {
+			if(!list.isEmpty()) {
+				for(int j = 0; j < list.size(); j++) {
 					Entity entity = list.get(j);
-					if (!entity.hasPassenger(this)) {
+					if(!entity.hasPassenger(this)) {
 						this.pushAwayFrom(entity);
 					}
 				}
@@ -185,46 +185,43 @@ public class BackpackEntity extends Entity implements Ownable, NamedScreenHandle
 
 	@Override
 	public ActionResult interact(PlayerEntity player, Hand hand) {
-		if (!player.getWorld().isClient && this.age > 20 && !player.isSpectator()) {
+		if(!player.getWorld().isClient && this.age > 20 && !player.isSpectator()) {
 			var ne = this.getStack();
 			var inv = player.getComponent(Components.PLAYER_INVENTORY).getInventory();
-			if (ne.getItem() instanceof AbstractBackpackItem bpn) {
-				if (!player.isSneaking()) {
+			if(ne.getItem() instanceof AbstractBackpackItem bpn) {
+				if(!player.isSneaking()) {
 					player.openHandledScreen(this);
 					return ActionResult.SUCCESS;
 				}
 				var st = ItemStack.EMPTY;
 				int slot = 0;
-				if (bpn.slot == AbstractBackpackItem.PackSlot.Backpack)
-					st = inv.getBags().getStack(0);
-				else {
+				if(bpn.slot == AbstractBackpackItem.PackSlot.Backpack) {st = inv.getBags().getStack(0);} else {
 					st = inv.getBags().getStack(1);
 					slot = 1;
-					if (!st.isEmpty()) {
+					if(!st.isEmpty()) {
 						slot = 2;
 						st = inv.getBags().getStack(2);
 					}
 				}
 				var old = st.copyAndEmpty();
-				if (old.getItem() instanceof AbstractBackpackItem abp && abp.isInventoryEmpty(old)) {
+				if(old.getItem() instanceof AbstractBackpackItem abp && abp.isInventoryEmpty(old)) {
 					player.dropItem(old, true);
-				} else
-					dropItemBackpack(player, old);
+				} else {dropItemBackpack(player, old);}
 				inv.getBags().setStack(slot, ne.copyAndEmpty());
 				inv.clearCache();
 				this.discard();
-				if (!player.getWorld().isClient() && !player.isSilent()) {
+				if(!player.getWorld().isClient() && !player.isSilent()) {
 					this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, player.getSoundCategory(), 1.0F, 1.0F);
 				}
 				return ActionResult.CONSUME;
 			} else {
-				if (inv.insterStack(this.getStack().copy())) {
+				if(inv.insterStack(this.getStack().copy())) {
 					this.discard();
-					if (!player.getWorld().isClient() && !player.isSilent())
+					if(!player.getWorld().isClient() && !player.isSilent()) {
 						this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, player.getSoundCategory(), 1.0F, 1.0F);
+					}
 					return ActionResult.SUCCESS;
-				} else
-					return ActionResult.FAIL;
+				} else {return ActionResult.FAIL;}
 			}
 		}
 		return ActionResult.SUCCESS;
@@ -232,10 +229,10 @@ public class BackpackEntity extends Entity implements Ownable, NamedScreenHandle
 
 	@Nullable
 	public static BackpackEntity dropItemBackpack(PlayerEntity player, ItemStack stack) {
-		if (stack.isEmpty()) {
+		if(stack.isEmpty()) {
 			return null;
 		} else {
-			if (player.getWorld().isClient) {
+			if(player.getWorld().isClient) {
 				player.swingHand(Hand.MAIN_HAND);
 				return null;
 			} else {
@@ -290,29 +287,29 @@ public class BackpackEntity extends Entity implements Ownable, NamedScreenHandle
 	@Override
 	public void onTrackedDataSet(TrackedData<?> data) {
 		super.onTrackedDataSet(data);
-		if (STACK.equals(data)) {
+		if(STACK.equals(data)) {
 			this.getStack().setHolder(this);
 		}
 	}
 
 	@Override
 	protected void readCustomDataFromNbt(NbtCompound nbt) {
-		if (nbt.containsUuid("Owner")) {
+		if(nbt.containsUuid("Owner")) {
 			this.owner = nbt.getUuid("Owner");
 		}
 		NbtCompound nbtCompound = nbt.getCompound("Item");
 		this.setStack(ItemStack.fromNbt(nbtCompound));
-		if (this.getStack().isEmpty()) {
+		if(this.getStack().isEmpty()) {
 			this.discard();
 		}
 	}
 
 	@Override
 	protected void writeCustomDataToNbt(NbtCompound nbt) {
-		if (this.owner != null) {
+		if(this.owner != null) {
 			nbt.putUuid("Owner", this.owner);
 		}
-		if (!this.getStack().isEmpty()) {
+		if(!this.getStack().isEmpty()) {
 			nbt.put("Item", this.getStack().writeNbt(new NbtCompound()));
 		}
 	}
@@ -331,16 +328,15 @@ public class BackpackEntity extends Entity implements Ownable, NamedScreenHandle
 	@Override
 	public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 
-		if (getStack().getItem() instanceof AbstractBackpackItem ab) {
+		if(getStack().getItem() instanceof AbstractBackpackItem ab) {
 			var inv = ab.getInventory(getStack());
 			return new GenericContainer(syncId, player, new GridContainer("container", inv, ab.inventoryWidth(getStack()), ab.inventoryHeight(getStack()))) {
 				@Override
 				public void onClosed(PlayerEntity player) {
-					if (!BackpackEntity.this.isAlive()) {
-						if (!player.getWorld().isClient) {
+					if(!BackpackEntity.this.isAlive()) {
+						if(!player.getWorld().isClient) {
 							player.dropItem(this.getCursorStack(), true);
-							for (var i = 0; i < inv.size(); i++)
-								player.dropItem(inv.getStack(i), false);
+							for(var i = 0; i < inv.size(); i++) {player.dropItem(inv.getStack(i), false);}
 						}
 					}
 				}

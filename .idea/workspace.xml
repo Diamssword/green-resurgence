@@ -5,133 +5,62 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2280433-581a-4b82-ab53-687b6ee5ff53" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/green-resurgence.client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/green-resurgence.client.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/green-resurgence.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/green-resurgence.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/green-resurgence.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/green-resurgence.test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Data_Generation.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Data_Generation.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Datagen.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/GreenResurgenceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/GreenResurgenceClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/ArmorTinkererModelGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/ArmorTinkererModelGui.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/RessourceGuiHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/RessourceGuiHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/WardrobeGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/WardrobeGui.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/components/ClothButtonComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/components/ClothButtonComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/faction/ClaimAntennaGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/faction/ClaimAntennaGui.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/items/ModularArmorRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/items/ModularArmorRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/mixin/client/PlayerSkinProviderAccessor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/network/ClientGuiPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/network/ClientGuiPacket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/cosmetics/AnimatablePlayer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/cosmetics/GeckoCosmeticLayer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/cosmetics/GeckoCosmeticRenderer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/resources/green_resurgence.client.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/resources/green_resurgence.client.mixins.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/ConfigModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/ConfigModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/RenderersRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/RenderersRegister.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/ScreenHandlers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/ScreenHandlers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/components/ComponentsRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/components/ComponentsRegister.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/components/InventoryComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/components/InventoryComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/PlayerBasedGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/PlayerBasedGui.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/BoxRenderers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/BoxRenderers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/devResources/lang/_fr_fr.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/devResources/lang/_fr_fr.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/GreenResurgence.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/GreenResurgence.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/DeployableLadderEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/DeployableLadderEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MBlocks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MBlocks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/Weapons.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/Weapons.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/ArmorTinkererBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/ArmorTinkererBlockEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/GenericStorageBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/GenericStorageBlockEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/ItemBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/ItemBlockEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/LootableItemBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/LootableItemBlockEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/LootableShelfEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/LootableShelfEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/commands/OpenScreenCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/commands/OpenScreenCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/GenericBlocks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/genericBlocks/GenericBlocks.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/http/APIService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/http/ApiCharacterValues.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/http/ApiSkinValues.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/http/ApiStatsValues.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/DeployableLadder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/DeployableLadder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/LootingToolItem.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/UniversalPlacerItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/UniversalPlacerItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/mixin/PlayerEntityMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/mixin/PlayerEntityMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/LootedBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/LootedBlockEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/BaseStorageBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/BaseStorageBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/ItemBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/ItemBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/ShelfBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/ShelfBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/AbstractMultiInvScreenHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/AbstractMultiInvScreenHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/Containers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/Containers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/CreativeMultiInvScreenHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/CreativeMultiInvScreenHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/GenericContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/GenericContainer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/GridContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/grids/GridContainer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/GridContainerSyncer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/grids/GridContainerSyncer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/IGridContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/grids/IGridContainer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/MultiInvScreenHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/MultiInvScreenHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/player/CustomPlayerInventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/player/CustomPlayerInventory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/player/VanillaPlayerInvMokup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/player/VanillaPlayerInvMokup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/player/grids/ArmorGrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/player/grids/ArmorGrid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/player/grids/PlayerGrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/player/grids/PlayerGrid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/datagen/ModelGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/datagen/ModelGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/datagen/ModelHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/datagen/ModelHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/datagen/SchematicBlockStateSupplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/datagen/SchematicBlockStateSupplier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/entities/BackpackEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/entities/BackpackEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/materials/Materials.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/materials/Materials.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/Channels.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/Channels.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/DictionaryPackets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/DictionaryPackets.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/GuiPackets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/GuiPackets.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/ModularArmorPackets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/ModularArmorPackets.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/structure/ItemPlacers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/structure/ItemPlacers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/Events.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/Events.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/components/TerrainEnergyStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/components/TerrainEnergyStorage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/geo/modular/armor/body_test.geo.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/geo/modular/armor/circulation_plot_hat.geo.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/geo/modular/armor/circulation_plot_hat.geo.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/geo/modular/armor/test.geo.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/geo/modular/armor/welding_mask.geo.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/geo/modular/armor/welding_mask.geo.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/geo/modular/armor/welding_mask_strip.geo.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/geo/modular/armor/welding_mask_strip.geo.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/geo/modular/backpack/backpack.geo.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/geo/modular/backpack/backpack.geo.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/broken_glass_trapdoor_bottom.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/broken_glass_trapdoor_bottom.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/broken_glass_trapdoor_open.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/broken_glass_trapdoor_open.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/broken_glass_trapdoor_top.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/broken_glass_trapdoor_top.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_back_bumper_left.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_back_bumper_right.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_chair_small_black.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_door_left_closed.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_door_left_open.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_door_right_closed.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_door_right_open.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_front_bumper_left.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_front_bumper_right.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_front_hood_left_gray.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_front_hood_left_gray_open.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_front_hood_right_gray.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_front_hood_right_gray_open.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_front_left_gray.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_front_right_gray.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_headlight_left.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_headlight_right.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_sidewalk.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_tire_protection_broken.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_tire_protection_full.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/car_1_window.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/clock_wall_white.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/clock_wall_white.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/glass_trapdoor_bottom.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/glass_trapdoor_bottom.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/glass_trapdoor_open.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/glass_trapdoor_open.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/glass_trapdoor_top.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/glass_trapdoor_top.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/kitchen_cabinet_door_light_blue.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/kitchen_cabinet_door_light_blue.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/metal_display_middle.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/metal_display_middle.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/plastic_trash_can_brown.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/plastic_trash_can_brown.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/road_barrier.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/road_barrier.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/road_tire_spike_cross.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/road_tire_spike_cross.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_ceiling_head.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_ceiling_head.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_head.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_head.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_head_with_hand.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_head_with_hand.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_mixer.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_mixer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_only_with_hand.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_round_ceiling_head.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_round_ceiling_head.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_round_head.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_round_head.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_round_head_with_hand.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_round_head_with_hand.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_round_wall_head.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_round_wall_head.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_wall_head.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/shower_wall_head.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/stool_waterhyacinth.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/stool_waterhyacinth.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/trash_can_fast_food_black.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/trash_can_fast_food_black.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/trash_can_fast_food_gray.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/trash_can_fast_food_gray.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/trash_can_fast_food_green.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/trash_can_fast_food_green.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/trash_can_fast_food_red.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/block/diams/trash_can_fast_food_red.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/item/tools/baseball_bat_aluminium.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/item/tools/baseball_bat_aluminium.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/item/tools/baseball_bat_aluminium_saw.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/item/tools/baseball_bat_aluminium_saw.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/item/tools/baseball_bat_wood.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/item/tools/baseball_bat_wood.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/item/tools/baseball_bat_wood_nail.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/item/tools/baseball_bat_wood_nail.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival/armor_tinkerer_model.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival/armor_tinkerer_model.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/wardrobe.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/wardrobe.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/car_front.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/car_front.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/concrete_road_side_drainage_channel.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/concrete_road_side_drainage_channel.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/kitchen_cabinet_black.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/kitchen_cabinet_black.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/plastic_orange.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/plastic_orange.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/road_barrier.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/road_barrier.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/table_basic_oak.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/table_basic_oak.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/table_basic_spruce.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/table_basic_spruce.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/table_fancy_oak.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/table_fancy_oak.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/table_fancy_spruce.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/table_fancy_spruce.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/table_folding_oak.json.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/table_folding_oak.json.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/table_folding_spruce.json.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/table_folding_spruce.json.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/tire_flatter.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/tire_flatter.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/tire_flatter_b.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/tire_flatter_b.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/trash_can_fast_food_black.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/trash_can_fast_food_black.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/trash_can_fast_food_gray.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/trash_can_fast_food_gray.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/trash_can_fast_food_green.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/trash_can_fast_food_green.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/trash_can_fast_food_red.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/block/diams/trash_can_fast_food_red.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/item/diams/base_ball_bat.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/item/diams/base_ball_bat.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/item/diams/base_ball_bat_aluminium.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/item/diams/base_ball_bat_aluminium.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/modular/armor/makeshift_heavy.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/modular/armor/welding_mask.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/modular/armor/welding_mask.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/modular/armor/welding_mask_strip.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/green_resurgence/cloths.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/green_resurgence/lootables.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/green_resurgence/lootables.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/green_resurgence/skills.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/character/HealthManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/character/HealthManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/character/PlayerEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/character/PlayerEvents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/components/FactionTerrainStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/components/FactionTerrainStorage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/utils/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival/player_inventory.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival/player_inventory.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/item/materials/unused/fuel.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,7 +80,23 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="green-resurgence" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="green-resurgence" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="green-resurgence" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="fabric" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -164,8 +109,8 @@
         <option value="Kotlin Class" />
         <option value="FabricItem" />
         <option value="FabricBlock" />
-        <option value="Interface" />
         <option value="Record" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -211,17 +156,29 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Application.(1)Minecraft Client .executor&quot;: &quot;Debug&quot;,
+    &quot;Application.Data Generation.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Minecraft Client (1).executor&quot;: &quot;Debug&quot;,
+    &quot;Application.Minecraft Client.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [:net.fabricmc.devlaunchinjector.Main.main()].executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.green-resurgence [configureLaunch].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [downloadAssets].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [genCommonSources].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [genSources].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [runClient].executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;code.cleanup.on.save&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;character__sheet__splitting&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Git/green-resurgence/src/main/resources/data/green_resurgence&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/diamssword/Dev/Git/green-resurgence/src/main/resources/assets/green_resurgence/models/item/equipment&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -230,11 +187,11 @@
       <recent name="com.diamssword.greenresurgence" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/item/equipment" />
+      <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival" />
       <recent name="D:\Git\green-resurgence\src\main\resources\data\green_resurgence" />
       <recent name="D:\Git\green-resurgence\libs" />
       <recent name="D:\Git\green-resurgence\src\main\resources\assets\minecraft\font" />
-      <recent name="D:\Git\green-resurgence\src\main\devResources" />
-      <recent name="D:\Git\green-resurgence\src\main\resources\assets\green_resurgence\lang" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Git\green-resurgence\src\main\resources\assets\green_resurgence\owo_ui\survival\subpanel" />
@@ -253,29 +210,32 @@
       <recent name="com.diamssword.greenresurgence.systems.base" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.diamssword.greenresurgence.genericBlocks" />
-      <recent name="com.diamssword.greenresurgence.mixin" />
-      <recent name="com.diamssword.greenresurgence" />
-      <recent name="com.diamssword.greenresurgence.mixin.client" />
-      <recent name="com.diamssword.greenresurgence.gui.inventoryPanel" />
+      <recent name="com.diamssword.greenresurgence.items" />
+      <recent name="com.diamssword.greenresurgence.utils" />
+      <recent name="com.diamssword.greenresurgence.blocks" />
+      <recent name="com.diamssword.greenresurgence.blockEntities" />
+      <recent name="com.diamssword.greenresurgence.gui.playerContainers" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.green-resurgence [build]">
-    <configuration name="SkinConverterUtil" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="22" />
+  <component name="RunManager" selected="Application.Minecraft Client">
+    <configuration name="Minecraft Client (1)" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="21" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="MAIN_CLASS_NAME" value="SkinConverterUtil" />
+      <option name="MAIN_CLASS_NAME" value="net.fabricmc.devlaunchinjector.Main" />
+      <module name="green-resurgence.client" />
+      <option name="PROGRAM_PARAMETERS" value="--username=Eaxsil" />
       <shortenClasspath name="ARGS_FILE" />
+      <option name="VM_PARAMETERS" value="-Dfabric.dli.config=$PROJECT_DIR$/.gradle/loom-cache/launch.cfg -Dfabric.dli.env=client -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotClient -XX:+AllowEnhancedClassRedefinition" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/run/" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="(1)Minecraft Client " type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="net.fabricmc.devlaunchinjector.Main" />
-      <module name="green-resurgence.client" />
-      <shortenClasspath name="ARGS_FILE" />
-      <option name="VM_PARAMETERS" value="-Dfabric.dli.config=D:\Git\green-resurgence\.gradle\loom-cache\launch.cfg -Dfabric.dli.env=client -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotClient" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/run1" />
+    <configuration name="SkinConverterUtil" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="22" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="SkinConverterUtil" />
+      <shortenClasspath name="NONE" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -308,40 +268,18 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="green-resurgence [downloadAssets]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="green-resurgence [configureLaunch]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value="downloadAssets" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="green-resurgence [genCommonSources]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="genCommonSources" />
+            <option value="configureLaunch" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -396,26 +334,47 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="green-resurgence [runClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="runClient" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <list>
+      <item itemvalue="Application.Minecraft Client (1)" />
       <item itemvalue="Application.SkinConverterUtil" />
-      <item itemvalue="Application.(1)Minecraft Client " />
-      <item itemvalue="Application.Data Generation" />
       <item itemvalue="Application.Minecraft Client" />
-      <item itemvalue="Application.Minecraft Datagen" />
+      <item itemvalue="Application.Data Generation" />
       <item itemvalue="Application.Minecraft Server" />
       <item itemvalue="Gradle.green-resurgence [build]" />
-      <item itemvalue="Gradle.green-resurgence [downloadAssets]" />
-      <item itemvalue="Gradle.green-resurgence [genCommonSources]" />
+      <item itemvalue="Gradle.green-resurgence [configureLaunch]" />
       <item itemvalue="Gradle.green-resurgence [genSources]" />
       <item itemvalue="Gradle.green-resurgence [remapSourcesJar]" />
+      <item itemvalue="Gradle.green-resurgence [runClient]" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.green-resurgence [configureLaunch]" />
+        <item itemvalue="Gradle.green-resurgence [runClient]" />
+        <item itemvalue="Gradle.green-resurgence [genSources]" />
         <item itemvalue="Gradle.green-resurgence [build]" />
         <item itemvalue="Gradle.green-resurgence [remapSourcesJar]" />
-        <item itemvalue="Gradle.green-resurgence [genSources]" />
-        <item itemvalue="Gradle.green-resurgence [genCommonSources]" />
-        <item itemvalue="Gradle.green-resurgence [downloadAssets]" />
       </list>
     </recent_temporary>
   </component>

@@ -10,23 +10,19 @@ public class PlayerEvents {
 
 	public static void init() {
 		PlayerTickEvent.onTick.register((pl, end) -> {
-			if (!end && !pl.getWorld().isClient) {
-				if (pl.getMainHandStack().getItem() instanceof ICustomPoseWeapon wep) {
-					if (wep.shouldRemoveOffHand() && !pl.getOffHandStack().isEmpty() && !(pl.getOffHandStack().getItem() instanceof SimpleEnergyItemTiered)) {
+			if(!end && !pl.getWorld().isClient) {
+				if(pl.getMainHandStack().getItem() instanceof ICustomPoseWeapon wep) {
+					if(wep.shouldRemoveOffHand() && !pl.getOffHandStack().isEmpty() && !(pl.getOffHandStack().getItem() instanceof SimpleEnergyItemTiered)) {
 						var st = pl.getOffHandStack().copyAndEmpty();
-						if (!pl.giveItemStack(st))
-							pl.dropStack(st);
+						if(!pl.giveItemStack(st)) {pl.dropStack(st);}
 					}
 					var comp = pl.getComponent(Components.PLAYER_DATA);
-					if (!wep.customPoseId().equals(comp.getCustomPoseID()))
-						comp.setCustomPose(wep.customPoseId());
+					if(!wep.customPoseId().equals(comp.getCustomPoseID())) {comp.setCustomPose(wep.customPoseId());}
 				}
 			}
 		});
 		ServerPlayerEvents.AFTER_RESPAWN.register((old, newP, wasAlive) -> {
-			if (!wasAlive) {
-				newP.getComponent(Components.PLAYER_DATA).healthManager.onRespawn();
-			}
+			newP.getComponent(Components.PLAYER_DATA).healthManager.onRespawn(wasAlive);
 		});
 	}
 }

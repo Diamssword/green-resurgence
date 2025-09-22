@@ -128,6 +128,7 @@ public class MBlocks implements BlockRegistryContainer {
 	@ModelGen
 	@NoDrop
 	public static final ArmorTinkererBlock ARMOR_TINKERER = new ArmorTinkererBlock(AbstractBlock.Settings.create().nonOpaque().strength(1, 100).suffocates(Blocks::never));
+	public static final EquipmentTinkererBlock EQUIPMENT_TINKERER = new EquipmentTinkererBlock(AbstractBlock.Settings.create().nonOpaque().strength(1, 100).suffocates(Blocks::never));
 	@ModelGen
 	public static final CrumbelingBlock CRUMBELING_BLOCK = new CrumbelingBlock(AbstractBlock.Settings.create().nonOpaque().dropsNothing().strength(99999, 99999).suffocates(Blocks::never));
 
@@ -137,22 +138,22 @@ public class MBlocks implements BlockRegistryContainer {
 
 	@Override
 	public void postProcessField(String namespace, Block value, String identifier, Field field) {
-		if (value instanceof ModBlockEntity<?> be) {
+		if(value instanceof ModBlockEntity<?> be) {
 			MBlockEntities.addToRegister(be);
 		}
 		// preserve normal traversal behaviour
-		if (field.isAnnotationPresent(NoItemGroup.class)) return;
+		if(field.isAnnotationPresent(NoItemGroup.class)) return;
 		Item i;
-		if (field.isAnnotationPresent(DiamsGroup.class))
+		if(field.isAnnotationPresent(DiamsGroup.class))
 			i = new BlockItem(value, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(1));
 		else
 			i = new BlockItem(value, new OwoItemSettings().group(MItems.GROUP));
-		if (field.isAnnotationPresent(ModelGen.class)) {
+		if(field.isAnnotationPresent(ModelGen.class)) {
 			ModelGenerator.blockItems.put(new Identifier(namespace, identifier), i);
 		}
 		Registry.register(Registries.ITEM, new Identifier(namespace, identifier), i);
-		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-			if (!field.isAnnotationPresent(NoDrop.class))
+		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
+			if(!field.isAnnotationPresent(NoDrop.class))
 				BlockLootGenerator.blocks.add(value);
 		}
 	}

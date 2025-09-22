@@ -31,6 +31,7 @@ public class Containers implements ContainerRegistryContainer {
 	public static final ScreenHandlerType<BaseStorageBlock.ScreenHandler> FAC_CHEST = build(BaseStorageBlock.ScreenHandler::new);
 	public static final ScreenHandlerType<GenericContainer> GENERIC_CONTAINER = build(GenericContainer::new);
 	public static final ScreenHandlerType<VanillaPlayerInvMokup> PLAYER = build(VanillaPlayerInvMokup::new);
+	public static final ScreenHandlerType<EquipmentScreenHandler> EQUIPMENT_TINKERER = build(EquipmentScreenHandler::new);
 
 	private static <T extends ScreenHandler> ScreenHandlerType<T> build(ScreenHandlerType.Factory<T> factory) {
 		return new ScreenHandlerType<T>(factory, FeatureFlags.VANILLA_FEATURES);

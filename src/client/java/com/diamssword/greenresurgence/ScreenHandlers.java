@@ -1,6 +1,9 @@
-package com.diamssword.greenresurgence.gui;
+package com.diamssword.greenresurgence;
 
 import com.diamssword.greenresurgence.containers.Containers;
+import com.diamssword.greenresurgence.gui.BlockVariantScreen;
+import com.diamssword.greenresurgence.gui.ItemBlockGui;
+import com.diamssword.greenresurgence.gui.ItemBlockGuiSimple;
 import com.diamssword.greenresurgence.gui.playerContainers.*;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 
@@ -18,6 +21,7 @@ public class ScreenHandlers {
 		HandledScreens.register(Containers.GENERIC_CONTAINER, GenericContainerGui::new);
 		HandledScreens.register(Containers.PLAYER, PlayerInventoryGui::new);
 		HandledScreens.register(Containers.ARMOR_TINKERER, ArmorTinkererContainerGui::new);
+		HandledScreens.register(Containers.EQUIPMENT_TINKERER, EquipmentTinkererContainerGui::new);
 
 	}
 }

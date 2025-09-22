@@ -1,6 +1,5 @@
-package com.diamssword.greenresurgence.containers;
+package com.diamssword.greenresurgence.containers.grids;
 
-import com.diamssword.greenresurgence.containers.grids.ContainerArmorGrid;
 import com.diamssword.greenresurgence.containers.player.grids.ArmorGrid;
 import com.diamssword.greenresurgence.containers.player.grids.BagsGrid;
 import com.diamssword.greenresurgence.containers.player.grids.OffHandGrid;
@@ -46,7 +45,7 @@ public class GridContainerSyncer {
 		List<Integer> ls = new ArrayList<>();
 		List<String> ls1 = new ArrayList<>();
 		List<String> ls2 = new ArrayList<>();
-		for (IGridContainer container : containers) {
+		for(IGridContainer container : containers) {
 			ls1.add(container.getName());
 
 			ls2.add(serializers.getOrDefault(container.getClass(), "basic"));
@@ -56,7 +55,7 @@ public class GridContainerSyncer {
 		names = ls1.toArray(new String[0]);
 		serializingId = ls2.toArray(new String[0]);
 		sizes = new int[ls.size()];
-		for (int i = 0; i < ls.size(); i++) {
+		for(int i = 0; i < ls.size(); i++) {
 			sizes[i] = ls.get(i);
 		}
 	}
@@ -70,27 +69,23 @@ public class GridContainerSyncer {
 
 	public IGridContainer[] getContainers() {
 		IGridContainer[] res = new IGridContainer[count];
-		for (int i = 0; i < count; i++) {
+		for(int i = 0; i < count; i++) {
 			var fac = factories.get(serializingId[i]);
 
-			if (fac != null)
-				res[i] = fac.accept(names[i], sizes[i * 2], sizes[(i * 2) + 1]);
-			else
-				res[i] = new GridContainer(names[i], sizes[i * 2], sizes[(i * 2) + 1]);
+			if(fac != null) {res[i] = fac.accept(names[i], sizes[i * 2], sizes[(i * 2) + 1]);} else {res[i] = new GridContainer(names[i], sizes[i * 2], sizes[(i * 2) + 1]);}
 		}
 		return res;
 	}
 
 	public static void serializer(PacketByteBuf write, GridContainerSyncer val) {
-		if (val.inventoryPos == null)
-			val.inventoryPos = BlockPos.ORIGIN;
+		if(val.inventoryPos == null) {val.inventoryPos = BlockPos.ORIGIN;}
 		write.writeInt(val.count);
 		write.writeBlockPos(val.inventoryPos);
 		write.writeIntArray(val.sizes);
-		for (String name : val.names) {
+		for(String name : val.names) {
 			write.writeString(name);
 		}
-		for (String serial : val.serializingId) {
+		for(String serial : val.serializingId) {
 			write.writeString(serial);
 		}
 	}
@@ -101,11 +96,11 @@ public class GridContainerSyncer {
 		p.inventoryPos = read.readBlockPos();
 		p.sizes = read.readIntArray();
 		p.names = new String[p.count];
-		for (int i = 0; i < p.count; i++) {
+		for(int i = 0; i < p.count; i++) {
 			p.names[i] = read.readString();
 		}
 		p.serializingId = new String[p.count];
-		for (int i = 0; i < p.count; i++) {
+		for(int i = 0; i < p.count; i++) {
 			p.serializingId[i] = read.readString();
 		}
 		return p;

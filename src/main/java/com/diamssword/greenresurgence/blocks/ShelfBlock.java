@@ -5,7 +5,7 @@ import com.diamssword.greenresurgence.blockEntities.LootableShelfEntity;
 import com.diamssword.greenresurgence.blockEntities.ModBlockEntity;
 import com.diamssword.greenresurgence.containers.Containers;
 import com.diamssword.greenresurgence.containers.CreativeMultiInvScreenHandler;
-import com.diamssword.greenresurgence.containers.IGridContainer;
+import com.diamssword.greenresurgence.containers.grids.IGridContainer;
 import net.minecraft.block.*;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
@@ -73,8 +73,8 @@ public class ShelfBlock extends ModBlockEntity<LootableShelfEntity> implements W
 	@Override
 	public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
 		NbtCompound nbtCompound = BlockItem.getBlockEntityNbt(stack);
-		if (nbtCompound != null) {
-			if (nbtCompound.contains("item")) {
+		if(nbtCompound != null) {
+			if(nbtCompound.contains("item")) {
 				var item = ItemStack.fromNbt(nbtCompound.getCompound("item"));
 				tooltip.add(Text.literal("Item: ").append(item.getName()));
 			}
@@ -85,8 +85,7 @@ public class ShelfBlock extends ModBlockEntity<LootableShelfEntity> implements W
 	@Override
 	@Deprecated
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		if (fullHitbox)
-			return super.getOutlineShape(state, world, pos, context);
+		if(fullHitbox) {return super.getOutlineShape(state, world, pos, context);}
 		return SHAPES[state.get(FACING).getId() - 2];
 	}
 
@@ -96,7 +95,7 @@ public class ShelfBlock extends ModBlockEntity<LootableShelfEntity> implements W
 		var bst = ctx.getWorld().getBlockState(ctx.getBlockPos().down());
 
 		var st = this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER).with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
-		if (hasBottomLogic()) {
+		if(hasBottomLogic()) {
 			var bot = bst.isSideSolid(ctx.getWorld(), ctx.getBlockPos().down(), Direction.UP, SideShapeType.FULL) && bst.getBlock() != this;
 			st = st.with(BOTTOM, bot);
 		}
@@ -105,18 +104,15 @@ public class ShelfBlock extends ModBlockEntity<LootableShelfEntity> implements W
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		if (hasBottomLogic())
-			builder.add(FACING, BOTTOM, WATERLOGGED);
-		else
-			builder.add(FACING, WATERLOGGED);
+		if(hasBottomLogic()) {builder.add(FACING, BOTTOM, WATERLOGGED);} else {builder.add(FACING, WATERLOGGED);}
 	}
 
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-		if (state.get(WATERLOGGED)) {
+		if(state.get(WATERLOGGED)) {
 			world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
-		if (hasBottomLogic() && direction == Direction.DOWN) {
+		if(hasBottomLogic() && direction == Direction.DOWN) {
 			var bot = neighborState.isSideSolid(world, pos.down(), Direction.UP, SideShapeType.FULL) && neighborState.getBlock() != this;
 			return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos).with(BOTTOM, bot);
 		}
@@ -125,7 +121,7 @@ public class ShelfBlock extends ModBlockEntity<LootableShelfEntity> implements W
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		if (state.get(WATERLOGGED)) {
+		if(state.get(WATERLOGGED)) {
 			return Fluids.WATER.getStill(false);
 		}
 		return super.getFluidState(state);
@@ -142,7 +138,7 @@ public class ShelfBlock extends ModBlockEntity<LootableShelfEntity> implements W
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!world.isClient && player.isCreative()) {
+		if(!world.isClient && player.isCreative()) {
 			Containers.createHandler(player, pos, (sync, inv, p1) -> new ShelfBlock.ScreenHandler(sync, p1, ShelfBlock.this.getBlockEntity(pos, world).getContainer()));
 			return ActionResult.SUCCESS;
 		}

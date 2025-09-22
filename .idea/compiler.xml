@@ -5,9 +5,9 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <option name="defaultObfuscationEnv" value="named:intermediary" />
-        <option name="inMapFileNamedIntermediary" value="C:\Users\Diamssword\.gradle\caches\fabric-loom\1.20.1\net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2\mappings.tiny" />
-        <option name="outMapFileNamedIntermediary" value="D:\Git\green-resurgence\build\loom-cache\mixin-map-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2.client.tiny" />
-        <option name="outRefMapFile" value="D:\Git\green-resurgence\build\classes\java\client\client-green_resurgence-refmap.json" />
+        <option name="inMapFileNamedIntermediary" value="$USER_HOME$/.gradle/caches/fabric-loom/1.20.1/net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2/mappings.tiny" />
+        <option name="outMapFileNamedIntermediary" value="$PROJECT_DIR$/build/loom-cache/mixin-map-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2.client.tiny" />
+        <option name="outRefMapFile" value="$PROJECT_DIR$/build/classes/java/client/client-green_resurgence-refmap.json" />
         <option name="quiet" value="true" />
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.wispforest/owo-lib/0.11.2+1.20/ed18ebb847ad7cdd19a4d66d2ea473202ca5a6fb/owo-lib-0.11.2+1.20.jar" />
@@ -61,9 +61,9 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <option name="defaultObfuscationEnv" value="named:intermediary" />
-        <option name="inMapFileNamedIntermediary" value="C:\Users\Diamssword\.gradle\caches\fabric-loom\1.20.1\net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2\mappings.tiny" />
-        <option name="outMapFileNamedIntermediary" value="D:\Git\green-resurgence\build\loom-cache\mixin-map-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2.main.tiny" />
-        <option name="outRefMapFile" value="D:\Git\green-resurgence\build\classes\java\main\green_resurgence-refmap.json" />
+        <option name="inMapFileNamedIntermediary" value="$USER_HOME$/.gradle/caches/fabric-loom/1.20.1/net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2/mappings.tiny" />
+        <option name="outMapFileNamedIntermediary" value="$PROJECT_DIR$/build/loom-cache/mixin-map-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2.main.tiny" />
+        <option name="outRefMapFile" value="$PROJECT_DIR$/build/classes/java/main/green_resurgence-refmap.json" />
         <option name="quiet" value="true" />
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.wispforest/owo-lib/0.11.2+1.20/ed18ebb847ad7cdd19a4d66d2ea473202ca5a6fb/owo-lib-0.11.2+1.20.jar" />
@@ -116,5 +116,12 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-AoutRefMapFile=$PROJECT_DIR$/build/classes/java/client/client-green_resurgence-refmap.json -AdefaultObfuscationEnv=named:intermediary -Aquiet=true -AoutMapFileNamedIntermediary=$PROJECT_DIR$/build/loom-cache/mixin-map-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2.client.tiny -AinMapFileNamedIntermediary=$USER_HOME$/.gradle/caches/fabric-loom/1.20.1/net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2/mappings.tiny" />
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="green-resurgence.main" options="-AoutRefMapFile=$PROJECT_DIR$/build/classes/java/main/green_resurgence-refmap.json -AdefaultObfuscationEnv=named:intermediary -Aquiet=true -AoutMapFileNamedIntermediary=$PROJECT_DIR$/build/loom-cache/mixin-map-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2.main.tiny -AinMapFileNamedIntermediary=$USER_HOME$/.gradle/caches/fabric-loom/1.20.1/net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2/mappings.tiny" />
+      <module name="green-resurgence.test" options="-AoutRefMapFile=$PROJECT_DIR$/build/classes/java/test/test-green_resurgence-refmap.json -AdefaultObfuscationEnv=named:intermediary -Aquiet=true -AoutMapFileNamedIntermediary=$PROJECT_DIR$/build/loom-cache/mixin-map-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2.test.tiny -AinMapFileNamedIntermediary=$USER_HOME$/.gradle/caches/fabric-loom/1.20.1/net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2/mappings.tiny" />
+    </option>
   </component>
 </project>

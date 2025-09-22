@@ -32,6 +32,7 @@ public class ComponentsRegister {
 		UIParsing.registerFactory("button-layout", ClickableLayoutComponent::parse);
 		UIParsing.registerFactory("search-box", (e) -> new SearchBoxComponent(Sizing.content()));
 		UIParsing.registerFactory("freerowgrid", FreeRowGridLayout::parse);
+		UIParsing.registerFactory("bentity", BetterEntityComponent::parse);
 
 
 	}

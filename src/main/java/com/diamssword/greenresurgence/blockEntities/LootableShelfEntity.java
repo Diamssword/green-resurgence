@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.blockEntities;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.containers.GridContainer;
+import com.diamssword.greenresurgence.containers.grids.GridContainer;
 import com.diamssword.greenresurgence.systems.lootables.IAdvancedLootableBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -51,16 +51,14 @@ public class LootableShelfEntity extends BlockEntity implements IAdvancedLootabl
 	}
 
 	public void lootBlock(PlayerEntity pl) {
-		if (!isOff) {
+		if(!isOff) {
 			var st = getItem().copy();
-			if (selectedCount == 0)
-				selectedCount = (int) (1 + (Math.random() * st.getCount()));
+			if(selectedCount == 0) {selectedCount = (int) (1 + (Math.random() * st.getCount()));}
 			st.setCount(selectedCount);
 			this.isOff = true;
 			this.lastBreak = System.currentTimeMillis();
 
-			if (!pl.giveItemStack(st))
-				pl.dropStack(st);
+			if(!pl.giveItemStack(st)) {pl.dropStack(st);}
 			getWorld().playSound(null, this.pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3f, 0.5f + (float) Math.random());
 			this.saveAndUpdate();
 		}
@@ -79,20 +77,18 @@ public class LootableShelfEntity extends BlockEntity implements IAdvancedLootabl
 
 	protected void saveAndUpdate() {
 		this.markDirty();
-		if (this.world instanceof ServerWorld sw)
-			sw.getChunkManager().markForUpdate(pos);
+		if(this.world instanceof ServerWorld sw) {sw.getChunkManager().markForUpdate(pos);}
 	}
 
 	public static <T extends BlockEntity> void tick(World world, BlockPos pos, BlockState blockState, LootableShelfEntity t) {
-		if (world.getTime() % 100 == 0 && t.isOff && !world.isClient) {
-			if (System.currentTimeMillis() > t.lastBreak + GreenResurgence.CONFIG.serverOptions.cooldowns.respawnShelvesLootInSec() * 1000L) {
+		if(world.getTime() % 100 == 0 && t.isOff && !world.isClient) {
+			if(System.currentTimeMillis() > t.lastBreak + GreenResurgence.CONFIG.serverOptions.cooldowns.respawnShelvesLootInSec() * 1000L) {
 
 				t.isOff = false;
-				for (int i = 0; i < 100; i++) {
+				for(int i = 0; i < 100; i++) {
 					t.selectedIndex = t.selectASlot();
 					t.selectedCount = (int) (1 + (Math.random() * t.items.get(t.selectedIndex).getCount()));
-					if (!t.getItem().isEmpty())
-						break;
+					if(!t.getItem().isEmpty()) {break;}
 				}
 				t.saveAndUpdate();
 			}
@@ -102,12 +98,10 @@ public class LootableShelfEntity extends BlockEntity implements IAdvancedLootabl
 
 	private int selectASlot() {
 		var ls = new ArrayList<Integer>();
-		for (int i = 0; i < items.size(); i++) {
-			if (!items.get(i).isEmpty())
-				ls.add(i);
+		for(int i = 0; i < items.size(); i++) {
+			if(!items.get(i).isEmpty()) {ls.add(i);}
 		}
-		if (ls.isEmpty())
-			return -1;
+		if(ls.isEmpty()) {return -1;}
 		return ls.get((int) (Math.random() * ls.size()));
 	}
 
@@ -118,20 +112,18 @@ public class LootableShelfEntity extends BlockEntity implements IAdvancedLootabl
 		selectedIndex = Math.min(nbt.getInt("selected"), items.size());
 		selectedCount = nbt.getInt("selectedCount");
 		isOff = nbt.getBoolean("isOff");
-		if (selectedIndex < 0 || getItem().isEmpty())
-			selectedIndex = selectASlot();
+		if(selectedIndex < 0 || getItem().isEmpty()) {selectedIndex = selectASlot();}
 	}
 
 	public ItemStack getItem() {
-		if (this.isOff || selectedIndex < 0 || selectedIndex >= this.items.size())
-			return ItemStack.EMPTY;
+		if(this.isOff || selectedIndex < 0 || selectedIndex >= this.items.size()) {return ItemStack.EMPTY;}
 		return this.items.get(selectedIndex).copyWithCount(selectedCount);
 	}
 
 	public GridContainer getContainer() {
 		SimpleInventory inv = new SimpleInventory(this.items.toArray(new ItemStack[0]));
 		inv.addListener((c) -> {
-			for (int i = 0; i < c.size(); i++) {
+			for(int i = 0; i < c.size(); i++) {
 				this.items.set(i, c.getStack(i));
 				this.selectedCount = (int) (1 + (Math.random() * getItem().getCount()));
 			}

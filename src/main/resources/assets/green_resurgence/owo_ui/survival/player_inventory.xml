@@ -8,32 +8,36 @@
                         <flow-layout direction="vertical" id="subPanelButtons">
                             <children>
                             </children>
-                            <sizing><horizontal method="fill">10</horizontal></sizing>
+                            <sizing>
+                                <horizontal method="fill">10</horizontal>
+                            </sizing>
                         </flow-layout>
                         <flow-layout direction="vertical" id="layoutSubPanels">
                             <children>
                                 <subscreen id="subpanels" source="survival/empty">
-                                <sizing>
-                                    <vertical method="fill">100</vertical>
-                                    <horizontal method="fill">100</horizontal>
-                                </sizing>
-                              </subscreen>
+                                    <sizing>
+                                        <vertical method="fill">100</vertical>
+                                        <horizontal method="fill">100</horizontal>
+                                    </sizing>
+                                </subscreen>
                             </children>
                             <sizing>
-                            <vertical method="fill">100</vertical>
-                            <horizontal method="fill">90</horizontal>
-                        </sizing>
+                                <vertical method="fill">100</vertical>
+                                <horizontal method="fill">90</horizontal>
+                            </sizing>
                         </flow-layout>
                     </children>
-                     <sizing>
+                    <sizing>
                         <vertical method="fill">80</vertical>
                         <horizontal method="fill">30</horizontal>
                     </sizing>
                     <positioning type="relative">0,50</positioning>
                 </flow-layout>
-                <flow-layout direction="horizontal">
+                <flow-layout direction="horizontal" id="blank_space">
                     <children/>
-                    <sizing><horizontal method="fill">30</horizontal></sizing>
+                    <sizing>
+                        <horizontal method="fill">30</horizontal>
+                    </sizing>
                 </flow-layout>
 
                 <flow-layout direction="horizontal" id="flow1"> <!---->
@@ -115,7 +119,7 @@
                 <subscreen id="subcontainer" source="survival/player_craft">
                     <sizing>
                         <vertical method="fill">100</vertical>
-                        <horizontal method="fill">30</horizontal>
+                        <horizontal method="fill">50</horizontal>
                     </sizing>
                 </subscreen>
             </children>

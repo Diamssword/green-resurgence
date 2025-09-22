@@ -26,9 +26,9 @@ public class HealthManager {
 	}
 
 	private void speedLogic() {
-		if (player.isSprinting()) {
+		if(player.isSprinting()) {
 			this.energyTickTimer = 0;
-			if (this.energyAmount > 0 && !energyBurnout) {
+			if(this.energyAmount > 0 && !energyBurnout) {
 				energyAmount = Math.max(energyAmount - 1f, 0);
 				markDirty();
 			} else {
@@ -37,16 +37,13 @@ public class HealthManager {
 			}
 		} else {
 			this.energyTickTimer++;
-			if (this.energyTickTimer >= 5) {
+			if(this.energyTickTimer >= 5) {
 				double f = 5.0 * getEnergyRateAmount();
 				var old = this.energyAmount;
-				if (player.isSneaking())
-					f = f * 1.5;
+				if(player.isSneaking()) {f = f * 1.5;}
 				this.energyAmount = Math.min(energyAmount + f, getMaxEnergyAmount());
-				if (energyBurnout && energyAmount / getMaxEnergyAmount() >= 0.1)
-					energyBurnout = false;
-				if (old != this.energyAmount)
-					markDirty();
+				if(energyBurnout && energyAmount / getMaxEnergyAmount() >= 0.1) {energyBurnout = false;}
+				if(old != this.energyAmount) {markDirty();}
 				this.energyTickTimer = 0;
 			}
 		}
@@ -57,51 +54,48 @@ public class HealthManager {
 	}
 
 	private void markDirty() {
-		if (refreshTicks < 0)
-			refreshTicks = 20;
+		if(refreshTicks < 0) {refreshTicks = 20;}
 	}
 
 	public void update() {
 		boolean bl = player.getWorld().getGameRules().getBoolean(GameRules.NATURAL_REGENERATION);
-		if (bl) {
+		if(bl) {
 			this.shieldTickTimer++;
-			if (this.shieldTickTimer >= 10) {
+			if(this.shieldTickTimer >= 10) {
 				float f = Math.min(this.shieldHealAmount, 6.0F);
 				var old = shieldAmount;
 				healShield(f / 6.0F);
-				if (old != shieldAmount)
-					markDirty();
+				if(old != shieldAmount) {markDirty();}
 				this.shieldTickTimer = 0;
 			}
 		} else {
 			this.shieldTickTimer = 0;
 		}
 		speedLogic();
-		if (refreshTicks > -1)
-			refreshTicks--;
-		if (refreshTicks == 0 && !player.getWorld().isClient)
-			PlayerData.syncHUD(player);
+		if(refreshTicks > -1) {refreshTicks--;}
+		if(refreshTicks == 0 && !player.getWorld().isClient) {PlayerData.syncHUD(player);}
 
 
 	}
 
-	public void onRespawn() {
+	public void onRespawn(boolean wasAlive) {
+
 		player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(50);
-		player.setHealth(player.getMaxHealth());
 		player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addPersistentModifier(new EntityAttributeModifier(AttributeModifiers.BASE_SPEED_ID, GreenResurgence.ID + ".base_speed_modifier", 0.2, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-		this.energyAmount = this.getMaxEnergyAmount();
-		this.shieldAmount = this.getMaxShieldAmount();
+		if(!wasAlive) {
+			player.setHealth(player.getMaxHealth());
+			this.energyAmount = this.getMaxEnergyAmount();
+			this.shieldAmount = this.getMaxShieldAmount();
+		}
 	}
 
 	public double attackShield(double amount, PlayerEntity owner) {
-		if (owner.getWorld().isClient)
-			return 0;
+		if(owner.getWorld().isClient) {return 0;}
 		var m = this.shieldAmount - amount;
 		this.shieldAmount = Math.max(m, 0);
 		this.shieldTickTimer = 0;
 		PlayerData.syncHUD(owner);
-		if (m < 0)
-			return m;
+		if(m < 0) {return m;}
 		return 0;
 	}
 
