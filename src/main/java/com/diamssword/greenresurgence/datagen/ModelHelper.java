@@ -429,6 +429,16 @@ public class ModelHelper {
 		return new SchematicBlockStateSupplier(b, schemName, m);
 	}
 
+	public static BlockStateVariantMap createBottomDefaultRotationStates() {
+		return BlockStateVariantMap.create(Properties.FACING)
+				.register(Direction.DOWN, BlockStateVariant.create())
+				.register(Direction.UP, BlockStateVariant.create().put(VariantSettings.X, VariantSettings.Rotation.R180))
+				.register(Direction.NORTH, BlockStateVariant.create().put(VariantSettings.X, VariantSettings.Rotation.R270))
+				.register(Direction.SOUTH, BlockStateVariant.create().put(VariantSettings.X, VariantSettings.Rotation.R90))
+				.register(Direction.WEST, BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R90).put(VariantSettings.X, VariantSettings.Rotation.R90))
+				.register(Direction.EAST, BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R90).put(VariantSettings.X, VariantSettings.Rotation.R270));
+	}
+
 	public SchematicBlockStateSupplier alterSchematic(Block b, String schemName, Map<String, String> keys) {
 		return new SchematicBlockStateSupplier(b, schemName, keys);
 	}

@@ -13,4 +13,6 @@ public interface IEquipmentDef {
 
 	String[] getSlots();
 
+	String[] getRequiredSlots();
+
 }

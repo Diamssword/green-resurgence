@@ -41,8 +41,7 @@ public class GreenResurgenceClient implements ClientModInitializer {
 		ModelLoadingPlugin.register(pluginContext -> {
 			EquipmentSkins.skins.values().forEach(v -> {
 				v.values().forEach(c -> {
-					if(!c.isGecko)
-						pluginContext.addModels(new ModelIdentifier(c.model, "inventory"));
+					pluginContext.addModels(new ModelIdentifier(c.getVanillaPath(), "inventory"));
 				});
 			});
 			pluginContext.addModels(new ModelIdentifier(GeckoToolEquipmentRenderer.BP_BG, "inventory"));

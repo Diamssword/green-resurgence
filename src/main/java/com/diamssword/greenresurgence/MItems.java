@@ -16,10 +16,16 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
 public class MItems implements ItemRegistryContainer {
-	public static final OwoItemGroup GROUP = OwoItemGroup.builder(new Identifier(GreenResurgence.ID, "item_group"), () -> Icon.of(new ItemStack(Registries.ITEM.get(new Identifier(GreenResurgence.ID, "tools/iron_pipe_axe")))))
+	public static final OwoItemGroup GROUP = OwoItemGroup.builder(new Identifier(GreenResurgence.ID, "item_group"), () -> {
+				var st = new ItemStack(Registries.ITEM.get(new Identifier(GreenResurgence.ID, "equipments/skin_modifier")));
+				st.getOrCreateNbt().putString("skin", "iron_pipe");
+				return Icon.of(st);
+			})
 			.initializer((group) -> {
 				group.addTab(Icon.of(new ItemStack(Registries.ITEM.get(new Identifier(GreenResurgence.ID, "item_block")))), "base", null, true);
-				group.addTab(Icon.of(new ItemStack(Registries.ITEM.get(new Identifier(GreenResurgence.ID, "tools/iron_pipe_axe")))), "weapons", null, false);
+				var st = new ItemStack(Registries.ITEM.get(new Identifier(GreenResurgence.ID, "equipments/skin_modifier")));
+				st.getOrCreateNbt().putString("skin", "iron_pipe");
+				group.addTab(Icon.of(st), "weapons", null, false);
 				group.addTab(Icon.of(new ItemStack(Registries.ITEM.get(new Identifier(GreenResurgence.ID, "container_placer")))), "placer", null, false);
 				group.addTab(Icon.of(GreenResurgence.asRessource("textures/item/materials/wood_furniture.png"), 0, 0, 16, 16), "materials", null, false);
 			}).build();

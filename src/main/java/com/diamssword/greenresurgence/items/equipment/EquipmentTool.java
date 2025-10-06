@@ -2,35 +2,51 @@ package com.diamssword.greenresurgence.items.equipment;
 
 import com.diamssword.greenresurgence.MItems;
 import com.diamssword.greenresurgence.items.StackBasedGeckoItem;
-import com.diamssword.greenresurgence.systems.equipement.AdvEquipmentSlot;
-import com.diamssword.greenresurgence.systems.equipement.IEquipementItem;
-import com.diamssword.greenresurgence.systems.equipement.IUpgradableEquipment;
-import com.diamssword.greenresurgence.systems.equipement.StackBasedEquipment;
+import com.diamssword.greenresurgence.systems.equipement.*;
 import com.google.common.collect.Multimap;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.fabricmc.fabric.api.item.v1.FabricItem;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stat.Stats;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class EquipmentTool extends StackBasedGeckoItem implements FabricItem, IEquipementItem {
+import java.util.function.BiConsumer;
+
+public abstract class EquipmentTool extends StackBasedGeckoItem implements FabricItem, IEquipementItem {
 
 	public final String category;
 	public final String subCategory;
+	private static final BiConsumer<Item, ItemGroup.Entries> generator = (i, e) -> {
+
+		var st = new ItemStack(i, 1);
+		var skin = EquipmentSkins.getDefault(i);
+		skin.ifPresent(s -> st.getOrCreateNbt().putString("skin", s));
+		e.add(st);
+	};
 
 	public EquipmentTool(String category, String subCategory) {
-		super(new OwoItemSettings().maxCount(1).group(MItems.GROUP).tab(1), false);
+		super(new OwoItemSettings().maxCount(1).group(MItems.GROUP).tab(1).stackGenerator(generator));
 		this.category = category;
 		this.subCategory = subCategory;
+	}
+
+	@Override
+	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+		super.inventoryTick(stack, world, entity, slot, selected);
+		this.getEquipment(stack).onTick(entity);
+
 	}
 
 	@Override
@@ -41,6 +57,8 @@ public class EquipmentTool extends StackBasedGeckoItem implements FabricItem, IE
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		var equipment = getEquipmentStack(stack);
+		if(attacker instanceof PlayerEntity pl)
+			equipment.onInteraction(pl, AdvEquipmentSlot.MAINHAND, IEquipmentUpgrade.InteractType.ATTACK, new EntityHitResult(target));
 		var broken = equipment.onToolDamage(attacker, AdvEquipmentSlot.MAINHAND);
 		if(broken) {
 			attacker.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND);
@@ -62,23 +80,15 @@ public class EquipmentTool extends StackBasedGeckoItem implements FabricItem, IE
 		return true;
 	}
 
-	/*
-		@Override
-		public Text getName(ItemStack stack) {
-			String skin = "Empty";
-			if(stack.hasNbt()) {
-				skin = getEquipment(stack).getSkin();
-			}
-			return Text.translatable(this.getTranslationKey(stack), skin);
-		}
-	*/
+	public abstract IEquipmentUpgrade[] getBaseUpgrades();
+
 	@Override
 	public IUpgradableEquipment getEquipment(ItemStack stack) {
-		return new StackBasedEquipment(category, subCategory, stack);
+		return new StackBasedEquipment(category, subCategory, stack).setBaseToolUpgrades(getBaseUpgrades());
 	}
 
 	public StackBasedEquipment getEquipmentStack(ItemStack stack) {
-		return new StackBasedEquipment(category, subCategory, stack);
+		return (StackBasedEquipment) getEquipment(stack);
 	}
 
 	@Override

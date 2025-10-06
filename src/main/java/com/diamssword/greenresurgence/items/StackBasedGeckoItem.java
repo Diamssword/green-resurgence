@@ -14,16 +14,18 @@ public class StackBasedGeckoItem extends Item implements GeoItem {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	public static Function<Boolean, Object> ProviderFunction;
 	private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
-	private final boolean emissive;
 
-	public StackBasedGeckoItem(Settings settings, boolean emissive) {
+	public StackBasedGeckoItem(Settings settings) {
 		super(settings);
-		this.emissive = emissive;
+	}
+
+	public boolean isEmissive() {
+		return false;
 	}
 
 	@Override
 	public void createRenderer(Consumer<Object> consumer) {
-		consumer.accept(ProviderFunction.apply(emissive));
+		consumer.accept(ProviderFunction.apply(isEmissive()));
 	}
 
 	@Override

@@ -1,0 +1,54 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"powered": {
+			"animation_length": 1,
+			"bones": {
+				"Lame Alum": {
+					"scale": {
+						"vector": [1, 1, 1]
+					}
+				},
+				"Lame_Etein": {
+					"scale": {
+						"vector": [0, 0, 0]
+					}
+				}
+			},
+			"particle_effects": {
+				"0.0": {
+					"effect": "green_ressurgence:flame_weapon"
+				},
+				"0.2917": {
+					"effect": "green_ressurgence:flame_weapon"
+				},
+				"0.375": {
+					"effect": "green_ressurgence:flame_weapon"
+				},
+				"0.5833": {
+					"effect": "green_ressurgence:flame_weapon"
+				},
+				"0.7083": {
+					"effect": "green_ressurgence:flame_weapon"
+				},
+				"0.8333": {
+					"effect": "green_ressurgence:flame_weapon"
+				},
+				"0.9167": {
+					"effect": "green_ressurgence:flame_weapon"
+				}
+			}
+		},
+		"idle": {
+			"animation_length": 1,
+			"bones": {
+				"Lame Alum": {
+					"scale": {
+						"vector": [0, 0, 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

@@ -17,7 +17,7 @@ public interface IUpgradableEquipment {
 
 	Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(AdvEquipmentSlot slot, @Nullable PlayerEntity player);
 
-	void onInteraction(PlayerEntity wearer, AdvEquipmentSlot slot, EquipmentUpgrade.InteractType interaction, HitResult context);
+	void onInteraction(PlayerEntity wearer, AdvEquipmentSlot slot, IEquipmentUpgrade.InteractType interaction, HitResult context);
 
 	void onTick(Entity parent);
 

@@ -1,7 +1,9 @@
 package com.diamssword.greenresurgence.items.equipment;
 
 import com.diamssword.greenresurgence.datagen.LangGenerator;
+import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentBatteryUpgrade;
 import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinItem;
+import com.diamssword.greenresurgence.materials.BatteryTiers;
 import com.diamssword.greenresurgence.systems.equipement.AdvEquipmentSlot;
 import com.diamssword.greenresurgence.systems.equipement.Equipments;
 import com.google.common.collect.ImmutableMultimap;
@@ -13,6 +15,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.HitResult;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +25,9 @@ import java.lang.reflect.Field;
 public class EquipmentItems implements ItemRegistryContainer {
 
 	public static final Item SKIN_MODIFIER = new EquipmentSkinItem();
-	public static final Item DAMAGE_MODIFIER = new EquipmentUpgradeItem("blade/*", Equipments.P_BLADE, 100, 1) {
+	public static final Item BATTERY_MODIFIER = new EquipmentBatteryUpgrade("electric/*", BatteryTiers.BATTERY);
+	public static final Item BATTERY_MODIFIER_T2 = new EquipmentBatteryUpgrade("electric/*", BatteryTiers.LIPO);
+	public static final Item DAMAGE_MODIFIER = new EquipmentUpgradeItem("blade/*,hammer/*", Equipments.P_BLADE, 100, 1) {
 		@Override
 		public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(AdvEquipmentSlot slot, @Nullable PlayerEntity player) {
 			if(slot == AdvEquipmentSlot.MAINHAND) {
@@ -38,7 +43,7 @@ public class EquipmentItems implements ItemRegistryContainer {
 		}
 
 		@Override
-		public void onTick(Entity parent) {
+		public void onTick(ItemStack stack, Entity parent) {
 
 		}
 	};
@@ -58,7 +63,7 @@ public class EquipmentItems implements ItemRegistryContainer {
 		}
 
 		@Override
-		public void onTick(Entity parent) {
+		public void onTick(ItemStack stack, Entity parent) {
 
 		}
 	};

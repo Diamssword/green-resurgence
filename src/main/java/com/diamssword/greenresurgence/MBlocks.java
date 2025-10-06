@@ -128,6 +128,7 @@ public class MBlocks implements BlockRegistryContainer {
 	@ModelGen
 	@NoDrop
 	public static final ArmorTinkererBlock ARMOR_TINKERER = new ArmorTinkererBlock(AbstractBlock.Settings.create().nonOpaque().strength(1, 100).suffocates(Blocks::never));
+	@ModelGen
 	public static final EquipmentTinkererBlock EQUIPMENT_TINKERER = new EquipmentTinkererBlock(AbstractBlock.Settings.create().nonOpaque().strength(1, 100).suffocates(Blocks::never));
 	@ModelGen
 	public static final CrumbelingBlock CRUMBELING_BLOCK = new CrumbelingBlock(AbstractBlock.Settings.create().nonOpaque().dropsNothing().strength(99999, 99999).suffocates(Blocks::never));

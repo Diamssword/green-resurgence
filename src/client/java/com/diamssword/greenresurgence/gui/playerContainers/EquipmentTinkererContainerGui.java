@@ -4,6 +4,10 @@ import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.EquipmentScreenHandler;
 import com.diamssword.greenresurgence.gui.components.BetterEntityComponent;
 import com.diamssword.greenresurgence.gui.components.InventoryComponent;
+import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinItem;
+import com.diamssword.greenresurgence.systems.equipement.EquipmentSkins;
+import com.diamssword.greenresurgence.systems.equipement.Equipments;
+import com.diamssword.greenresurgence.systems.equipement.IEquipmentBlueprint;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
@@ -30,6 +34,22 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 		super.handledScreenTick();
 		if(handler.isReady() && stackDp != null) {
 			var s = handler.getInventory("tool_slot").getInventory().getStack(0);
+			if(s.getItem() instanceof IEquipmentBlueprint bp) {
+				s = new ItemStack(bp.getEquipment().getEquipmentItem(), 1);
+				var inv = handler.getInventory("equipment_" + Equipments.P_SKIN);
+				if(inv != null) {
+					var d = inv.getInventory().getStack(0);
+					if(d.getItem() instanceof EquipmentSkinItem) {
+						var sk = EquipmentSkinItem.getSkin(d);
+						if(!sk.isEmpty())
+							s.getOrCreateNbt().putString("skin", EquipmentSkinItem.getSkin(d));
+						else
+							s.getOrCreateNbt().putString("skin", EquipmentSkins.getDefault(bp.getEquipment().getEquipmentItem()).orElse(""));
+					} else
+						s.getOrCreateNbt().putString("skin", EquipmentSkins.getDefault(bp.getEquipment().getEquipmentItem()).orElse(""));
+				}
+
+			}
 			stackDp.entity().setStack(s);
 		}
 	}

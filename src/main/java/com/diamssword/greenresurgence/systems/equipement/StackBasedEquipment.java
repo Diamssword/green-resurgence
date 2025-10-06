@@ -11,24 +11,23 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.Registries;
 import net.minecraft.stat.Stats;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class StackBasedEquipment implements IUpgradableEquipment {
 
 	private final String subcategory;
 	private final String category;
-	private final Map<String, EquipmentUpgradeItem> upgrades = new HashMap<>();
+	private final Map<String, ItemStack> content = new HashMap<>();
 	private String skin;
-	private final Map<String, Integer> durability = new HashMap<>();
-	private final ItemStack stack;
+	public final ItemStack stack;
 	private final IEquipmentDef equipment;
+	private IEquipmentUpgrade[] baseUpgrades = new EquipmentUpgradeItem[0];
 
 	public StackBasedEquipment(String category, String subcategory, ItemStack stack) {
 		this.category = category;
@@ -46,20 +45,18 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 		fromNBT(stack.getOrCreateNbt());
 	}
 
+	public StackBasedEquipment setBaseToolUpgrades(IEquipmentUpgrade[] upgrades) {
+		this.baseUpgrades = upgrades;
+		return this;
+	}
+
 	protected void fromNBT(NbtCompound tag) {
-		upgrades.clear();
+		content.clear();
 		if(tag.contains("upgrades")) {
 			var ut = tag.getCompound("upgrades");
 			for(var k : ut.getKeys()) {
 				var st = ut.getCompound(k);
-				var item = Registries.ITEM.get(new Identifier(st.getString("id")));
-				if(item instanceof EquipmentUpgradeItem up) {
-					upgrades.put(k, up);
-					if(st.contains("damage"))
-						durability.put(k, st.getInt("damage"));
-					else
-						durability.put(k, up.maxDurability());
-				}
+				content.put(k, ItemStack.fromNbt(st));
 			}
 		}
 		if(tag.contains("skin"))
@@ -67,21 +64,12 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 	}
 
 	public ItemStack getUpgradeItem(String slot) {
-		if(upgrades.containsKey(slot)) {
-			var st = new ItemStack(upgrades.get(slot), 1);
-			st.setDamage(durability.get(slot));
-			if(slot.equals(Equipments.P_SKIN)) {
-				st.getOrCreateNbt().putString("skin", skin);
-			}
-			return st;
-		}
-		return ItemStack.EMPTY;
+		return content.getOrDefault(slot, ItemStack.EMPTY);
 	}
 
 	public void setUpgrade(ItemStack upgradeItem) {
 		if(upgradeItem.getItem() instanceof EquipmentUpgradeItem up && equipment != null && up.canBeApplied(equipment, upgradeItem)) {
-			this.upgrades.put(up.slot(equipment), up);
-			this.durability.put(up.slot(equipment), upgradeItem.getDamage());
+			this.content.put(up.slot(equipment), upgradeItem);
 			if(up.slot(equipment).equals(Equipments.P_SKIN)) {
 				skin = upgradeItem.getOrCreateNbt().getString("skin");
 			}
@@ -99,10 +87,16 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 			setUpgrade(upgradeItem);
 	}
 
-	public void clearUpgrade(String slot) {
-		this.upgrades.remove(slot);
-		this.durability.remove(slot);
+	public boolean isMinimalUpgradesSet() {
+		for(String requiredSlot : this.equipment.getRequiredSlots()) {
+			if(!this.content.containsKey(requiredSlot))
+				return false;
+		}
+		return true;
+	}
 
+	public void clearUpgrade(String slot) {
+		this.content.remove(slot);
 		if(slot.equals(Equipments.P_SKIN))
 			skin = "";
 	}
@@ -110,11 +104,8 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 	public void save() {
 		var nbt = stack.getOrCreateNbt();
 		var ups = new NbtCompound();
-		upgrades.forEach((k, v) -> {
-			var up = new NbtCompound();
-			up.putString("id", Registries.ITEM.getId(v).toString());
-			up.putInt("damage", durability.get(k));
-			ups.put(k, up);
+		content.forEach((k, v) -> {
+			ups.put(k, v.writeNbt(new NbtCompound()));
 		});
 		nbt.put("upgrades", ups);
 		if(skin != null)
@@ -140,39 +131,56 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 	@Override
 	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(AdvEquipmentSlot slot, @Nullable PlayerEntity player) {
 		Multimap<EntityAttribute, EntityAttributeModifier> map = ArrayListMultimap.create();
-		upgrades.values().forEach(v -> {
-			var mod = v.getAttributeModifiers(slot, player);
-			if(mod != null) {map.putAll(mod);}
+		content.keySet().forEach(v -> {
+			var eq = getAsEquipment(v);
+			if(eq.isPresent()) {
+				var mod = eq.get().getAttributeModifiers(slot, player);
+				if(mod != null) {map.putAll(mod);}
+			}
 		});
+		for(IEquipmentUpgrade baseUpgrade : baseUpgrades) {
+			var mod = baseUpgrade.getAttributeModifiers(slot, player);
+			if(mod != null) {map.putAll(mod);}
+		}
 		return map;
 	}
 
+	protected Optional<EquipmentUpgradeItem> getAsEquipment(String slot) {
+		if(getUpgradeItem(slot).getItem() instanceof EquipmentUpgradeItem up) {
+			return Optional.of(up);
+		}
+		return Optional.empty();
+	}
+
 	@Override
-	public void onInteraction(PlayerEntity wearer, AdvEquipmentSlot slot, EquipmentUpgrade.InteractType interaction, HitResult context) {
-		upgrades.values().forEach(v -> {
-			v.onInteraction(wearer, slot, interaction, context);
+	public void onInteraction(PlayerEntity wearer, AdvEquipmentSlot slot, IEquipmentUpgrade.InteractType interaction, HitResult context) {
+		content.keySet().forEach(v -> {
+			var eq = getAsEquipment(v);
+			eq.ifPresent(equipmentUpgradeItem -> equipmentUpgradeItem.onInteraction(wearer, slot, interaction, context));
 		});
+		for(IEquipmentUpgrade baseUpgrade : baseUpgrades) {
+			baseUpgrade.onInteraction(wearer, slot, interaction, context);
+		}
 	}
 
 	public boolean onToolDamage(LivingEntity owner, AdvEquipmentSlot slot) {
-		if(upgrades.isEmpty()) return true;
-		var keys = this.upgrades.keySet().stream().filter(v -> upgrades.get(v).isDamageable());
-		var picked = Utils.selectRandomWeighted(keys.toList(), k -> this.upgrades.get(k).damageWheight());
-		var dura = this.durability.get(picked) + 1;
-		if(dura >= this.upgrades.get(picked).maxDurability()) {
-			this.durability.remove(picked);
+		if(content.isEmpty()) return true;
+		var keys = this.content.keySet().stream().filter(v -> getAsEquipment(v).map(EquipmentUpgradeItem::isDamageable).orElse(false));
+		var picked = Utils.selectRandomWeighted(keys.toList(), k -> getAsEquipment(k).map(EquipmentUpgradeItem::damageWheight).orElse(0f));
+		var dura = this.content.get(picked).getDamage() + 1;
+		if(dura >= getAsEquipment(picked).get().maxDurability()) {
 			if(owner instanceof PlayerEntity) {
-				((PlayerEntity) owner).incrementStat(Stats.BROKEN.getOrCreateStat(this.upgrades.get(picked)));
+				((PlayerEntity) owner).incrementStat(Stats.BROKEN.getOrCreateStat(getAsEquipment(picked).get()));
 			}
-			this.upgrades.remove(picked);
-			if(this.upgrades.isEmpty()) {
+			this.content.remove(picked);
+			if(this.content.isEmpty()) {
 				return true;
 			} else {
 				var vsl = slot.getParent();
 				if(vsl != null) {owner.sendEquipmentBreakStatus(vsl);}
 			}
 		} else {
-			this.durability.put(picked, dura);
+			this.content.get(picked).setDamage(dura);
 
 		}
 		return false;
@@ -180,16 +188,21 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 
 	@Override
 	public void onTick(Entity parent) {
-
+		this.content.forEach((k, v) -> {
+			getAsEquipment(k).ifPresent(v1 -> v1.onTick(stack, parent));
+		});
+		for(IEquipmentUpgrade baseUpgrade : baseUpgrades) {
+			baseUpgrade.onTick(stack, parent);
+		}
 	}
 
 	public float getDurabilityProgress() {
-		var ls = this.upgrades.keySet().stream().filter(v -> upgrades.get(v).isDamageable()).toList();
+		var ls = this.content.keySet().stream().filter(v -> getAsEquipment(v).map(EquipmentUpgradeItem::isDamageable).orElse(false)).toList();
 		var act = 0;
 		var max = 0;
 		for(var k : ls) {
-			max += this.upgrades.get(k).maxDurability();
-			act += this.durability.get(k);
+			max += getAsEquipment(k).get().maxDurability();
+			act += content.get(k).getDamage();
 		}
 		if(max == 0)
 			return 1;

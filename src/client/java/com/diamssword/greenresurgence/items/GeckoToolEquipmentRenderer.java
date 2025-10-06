@@ -1,11 +1,11 @@
 package com.diamssword.greenresurgence.items;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.items.equipment.EquipmentTool;
 import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinItem;
 import com.diamssword.greenresurgence.systems.equipement.EquipmentSkins;
 import com.diamssword.greenresurgence.systems.equipement.IEquipementItem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.render.item.ItemRenderer;
@@ -14,6 +14,7 @@ import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
@@ -24,12 +25,13 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.Animation;
 import software.bernie.geckolib.model.DefaultedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 import java.util.Optional;
 
-public final class GeckoToolEquipmentRenderer extends GeoItemRenderer<EquipmentTool> {
+public final class GeckoToolEquipmentRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer<T> {
 	private static final ItemGeoModel<GeoAnimatable> FALLBACKMODEL = new ItemGeoModel<>(GreenResurgence.asRessource("default"), true);
 	public static Identifier BP_BG = GreenResurgence.asRessource("equipments/blueprint_background");
 
@@ -41,12 +43,12 @@ public final class GeckoToolEquipmentRenderer extends GeoItemRenderer<EquipmentT
 
 	public static RenderProvider RendererProvider(boolean emissive) {
 		return new RenderProvider() {
-			private GeckoToolEquipmentRenderer renderer;
+			private GeckoToolEquipmentRenderer<?> renderer;
 
 			@Override
 			public BuiltinModelItemRenderer getCustomRenderer() {
 				if(this.renderer == null)
-					this.renderer = new GeckoToolEquipmentRenderer(emissive);
+					this.renderer = new GeckoToolEquipmentRenderer<>(emissive);
 				return this.renderer;
 			}
 		};
@@ -76,7 +78,6 @@ public final class GeckoToolEquipmentRenderer extends GeoItemRenderer<EquipmentT
 				packedOverlay,
 				bk
 		);
-
 		poseStack.pop();
 
 	}
@@ -96,13 +97,12 @@ public final class GeckoToolEquipmentRenderer extends GeoItemRenderer<EquipmentT
 				poseStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90));
 				poseStack.translate(-0, -1, 0);
 			}
-
 			renderVanillaModel(poseStack, BP_BG, stack, transformType, bufferSource, packedLight, packedOverlay, 1f);
 			if(!transformType.isFirstPerson()) {
 				var skname = sk.getSkin(stack);
 				if(!skname.isEmpty()) {
 					model = EquipmentSkins.get(skname, MinecraftClient.getInstance().world.getTime());
-					if(model.isPresent()) {
+					if(model.isPresent() && !model.get().isGecko) {
 						poseStack.push();
 						poseStack.translate(0f, 0f, 0.1f);
 						if(transformType != ModelTransformationMode.GUI) {
@@ -112,21 +112,67 @@ public final class GeckoToolEquipmentRenderer extends GeoItemRenderer<EquipmentT
 						}
 						renderSkin(poseStack, model.get(), stack, transformType == ModelTransformationMode.GUI ? ModelTransformationMode.GUI : ModelTransformationMode.FIXED, bufferSource, packedLight, packedOverlay, 0.7f);
 						poseStack.pop();
+					} else {
+						isBP = true;
+						model.ifPresent(itemSkinModelDef -> renderSkin(poseStack, itemSkinModelDef, stack, transformType, bufferSource, packedLight, packedOverlay, 0.7f));
 					}
+
 				}
 			}
-			//}
 			poseStack.pop();
 		}
 
 
 	}
 
+	private ItemGeoModel<T> model;
+	private BakedModel vanillaBaked;
+	private boolean isBP = false;
+
+	@Override
+	public GeoModel<T> getGeoModel() {
+
+		if(model != null)
+			return model;
+		return super.getGeoModel();
+	}
+
+	@Override
+	public void doPostRenderCleanup() {
+		super.doPostRenderCleanup();
+		vanillaBaked = null;
+		isBP = false;
+
+	}
+
 	private void renderSkin(MatrixStack poseStack, EquipmentSkins.ItemSkinModelDef model, ItemStack stack, ModelTransformationMode transformType, VertexConsumerProvider bufferSource, int packedLight, int packedOverlay, float scale) {
 		if(model.isGecko) {
+			this.model = new ItemGeoModel<>(model.model);
+			MinecraftClient client = MinecraftClient.getInstance();
+			BakedModelManager modelManager = client.getBakedModelManager();
+			vanillaBaked = modelManager.getModel(new ModelIdentifier(model.getVanillaPath(), "inventory"));
 			super.render(stack, transformType, poseStack, bufferSource, packedLight, packedOverlay);
 		} else {
 			renderVanillaModel(poseStack, model.model, stack, transformType, bufferSource, packedLight, packedOverlay, scale);
+		}
+	}
+
+	@Override
+	public void preRender(MatrixStack poseStack, T animatable, BakedGeoModel model, VertexConsumerProvider bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+		if(vanillaBaked != null) {
+			var l = false;
+			if(MinecraftClient.getInstance().player != null)
+				l = MinecraftClient.getInstance().player.getMainArm() == Arm.LEFT;
+			vanillaBaked.getTransformation().getTransformation(this.renderPerspective).apply(l, poseStack);
+		}
+		if(isBP) {
+			if(this.renderPerspective == ModelTransformationMode.GUI)
+				poseStack.translate(0, 0, 0.1f);
+			else {
+				poseStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-90));
+				poseStack.scale(0.5f, 0.5f, 0.5f);
+			}
 		}
 	}
 

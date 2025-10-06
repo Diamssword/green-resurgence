@@ -163,7 +163,7 @@ public class EquipmentScreenHandler extends MultiInvScreenHandler {
 
 		@Override
 		public boolean canInsert(ItemStack stack) {
-			if(stack.getItem() instanceof EquipmentUpgrade up) {
+			if(stack.getItem() instanceof IEquipmentUpgrade up) {
 				if(up.slot(equipment).equals(slot)) {
 					return up.canBeApplied(equipment, stack);
 				}

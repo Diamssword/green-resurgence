@@ -11,6 +11,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.sound.SoundEvent;
@@ -78,7 +79,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	@Inject(at = @At("HEAD"), method = "updatePose", cancellable = true)
 	protected void updatePose(CallbackInfo ci) {
 		var comp = Components.PLAYER_DATA.get(this);
-		if (comp.isForcedPose()) {
+		if(comp.isForcedPose()) {
 			this.setPose(comp.getPose());
 			ci.cancel();
 		}
@@ -87,9 +88,12 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	@Shadow
 	public abstract void increaseStat(Identifier stat, int amount);
 
+	@Shadow
+	public abstract PlayerInventory getInventory();
+
 	@Inject(at = @At("HEAD"), method = "dismountVehicle")
 	public void dismountVehicle(CallbackInfo ci) {
-		if (this.getVehicle() instanceof PlayerEntity && !this.getEntityWorld().isClient) {
+		if(this.getVehicle() instanceof PlayerEntity && !this.getEntityWorld().isClient) {
 			Channels.MAIN.serverHandle((PlayerEntity) this.getVehicle()).send(new PosesPackets.DismountedPlayerNotify(this.getUuid()));
 		}
 	}
@@ -97,8 +101,8 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;onAttacking(Lnet/minecraft/entity/Entity;)V"), method = "attack")
 	public void attack(Entity target, CallbackInfo ci) {
 		float g = (float) this.getAttributeValue(Attributes.PLAYER_KNOCKBACK);
-		if (g > 0.0F) {
-			if (target instanceof LivingEntity) {
+		if(g > 0.0F) {
+			if(target instanceof LivingEntity) {
 				((LivingEntity) target).takeKnockback(g, MathHelper.sin(this.getYaw() * (float) (Math.PI / 180.0)), -MathHelper.cos(this.getYaw() * (float) (Math.PI / 180.0)));
 				//	this.setVelocity(this.getVelocity().multiply(0.6, 1.0, 0.6));
 			} else {
@@ -109,29 +113,29 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 	@Inject(at = @At("HEAD"), method = "applyDamage", cancellable = true)
 	protected void applyDamage(DamageSource source, float amount, CallbackInfo ci) {
-		if (!this.isInvulnerableTo(source)) {
+		if(!this.isInvulnerableTo(source)) {
 			var man = this.getComponent(Components.PLAYER_DATA).healthManager;
-			if (!HealthManager.damageByPassShield(source) && man.getShieldAmount() > 0) {
+			if(!HealthManager.damageByPassShield(source) && man.getShieldAmount() > 0) {
 				amount = this.applyArmorToDamage(source, amount);
 				amount = this.modifyAppliedDamage(source, amount);
 				float var7 = Math.max(amount - this.getAbsorptionAmount(), 0.0F);
 				this.setAbsorptionAmount(this.getAbsorptionAmount() - (amount - var7));
 				float g = amount - var7;
-				if (g > 0.0F && g < 3.4028235E37F) {
+				if(g > 0.0F && g < 3.4028235E37F) {
 					this.increaseStat(Stats.DAMAGE_ABSORBED, Math.round(g * 10.0F));
 				}
 
-				if (var7 != 0.0F) {
+				if(var7 != 0.0F) {
 					// this.addExhaustion(source.getExhaustion());
 					this.getDamageTracker().onDamage(source, var7);
 					var r = man.attackShield(var7, ((PlayerEntity) (Object) this));
 					// this.setHealth(this.getHealth() - var7);
-					if (var7 < 3.4028235E37F) {
+					if(var7 < 3.4028235E37F) {
 						this.increaseStat(Stats.DAMAGE_TAKEN, Math.round(var7 * 10.0F));
 					}
 
 					this.emitGameEvent(GameEvent.ENTITY_DAMAGE);
-					if (r < 0)
+					if(r < 0)
 						this.setHealth((float) (this.getHealth() + r));
 				}
 				ci.cancel();
@@ -143,17 +147,17 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	@Inject(at = @At("HEAD"), method = "damageShield", cancellable = true)
 	protected void damageShield(float amount, CallbackInfo ci) {
 		var pl = (PlayerEntity) (Object) this;
-		if (pl.getActiveItem().getItem() instanceof ShieldItem) {
-			if (!this.getWorld().isClient) {
+		if(pl.getActiveItem().getItem() instanceof ShieldItem) {
+			if(!this.getWorld().isClient) {
 				pl.incrementStat(Stats.USED.getOrCreateStat(pl.getActiveItem().getItem()));
 			}
 
-			if (amount >= 3.0F) {
+			if(amount >= 3.0F) {
 				int i = 1 + MathHelper.floor(amount);
 				Hand hand = pl.getActiveHand();
 				pl.getActiveItem().damage(i, pl, player -> player.sendToolBreakStatus(hand));
-				if (pl.getActiveItem().isEmpty()) {
-					if (hand == Hand.MAIN_HAND) {
+				if(pl.getActiveItem().isEmpty()) {
+					if(hand == Hand.MAIN_HAND) {
 						this.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 					} else {
 						this.equipStack(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
@@ -171,11 +175,11 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 		var pl = (PlayerEntity) (Object) this;
 
 		float f = 0.25F + (float) EnchantmentHelper.getEfficiency(pl) * 0.05F;
-		if (sprinting) {
+		if(sprinting) {
 			f += 0.75F;
 		}
 
-		if (this.random.nextFloat() < f) {
+		if(this.random.nextFloat() < f) {
 			pl.getItemCooldownManager().set(pl.getActiveItem().getItem(), 100);
 			pl.clearActiveItem();
 			this.getWorld().sendEntityStatus(this, EntityStatuses.BREAK_SHIELD);
@@ -189,19 +193,19 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 		var comp = this.getComponent(Components.PLAYER_DATA);
 		var custpo = comp.getCustomPose();
-		if (custpo != null) {
+		if(custpo != null) {
 			var p = POSE_DIMENSIONS.get(pose);
 			var p1 = custpo.changeHitBox(comp.player, p);
-			if (p1 != p)
+			if(p1 != p)
 				cir.setReturnValue(p1);
 		}
 	}
 
 	@Inject(at = @At("HEAD"), method = "getActiveEyeHeight", cancellable = true)
 	public void getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> cir) {
-		if (pose == EntityPose.STANDING)
+		if(pose == EntityPose.STANDING)
 			cir.setReturnValue(dimensions.height * 0.9f);
-		else if (pose == EntityPose.CROUCHING)
+		else if(pose == EntityPose.CROUCHING)
 			cir.setReturnValue(dimensions.height * 0.85f);
 
 	}
@@ -211,4 +215,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 		Attributes.plAttributes.values().forEach(v -> cir.getReturnValue().add(v, v.getDefaultValue()));
 
 	}
+
+
 }

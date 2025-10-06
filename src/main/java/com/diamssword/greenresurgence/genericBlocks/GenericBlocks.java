@@ -25,7 +25,7 @@ public class GenericBlocks {
 	public static List<GenericBlockSet> sets = new ArrayList<>();
 	public static final OwoItemGroup GENERIC_GROUP = OwoItemGroup.builder(new Identifier(GreenResurgence.ID, "generic_group"), () -> sets.isEmpty() ? Icon.of(Items.STICK) : Icon.of(sets.get(0).displayStack()))
 			.initializer((group) -> {
-				for (GenericBlockSet set : sets) {
+				for(GenericBlockSet set : sets) {
 					group.addTab(Icon.of(set.displayStack()), set.subdomain, null, false);
 				}
 
@@ -78,7 +78,7 @@ public class GenericBlocks {
 
 	private static String[] simpleList(String pref, String suff, String... parts) {
 		var res = new ArrayList<String>();
-		for (String part : parts) {
+		for(String part : parts) {
 			res.add(pref + part + suff);
 		}
 		return res.toArray(new String[0]);
@@ -86,9 +86,9 @@ public class GenericBlocks {
 
 	private static String[] simpleList(String pref, String[] mid, String[] suffix) {
 		var res = new ArrayList<String>();
-		for (String p : mid) {
-			if (suffix != null) {
-				for (String q : suffix) {
+		for(String p : mid) {
+			if(suffix != null) {
+				for(String q : suffix) {
 
 					res.add(pref + p + q);
 				}
@@ -107,7 +107,7 @@ public class GenericBlocks {
 
 	public static String[] allColors(String suffix) {
 		String[] s = new String[16];
-		for (DyeColor value : DyeColor.values()) {
+		for(DyeColor value : DyeColor.values()) {
 			s[value.getId()] = suffix + value.getName();
 		}
 		return s;
@@ -199,6 +199,7 @@ public class GenericBlocks {
 
 		//carpet
 		diams.create("shelf_wall").addSub(BlockType.OMNI_BLOCK, ModelType.CARPET, HitBox.CARPET).disableGen(true);
+		diams.create("cardboard_bed").addSub(BlockType.OMNI_BLOCK, ModelType.CARPET_BOT_MODEL, HitBox.CARPET).disableGen(true);
 		diams.create("clock_wall_white", "paper_post_it_c", "paper_post_it_b", "paper_post_it_a").addSub(BlockType.OMNI_BLOCK, ModelType.CARPET, HitBox.CARPET).addGroup("wall_mounted").disableGen(true);
 		diams.create("polaroid").addSub(BlockType.OMNI_BLOCK, ModelType.CARPET, HitBox.CARPET).setTransparency(Transparency.TRANSPARENT).addGroup("wall_mounted");
 
@@ -233,7 +234,8 @@ public class GenericBlocks {
 		diams.create("barrier_plastic_angle").addSub(BlockType.PILLAR).setTransparency(Transparency.NOTFULL).disableGen(true);
 		//car
 		diams.create(simpleList("car/car_1/car_", new String[]{"1_"}, new String[]{"tire_protection_full", "tire_protection_broken", "sidewalk", "front_bumper_right", "front_bumper_left", "back_bumper_right", "back_bumper_left"})).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.SLAB).disableGen(true).addGroup("car_parts");
-		diams.create(simpleList("car/car_1/car_", new String[]{"1_"}, new String[]{"headlight_right", "headlight_left", "headlight_back_left", "headlight_back_right"})).addSub(BlockType.OMNI_BLOCK, ModelType.SIMPLE, HitBox.CARPET).disableGen(true).addGroup("car_parts");
+		diams.create(simpleList("car/car_1/car_", new String[]{"1_"}, new String[]{"headlight_right", "headlight_left"})).addSub(BlockType.OMNI_BLOCK, ModelType.SIMPLE, HitBox.CARPET).disableGen(true).addGroup("car_parts");
+		diams.create(simpleList("car/car_1/car_", new String[]{"1_"}, new String[]{"headlight_back_left", "headlight_back_right"})).addSub(BlockType.OMNI_BLOCK, ModelType.SIMPLE, HitBox.CARPET).notSolid().disableGen(true).addGroup("car_parts");
 		diams.create(simpleList("car/car_1/car_", new String[]{"1_"}, new String[]{"front_right_gray", "front_left_gray"})).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.STAIR).disableGen(true).setTransparency(Transparency.TRANSPARENT).addGroup("car_parts");
 		diams.create(simpleList("car/car_1/car_", new String[]{"1_"}, new String[]{"chair_small_black"})).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.CARPET_FIXED).disableGen(true).seat(CHAIR_SLAB).addGroup("car_parts");
 		diams.create(simpleList("car/car_1/car_1_front_hood_", "", "right_gray_open", "left_gray_open")).addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.SMALL_SIDE_CARPET).disableGen(true).addGroup("car_parts");
@@ -338,11 +340,11 @@ public class GenericBlocks {
 
 	public static void register() {
 		int tab = 0;
-		for (GenericBlockSet set : sets) {
+		for(GenericBlockSet set : sets) {
 			set.setTabIndex(tab);
 			tab++;
 		}
-		for (GenericBlockSet set : sets) {
+		for(GenericBlockSet set : sets) {
 			set.register();
 		}
 

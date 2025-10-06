@@ -13,6 +13,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.InventoryChangedListener;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -43,13 +44,16 @@ public class EquipmentTinkererBlockEntity extends BlockEntity {
 	protected void onToolChange(Inventory unused) {
 		if(world != null && !world.isClient) {
 			var stack = inventory.getStack(0);
+			IEquipmentDef oldEquipment = null;
+			if(currentEquipment != null)
+				oldEquipment = currentEquipment.getEquipment();
 			if(stack.getItem() instanceof IEquipmentBlueprint bp) {
 				currentEquipment = new StackBasedEquipment(bp.getEquipment(), stack);
 			} else if(stack.getItem() instanceof IEquipementItem bp) {
 				currentEquipment = new StackBasedEquipment(bp.getEquipment(stack).getEquipment(), stack);
 			} else
 				currentEquipment = null;
-			if(stack.getItem() != currentTool) {
+			if(stack.getItem() != currentTool && (currentEquipment == null || oldEquipment != currentEquipment.getEquipment())) {
 				recreateUpgradeInv();
 			} else {
 				updateContent();
@@ -59,6 +63,7 @@ public class EquipmentTinkererBlockEntity extends BlockEntity {
 	}
 
 	protected void updateContent() {
+		currentTool = inventory.getStack(0).getItem();
 		if(upgrades != null && currentEquipment != null) {
 
 			upgrades.removeListener(currentListener);
@@ -78,6 +83,18 @@ public class EquipmentTinkererBlockEntity extends BlockEntity {
 				currentEquipment.setUpgrade(inv.getStack(i), slots[i]);
 			}
 			currentEquipment.save();
+			if(currentEquipment.isMinimalUpgradesSet() && currentTool instanceof IEquipmentBlueprint bp) {
+				var nbts = currentEquipment.stack.getNbt();
+				var st = new ItemStack(bp.getEquipment().getEquipmentItem(), 1);
+				st.setNbt(nbts);
+				inventory.setStack(0, st);
+			} else if(!currentEquipment.isMinimalUpgradesSet() && currentTool instanceof IEquipementItem bp) {
+				var nbts = currentEquipment.stack.getNbt();
+				var st = new ItemStack(currentEquipment.getEquipment().getBlueprintItem(), 1);
+				st.setNbt(nbts);
+				inventory.setStack(0, st);
+			}
+
 		}
 	}
 

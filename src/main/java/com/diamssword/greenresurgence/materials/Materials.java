@@ -153,7 +153,7 @@ public class Materials {
 				.add(1, "silk", "Tissu de Soie", "Un tissu trés léger")
 				.add(2, "jute", "Carré de Jute", "Un tissu brut et résistant")
 				.add(2, "jean", "Pantalon en Jean", "")
-				.add(3, "chanvre", "Toile en Chanvre", "")
+				.add(2, "chanvre", "Toile en Chanvre", "")
 				.add(3, "wool", "Laine", "Chaud et comfortable")
 				.add(3, "fur", "Fourrure", "Une forte odeur s'en dégage");
 		//Glass

@@ -17,7 +17,8 @@ public class PlayerEvents {
 						if(!pl.giveItemStack(st)) {pl.dropStack(st);}
 					}
 					var comp = pl.getComponent(Components.PLAYER_DATA);
-					if(!wep.customPoseId().equals(comp.getCustomPoseID())) {comp.setCustomPose(wep.customPoseId());}
+					var pose = wep.customPoseId(pl.getMainHandStack());
+					if(pose != null && !pose.equals(comp.getCustomPoseID())) {comp.setCustomPose(pose);}
 				}
 			}
 		});

@@ -2,10 +2,7 @@ package com.diamssword.greenresurgence.blocks;
 
 import com.diamssword.greenresurgence.blockEntities.EquipmentTinkererBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.ModBlockEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.Waterloggable;
+import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
@@ -34,13 +31,17 @@ import org.jetbrains.annotations.Nullable;
 public class EquipmentTinkererBlock extends ModBlockEntity<EquipmentTinkererBlockEntity> implements Waterloggable {
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
-	private static final VoxelShape SHAPE = Block.createCuboidShape(4, 0, 4, 12, 16, 12);
+	//private static final VoxelShape SHAPE = Block.createCuboidShape(4, 0, 4, 12, 16, 12);
 
 	public EquipmentTinkererBlock(Settings settings) {
 		super(settings);
 		this.getDefaultState().with(FACING, Direction.NORTH).with(WATERLOGGED, false);
 	}
 
+	@Override
+	public BlockRenderType getRenderType(BlockState state) {
+		return BlockRenderType.MODEL;
+	}
 
 	@Override
 	public Class<EquipmentTinkererBlockEntity> getBlockEntityClass() {
@@ -50,7 +51,7 @@ public class EquipmentTinkererBlock extends ModBlockEntity<EquipmentTinkererBloc
 	@Override
 	@Deprecated
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return SHAPE;
+		return super.getOutlineShape(state, world, pos, context);
 	}
 
 	@Override
@@ -70,8 +71,8 @@ public class EquipmentTinkererBlock extends ModBlockEntity<EquipmentTinkererBloc
 	}
 
 	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-		FluidState fluidState = world.getFluidState(pos.up());
-		world.setBlockState(pos.up(), state.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER));
+		//FluidState fluidState = world.getFluidState(pos.up());
+		//world.setBlockState(pos.up(), state.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER));
 	}
 
 	@Override

@@ -17,61 +17,69 @@ import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 import java.util.function.BiConsumer;
 
 public final class GeckoItemRenderer extends GeoItemRenderer<GeckoActivated> {
-    private static final ItemGeoModel<GeoAnimatable> FALLBACKMODEL=new ItemGeoModel<>(GreenResurgence.asRessource("default"),true);
-    public GeckoItemRenderer(String model,boolean emissive) {
-        super(new ItemGeoModel<>(GreenResurgence.asRessource(model)));
-        if(emissive)
-            addRenderLayer(new AutoGlowingGeoLayer<>(this));
-    }
-    public static RenderProvider RendererProvider(String itemname,boolean emissive) {
-        return new RenderProvider() {
-            private GeckoItemRenderer renderer;
+	private static final ItemGeoModel<GeoAnimatable> FALLBACKMODEL = new ItemGeoModel<>(GreenResurgence.asRessource("default"), true);
 
-            @Override
-            public BuiltinModelItemRenderer getCustomRenderer() {
-                if (this.renderer == null)
-                    this.renderer = new GeckoItemRenderer(itemname,emissive);
-                return this.renderer;
-            }
-        };
-    }
-    public static class ItemGeoModel<T extends GeoAnimatable> extends DefaultedGeoModel<T> {
+	public GeckoItemRenderer(String model, boolean emissive) {
+		super(new ItemGeoModel<>(GreenResurgence.asRessource(model)));
+		if(emissive)
+			addRenderLayer(new AutoGlowingGeoLayer<>(this));
+	}
 
-        public ItemGeoModel(Identifier assetSubpath) {this(assetSubpath,false);}
-        private final boolean defaut;
-        protected ItemGeoModel(Identifier assetSubpath,boolean defaut) {
-            super(assetSubpath);
-            this.defaut=defaut;
-        }
-        @Override
-        public void addAdditionalStateData(T animatable, long instanceId, BiConsumer<DataTicket<T>, T> dataConsumer) {
-            //System.out.println("yolo");
-        }
-        @Override
-        public BakedGeoModel getBakedModel(Identifier location) {
-            try {
-                return super.getBakedModel(location);
-            }catch (GeckoLibException ex){
-                if(defaut)
-                    throw ex;
-                else
-                    return FALLBACKMODEL.getBakedModel(FALLBACKMODEL.getModelResource(null));
-            }
-        }
-        @Override
-        public Animation getAnimation(T animatable, String name) {
-            try {
-                return super.getAnimation(animatable,name);
-            }catch (GeckoLibException ex){
-                if(defaut)
-                    throw ex;
-                else
-                    return FALLBACKMODEL.getAnimation(animatable,name);
-            }
-        }
-        @Override
-        protected String subtype() {
-            return "item";
-        }
-    }
+	public static RenderProvider RendererProvider(String itemname, boolean emissive) {
+		return new RenderProvider() {
+			private GeckoItemRenderer renderer;
+
+			@Override
+			public BuiltinModelItemRenderer getCustomRenderer() {
+				if(this.renderer == null)
+					this.renderer = new GeckoItemRenderer(itemname, emissive);
+				return this.renderer;
+			}
+		};
+	}
+
+	public static class ItemGeoModel<T extends GeoAnimatable> extends DefaultedGeoModel<T> {
+
+		public ItemGeoModel(Identifier assetSubpath) {this(assetSubpath, false);}
+
+		private final boolean defaut;
+
+		protected ItemGeoModel(Identifier assetSubpath, boolean defaut) {
+			super(assetSubpath);
+			this.defaut = defaut;
+		}
+
+		@Override
+		public void addAdditionalStateData(T animatable, long instanceId, BiConsumer<DataTicket<T>, T> dataConsumer) {
+		}
+
+		@Override
+		public BakedGeoModel getBakedModel(Identifier location) {
+			try {
+				return super.getBakedModel(location);
+			} catch(GeckoLibException ex) {
+				if(defaut)
+					throw ex;
+				else
+					return FALLBACKMODEL.getBakedModel(FALLBACKMODEL.getModelResource(null));
+			}
+		}
+
+		@Override
+		public Animation getAnimation(T animatable, String name) {
+			try {
+				return super.getAnimation(animatable, name);
+			} catch(GeckoLibException ex) {
+				if(defaut)
+					throw ex;
+				else
+					return FALLBACKMODEL.getAnimation(animatable, name);
+			}
+		}
+
+		@Override
+		protected String subtype() {
+			return "item";
+		}
+	}
 }

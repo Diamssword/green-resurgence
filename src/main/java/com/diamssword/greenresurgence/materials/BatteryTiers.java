@@ -1,7 +1,8 @@
 package com.diamssword.greenresurgence.materials;
 
 public enum BatteryTiers {
-	BATTERY(100, 60000, 5);
+	BATTERY(100, 60000, 5),
+	LIPO(1000, 600000, 50);
 
 	public final int maxIO;
 	public final float dischargeInMinutes;
@@ -13,7 +14,7 @@ public enum BatteryTiers {
 		this.dischargeInMinutes = dischargeInMinutes;
 	}
 
-	public int recommendeDischargeRate() {
+	public int recommendedDischargeRate() {
 		return (int) ((int) capacity / (dischargeInMinutes * 60 * 20));
 	}
 

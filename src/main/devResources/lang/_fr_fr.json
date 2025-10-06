@@ -80,7 +80,8 @@
   "skin.green_resurgence.bone_axe": "Hache Osseuse",
   "equipment.green_resurgence.gui.skin": "Skin",
   "equipment.green_resurgence.gui.blade": "Lame",
-  "equipment.green_resurgence.gui.weight": "Poid",
+  "equipment.green_resurgence.gui.head": "Tête",
   "equipment.green_resurgence.gui.handle": "Manche",
-  "equipment.green_resurgence.gui.extra": "Extra"
+  "equipment.green_resurgence.gui.extra": "Extra",
+  "equipment.green_resurgence.gui.battery": "Batterie"
 }

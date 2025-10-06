@@ -15,6 +15,7 @@ import com.diamssword.greenresurgence.network.InventoryPackets;
 import com.diamssword.greenresurgence.systems.Components;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
@@ -29,6 +30,7 @@ import net.minecraft.util.Pair;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class CustomPlayerInventory implements ICharacterStored {
@@ -270,6 +272,19 @@ public class CustomPlayerInventory implements ICharacterStored {
 		}
 
 		return i.isEmpty() ? stack.getCount() : this.addStack(i.get(), stack);
+	}
+
+	public int remove(Predicate<ItemStack> shouldRemove, int maxCount) {
+		int i = 0;
+		boolean bl = maxCount == 0;
+		for(Inventory inventory : getAllInventories()) {
+			i += Inventories.remove(inventory, shouldRemove, maxCount - i, bl);
+		}
+		i += Inventories.remove(cursorStack, shouldRemove, maxCount - i, bl);
+		if(cursorStack.isEmpty()) {
+			this.getPlayer().currentScreenHandler.setCursorStack(ItemStack.EMPTY);
+		}
+		return i;
 	}
 
 	public int addStack(Pair<Inventory, Integer> pair, ItemStack stack) {

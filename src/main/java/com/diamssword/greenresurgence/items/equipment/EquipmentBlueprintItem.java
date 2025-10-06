@@ -1,7 +1,10 @@
 package com.diamssword.greenresurgence.items.equipment;
 
+import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.systems.equipement.IEquipmentBlueprint;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 
 public class EquipmentBlueprintItem extends Item implements IEquipmentBlueprint {
 	private final String subtype;
@@ -22,4 +25,10 @@ public class EquipmentBlueprintItem extends Item implements IEquipmentBlueprint 
 	public String getEquipmentSubtype() {
 		return subtype;
 	}
+
+	@Override
+	public Text getName(ItemStack stack) {
+		return Text.translatable("item." + GreenResurgence.ID + ".equipments.blueprint").append(Text.literal(" (")).append(Text.translatable("item." + GreenResurgence.ID + ".equipments." + type + "_" + subtype)).append(Text.literal(")"));
+	}
+
 }

@@ -48,7 +48,7 @@ public class BatteryItem extends MaterialItem implements SimpleEnergyItemTiered 
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		var stack = user.getStackInHand(hand);
 
-		if (hand == Hand.OFF_HAND && this.getStoredEnergy(stack) > 0) {
+		if(hand == Hand.OFF_HAND && this.getStoredEnergy(stack) > 0) {
 			user.setCurrentHand(hand);
 			return TypedActionResult.consume(stack);
 		}
@@ -63,31 +63,31 @@ public class BatteryItem extends MaterialItem implements SimpleEnergyItemTiered 
 
 	@Override
 	public int getMaxUseTime(ItemStack stack) {
-		if (this.getStoredEnergy(stack) > 0)
+		if(this.getStoredEnergy(stack) > 0)
 			return 72000;
 		return 0;
 	}
 
 	@Override
 	public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-		if (user instanceof PlayerEntity pl && pl.getActiveHand() == Hand.OFF_HAND) {
+		if(user instanceof PlayerEntity pl && pl.getActiveHand() == Hand.OFF_HAND) {
 			var otherStack = user.getStackInHand(Hand.MAIN_HAND);
-			if (otherStack.getItem() instanceof SimpleEnergyItemTiered rei) {
+			if(otherStack.getItem() instanceof SimpleEnergyItemTiered rei) {
 				var storage = EnergyStorage.ITEM.find(stack, ContainerItemContext.ofPlayerHand(pl, Hand.OFF_HAND));
 				var recp = EnergyStorage.ITEM.find(otherStack, ContainerItemContext.ofPlayerHand(pl, Hand.MAIN_HAND));
-				if (storage == null || !storage.supportsExtraction() || recp == null || !recp.supportsInsertion()) {
+				if(storage == null || !storage.supportsExtraction() || recp == null || !recp.supportsInsertion()) {
 					return;
 				}
 
 				// Utilise un contexte de transaction propre
-				try (Transaction ctx = Transaction.openOuter()) {
+				try(Transaction ctx = Transaction.openOuter()) {
 					var max = rei.getEnergyMaxInput(otherStack);
 					max = Math.min(max, recp.getCapacity() - recp.getAmount());
-					if (max > 0) {
+					if(max > 0) {
 						long extracted = storage.extract(max, ctx);
 
 						//recp.insert(extracted, ctx);
-						if (extracted > 0) {
+						if(extracted > 0) {
 							recp.insert(extracted, ctx);
 							ctx.commit(); // Applique la transaction
 						}
@@ -98,7 +98,7 @@ public class BatteryItem extends MaterialItem implements SimpleEnergyItemTiered 
 	}
 
 	@Override
-	public BatteryTiers getBatteryTier() {
+	public BatteryTiers getBatteryTier(ItemStack var1) {
 		return type;
 	}
 

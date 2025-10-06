@@ -9,12 +9,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.hit.HitResult;
 import org.jetbrains.annotations.Nullable;
 
-public interface EquipmentUpgrade {
+public interface IEquipmentUpgrade {
 	boolean canBeApplied(IEquipmentDef equipment, ItemStack stack);
 
 	String slot(IEquipmentDef equipment);
 
 	Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(AdvEquipmentSlot slot, @Nullable PlayerEntity player);
+
 
 	void onInteraction(PlayerEntity wearer, AdvEquipmentSlot slot, InteractType interaction, HitResult context);
 
@@ -23,7 +24,7 @@ public interface EquipmentUpgrade {
 	 */
 	float damageWheight();
 
-	void onTick(Entity parent);
+	void onTick(ItemStack stack, Entity parent);
 
 	enum InteractType {
 		ATTACK,

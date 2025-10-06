@@ -46,12 +46,12 @@ public class GeckoActivated extends ActivatedSword implements GeoItem, SimpleEne
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
 		super.inventoryTick(stack, world, entity, slot, selected);
-		if (world instanceof ServerWorld sw) {
+		if(world instanceof ServerWorld sw) {
 			GeoItem.getOrAssignId(stack, sw);
-			if (stack.getNbt().getBoolean("activated") && world.getTime() % 80 == 0) {
-				var v = Math.max(this.getStoredEnergy(stack) - (BatteryTiers.BATTERY.recommendeDischargeRate() * 80L), 0);
+			if(stack.getNbt().getBoolean("activated") && world.getTime() % 80 == 0) {
+				var v = Math.max(this.getStoredEnergy(stack) - (BatteryTiers.BATTERY.recommendedDischargeRate() * 80L), 0);
 				this.setStoredEnergy(stack, v);
-				if (v <= 0)
+				if(v <= 0)
 					stack.getNbt().putBoolean("activated", false);
 			}
 		}
@@ -65,14 +65,14 @@ public class GeckoActivated extends ActivatedSword implements GeoItem, SimpleEne
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		if (hand == Hand.MAIN_HAND) {
-			if (user.getOffHandStack().getItem() instanceof SimpleEnergyItemTiered) {
+		if(hand == Hand.MAIN_HAND) {
+			if(user.getOffHandStack().getItem() instanceof SimpleEnergyItemTiered) {
 				return TypedActionResult.pass(user.getMainHandStack());
 			}
 		}
 
 		var st = user.getStackInHand(hand);
-		if (this.getStoredEnergy(st) > 0) {
+		if(this.getStoredEnergy(st) > 0) {
 			var comp = st.getOrCreateNbt();
 			comp.putBoolean("activated", !comp.getBoolean("activated"));
 			st.setNbt(comp);
@@ -93,7 +93,7 @@ public class GeckoActivated extends ActivatedSword implements GeoItem, SimpleEne
 			// Apply our generic idle animation.
 			// Whether it plays or not is decided down below.
 			var st = state.getData(DataTickets.ITEMSTACK);
-			if (st != null && st.getOrCreateNbt().getBoolean("activated")) {
+			if(st != null && st.getOrCreateNbt().getBoolean("activated")) {
 				state.getController().setAnimation(POWERED_ANIM);
 			} else
 				state.getController().setAnimation(IDLE_ANIM);
@@ -128,7 +128,7 @@ public class GeckoActivated extends ActivatedSword implements GeoItem, SimpleEne
 	}
 
 	@Override
-	public BatteryTiers getBatteryTier() {
+	public BatteryTiers getBatteryTier(ItemStack var1) {
 		return BatteryTiers.BATTERY;
 	}
 

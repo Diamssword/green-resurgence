@@ -60,7 +60,7 @@ public class GenericBlockSet {
 
 	public GenericBlockRegisterInstance add(String name, Transparency render, BlockType... blocks) {
 		var d = new GenericBlockRegisterInstance(name);
-		for (BlockType block : blocks) {
+		for(BlockType block : blocks) {
 			d.addSub(block);
 		}
 		d.setTransparency(render);
@@ -79,14 +79,14 @@ public class GenericBlockSet {
 	public void register() {
 		this.blocks.forEach(entry -> {
 			entry.blocks.values().forEach(v -> {
-				if (v.itemGroup != null && !itemGroups.containsKey(v.itemGroup)) {
+				if(v.itemGroup != null && !itemGroups.containsKey(v.itemGroup)) {
 					itemGroups.put(v.itemGroup, new BlockVariantItem(new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex).maxCount(1)));
 				}
-				for (String name : entry.names) {
-					if (v.itemGroup != null)
+				for(String name : entry.names) {
+					if(v.itemGroup != null)
 						itemGroups.get(v.itemGroup).addVariant(getBlockId(name, v));
 					var settings = processSettings(v);
-					if (v.multistate > 1 && v.type == BlockType.PILLAR) {
+					if(v.multistate > 1 && v.type == BlockType.PILLAR) {
 						genericRegisterHelper(name, v, new GenericPillarMultiState(settings, v) {
 							@Override
 							public int getPropCount() {
@@ -94,7 +94,7 @@ public class GenericBlockSet {
 							}
 						});
 					} else {
-						switch (v.type) {
+						switch(v.type) {
 							case SIMPLE -> genericRegisterHelper(name, v, v.toggleable ? new GenericBlockToggleable(settings, v) : new GenericBlock(settings, v));
 							case ALL_SIDE_PANEL -> genericRegisterHelper(name, v, new AllDirectionVine(settings, v));
 							case PILLAR -> genericRegisterHelper(name, v, v.toggleable ? new GenericPillarToggleable(settings, v) : new GenericPillar(settings, v));
@@ -153,7 +153,7 @@ public class GenericBlockSet {
 	}
 
 	private OwoItemSettings addItemGroup(GenericBlockProp prop) {
-		if (prop.itemGroup != null)
+		if(prop.itemGroup != null)
 			return new OwoItemSettings();
 		return new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex);
 	}
@@ -164,19 +164,19 @@ public class GenericBlockSet {
 
 	private AbstractBlock.Settings processSettings(GenericBlockProp entry, AbstractBlock.Settings settings) {
 		settings = settings.sounds(entry.sound);
-		if (entry.transparency != Transparency.OPAQUE)
+		if(entry.transparency != Transparency.OPAQUE)
 			settings = settings.nonOpaque().solidBlock(Blocks::never);
-		if (entry.transparency == Transparency.NOTFULL)
+		if(entry.transparency == Transparency.NOTFULL)
 			settings = settings.notSolid().nonOpaque();
 		var l = entry.light;
-		if (l > 0) {
-			if (entry.toggleable)
+		if(l > 0) {
+			if(entry.toggleable)
 				settings = settings.luminance(st -> st.getProperties().contains(Properties.OPEN) && st.get(Properties.OPEN) ? l : 0);
-			else if (entry.multistate > 1)
+			else if(entry.multistate > 1)
 				settings = settings.luminance(st -> {
-					if (st.getBlock() instanceof GenericPillarMultiState mb) {
+					if(st.getBlock() instanceof GenericPillarMultiState mb) {
 						var v = st.get(mb.getToggleProp());
-						if (v <= 1)
+						if(v <= 1)
 							return 0;
 						return (int) ((v / (float) mb.getPropCount()) * l);
 					}
@@ -191,37 +191,37 @@ public class GenericBlockSet {
 	public Map<Block, Transparency> getGlasses() {
 		var res = new HashMap<Block, Transparency>();
 		generatedBlocks.forEach(v -> {
-			if (v.props.transparency == Transparency.CUTOUT || v.props.transparency == Transparency.TRANSPARENT)
+			if(v.props.transparency == Transparency.CUTOUT || v.props.transparency == Transparency.TRANSPARENT)
 				res.put(v.block, v.props.transparency);
 		});
 		return res;
 	}
 
 	public void blockDropGenerator(FabricBlockLootTableProvider generator) {
-		for (GeneratedBlockInstance b : generatedBlocks) {
-			if (!b.props.noLoot) {
+		for(GeneratedBlockInstance b : generatedBlocks) {
+			if(!b.props.noLoot) {
 				generator.addDrop(b.block);
 			}
 		}
 	}
 
 	public void tagGenerator(Function<TagKey<Block>, FabricTagBuilder> factory) {
-		for (GeneratedBlockInstance b : generatedBlocks) {
-			if (b.props.type == BlockType.FENCE)
+		for(GeneratedBlockInstance b : generatedBlocks) {
+			if(b.props.type == BlockType.FENCE)
 				factory.apply(BlockTags.FENCES).add(b.block);
-			if (b.props.type == BlockType.DOOR || b.props.type == BlockType.DOOR_TWO) {
+			if(b.props.type == BlockType.DOOR || b.props.type == BlockType.DOOR_TWO) {
 				factory.apply(BlockTags.DOORS).add(b.block);
 				factory.apply(BlockTags.WOODEN_DOORS).add(b.block);
 			}
-			if (b.props.type == BlockType.BED)
+			if(b.props.type == BlockType.BED)
 				factory.apply(BlockTags.BEDS).add(b.block);
-			if (b.props.type == BlockType.STAIRS)
+			if(b.props.type == BlockType.STAIRS)
 				factory.apply(BlockTags.STAIRS).add(b.block);
-			if (b.props.subtype == SubBlock.SLAB)
+			if(b.props.subtype == SubBlock.SLAB)
 				factory.apply(BlockTags.SLABS).add(b.block);
-			if (b.props.type == BlockType.TRAPDOOR)
+			if(b.props.type == BlockType.TRAPDOOR)
 				factory.apply(BlockTags.TRAPDOORS).add(b.block);
-			for (TagKey<Block> tag : b.props.tags) {
+			for(TagKey<Block> tag : b.props.tags) {
 				factory.apply(tag).add(b.block);
 			}
 
@@ -230,7 +230,7 @@ public class GenericBlockSet {
 	}
 
 	public void langGenerator(FabricLanguageProvider.TranslationBuilder builder) {
-		for (GeneratedBlockInstance b : generatedBlocks) {
+		for(GeneratedBlockInstance b : generatedBlocks) {
 			builder.add(b.block, LangGenerator.autoLocalizeString(b.name));
 		}
 		itemGroups.forEach((k, v) -> {
@@ -240,23 +240,23 @@ public class GenericBlockSet {
 	}
 
 	public void modelGenerator(ItemModelGenerator generator) {
-		for (GeneratedItemInstance b : generatedItems) {
+		for(GeneratedItemInstance b : generatedItems) {
 
-			if (b.type.genItem) {
+			if(b.type.genItem) {
 
-				if (b.type.itemModelPath != null)
+				if(b.type.itemModelPath != null)
 					generator.register(b.item, new Model(Optional.of(helper.transformVariantModelId(b.type.itemModelPath.apply(b.name), b.type.variants)), Optional.empty()));
-				else if (b.type.type == BlockType.PANE)
+				else if(b.type.type == BlockType.PANE)
 					new Model(Optional.of(new Identifier("item/generated")), Optional.empty(), TextureKey.LAYER0).upload(ModelIds.getItemModelId(b.item), TextureMap.layer0(new Identifier(GreenResurgence.ID, "block/" + this.subdomain + "/" + b.name.replace("_pane", ""))), generator.writer);
-				else if (b.type.type == BlockType.FENCE)
+				else if(b.type.type == BlockType.FENCE)
 					new Model(Optional.of(new Identifier("block/fence_inventory")), Optional.empty(), TextureKey.TEXTURE).upload(ModelIds.getItemModelId(b.item), TextureMap.texture(new Identifier(GreenResurgence.ID, "block/" + this.subdomain + "/" + b.name.replace("_fence", b.type.variants > 0 ? "/" + b.name.replace("_fence", "") + "0" : ""))), generator.writer);
-				else if (b.type.type == BlockType.DOOR)
+				else if(b.type.type == BlockType.DOOR)
 					generator.register(b.item, new Model(Optional.of(helper.getBlockModelId(b.name, b.type.modelPath).withSuffixedPath("_left")), Optional.empty()));
-				else if (b.type.type == BlockType.DOOR_TWO)
+				else if(b.type.type == BlockType.DOOR_TWO)
 					generator.register(b.item, new Model(Optional.of(helper.getBlockModelId(b.name, b.type.modelPath).withSuffixedPath("_left_closed")), Optional.empty()));
-				else if (b.type.type == BlockType.TABLE)
+				else if(b.type.type == BlockType.TABLE)
 					generator.register(b.item, new Model(Optional.of(helper.transformVariantModelId(helper.getBlockModelId(b.name, b.type.modelPath).withSuffixedPath("/full"), b.type.variants)), Optional.empty()));
-				else if (b.type.multistate > 1)
+				else if(b.type.multistate > 1)
 					generator.register(b.item, new Model(Optional.of(helper.getBlockModelId(b.name, b.type.modelPath).withSuffixedPath("_1")), Optional.empty()));
 				else
 					generator.register(b.item, new Model(Optional.of(helper.transformVariantModelId(helper.getBlockModelId(b.name, b.type.modelPath), b.type.variants)), Optional.empty()));
@@ -271,43 +271,43 @@ public class GenericBlockSet {
 
 	public void modelGenerator(BlockStateModelGenerator generator) {
 		generatedBlocks.forEach(b -> {
-			if (b.props.genBlockState) {
+			if(b.props.genBlockState) {
 				boolean noModel = !b.props.genModel;
 				int variants = b.props.variants;
 				var model = b.props.model;
 				var Tname = b.name;
-				if (b.props.subtype == SubBlock.CARPET)
+				if(b.props.subtype == SubBlock.CARPET)
 					Tname = b.name.replace("_carpet", "");
-				else if (b.props.subtype == SubBlock.SLAB)
+				else if(b.props.subtype == SubBlock.SLAB)
 					Tname = b.name.replace("_slab", "");
-				else if (b.props.subtype == SubBlock.WALL)
+				else if(b.props.subtype == SubBlock.WALL)
 					Tname = b.name.replace("_wall", "");
-				if (b.props.blockstateSupplier != null) {
+				if(b.props.blockstateSupplier != null) {
 					generator.blockStateCollector.accept(b.props.blockstateSupplier.apply(b.block, b.name));
 					return;
 				}
-				switch (b.props.type) {
+				switch(b.props.type) {
 
 					case SIMPLE -> {
-						if (b.props.toggleable) {
+						if(b.props.toggleable) {
 							var map = BlockStateVariantMap.create(Properties.OPEN)
 									.register(true, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name, b.props.modelPath).withSuffixedPath("_open")))
 									.register(false, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name, b.props.modelPath)));
 							generator.blockStateCollector.accept(helper.createVariantsStates(VariantsBlockStateSupplier.create(b.block).coordinate(map), variants));
 						} else
 							generator.blockStateCollector.accept(helper.createVariantsStates(BlockStateModelGenerator.createSingletonBlockState(b.block, helper.getBlockModelId(b.name, b.props.modelPath)), variants));
-						if (noModel || b.props.toggleable) return;
+						if(noModel || b.props.toggleable) return;
 						TexturedModel.Factory factory = helper.getModeleFactoryFor(model, Tname);
 						helper.registerModel(factory, model, b.block, b.name, generator, variants);
 
 					}
 					case PILLAR -> {
-						if (b.props.toggleable) {
+						if(b.props.toggleable) {
 							generator.blockStateCollector.accept(helper.createVariantsStates(VariantsBlockStateSupplier.create(b.block,
 									BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name, b.props.modelPath))).coordinate(
 									ModelHelper.fillToggleableVariantMap(BlockStateVariantMap.create(Properties.HORIZONTAL_FACING, Properties.OPEN),
 											helper.getBlockModelId(b.name, b.props.modelPath), helper.getBlockModelId(b.name, b.props.modelPath).withSuffixedPath("_open"), false)), variants));
-						} else if (b.props.multistate > 1) {
+						} else if(b.props.multistate > 1) {
 							var b1 = ((GenericPillarMultiState) b.block);
 							generator.blockStateCollector.accept(helper.createVariantsStates(VariantsBlockStateSupplier.create(b1,
 									BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name, b.props.modelPath))).coordinate(
@@ -315,7 +315,7 @@ public class GenericBlockSet {
 											helper.getBlockModelId(b.name, b.props.modelPath), b1.getPropCount())), variants));
 						} else
 							generator.blockStateCollector.accept(VariantsBlockStateSupplier.create(b.block, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name, b.props.modelPath))).coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
-						if (noModel || b.props.toggleable) return;
+						if(noModel || b.props.toggleable) return;
 						TexturedModel.Factory factory = helper.getModeleFactoryFor(model, Tname);
 						factory.get(b.block).getModel().upload(helper.getBlockModelId(b.name), factory.get(b.block).getTextures(), generator.modelCollector);
 
@@ -330,14 +330,14 @@ public class GenericBlockSet {
 
 					}
 					case OMNI_BLOCK -> {
-						if (b.props.toggleable) {
+						if(b.props.toggleable) {
 							generator.blockStateCollector.accept(helper.createVariantsStates(VariantsBlockStateSupplier.create(b.block,
 									BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name, b.props.modelPath))).coordinate(
 									ModelHelper.fillToggleableVariantMap(BlockStateVariantMap.create(Properties.FACING, Properties.OPEN),
 											helper.getBlockModelId(b.name, b.props.modelPath), helper.getBlockModelId(b.name, b.props.modelPath).withSuffixedPath("_open"), true)), variants));
 						} else
-							generator.blockStateCollector.accept(helper.createVariantsStates(VariantsBlockStateSupplier.create(b.block, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name, b.props.modelPath))).coordinate(BlockStateModelGenerator.createNorthDefaultRotationStates()), variants));
-						if (noModel || b.props.toggleable) return;
+							generator.blockStateCollector.accept(helper.createVariantsStates(VariantsBlockStateSupplier.create(b.block, BlockStateVariant.create().put(VariantSettings.MODEL, helper.getBlockModelId(b.name, b.props.modelPath))).coordinate(model == ModelType.CARPET_BOT_MODEL ? ModelHelper.createBottomDefaultRotationStates() : BlockStateModelGenerator.createNorthDefaultRotationStates()), variants));
+						if(noModel || b.props.toggleable) return;
 						TexturedModel.Factory factory = helper.getModeleFactoryFor(model, Tname);
 						helper.registerModel(factory, model, b.block, b.name, generator, variants);
 					}
@@ -346,7 +346,7 @@ public class GenericBlockSet {
 						m.put("id", b.name);
 						m.put("sub", this.subdomain);
 						generator.blockStateCollector.accept(helper.createVariantsStates(helper.alterSchematic(b.block, "all_side_panel", m), variants));
-						if (noModel) return;
+						if(noModel) return;
 						TexturedModel.Factory factory = helper.getModeleFactoryFor(model, Tname);
 						helper.registerModel(factory, model, b.block, b.name, generator, variants);
 					}
@@ -364,7 +364,7 @@ public class GenericBlockSet {
 						m.put("id", b.name);
 						m.put("sub", this.subdomain);
 						generator.blockStateCollector.accept(helper.createVariantsStates(helper.alterSchematic(b.block, "door_double", m), variants));
-						if (noModel) return;
+						if(noModel) return;
 						TexturedModel.Factory factory = helper.getModeleFactoryFor(model, Tname);
 						helper.registerModel(factory, model, b.block, b.name, generator, variants);
 					}
@@ -376,7 +376,7 @@ public class GenericBlockSet {
 					}
 					case STAIRS -> {
 						generator.blockStateCollector.accept(helper.createVariantsStates(BlockStateModelGenerator.createStairsBlockState(b.block, helper.getBlockModelId(b.name, b.props.modelPath).withSuffixedPath("_inner"), helper.getBlockModelId(b.name, b.props.modelPath), helper.getBlockModelId(b.name, b.props.modelPath).withSuffixedPath("_outer")), variants));
-						if (noModel) return;
+						if(noModel) return;
 						var facts = helper.getModelForStairs(b.name.replace("_stair", ""), model);
 						helper.registerModel(facts[0], b.block, b.name, generator, variants, TextureKey.BOTTOM, TextureKey.TOP, TextureKey.SIDE);
 						helper.registerModel(facts[1], b.block, b.name + "_inner", generator, variants, TextureKey.BOTTOM, TextureKey.TOP, TextureKey.SIDE);
@@ -386,7 +386,7 @@ public class GenericBlockSet {
 						helper.registerBed(generator, b.name, b.block);
 					}
 					case TRAPDOOR -> {
-						if (noModel) return;
+						if(noModel) return;
 						helper.registerTrapdoor(generator, b.name, b.block);
 					}
 				}
@@ -410,7 +410,7 @@ public class GenericBlockSet {
 		}
 
 		private static HitBox DefaultHitbox(SubBlock sub) {
-			switch (sub) {
+			switch(sub) {
 				case SLAB:
 					return HitBox.SLAB;
 				case CARPET:
@@ -519,7 +519,7 @@ public class GenericBlockSet {
 
 		public GenericBlockRegisterInstance notSolid(SubBlock sub) {
 			blocks.values().forEach(v -> {
-				if (v.subtype == sub)
+				if(v.subtype == sub)
 					v.solid = false;
 			});
 			return this;
@@ -532,7 +532,7 @@ public class GenericBlockSet {
 
 		public GenericBlockRegisterInstance noLoot(SubBlock sub) {
 			blocks.values().forEach(v -> {
-				if (v.subtype == sub)
+				if(v.subtype == sub)
 					v.noLoot = true;
 			});
 			return this;
@@ -549,7 +549,7 @@ public class GenericBlockSet {
 		public GenericBlockRegisterInstance disableGen(boolean genBlockStateAndItem, SubBlock subtype) {
 
 			blocks.values().forEach(v -> {
-				if (v.subtype == subtype) {
+				if(v.subtype == subtype) {
 					v.genModel = false;
 					v.genBlockState = genBlockStateAndItem;
 					v.genItem = genBlockStateAndItem;
@@ -633,7 +633,7 @@ public class GenericBlockSet {
 	}
 
 	private static String getSuffix(BlockType type, SubBlock sub) {
-		switch (type) {
+		switch(type) {
 			case FENCE:
 				return "_fence";
 			case STAIRS:
@@ -641,7 +641,7 @@ public class GenericBlockSet {
 			case PANE:
 				return "_pane";
 			default:
-				switch (sub) {
+				switch(sub) {
 
 					case NONE:
 						return "";
@@ -723,6 +723,7 @@ public class GenericBlockSet {
 		WALL,
 		LADDER,
 		CARPET,
+		CARPET_BOT_MODEL,
 		TABLE_DECORLESS
 
 	}

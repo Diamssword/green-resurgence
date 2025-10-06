@@ -1,26 +1,31 @@
 package com.diamssword.greenresurgence.items.equipment;
 
 import com.diamssword.greenresurgence.MItems;
-import com.diamssword.greenresurgence.systems.equipement.EquipmentUpgrade;
 import com.diamssword.greenresurgence.systems.equipement.IEquipmentDef;
+import com.diamssword.greenresurgence.systems.equipement.IEquipmentUpgrade;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 
-public abstract class EquipmentUpgradeItem extends Item implements EquipmentUpgrade {
+public abstract class EquipmentUpgradeItem extends Item implements IEquipmentUpgrade {
 	protected final String[] allowed;
 	private final String slot;
 	private final int durability;
 	private final float weight;
 
 	public EquipmentUpgradeItem(String allowed, String slot, float wheight) {
-		this(allowed, slot, -1, wheight);
+		this(new OwoItemSettings().maxCount(8).group(MItems.GROUP).tab(1), allowed, slot, -1, wheight);
+	}
+
+	public EquipmentUpgradeItem(String allowed, String slot, int durability, float wheight) {
+		this(new OwoItemSettings().maxCount(8).group(MItems.GROUP).tab(1), allowed, slot, durability, wheight);
 	}
 
 	public EquipmentUpgradeItem(String allowed, String slot) {
-		this(allowed, slot, -1, 1);
+		this(new OwoItemSettings().maxCount(8).group(MItems.GROUP).tab(1), allowed, slot, -1, 1);
 	}
+
 
 	@Override
 	public boolean isDamageable() {
@@ -31,8 +36,8 @@ public abstract class EquipmentUpgradeItem extends Item implements EquipmentUpgr
 		return durability;
 	}
 
-	public EquipmentUpgradeItem(String allowed, String slot, int durability, float wheight) {
-		super(new OwoItemSettings().maxCount(8).group(MItems.GROUP).tab(1));
+	public EquipmentUpgradeItem(OwoItemSettings settings, String allowed, String slot, int durability, float wheight) {
+		super(settings);
 		this.allowed = allowed.split(",");
 		this.slot = slot;
 		this.durability = durability;
