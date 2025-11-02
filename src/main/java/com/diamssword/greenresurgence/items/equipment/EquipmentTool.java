@@ -7,6 +7,7 @@ import com.google.common.collect.Multimap;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.fabricmc.fabric.api.item.v1.FabricItem;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -17,11 +18,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 public abstract class EquipmentTool extends StackBasedGeckoItem implements FabricItem, IEquipementItem {
@@ -30,7 +37,7 @@ public abstract class EquipmentTool extends StackBasedGeckoItem implements Fabri
 	public final String subCategory;
 	private static final BiConsumer<Item, ItemGroup.Entries> generator = (i, e) -> {
 
-		var st = new ItemStack(i, 1);
+		var st = i.getDefaultStack();
 		var skin = EquipmentSkins.getDefault(i);
 		skin.ifPresent(s -> st.getOrCreateNbt().putString("skin", s));
 		e.add(st);
@@ -45,13 +52,33 @@ public abstract class EquipmentTool extends StackBasedGeckoItem implements Fabri
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
 		super.inventoryTick(stack, world, entity, slot, selected);
-		this.getEquipment(stack).onTick(entity);
+		var eslot = AdvEquipmentSlot.UNKNOWN;
+		if(entity instanceof LivingEntity pl) {
+			if(pl.getMainHandStack() == stack)
+				eslot = AdvEquipmentSlot.MAINHAND;
+			else if(pl.getOffHandStack() == stack)
+				eslot = AdvEquipmentSlot.OFFHAND;
 
+		}
+		this.getEquipment(stack).onTick(entity, eslot);
+
+	}
+
+	@Override
+	public ItemStack getDefaultStack() {
+		ItemStack stack = new ItemStack(this);
+		stack.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
+		return stack;
 	}
 
 	@Override
 	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
 		return getEquipmentStack(stack).getAttributeModifiers(AdvEquipmentSlot.fromVanilla(slot), null);
+	}
+
+	@Override
+	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+		getEquipmentStack(stack).appendTooltip(tooltip);
 	}
 
 	@Override
@@ -76,15 +103,29 @@ public abstract class EquipmentTool extends StackBasedGeckoItem implements Fabri
 
 	@Override
 	public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
-		//if needed for tools
+		var equipment = getEquipmentStack(stack);
+		if(miner instanceof PlayerEntity pl)
+			equipment.onInteraction(pl, AdvEquipmentSlot.MAINHAND, IEquipmentUpgrade.InteractType.INTERACT, new BlockHitResult(pos.toCenterPos(), Direction.UP, pos, true));
+		var broken = equipment.onToolDamage(miner, AdvEquipmentSlot.MAINHAND);
+		if(broken) {
+			miner.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND);
+			Item item = stack.getItem();
+			stack.decrement(1);
+			if(miner instanceof PlayerEntity) {
+				((PlayerEntity) miner).incrementStat(Stats.BROKEN.getOrCreateStat(item));
+			}
+			stack.setDamage(0);
+		} else
+			equipment.save();
+
 		return true;
 	}
 
-	public abstract IEquipmentUpgrade[] getBaseUpgrades();
+	public abstract Map<String, EffectLevel> getBaseUpgrades();
 
 	@Override
 	public IUpgradableEquipment getEquipment(ItemStack stack) {
-		return new StackBasedEquipment(category, subCategory, stack).setBaseToolUpgrades(getBaseUpgrades());
+		return new StackBasedEquipment(category, subCategory, stack, getBaseUpgrades());
 	}
 
 	public StackBasedEquipment getEquipmentStack(ItemStack stack) {

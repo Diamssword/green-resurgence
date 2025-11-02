@@ -18,18 +18,26 @@ public class Equipments {
 	public static final String P_SKIN = "skin";
 	public static final String P_BLADE = "blade";
 	public static final String P_HEAD = "head";
+	public static final String P_BINDING = "binding";
+
+	public static final String P_BINDING_EXTRA = "extra_binding";
+	public static final String P_HANDLE_EXTRA = "extra_handle";
+	public static final String P_HEAD_EXTRA = "extra_head";
+	public static final String P_BINDING_EXTRA_2 = "extra_binding_2";
+	public static final String P_HANDLE_EXTRA_2 = "extra_handle_2";
+	public static final String P_HEAD_EXTRA_2 = "extra_head_2";
 	public static final String P_SPIKE = "spike";
 	public static final String P_BATTERY = "battery";
 	public static final String P_HANDLE = "handle";
 	public static final String P_EXTRA = "extra";
 
 	public static void init() {
-		register("blade", "short", new String[]{P_SKIN, P_BLADE, P_HANDLE}, P_EXTRA);
-		register("blade", "medium", new String[]{P_SKIN, P_BLADE, P_HANDLE}, P_EXTRA);
-		register("blade", "long", new String[]{P_SKIN, P_BLADE, P_HANDLE}, P_EXTRA);
+		register("blade", "short", new String[]{P_SKIN, P_HEAD, P_BINDING, P_HANDLE}, P_HEAD_EXTRA, P_BINDING_EXTRA, P_HANDLE_EXTRA);
+		register("blade", "medium", new String[]{P_SKIN, P_HEAD, P_BINDING, P_HANDLE}, P_HEAD_EXTRA, P_BINDING_EXTRA, P_HANDLE_EXTRA);
+		register("blade", "long", new String[]{P_SKIN, P_HEAD, P_BINDING, P_HANDLE}, P_HEAD_EXTRA, P_BINDING_EXTRA, P_HANDLE_EXTRA, P_HEAD_EXTRA_2, P_BINDING_EXTRA_2, P_HANDLE_EXTRA_2);
 
 		register("hammer", "short", new String[]{P_SKIN, P_HEAD, P_HANDLE}, P_EXTRA);
-		register("hammer", "medium", new String[]{P_SKIN, P_BLADE, P_HANDLE}, P_EXTRA);
+		register("hammer", "medium", new String[]{P_SKIN, P_HEAD, P_HANDLE}, P_EXTRA);
 		register("hammer", "long", new String[]{P_SKIN, P_HEAD, P_HANDLE}, P_EXTRA);
 
 		register("spike", "short", new String[]{P_SKIN, P_SPIKE, P_HANDLE}, P_EXTRA);
@@ -41,6 +49,7 @@ public class Equipments {
 
 		registers();
 		EquipmentSkins.init();
+		EquipmentEffects.init();
 
 	}
 

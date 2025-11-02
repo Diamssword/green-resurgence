@@ -8,15 +8,19 @@ import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinItem
 import com.diamssword.greenresurgence.systems.equipement.EquipmentSkins;
 import com.diamssword.greenresurgence.systems.equipement.Equipments;
 import com.diamssword.greenresurgence.systems.equipement.IEquipmentBlueprint;
-import io.wispforest.owo.ui.component.Components;
+import com.diamssword.greenresurgence.systems.equipement.IEquipmentUpgrade;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
+import io.wispforest.owo.ui.container.GridLayout;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
 
 public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScreenHandler> {
@@ -63,18 +67,60 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 		var contL = Containers.verticalFlow(Sizing.content(), Sizing.content());
 		contL.margins(Insets.vertical(5));
 		contL.gap(10);
-		var contS = Containers.verticalFlow(Sizing.content(), Sizing.content());
-
 		this.handler.onEquipmentReady(v -> {
-			for(String slot : v.getSlots()) {
-				contL.child(Components.label(Text.translatable("equipment." + GreenResurgence.ID + ".gui." + slot)));
-				contS.child(new InventoryComponent("equipment_" + slot, 1, 1, "disabled"));
-			}
+			var g = simpleGridSlotSetup(v.getSlots());
 			panel.child(contL);
-			panel.child(contS);
+			if(g != null)
+				panel.child(g);
 			findInvComps(rootComponent);
 		});
 
+	}
+
+	@Override
+	protected void drawSlotExtra(DrawContext ctx, int x, int y, Slot slot, String inventory) {
+		var st = this.handler.getCursorStack();
+		if(!st.isEmpty()) {
+			if(st.getItem() instanceof IEquipmentUpgrade eq) {
+				var name = this.handler.getInventoryForSlot(slot);
+				if(name.contains("equipment_")) {
+					if(eq.slot(handler.getEquipment()).equals(name.replace("equipment_", "")))
+						ctx.fill(x, y, x + 16, y + 16, 0x603A6218);
+				}
+
+			}
+		}
+
+	}
+
+	@Override
+	protected void drawMouseoverTooltip(DrawContext context, int x, int y) {
+		if(this.handler.getCursorStack().isEmpty() && this.focusedSlot != null) {
+			if(this.focusedSlot.hasStack()) {
+				ItemStack itemStack = this.focusedSlot.getStack();
+				context.drawTooltip(this.textRenderer, this.getTooltipFromItem(itemStack), itemStack.getTooltipData(), x, y);
+			} else {
+				var name = this.handler.getInventoryForSlot(this.focusedSlot);
+				if(name.contains("equipment_"))
+					context.drawTooltip(this.textRenderer, Text.translatable("equipment." + GreenResurgence.ID + ".gui." + name.replace("equipment_", "")).formatted(Formatting.GRAY, Formatting.ITALIC), x, y);
+			}
+		}
+	}
+
+	private static GridLayout simpleGridSlotSetup(String[] slots) {
+		if(slots.length == 7 || slots.length == 10) {
+			var b = slots.length == 7;
+			var grid = Containers.grid(Sizing.content(), Sizing.content(), 4, b ? 2 : 3);
+			grid.padding(Insets.of(2));
+			for(int i = 0; i < slots.length; i++) {
+				var slot = slots[i];
+				var x = i < 4 ? 0 : (i > 6 ? 2 : 1);
+				var y = i < 4 ? i : 1 + (i % 3);
+				grid.child(new InventoryComponent("equipment_" + slot, 1, 1, "disabled").margins(Insets.of(1)), y, x);
+			}
+			return grid;
+		}
+		return null;
 	}
 }
 

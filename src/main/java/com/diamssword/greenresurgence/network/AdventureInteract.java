@@ -36,52 +36,54 @@ public class AdventureInteract {
 		Channels.MAIN.registerClientbound(AllowedList.class, (msg, ctx) -> {
 			BaseInteractions.allowedBlocks.clear();
 			BaseInteractions.allowedItems.clear();
-			for (Identifier block : msg.blocks) {
+			for(Identifier block : msg.blocks) {
 				BaseInteractions.allowedBlocks.add(Registries.BLOCK.get(block));
 			}
-			for (Identifier block : msg.items) {
+			for(Identifier block : msg.items) {
 				BaseInteractions.allowedItems.add(Registries.ITEM.get(block));
 			}
 		});
 		Channels.MAIN.registerServerbound(BlockInteract.class, (msg, ctx) -> {
 
-			if (ctx.player().interactionManager.getGameMode().isSurvivalLike() && checkCooldown(ctx.player())) {
+			if(ctx.player().interactionManager.getGameMode().isSurvivalLike() && checkCooldown(ctx.player())) {
 				ItemStack st = ctx.player().getMainHandStack();
 				BlockState state = ctx.player().getWorld().getBlockState(msg.pos);
-				if (state.getBlock() == MBlocks.LOOTED_BLOCK) {
+				if(state.getBlock() == MBlocks.LOOTED_BLOCK) {
 					LootedBlockEntity ent = MBlocks.LOOTED_BLOCK.getBlockEntity(msg.pos, ctx.player().getWorld());
-					if (st != null && LootableLogic.meetBreakRequirement(st, ent.getRealBlock(), ctx.player())) {
+					if(st != null && LootableLogic.meetBreakRequirement(st, ent.getRealBlock(), ctx.player())) {
 						setCooldown(ctx.player());
 						ent.attackBlock(ctx.player());
+						st.postMine(ctx.player().getWorld(), state, msg.pos, ctx.player());
 						Lootables.loader.getTable(ent.getRealBlock().getBlock()).ifPresent(l -> {
-							if (l.getConnected() != null) {
-								for (var dir : Direction.values()) {
-									if (dir.getAxis() != Direction.Axis.Y) {
+							if(l.getConnected() != null) {
+								for(var dir : Direction.values()) {
+									if(dir.getAxis() != Direction.Axis.Y) {
 										interactAdjacentBlock(ctx.player(), msg.pos.offset(dir), ctx.player().getWorld(), l.getConnected());
 									}
 								}
 							}
 						});
 					}
-				} else if (state.hasBlockEntity() && ctx.player().getWorld().getBlockEntity(msg.pos) instanceof IAdvancedLootableBlock res) {
-					if (res.canBeInteracted()) {
+				} else if(state.hasBlockEntity() && ctx.player().getWorld().getBlockEntity(msg.pos) instanceof IAdvancedLootableBlock res) {
+					if(res.canBeInteracted()) {
 						setCooldown(ctx.player());
 						res.lootBlock(ctx.player());
 					}
-				} else if (st != null && LootableLogic.meetBreakRequirement(st, state, ctx.player())) {
+				} else if(st != null && LootableLogic.meetBreakRequirement(st, state, ctx.player())) {
 					ctx.player().getWorld().setBlockState(msg.pos, MBlocks.LOOTED_BLOCK.getDefaultState());
 					var te = MBlocks.LOOTED_BLOCK.getBlockEntity(msg.pos, ctx.player().getWorld());
 					te.setRealBlock(state);
 					setCooldown(ctx.player());
 					te.lastBreak = System.currentTimeMillis();
 					te.markDirty();
+					st.postMine(ctx.player().getWorld(), state, msg.pos, ctx.player());
 					LootableLogic.giveLoot(ctx.player(), msg.pos, state);
 					ctx.player().getWorld().syncWorldEvent(WorldEvents.BLOCK_BROKEN, msg.pos, Block.getRawIdFromState(state));
 					ctx.player().getWorld().playSound(null, msg.pos, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 0.5f, 1f + (float) Math.random());
 					Lootables.loader.getTable(state.getBlock()).ifPresent(l -> {
-						if (l.getConnected() != null) {
-							for (var dir : Direction.values()) {
-								if (dir.getAxis() != Direction.Axis.Y) {
+						if(l.getConnected() != null) {
+							for(var dir : Direction.values()) {
+								if(dir.getAxis() != Direction.Axis.Y) {
 									interactAdjacentBlock(ctx.player(), msg.pos.offset(dir), ctx.player().getWorld(), l.getConnected());
 								}
 							}
@@ -94,10 +96,10 @@ public class AdventureInteract {
 
 	private static void interactAdjacentBlock(ServerPlayerEntity player, BlockPos pos, World world, Block block) {
 		BlockState state = player.getWorld().getBlockState(pos);
-		if (state.getBlock() == MBlocks.LOOTED_BLOCK) {
+		if(state.getBlock() == MBlocks.LOOTED_BLOCK) {
 			LootedBlockEntity ent = MBlocks.LOOTED_BLOCK.getBlockEntity(pos, world);
 			ent.attackBlock(player);
-		} else if (state.getBlock() == block) {
+		} else if(state.getBlock() == block) {
 			player.getWorld().setBlockState(pos, MBlocks.LOOTED_BLOCK.getDefaultState());
 			var te = MBlocks.LOOTED_BLOCK.getBlockEntity(pos, world);
 			te.setRealBlock(state);
@@ -111,7 +113,7 @@ public class AdventureInteract {
 	}
 
 	private static boolean checkCooldown(PlayerEntity player) {
-		if (cooldowns.containsKey(player)) {
+		if(cooldowns.containsKey(player)) {
 			return player.getWorld().getTime() > cooldowns.get(player) + 10;
 		}
 		return true;

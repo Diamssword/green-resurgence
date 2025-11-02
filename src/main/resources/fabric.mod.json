@@ -27,6 +27,12 @@
     ],
     "cardinal-components": [
       "com.diamssword.greenresurgence.systems.Components"
+    ],
+    "mixinsquared": [
+      "com.diamssword.greenresurgence.mixin.YourModMixinCanceller"
+    ],
+    "lambdynlights:initializer": [
+      "com.diamssword.greenresurgence.dynamicLight.DynamicLightsInitializer"
     ]
   },
   "mixins": [

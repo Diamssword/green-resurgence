@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.9-SNAPSHOT'
+    id 'fabric-loom' version '1.11.8'
     id 'maven-publish'
 }
 
@@ -28,10 +28,23 @@ repositories {
             includeGroup("com.eliotlash.mclib")
         }
     }
+    maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven { url = "https://mvn.devos.one/releases" } // Porting Lib releases
+    maven { url = "https://mvn.devos.one/snapshots" } // Create and several dependencies
+    maven { url = "https://modmaven.dev/" } // Flywheel
+    maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
+    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven" } // Forge Config API Port
+    maven {
+        // LambDynamicLights
+        url "https://maven.gegy.dev/releases/"
+    }
     flatDir {
         dirs rootProject.file('libs')
     }
-
+    maven { url = "https://maven.bawnorton.com/releases" }
     maven { url "https://maven.architectury.dev/" }
 }
 
@@ -90,6 +103,17 @@ dependencies {
     modLocalRuntime name: "character_sheet-fabric-${character_version}"
     modLocalRuntime "dev.architectury:architectury-fabric:$project.architectury_api_version"
 
+    include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.7-beta.1")))
+
+    modCompileOnly("dev.lambdaurora.lambdynamiclights:lambdynamiclights-api:${lambdynamiclights_version}")
+    modLocalRuntime("dev.lambdaurora.lambdynamiclights:lambdynamiclights-runtime:${lambdynamiclights_version}")
+
+    //swap with modImplementation to run on test client
+    modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
+    //swap with modImplementation to run on test client
+    modCompileOnly("com.terraformersmc:modmenu:${modmenu_version}")
+
+    modLocalRuntime("maven.modrinth:sodium:${sodium_version}")
 }
 
 processResources {

@@ -1,35 +1,36 @@
 package com.diamssword.greenresurgence.systems.equipement;
 
-import com.google.common.collect.Multimap;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.hit.HitResult;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public interface IEquipmentUpgrade {
 	boolean canBeApplied(IEquipmentDef equipment, ItemStack stack);
 
+	public Map<String, EffectLevel> getEffectsLevels();
+
 	String slot(IEquipmentDef equipment);
 
-	Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(AdvEquipmentSlot slot, @Nullable PlayerEntity player);
-
-
-	void onInteraction(PlayerEntity wearer, AdvEquipmentSlot slot, InteractType interaction, HitResult context);
+	public default Map<String, IEquipmentEffect> getEffects() {
+		var res = new HashMap<String, IEquipmentEffect>();
+		for(String s : getEffectsLevels().keySet()) {
+			EquipmentEffects.get(s).ifPresent(c -> res.put(s, c));
+		}
+		return res;
+	}
 
 	/**
 	 * The chance for this upgrade to take damage instead of others
 	 */
-	float damageWheight();
+	float damageWeight();
 
-	void onTick(ItemStack stack, Entity parent);
 
 	enum InteractType {
 		ATTACK,
 		ATTACKED,
 		BREAK,
-		INTERACT
+		INTERACT,
+		TICK
 	}
 }

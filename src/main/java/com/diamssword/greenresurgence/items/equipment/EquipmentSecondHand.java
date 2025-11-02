@@ -2,9 +2,12 @@ package com.diamssword.greenresurgence.items.equipment;
 
 import com.diamssword.greenresurgence.items.weapons.ICustomPoseWeapon;
 import com.diamssword.greenresurgence.systems.character.PosesManager;
+import com.diamssword.greenresurgence.systems.equipement.EffectLevel;
 import com.diamssword.greenresurgence.systems.equipement.EquipmentSkins;
-import com.diamssword.greenresurgence.systems.equipement.IEquipmentUpgrade;
 import net.minecraft.item.ItemStack;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class EquipmentSecondHand extends EquipmentTool implements ICustomPoseWeapon {
 
@@ -14,8 +17,8 @@ public class EquipmentSecondHand extends EquipmentTool implements ICustomPoseWea
 	}
 
 	@Override
-	public IEquipmentUpgrade[] getBaseUpgrades() {
-		return new IEquipmentUpgrade[0];
+	public Map<String, EffectLevel> getBaseUpgrades() {
+		return new HashMap<>();
 	}
 
 	@Override

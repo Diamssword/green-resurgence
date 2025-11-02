@@ -46,6 +46,7 @@ public class GreenResurgenceClient implements ClientModInitializer {
 			});
 			pluginContext.addModels(new ModelIdentifier(GeckoToolEquipmentRenderer.BP_BG, "inventory"));
 		});
+		GreenResurgence.clientHelper = new ClientSideHelperImp();
 	}
 
 	@Environment(EnvType.CLIENT)

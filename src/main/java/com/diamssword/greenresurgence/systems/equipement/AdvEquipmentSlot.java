@@ -27,7 +27,8 @@ public enum AdvEquipmentSlot {
 	HEAD(AdvEquipmentSlot.Type.ARMOR, EquipmentSlot.HEAD),
 	BACKPACK(Type.BACKPACK, 0, "backpack"),
 	SATCHEL_LEFT(Type.SATCHEL, 0, "satchel_left"),
-	SATCHEL_RIGHT(Type.SATCHEL, 1, "satchel_right");
+	SATCHEL_RIGHT(Type.SATCHEL, 1, "satchel_right"),
+	UNKNOWN(Type.UNKNOWN, 1, "unknown");
 
 
 	private final AdvEquipmentSlot.Type type;
@@ -153,6 +154,7 @@ public enum AdvEquipmentSlot {
 		HAND,
 		ARMOR,
 		BACKPACK,
-		SATCHEL
+		SATCHEL,
+		UNKNOWN
 	}
 }

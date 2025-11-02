@@ -28,7 +28,7 @@ public class ActivatedSword extends SwordItem implements FabricItem {
 
 	@Override
 	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
-		if (slot == EquipmentSlot.MAINHAND && stack.getOrCreateNbt().getBoolean("activated"))
+		if(slot == EquipmentSlot.MAINHAND && stack.getOrCreateNbt().getBoolean("activated"))
 			return attributeModifiersPowered;
 
 		return super.getAttributeModifiers(slot);
@@ -43,4 +43,5 @@ public class ActivatedSword extends SwordItem implements FabricItem {
 		user.getItemCooldownManager().set(this, 20);
 		return TypedActionResult.consume(st);
 	}
+
 }

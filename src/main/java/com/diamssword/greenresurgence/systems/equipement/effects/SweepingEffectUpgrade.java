@@ -1,42 +1,36 @@
-package com.diamssword.greenresurgence.systems.equipement.upgrades;
+package com.diamssword.greenresurgence.systems.equipement.effects;
 
+import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.systems.equipement.AdvEquipmentSlot;
-import com.diamssword.greenresurgence.systems.equipement.IEquipmentDef;
+import com.diamssword.greenresurgence.systems.equipement.IEquipmentEffect;
 import com.diamssword.greenresurgence.systems.equipement.IEquipmentUpgrade;
+import com.diamssword.greenresurgence.systems.equipement.UpgradeActionContext;
 import com.google.common.collect.Multimap;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.Nullable;
 
-public class SweepingEffectUpgrade implements IEquipmentUpgrade {
+import java.util.List;
+
+import static net.minecraft.item.ItemStack.MODIFIER_FORMAT;
+
+public class SweepingEffectUpgrade implements IEquipmentEffect {
+
 	@Override
-	public boolean canBeApplied(IEquipmentDef equipment, ItemStack stack) {
-		return true;
+	public void getAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> map, AdvEquipmentSlot slot, UpgradeActionContext ctx) {
+
 	}
 
 	@Override
-	public String slot(IEquipmentDef equipment) {
-		return "";
-	}
-
-	@Override
-	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(AdvEquipmentSlot slot, @Nullable PlayerEntity player) {
-		return null;
-	}
-
-	@Override
-	public void onInteraction(PlayerEntity wearer, AdvEquipmentSlot slot, InteractType interaction, HitResult context) {
-		if(interaction == InteractType.ATTACK && context instanceof EntityHitResult res && res.getEntity() instanceof LivingEntity living) {
-			sweepAttack(wearer, living, 2, 10f, 2);
+	public void onInteraction(UpgradeActionContext ctx, AdvEquipmentSlot slot, IEquipmentUpgrade.InteractType interaction) {
+		if(interaction == IEquipmentUpgrade.InteractType.ATTACK && ctx.getTarget() != null) {
+			sweepAttack(ctx.getPlayerSource(), ctx.getTarget(), ctx.getLevel("sweeping").getLevel(), 10f, 2);
 		}
 	}
 
@@ -64,12 +58,17 @@ public class SweepingEffectUpgrade implements IEquipmentUpgrade {
 	}
 
 	@Override
-	public float damageWheight() {
-		return 0;
-	}
-
-	@Override
-	public void onTick(ItemStack stack, Entity parent) {
+	public void addTooltips(UpgradeActionContext ctx, AdvEquipmentSlot slot, List<Text> tooltip) {
+		if(slot == AdvEquipmentSlot.MAINHAND) {
+			tooltip.add(
+					Text.translatable(
+									"attribute.modifier.plus." + EntityAttributeModifier.Operation.ADDITION.getId(),
+									MODIFIER_FORMAT.format(ctx.getLevel("sweeping").getLevel()),
+									Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.sweeping.targets")
+							)
+							.formatted(Formatting.BLUE)
+			);
+		}
 
 	}
 }

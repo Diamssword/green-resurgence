@@ -18,6 +18,7 @@ import com.diamssword.greenresurgence.systems.crafting.Recipes;
 import com.diamssword.greenresurgence.systems.equipement.Equipments;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
+import com.diamssword.greenresurgence.utils.ClientSideHelper;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.wispforest.owo.registration.annotations.RegistryNamespace;
 import io.wispforest.owo.registration.reflect.AutoRegistryContainer;
@@ -46,7 +47,9 @@ public class GreenResurgence implements ModInitializer {
 		return new Identifier(ID, name);
 	}
 
+	//public static StatusEffect CONQUEST_SLOWNESS = null;
 	public static final com.diamssword.greenresurgence.ResurgenceConfig CONFIG = com.diamssword.greenresurgence.ResurgenceConfig.createAndLoad();
+	public static ClientSideHelper clientHelper = new ClientSideHelper();
 
 	@Override
 	public void onInitialize() {
@@ -77,6 +80,7 @@ public class GreenResurgence implements ModInitializer {
 		registerCommand("structureBlockHelper", StructureBlockHelperCommand::register);
 		registerCommand("resurgenceGui", OpenScreenCommand::register);
 		registerCommand("recipeHelper", RecipeHelperCommand::register);
+		registerCommand("worldTools", WorldToolsCommand::register);
 
 		ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
 			onPostInit();
@@ -97,7 +101,6 @@ public class GreenResurgence implements ModInitializer {
 		ClassesRegister.init();
 		CharactersApi.instance.unattachComponentFromCharacters(CharactersApi.CHARACTER_ATTACHED_COMPONENT_INVENTORY);
 		CharactersApi.instance.attachComponentToCharacters(asRessource("inventory"), p -> p.getComponent(Components.PLAYER_INVENTORY).getInventory(), CustomPlayerInventory::serializer, CustomPlayerInventory::unserializer);
-
 	}
 
 	public void registerCommand(String name, Consumer<LiteralArgumentBuilder<ServerCommandSource>> builder) {

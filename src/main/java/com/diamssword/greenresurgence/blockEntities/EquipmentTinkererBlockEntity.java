@@ -85,8 +85,9 @@ public class EquipmentTinkererBlockEntity extends BlockEntity {
 			currentEquipment.save();
 			if(currentEquipment.isMinimalUpgradesSet() && currentTool instanceof IEquipmentBlueprint bp) {
 				var nbts = currentEquipment.stack.getNbt();
-				var st = new ItemStack(bp.getEquipment().getEquipmentItem(), 1);
+				var st = bp.getEquipment().getEquipmentItem().getDefaultStack();
 				st.setNbt(nbts);
+				st.addHideFlag(ItemStack.TooltipSection.MODIFIERS);
 				inventory.setStack(0, st);
 			} else if(!currentEquipment.isMinimalUpgradesSet() && currentTool instanceof IEquipementItem bp) {
 				var nbts = currentEquipment.stack.getNbt();

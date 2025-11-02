@@ -132,6 +132,10 @@ public class MBlocks implements BlockRegistryContainer {
 	public static final EquipmentTinkererBlock EQUIPMENT_TINKERER = new EquipmentTinkererBlock(AbstractBlock.Settings.create().nonOpaque().strength(1, 100).suffocates(Blocks::never));
 	@ModelGen
 	public static final CrumbelingBlock CRUMBELING_BLOCK = new CrumbelingBlock(AbstractBlock.Settings.create().nonOpaque().dropsNothing().strength(99999, 99999).suffocates(Blocks::never));
+	@ModelGen
+	public static final CameleonBlock CAMO_WALL = new CameleonBlock(true);
+	@ModelGen
+	public static final CameleonBlock CAMO_FLOOR = new CameleonBlock(false);
 
 	@Override
 	public void afterFieldProcessing() {

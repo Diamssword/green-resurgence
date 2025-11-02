@@ -2,8 +2,8 @@ package com.diamssword.greenresurgence.items.equipment;
 
 import com.diamssword.greenresurgence.items.SimpleEnergyItemTiered;
 import com.diamssword.greenresurgence.materials.BatteryTiers;
+import com.diamssword.greenresurgence.systems.equipement.EffectLevel;
 import com.diamssword.greenresurgence.systems.equipement.ElectricStackBasedEquipment;
-import com.diamssword.greenresurgence.systems.equipement.IEquipmentUpgrade;
 import com.diamssword.greenresurgence.systems.equipement.IUpgradableEquipment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -21,6 +21,8 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class EquipmentToolElectric extends EquipmentTool implements SimpleEnergyItemTiered {
@@ -36,11 +38,6 @@ public class EquipmentToolElectric extends EquipmentTool implements SimpleEnergy
 	@Override
 	public boolean isEmissive() {
 		return emissive;
-	}
-
-	@Override
-	public boolean isNbtSynced() {
-		return false;
 	}
 
 	@Override
@@ -84,8 +81,8 @@ public class EquipmentToolElectric extends EquipmentTool implements SimpleEnergy
 	}
 
 	@Override
-	public IEquipmentUpgrade[] getBaseUpgrades() {
-		return new IEquipmentUpgrade[0];
+	public Map<String, EffectLevel> getBaseUpgrades() {
+		return new HashMap<>();
 	}
 
 	@Override

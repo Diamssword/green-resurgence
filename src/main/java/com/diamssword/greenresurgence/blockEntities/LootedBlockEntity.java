@@ -82,6 +82,7 @@ public class LootedBlockEntity extends BlockEntity {
 			this.lastBreak = System.currentTimeMillis();
 			this.markDirty();
 			this.world.updateListeners(this.pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_ALL);
+
 		}
 	}
 

@@ -1,7 +1,9 @@
 package com.diamssword.greenresurgence.items.equipment;
 
-import com.diamssword.greenresurgence.systems.equipement.IEquipmentUpgrade;
-import com.diamssword.greenresurgence.systems.equipement.upgrades.SweepingEffectUpgrade;
+import com.diamssword.greenresurgence.systems.equipement.EffectLevel;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class EquipmentToolHammer extends EquipmentTool {
 	public EquipmentToolHammer(String category, String subCategory) {
@@ -10,7 +12,9 @@ public class EquipmentToolHammer extends EquipmentTool {
 
 
 	@Override
-	public IEquipmentUpgrade[] getBaseUpgrades() {
-		return new IEquipmentUpgrade[]{new SweepingEffectUpgrade()};
+	public Map<String, EffectLevel> getBaseUpgrades() {
+		var m = new HashMap<String, EffectLevel>();
+		m.put("sweeping", new EffectLevel(1));
+		return m;
 	}
 }

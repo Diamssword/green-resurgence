@@ -1,9 +1,11 @@
 package com.diamssword.greenresurgence;
 
+import com.diamssword.greenresurgence.dynamicLight.DynLightEventHandler;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlockSet;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.items.*;
 import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinItem;
+import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinTooltipData;
 import com.diamssword.greenresurgence.items.weapons.GeckoActivated;
 import com.diamssword.greenresurgence.render.blockEntityRenderer.*;
 import com.diamssword.greenresurgence.render.cosmetics.ModularArmorLayerRenderer;
@@ -11,6 +13,8 @@ import com.diamssword.greenresurgence.structure.ItemPlacers;
 import com.diamssword.greenresurgence.structure.MultiblockInstance;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
+import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 
@@ -27,6 +31,16 @@ public class RenderersRegister {
 		StackBasedGeckoItem.ProviderFunction = GeckoToolEquipmentRenderer::RendererProvider;
 		EquipmentSkinItem.ProviderFunction = GeckoToolEquipmentRenderer::RendererProvider;
 		BackPackItem.ProviderFunction = BackpackArmorRenderer::RendererProvider;
+		TooltipComponentCallback.EVENT.register((a) -> {
+			if(a instanceof EquipmentSkinTooltipData dt)
+				return new EquipmentSkinTooltipComponent(dt);
+			return null;
+		});
+
+		//DynLight Compat
+		if(FabricLoader.getInstance().isModLoaded("lambdynlights")) {
+			DynLightEventHandler.register();
+		}
 	}
 
 	private static void blocksRenderers() {
