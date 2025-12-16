@@ -14,4 +14,8 @@ public interface IPlayerCustomPose {
 
 	public boolean shouldExitPose(PlayerEntity player);
 
+	default public int priority() {
+		return 0;
+	}
+
 }

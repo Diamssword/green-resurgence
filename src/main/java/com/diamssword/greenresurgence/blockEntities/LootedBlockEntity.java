@@ -3,7 +3,7 @@ package com.diamssword.greenresurgence.blockEntities;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.Containers;
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
-import com.diamssword.greenresurgence.containers.grids.GridContainer;
+import com.diamssword.greenresurgence.containers.grids.ExtractOnlyGrid;
 import com.diamssword.greenresurgence.containers.grids.IGridContainer;
 import com.diamssword.greenresurgence.systems.lootables.LootableLogic;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
@@ -87,13 +87,15 @@ public class LootedBlockEntity extends BlockEntity {
 	}
 
 	public void openInventory(ServerPlayerEntity player) {
-		if(inventory == null) {createInventory(player);}
-		Containers.createHandler(player, pos, (sync, inv, p1) -> new Container(sync, player, new GridContainer("loot", inventory, 3, 3)));
+		if(inventory == null)
+			createInventory(player);
+		Containers.createHandler(player, pos, (sync, inv, p1) -> new Container(sync, player, new ExtractOnlyGrid("loot", inventory, 3, 3)));
 
 	}
 
 	private void createInventory(ServerPlayerEntity player) {
 		this.lastBreak = System.currentTimeMillis();
+
 		inventory = new SimpleInventory(9);
 		inventory.addListener(ls -> this.markDirty());
 		LootableLogic.createLootInventory(player, pos, getRealBlock(), inventory);
@@ -148,12 +150,17 @@ public class LootedBlockEntity extends BlockEntity {
 	}
 
 	public static class Container extends MultiInvScreenHandler {
+
 		public Container(int syncId, PlayerInventory playerInventory) {
 			super(syncId, playerInventory);
 		}
 
 		public Container(int syncId, PlayerEntity player, IGridContainer... inventories) {
 			super(syncId, player, inventories);
+		}
+
+		public Container(int syncId, PlayerEntity player, boolean empty) {
+			super(syncId, player, empty);
 		}
 
 		@Override

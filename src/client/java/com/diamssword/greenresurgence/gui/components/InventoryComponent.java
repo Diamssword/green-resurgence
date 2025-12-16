@@ -13,13 +13,16 @@ import io.wispforest.owo.ui.parsing.UIParsing;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Element;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class InventoryComponent extends BaseComponent implements IHideableComponent {
-	public final Identifier SLOT_TEXTURE;
+	protected Identifier SLOT_TEXTURE;
 	public final String inventoryId;
+	protected Map<Integer, Identifier> icons = new HashMap<>();
 	public final String name;
 	public Text customName;
 	protected AnimatableProperty<PositionedRectangle> visibleArea;
@@ -27,6 +30,7 @@ public class InventoryComponent extends BaseComponent implements IHideableCompon
 	private int regionHeight = 18;
 	protected boolean blend = false;
 	private boolean hidden;
+	private int slotWidth;
 
 	public InventoryComponent(String inventoryId, int width, int height, String name) {
 		this.inventoryId = inventoryId;
@@ -44,8 +48,22 @@ public class InventoryComponent extends BaseComponent implements IHideableCompon
 
 	}
 
+	public InventoryComponent setIcon(int index, @Nullable Identifier texture) {
+		if(texture == null)
+			icons.remove(index);
+		else
+			icons.put(index, texture);
+		return this;
+	}
+
+	public InventoryComponent setBackground(Identifier texture) {
+		SLOT_TEXTURE = texture;
+		return this;
+	}
+
 	public void setSize(int width, int height) {
 		this.regionWidth = width * 18;
+		this.slotWidth = width;
 		this.regionHeight = (getInventoryName() != null ? 10 : 1) + height * 18;
 		this.visibleArea = AnimatableProperty.of(PositionedRectangle.of(0, 0, this.regionWidth, this.regionHeight));
 		this.applySizing();
@@ -125,6 +143,11 @@ public class InventoryComponent extends BaseComponent implements IHideableCompon
 				bottomEdge - visibleArea.y() - (name != null ? 10 : 1),
 				18, 18
 		);
+		icons.forEach((k, v) -> {
+			var x1 = k % slotWidth;
+			var y1 = k / slotWidth;
+			context.drawTexture(v, visibleArea.x() + (x1 * 18), visibleArea.y() + 1 + (name != null ? 9 : 0) + (y1 * 18), 0, 0, 16, 16, 16, 16);
+		});
 
 		if(this.blend) {
 			RenderSystem.disableBlend();

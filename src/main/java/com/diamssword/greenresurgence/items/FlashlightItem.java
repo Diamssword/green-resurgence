@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.items;
 
 import com.diamssword.greenresurgence.materials.BatteryTiers;
-import com.diamssword.greenresurgence.systems.equipement.IFlashLightProvider;
+import com.diamssword.greenresurgence.systems.equipement.utils.IFlashLightProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -41,6 +41,11 @@ public class FlashlightItem extends Item implements SimpleEnergyItemTiered, IFla
 			}
 		}
 
+	}
+
+	@Override
+	public boolean allowNbtUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
+		return false;
 	}
 
 	@Override

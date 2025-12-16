@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.systems.character;
 
+import com.diamssword.greenresurgence.items.equipment.IOffHandAttack;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.character.customPoses.IPlayerCustomPose;
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
@@ -13,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Hand;
 
 import java.util.Optional;
 
@@ -26,6 +28,8 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 	public final PlayerEntity player;
 	private NbtCompound carriedEntity;
 	public final HealthManager healthManager;
+	public float lastCooldownProgress;
+	public Hand nextHandSwing = Hand.OFF_HAND;
 
 	public PlayerData(PlayerEntity e) {
 		this.player = e;
@@ -47,7 +51,7 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 	}
 
 	public void placeCarriedEntity() {
-		if (this.carriedEntity != null) {
+		if(this.carriedEntity != null) {
 			getCarriedEntity().ifPresent(et -> player.getWorld().spawnEntity(et));
 			this.carriedEntity = null;
 		}
@@ -58,7 +62,7 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 	}
 
 	public Optional<Entity> getCarriedEntity() {
-		if (this.carriedEntity != null) {
+		if(this.carriedEntity != null) {
 			return EntityType.getEntityFromNbt(this.carriedEntity, player.getWorld()).map(e -> {
 				e.updatePosition(player.getX(), player.getY(), player.getZ());
 				return e;
@@ -86,9 +90,18 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 	}
 
 	public void setCustomPose(String id) {
-		if (id != null) {
-			customPose = PosesManager.createPose(id, player);
-			if (customPose != null)
+		if(id != null) {
+			if(customPose != null) {
+				var n = PosesManager.createPose(id, player);
+				if(n == null)
+					customPose = null;
+				else if(customPose.priority() <= n.priority())
+					customPose = n;
+				else
+					return;
+			} else
+				customPose = PosesManager.createPose(id, player);
+			if(customPose != null)
 				customPoseID = id;
 			else
 				customPoseID = null;
@@ -102,8 +115,8 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 
 	@Override
 	public void serverTick() {
-		if (customPose != null) {
-			if (customPose.shouldExitPose(player)) {
+		if(customPose != null) {
+			if(customPose.shouldExitPose(player)) {
 				setCustomPose(null);
 			} else {
 				customPose.tick(player);
@@ -114,27 +127,28 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 
 	@Override
 	public void readFromNbt(NbtCompound tag) {
-		if (tag.contains("health"))
+		if(tag.contains("health"))
 			healthManager.readNbt(tag.getCompound("health"));
-		if (tag.contains("pose"))
+		nextHandSwing = tag.getBoolean("offHandNext") ? Hand.MAIN_HAND : Hand.OFF_HAND;
+		if(tag.contains("pose"))
 			forcedPose = EntityPose.valueOf(tag.getString("pose"));
-		if (tag.contains("carriedEntity"))
+		if(tag.contains("carriedEntity"))
 			this.carriedEntity = tag.getCompound("carriedEntity");
-		if (tag.contains("customPoseID")) {
+		if(tag.contains("customPoseID")) {
 			var d = tag.getString("customPoseID");
-			if (d.equals("null")) {
+			if(d.equals("null")) {
 				customPose = null;
 				customPoseID = null;
 				player.calculateDimensions();
-			} else if (!d.equals(customPoseID) || customPose == null) {
+			} else if(!d.equals(customPoseID) || customPose == null) {
 				customPose = PosesManager.createPose(d, player);
 				player.calculateDimensions();
 			}
 			customPoseID = d;
 		}
-		if (tag.contains("shieldAmount"))
+		if(tag.contains("shieldAmount"))
 			healthManager.setShieldAmount(tag.getDouble("shieldAmount"));
-		if (tag.contains("energyAmount"))
+		if(tag.contains("energyAmount"))
 			healthManager.setEnergyAmount(tag.getDouble("energyAmount"));
 	}
 
@@ -146,17 +160,18 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 	public void writeSyncPacket(PacketByteBuf buf, ServerPlayerEntity recipient, int mode) {
 
 		NbtCompound tag = new NbtCompound();
-		if (mode == SYNC_MODE_FULL || mode == SYNC_MODE_CLOTH) {
-			if (forcedPose != null)
+		if(mode == SYNC_MODE_FULL || mode == SYNC_MODE_CLOTH) {
+			tag.putBoolean("offHandNext", nextHandSwing == Hand.OFF_HAND);
+			if(forcedPose != null)
 				tag.putString("pose", forcedPose.toString());
-			if (carriedEntity != null)
+			if(carriedEntity != null)
 				tag.put("carriedEntity", carriedEntity);
-			if (customPoseID != null)
+			if(customPoseID != null)
 				tag.putString("customPoseID", customPoseID);
 			else
 				tag.putString("customPoseID", "null");
 		}
-		if (mode == SYNC_MODE_FULL || mode == SYNC_MODE_HUD) {
+		if(mode == SYNC_MODE_FULL || mode == SYNC_MODE_HUD) {
 			tag.putDouble("shieldAmount", healthManager.getShieldAmount());
 			tag.putDouble("energyAmount", healthManager.getEnergyAmount());
 		}
@@ -167,18 +182,18 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 	@Override
 	public void applySyncPacket(PacketByteBuf buf) {
 		NbtCompound tag = buf.readNbt();
-		if (tag != null) {
+		if(tag != null) {
 			this.readFromNbt(tag);
 		}
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
-		if (forcedPose != null)
+		if(forcedPose != null)
 			tag.putString("pose", forcedPose.toString());
-		if (customPoseID != null)
+		if(customPoseID != null)
 			tag.putString("customPoseID", customPoseID);
-		if (carriedEntity != null)
+		if(carriedEntity != null)
 			tag.put("carriedEntity", carriedEntity);
 		var t1 = new NbtCompound();
 		healthManager.writeNbt(t1);
@@ -187,10 +202,12 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 
 	@Override
 	public void clientTick() {
-		if (customPose != null) {
+		if(customPose != null) {
 			customPose.tick(player);
 		}
 		healthManager.update();
+		if(player.getOffHandStack().getItem() instanceof IOffHandAttack)
+			player.preferredHand = nextHandSwing;
 	}
 
 	public static void syncFull(PlayerEntity player) {

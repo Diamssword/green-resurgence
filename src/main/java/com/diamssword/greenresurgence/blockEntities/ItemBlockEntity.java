@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 public class ItemBlockEntity extends BlockEntity {
 	protected Vec3d rotation = Vec3d.ZERO;
 	protected Vec3d position = Vec3d.ZERO;
-	private boolean lightOffset = true;
+	private boolean lightOffset = false;
 	protected double size = 10;
 	private ItemStack item = new ItemStack(Items.APPLE);
 	public Direction baseDir;

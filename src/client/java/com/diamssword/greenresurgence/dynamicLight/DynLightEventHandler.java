@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence.dynamicLight;
 
-import com.diamssword.greenresurgence.systems.equipement.IFlashLightProvider;
+import com.diamssword.greenresurgence.systems.equipement.utils.IFlashLightProvider;
 import dev.lambdaurora.lambdynlights.api.behavior.DynamicLightBehavior;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;

@@ -31,6 +31,7 @@ public class GridContainerSyncer {
 		registerGridSerializer(OffHandGrid.class, "playerOffhand", OffHandGrid::new);
 		registerGridSerializer(BagsGrid.class, "bagSlots", BagsGrid::new);
 		registerGridSerializer(ContainerArmorGrid.class, "containerArmor", ContainerArmorGrid::new);
+		registerGridSerializer(ExtractOnlyGrid.class, "extractOnly", ExtractOnlyGrid::new);
 	}
 
 	public int count;
@@ -71,9 +72,13 @@ public class GridContainerSyncer {
 		IGridContainer[] res = new IGridContainer[count];
 		for(int i = 0; i < count; i++) {
 			var fac = factories.get(serializingId[i]);
+			if(fac != null)
+				res[i] = fac.accept(names[i], sizes[i * 2], sizes[(i * 2) + 1]);
+			else
+				res[i] = new GridContainer(names[i], sizes[i * 2], sizes[(i * 2) + 1]);
 
-			if(fac != null) {res[i] = fac.accept(names[i], sizes[i * 2], sizes[(i * 2) + 1]);} else {res[i] = new GridContainer(names[i], sizes[i * 2], sizes[(i * 2) + 1]);}
 		}
+
 		return res;
 	}
 

@@ -26,7 +26,7 @@ public class MItems implements ItemRegistryContainer {
 				var st = new ItemStack(Registries.ITEM.get(new Identifier(GreenResurgence.ID, "equipments/skin_modifier")));
 				st.getOrCreateNbt().putString("skin", "iron_pipe");
 				group.addTab(Icon.of(st), "weapons", null, false);
-				group.addTab(Icon.of(new ItemStack(Registries.ITEM.get(new Identifier(GreenResurgence.ID, "container_placer")))), "placer", null, false);
+				group.addTab(Icon.of(new ItemStack(Registries.ITEM.get(new Identifier(GreenResurgence.ID, "placers/container")))), "placer", null, false);
 				group.addTab(Icon.of(GreenResurgence.asRessource("textures/item/materials/wood_furniture.png"), 0, 0, 16, 16), "materials", null, false);
 			}).build();
 	public static final Item WIRE_SPOOL = new CableItem(withDiamsTab());

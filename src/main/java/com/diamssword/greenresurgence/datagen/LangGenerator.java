@@ -10,27 +10,32 @@ import net.minecraft.util.Identifier;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LangGenerator extends FabricLanguageProvider {
-	private final Path existingFilePath;
-	private final Path existingStatsPath;
+	private final List<Path> list = new ArrayList<>();
+	private static final String[] pathsPrefixes = new String[]{
+			"",
+			"stats",
+			"equipment"
+	};
 	public static Map<Identifier, String> auto_name = new HashMap<>();
 
 	public LangGenerator(FabricDataOutput dataGenerator, String code) {
 		super(dataGenerator, code);
-		existingFilePath = getDevPath("lang/_" + code + ".json");
-		existingStatsPath = getDevPath("lang/stats_" + code + ".json");
-		//existingFilePath = dataGenerator.getModContainer().findPath("assets/green_resurgence/lang/_" + code + ".json");
-		//existingStatsPath = dataGenerator.getModContainer().findPath("assets/green_resurgence/lang/stats_" + code + ".json");
+		for(var p : pathsPrefixes) {
+			list.add(getDevPath("lang/" + p + "_" + code + ".json"));
+		}
 	}
 
 	@Override
 	public void generateTranslations(TranslationBuilder translationBuilder) {
 		try {
 
-			for (GenericBlockSet set : GenericBlocks.sets) {
+			for(GenericBlockSet set : GenericBlocks.sets) {
 				set.langGenerator(translationBuilder);
 			}
 
@@ -40,31 +45,29 @@ public class LangGenerator extends FabricLanguageProvider {
 			translationBuilder.add("materials.tier.3", "Tier III");
 			translationBuilder.add("materials.tier.4", "Tier IV");
 			translationBuilder.add("materials.tier.5", "Tier V");
-			try {
-				translationBuilder.add(existingFilePath);
-			} catch (IOException e) {
-				e.printStackTrace();
+			for(Path path : list) {
+				try {
+					translationBuilder.add(path);
+				} catch(IOException e) {
+					e.printStackTrace();
+				}
 			}
-			try {
-				translationBuilder.add(existingStatsPath);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} catch (Exception e) {
+
+		} catch(Exception e) {
 			throw new RuntimeException("Failed to add existing language file!", e);
 		}
 	}
 
 	private void autoLocalize(TranslationBuilder builder, Identifier id, String name) {
 		var i = name.lastIndexOf("/");
-		if (i > 0)
+		if(i > 0)
 			name = name.substring(i + 1);
 		builder.add("item." + id.getNamespace() + "." + id.getPath().replaceAll("/", "."), capitalizeString(name.replaceAll("_", " ")));
 	}
 
 	public static String autoLocalizeString(String name) {
 		var i = name.lastIndexOf("/");
-		if (i > 0)
+		if(i > 0)
 			name = name.substring(i + 1);
 		return capitalizeString(name.replaceAll("_", " "));
 	}
@@ -72,11 +75,11 @@ public class LangGenerator extends FabricLanguageProvider {
 	public static String capitalizeString(String string) {
 		char[] chars = string.toLowerCase().toCharArray();
 		boolean found = false;
-		for (int i = 0; i < chars.length; i++) {
-			if (!found && Character.isLetter(chars[i])) {
+		for(int i = 0; i < chars.length; i++) {
+			if(!found && Character.isLetter(chars[i])) {
 				chars[i] = Character.toUpperCase(chars[i]);
 				found = true;
-			} else if (Character.isWhitespace(chars[i]) || chars[i] == '.' || chars[i] == '\'') { // You can add other chars here
+			} else if(Character.isWhitespace(chars[i]) || chars[i] == '.' || chars[i] == '\'') { // You can add other chars here
 				found = false;
 			}
 		}
@@ -86,5 +89,5 @@ public class LangGenerator extends FabricLanguageProvider {
 	public static Path getDevPath(String path) {
 		return Paths.get(Paths.get(System.getProperty("user.dir")).getParent().getParent().toString(), "src/main/devResources/" + path);
 	}
-	
+
 }

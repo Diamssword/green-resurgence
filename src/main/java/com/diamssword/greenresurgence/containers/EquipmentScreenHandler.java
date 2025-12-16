@@ -4,6 +4,7 @@ import com.diamssword.greenresurgence.containers.grids.GridContainer;
 import com.diamssword.greenresurgence.containers.grids.GridContainerSyncer;
 import com.diamssword.greenresurgence.containers.grids.IGridContainer;
 import com.diamssword.greenresurgence.systems.equipement.*;
+import com.diamssword.greenresurgence.utils.Utils;
 import io.wispforest.owo.client.screens.SyncedProperty;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -164,12 +165,14 @@ public class EquipmentScreenHandler extends MultiInvScreenHandler {
 		@Override
 		public boolean canInsert(ItemStack stack) {
 			if(stack.getItem() instanceof IEquipmentUpgrade up) {
-				if(up.slot(equipment).equals(slot)) {
+
+				if(Utils.arrayContains(up.slots(equipment), slot)) {
 					return up.canBeApplied(equipment, stack);
 				}
 			}
 			return false;
 		}
+
 
 		public int getMaxItemCount() {
 			return 1;

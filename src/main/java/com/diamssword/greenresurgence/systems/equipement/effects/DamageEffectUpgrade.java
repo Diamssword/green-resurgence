@@ -11,7 +11,9 @@ public class DamageEffectUpgrade implements IEquipmentEffect {
 	@Override
 	public void getAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> map, AdvEquipmentSlot slot, UpgradeActionContext ctx) {
 		if(slot == AdvEquipmentSlot.MAINHAND) {
-			map.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(EquipmentAttributes.ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", 5, EntityAttributeModifier.Operation.ADDITION));
+			var eff = ctx.getLevel(EquipmentEffects.ATTACK_DAMAGE);
+			if(eff.getLevel() != 0)
+				map.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(EquipmentValues.ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", eff.getLevel(), EntityAttributeModifier.Operation.ADDITION));
 		}
 	}
 

@@ -2,7 +2,7 @@
   "parent": "minecraft:block/slab",
   "textures": {
     "bottom": "green_resurgence:block/diams/gray_glazed_terracotta",
-    "side": "green_resurgence:block/diams/gray_glazed_terracotta",
+    "side": "green_resurgence:block/diams/gray_concrete",
     "top": "green_resurgence:block/diams/gray_glazed_terracotta"
   }
 }

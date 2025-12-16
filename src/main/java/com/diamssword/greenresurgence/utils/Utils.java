@@ -15,6 +15,13 @@ public class Utils {
 		return uuid.toString().replaceAll("-", "");
 	}
 
+	public static boolean arrayContains(String[] array, String text) {
+		for(String s : array) {
+			if(s.equals(text))
+				return true;
+		}
+		return false;
+	}
 
 	public static <T> T selectRandomWeighted(List<T> items, java.util.function.Function<T, Float> weightFunction) {
 		float totalWeight = 0f;

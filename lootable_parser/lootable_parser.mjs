@@ -1,6 +1,8 @@
 import * as fs from "fs"
 const table_dic={};
-parseBlocks(fs.readFileSync("csv/blocks_v2.csv").toString());
+
+//TODO  prendre en compte 'pourcentage 1', 'pourcentage 2', et lier tables <num> aux pourcentages (electromenager 1 > electromenager/pourcentage_1)
+parseBlocks(fs.readFileSync("csv/blocks.csv").toString());
 /**
  * 
  * @param {string[]} files 
@@ -9,7 +11,9 @@ function combineTable(files)
 {
     const res={rollMin:1000,rollMax:0,items:{}}
     files.forEach(f=>{
-        var ob=parse(fs.readFileSync("csv/"+f+".csv").toString());
+        let parts=f.trim().split(" ");
+        const number=parseInt(parts[1])||1
+        var ob=parse(fs.readFileSync("csv/"+parts[0]+".csv").toString());
         for(var k in ob)
             {
                 const o=ob[k];
@@ -33,7 +37,12 @@ function combineTable(files)
                     {
                         
                         const qts=splitNb(o["quantitée"])
-                        res.items[item]={min:qts[0],max:qts[1],perc:parseFloat(o["pourcentage"])};
+                        let d=o["pourcentage"];
+                        if(o["pourcentage "+number])
+                            d=o["pourcentage "+number]
+                        else
+                            console.error("didn't find row 'pourcentage "+number+"' for "+f+" : defaulting to row 'pourcentage'")
+                        res.items[item]={min:qts[0],max:qts[1],perc:parseFloat(d)};
                     }
                 }
                 else
@@ -95,6 +104,8 @@ function splitNb(text)
 function handleBlock(id,props)
 {
     var d={block:id,empty:props.replace,tables:{}};
+    if(props.connected)
+        d.connected=props.connected
     for(var tool in props.tables)
     {
         var tn=props.tables[tool].join("_");
@@ -117,14 +128,15 @@ var result={};
 for(var k in ob)
 {
     const o=ob[k];
-    var table=o["table"].trim();
-    var tool=  o["outils"].trim();
-    var replace= o["replace"]?o["replace"]:"minecraft:air"
+    var table=o["Table"].trim();
+    var tool=  o["Outils"].trim();
+    var replace= o["Remplace"]?o["Remplace"]:"minecraft:air"
+    var connected= o["Remplace"];
     if(table && tool && replace)
     {
             o["blocs"].split(" ").forEach(b=>{
                 if(!result[b])
-                    result[b]={replace, tables:{[tool]:[table]}}
+                    result[b]={replace,connected, tables:{[tool]:[table]}}
                 else
                 {
                     if(!result[b].tables[tool])

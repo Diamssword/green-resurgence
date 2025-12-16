@@ -3,7 +3,7 @@
     "block": "green_resurgence:cereals",
     "empty": "minecraft:air",
     "tables": {
-      "hammer": "green_resurgence:lootable/carton"
+      "hand": "green_resurgence:lootable/carton"
     }
   },
   {

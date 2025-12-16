@@ -1,0 +1,3 @@
+{
+    "build:car":["build:car/civil","build:car/special"]
+}

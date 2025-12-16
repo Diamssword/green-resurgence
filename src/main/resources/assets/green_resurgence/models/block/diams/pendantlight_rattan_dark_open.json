@@ -1,0 +1,5 @@
+{
+"parent":"green_resurgence:block/diams/pendantlight_rattan_light",
+"textures": {
+		"0": "green_resurgence:block/diams/pendantlight_ratttan_dark"
+		}}

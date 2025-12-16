@@ -3,6 +3,8 @@ package com.diamssword.greenresurgence.items.equipment;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.MItems;
 import com.diamssword.greenresurgence.systems.equipement.*;
+import com.diamssword.greenresurgence.systems.equipement.utils.MapEffectMaker;
+import com.diamssword.greenresurgence.systems.equipement.utils.TooltipHelper;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
@@ -14,14 +16,17 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class EquipmentUpgradeItem extends Item implements IEquipmentUpgrade {
 	protected final String[] allowed;
 	private final String slot;
 	private final int durability;
 	private final float weight;
-	private List<String> effects = new ArrayList<>();
+	private Map<String, EffectLevel> effects = new HashMap<>();
 
 	public EquipmentUpgradeItem(String allowed, String slot, float wheight) {
 		this(new OwoItemSettings().maxCount(8).group(MItems.GROUP).tab(1), allowed, slot, -1, wheight);
@@ -31,12 +36,28 @@ public class EquipmentUpgradeItem extends Item implements IEquipmentUpgrade {
 		this(new OwoItemSettings().maxCount(8).group(MItems.GROUP).tab(1), allowed, slot, durability, wheight);
 	}
 
-	public EquipmentUpgradeItem(String allowed, String slot, int durability, float wheight, String... effects) {
-		this(new OwoItemSettings().maxCount(8).group(MItems.GROUP).tab(1), allowed, slot, durability, wheight, effects);
-	}
 
 	public EquipmentUpgradeItem(String allowed, String slot) {
 		this(new OwoItemSettings().maxCount(8).group(MItems.GROUP).tab(1), allowed, slot, -1, 1);
+	}
+
+
+	public EquipmentUpgradeItem(OwoItemSettings settings, String allowed, String slot, int durability, float weight) {
+		super(settings);
+		this.allowed = allowed.split(",");
+		this.slot = slot;
+		this.durability = durability;
+		this.weight = weight;
+	}
+
+	public EquipmentUpgradeItem setEffect(MapEffectMaker map) {
+		this.effects = map.get();
+		return this;
+	}
+
+	public EquipmentUpgradeItem setEffectMap(Map<String, EffectLevel> effects) {
+		this.effects = effects;
+		return this;
 	}
 
 	@Override
@@ -56,7 +77,7 @@ public class EquipmentUpgradeItem extends Item implements IEquipmentUpgrade {
 				tools.add(Text.translatable("item." + GreenResurgence.ID + ".equipments." + sp[0] + "_" + sp[1]));
 		}
 		if(!tools.isEmpty()) {
-			var t = Text.empty();
+			var t = Text.empty().formatted(Formatting.LIGHT_PURPLE);
 			for(int i = 0; i < tools.size(); i++) {
 				t = t.append(tools.get(i));
 				if(i < tools.size() - 1)
@@ -74,7 +95,7 @@ public class EquipmentUpgradeItem extends Item implements IEquipmentUpgrade {
 				});
 			});
 			if(!subList.isEmpty()) {
-				TooltipHelper.appendUpgradeHeader(value, ctx.context == UpgradeActionContext.ItemContext.UPGRADE, tooltip);
+				TooltipHelper.appendUpgradeHeader(this, value, ctx.context, tooltip);
 				tooltip.addAll(subList);
 			}
 		}
@@ -94,22 +115,9 @@ public class EquipmentUpgradeItem extends Item implements IEquipmentUpgrade {
 		return durability;
 	}
 
-	public EquipmentUpgradeItem(OwoItemSettings settings, String allowed, String slot, int durability, float wheight, String... effects) {
-		super(settings);
-		this.allowed = allowed.split(",");
-		this.slot = slot;
-		this.durability = durability;
-		this.weight = wheight;
-		this.effects = Arrays.asList(effects);
-	}
-
 	@Override
 	public Map<String, EffectLevel> getEffectsLevels() {
-		var map = new HashMap<String, EffectLevel>();
-		for(String effect : effects) {
-			map.put(effect, new EffectLevel(1));
-		}
-		return map;
+		return effects;
 	}
 
 	@Override
@@ -129,8 +137,8 @@ public class EquipmentUpgradeItem extends Item implements IEquipmentUpgrade {
 	}
 
 	@Override
-	public String slot(IEquipmentDef equipment) {
-		return slot;
+	public String[] slots(IEquipmentDef equipment) {
+		return new String[]{slot};
 	}
 
 	@Override

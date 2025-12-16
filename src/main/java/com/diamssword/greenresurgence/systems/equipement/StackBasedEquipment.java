@@ -2,6 +2,8 @@ package com.diamssword.greenresurgence.systems.equipement;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.items.equipment.EquipmentUpgradeItem;
+import com.diamssword.greenresurgence.systems.equipement.utils.ExtraEntityHitResult;
+import com.diamssword.greenresurgence.systems.equipement.utils.TooltipHelper;
 import com.diamssword.greenresurgence.utils.Utils;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -103,17 +105,6 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 		return content.getOrDefault(slot, ItemStack.EMPTY);
 	}
 
-	public void setUpgrade(ItemStack upgradeItem) {
-		if(upgradeItem.getItem() instanceof EquipmentUpgradeItem up && equipment != null && up.canBeApplied(equipment, upgradeItem)) {
-			this.content.put(up.slot(equipment), upgradeItem);
-			this.broken.remove(up.slot(equipment));
-			if(up.slot(equipment).equals(Equipments.P_SKIN)) {
-				skin = upgradeItem.getOrCreateNbt().getString("skin");
-			}
-			computeEffects();
-		}
-
-	}
 
 	public IEquipmentDef getEquipment() {
 		return equipment;
@@ -134,8 +125,14 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 	public void setUpgrade(ItemStack upgradeItem, String slot) {
 		if(upgradeItem.isEmpty())
 			clearUpgrade(slot);
-		else
-			setUpgrade(upgradeItem);
+		else if(upgradeItem.getItem() instanceof EquipmentUpgradeItem up && equipment != null && up.canBeApplied(equipment, upgradeItem)) {
+			this.content.put(slot, upgradeItem);
+			this.broken.remove(slot);
+			if(slot.equals(Equipments.P_SKIN)) {
+				skin = upgradeItem.getOrCreateNbt().getString("skin");
+			}
+			computeEffects();
+		}
 	}
 
 	public boolean isMinimalUpgradesSet() {
@@ -186,7 +183,7 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 	}
 
 	@Override
-	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(AdvEquipmentSlot slot, @Nullable PlayerEntity player) {
+	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(AdvEquipmentSlot slot, @Nullable LivingEntity player) {
 		if(!isComputed)
 			computeEffects();
 
@@ -212,25 +209,23 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 			eq.ifPresent(equipmentUpgradeItem -> equipmentUpgradeItem.getEffectsLevels().forEach((k1, v1) -> {
 				EquipmentEffects.get(k1).ifPresent(a -> {
 					if(!combinedEffects.containsKey(a))
-						combinedEffects.put(a, v1);
+						combinedEffects.put(a, v1.copy());
 					else
-						combinedEffects.get(a).add(v1);
-					if(!combinedEffectsString.containsKey(k1))
-						combinedEffectsString.put(k1, v1);
+						combinedEffects.get(a).add(v1.copy());
+					combinedEffectsString.put(k1, combinedEffects.get(a));
 				});
 			}));
 		});
 		baseUpgrades.forEach((k, v) -> {
 			EquipmentEffects.get(k).ifPresent(a -> {
-
 				if(!combinedEffects.containsKey(a))
-					combinedEffects.put(a, v);
+					combinedEffects.put(a, v.copy());
 				else
-					combinedEffects.get(a).add(v);
-				if(!combinedEffectsString.containsKey(k))
-					combinedEffectsString.put(k, v);
+					combinedEffects.get(a).add(v.copy());
+				combinedEffectsString.put(k, combinedEffects.get(a));
 			});
 		});
+
 	}
 
 	protected Optional<EquipmentUpgradeItem> getAsEquipment(String slot) {
@@ -241,24 +236,27 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 	}
 
 	@Override
-	public void onInteraction(PlayerEntity wearer, AdvEquipmentSlot slot, IEquipmentUpgrade.InteractType interaction, HitResult context) {
-
+	public float onInteraction(LivingEntity wearer, AdvEquipmentSlot slot, IEquipmentUpgrade.InteractType interaction, HitResult context) {
 		if(!isComputed)
 			computeEffects();
 		if(context instanceof EntityHitResult res && res.getEntity() instanceof LivingEntity li) {
-			var ctx = new UpgradeActionContext(wearer, li, UpgradeActionContext.ItemContext.TOOL).setLevels(combinedEffectsString);
-			combinedEffects.forEach((k, v) -> {
 
+			var ctx = new UpgradeActionContext(wearer, li, UpgradeActionContext.ItemContext.TOOL).setLevels(combinedEffectsString);
+			if(res instanceof ExtraEntityHitResult ex) {
+				ctx.setWeapon(ex.weapon).setContextValue(ex.damage).setReturnValue(ex.damage);
+			}
+			combinedEffects.forEach((k, v) -> {
 				k.onInteraction(ctx, slot, interaction);
 			});
+			return ctx.getReturnValue();
 		}
-
+		return 0f;
 	}
 
 	public boolean onToolDamage(LivingEntity owner, AdvEquipmentSlot slot) {
 		if(content.isEmpty()) return true;
 		var keys = this.content.keySet().stream().filter(v -> getAsEquipment(v).map(EquipmentUpgradeItem::isDamageable).orElse(false));
-		var picked = Utils.selectRandomWeighted(keys.toList(), k -> getAsEquipment(k).map(EquipmentUpgradeItem::damageWeight).orElse(0f));
+		var picked = Utils.selectRandomWeighted(keys.toList(), k -> getAsEquipment(k).map((e) -> e.damageWeight() + this.equipment.getDamageChance(k)).orElse(0f));
 		var dura = this.content.get(picked).getDamage() + 1;
 		if(dura >= getAsEquipment(picked).get().maxDurability()) {
 			if(owner instanceof PlayerEntity) {
@@ -290,7 +288,7 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 				});
 			});
 			if(!subList.isEmpty()) {
-				TooltipHelper.appendUpgradeHeader(value, ctx.context == UpgradeActionContext.ItemContext.UPGRADE, tooltip);
+				TooltipHelper.appendUpgradeHeader(stack.getItem(), value, ctx.context, tooltip);
 				tooltip.addAll(subList);
 			}
 		}

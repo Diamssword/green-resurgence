@@ -1,7 +1,31 @@
+/// <reference types="node" />
 const fs = require("fs")
 const ph=require("path")
 const allBundles = {};
+/**
+ * @type {{[key:string]:string[]}}
+ */
+var markers={};
+if(fs.existsSync("markers.json"))
+    markers=JSON.parse(fs.readFileSync("markers.json","utf-8"))
+else
+    console.log("no markers.json file detected")
 loadStructureDir("structures")
+console.log("Adding custom markers")
+Object.keys(markers).forEach(key=>{
+    const objs=markers[key];
+    if(allBundles[key])
+        console.warn(key+" already exist in the bundles, the marker will override it")
+    allBundles[key]=[];
+    objs.forEach(o=>{
+        if(allBundles[o])
+        {
+            allBundles[key]=[...allBundles[key],...allBundles[o]]
+        }
+        else
+            console.warn("marker "+key+" is looking for "+o+" but can't find it.")
+    })
+})
 setupFolder()
 function loadStructureDir(mainDir) {
     const bundles = {};

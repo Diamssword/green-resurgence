@@ -15,4 +15,5 @@ public interface IEquipmentDef {
 
 	String[] getRequiredSlots();
 
+	float getDamageChance(String part);
 }

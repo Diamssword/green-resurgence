@@ -4,6 +4,7 @@ import com.diamssword.characters.api.CharactersApi;
 import com.diamssword.greenresurgence.commands.*;
 import com.diamssword.greenresurgence.containers.Containers;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
+import com.diamssword.greenresurgence.effects.ResurgenceEffects;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.items.equipment.EquipmentItems;
 import com.diamssword.greenresurgence.materials.Materials;
@@ -65,6 +66,7 @@ public class GreenResurgence implements ModInitializer {
 		MBlockEntities.registerAll();
 		FieldRegistrationHandler.register(Containers.class, ID, false);
 		FieldRegistrationHandler.register(MEntities.class, ID, false);
+		FieldRegistrationHandler.register(ResurgenceEffects.class, ID, false);
 		ItemPlacers.init();
 		MItems.GROUP.initialize();
 		Channels.initialize();

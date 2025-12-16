@@ -33,7 +33,7 @@ import java.util.Random;
 public class LootableLogic {
 	public static ActionResult onRightClick(PlayerEntity player, World w, Hand hand, BlockHitResult hit) {
 		if(player instanceof ServerPlayerEntity pl) {
-			if(pl.interactionManager.getGameMode().isSurvivalLike() && player.getMainHandStack().isEmpty()) {
+			if(pl.interactionManager.getGameMode().isSurvivalLike()) {
 				BlockPos p = hit.getBlockPos();
 				BlockState state = player.getWorld().getBlockState(p);
 				if(state.getBlock() == MBlocks.LOOTED_BLOCK) {
@@ -107,6 +107,10 @@ public class LootableLogic {
 		return getGoodTool(tool, block, mode) != null;
 	}
 
+	public static boolean isContainer(BlockState block) {
+		return Lootables.isGoodTool(block.getBlock(), Lootables.CONTAINER.id());
+	}
+
 	public static boolean meetBreakRequirement(ItemStack tool, BlockState block, PlayerEntity player) {
 
 		var t = getGoodTool(tool, block, 0);
@@ -122,15 +126,16 @@ public class LootableLogic {
 	 * @param mode  0= left click only 1= right click only 2= both
 	 * @return the tool ID or null;
 	 */
-	private static Identifier getGoodTool(ItemStack tool, BlockState block, int mode) {
-		if(tool.isEmpty() && block != null) {
+	public static Identifier getGoodTool(ItemStack tool, BlockState block, int mode) {
+
+		/*if(tool.isEmpty() && block != null) {
 			if(Lootables.isGoodTool(block.getBlock(), Lootables.CONTAINER.id()))
 				return (mode == 1 || mode == 2) ? Lootables.CONTAINER.id() : null;
 			else if(Lootables.isGoodTool(block.getBlock(), Lootables.HAND.id()))
 				return (mode == 0 || mode == 2) ? Lootables.HAND.id() : null;
 			else
 				return null;
-		}
+		}*/
 		List<TagKey<Item>> list;
 		if(tool.getItem() instanceof IEquipementItem eq)
 			list = eq.getEquipment(tool).getTags();
@@ -141,7 +146,15 @@ public class LootableLogic {
 			if(Lootables.isGoodTool(block.getBlock(), it.id()))
 				return it.id();
 		}
-
+		if(block != null) {
+			if(Lootables.isGoodTool(block.getBlock(), Lootables.CONTAINER.id())) {
+				if(mode == 1 || mode == 2)
+					return Lootables.CONTAINER.id();
+			} else if(Lootables.isGoodTool(block.getBlock(), Lootables.HAND.id())) {
+				if(mode == 0 || mode == 2)
+					return Lootables.HAND.id();
+			}
+		}
 		return null;
 	}
 

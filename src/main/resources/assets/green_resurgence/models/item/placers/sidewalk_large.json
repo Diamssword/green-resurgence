@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "green_resurgence:item/placers/sidewalk",
+    "layer1": "green_resurgence:item/placers/x20"
+  }
+}

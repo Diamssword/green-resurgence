@@ -6,7 +6,6 @@ import com.diamssword.greenresurgence.systems.equipement.EffectLevel;
 import com.diamssword.greenresurgence.systems.equipement.EquipmentSkins;
 import net.minecraft.item.ItemStack;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class EquipmentTwoHanded extends EquipmentTool implements ICustomPoseWeapon {
@@ -16,10 +15,10 @@ public class EquipmentTwoHanded extends EquipmentTool implements ICustomPoseWeap
 		super(category, subCategory);
 	}
 
-	@Override
-	public Map<String, EffectLevel> getBaseUpgrades() {
-		return new HashMap<>();
+	public EquipmentTwoHanded(String category, String subCategory, Map<String, EffectLevel> baseEffects) {
+		super(category, subCategory, baseEffects);
 	}
+
 
 	@Override
 	public boolean shouldRemoveOffHand() {

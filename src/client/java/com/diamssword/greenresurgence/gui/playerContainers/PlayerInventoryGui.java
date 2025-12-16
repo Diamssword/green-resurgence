@@ -41,15 +41,20 @@ public class PlayerInventoryGui extends PlayerBasedGui<VanillaPlayerInvMokup> {
 		var ls = rootComponent.childById(FlowLayout.class, "recipeMenu");
 		var queue = rootComponent.childById(FlowLayout.class, "recipeProgress");
 		var collection = Recipes.get(GreenResurgence.asRessource("player"));
-		if (collection.isPresent()) {
+		if(collection.isPresent()) {
 			var recipes = collection.get().getRecipes(client.player);
-			for (var rec : recipes) {
+			for(var rec : recipes) {
 				ls.child(create(rec));
 			}
 		}
 		playerinv = client.player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_INVENTORY);
 		playerinv.getCrafterProvider().onNewRecipeQueued(() -> redrawQueue(queue, playerinv.getCrafterProvider()));
 		redrawQueue(queue, playerinv.getCrafterProvider());
+		this.handler.onReady(c -> {
+			this.invsComps.forEach((k, v) -> {
+			});
+		});
+
 	}
 
 	private void redrawQueue(FlowLayout container, TimedCraftingProvider provider) {
@@ -59,16 +64,16 @@ public class PlayerInventoryGui extends PlayerBasedGui<VanillaPlayerInvMokup> {
 
 		provider.getPendingCrafts().forEach(v -> {
 			var r = v.recipe.result(client.player).getCurrentItem(client.getRenderTime());
-			if (stacks.containsKey(r.getItem())) {
+			if(stacks.containsKey(r.getItem())) {
 				var st = stacks.get(r.getItem());
 				st.setCount(st.getCount() + r.getCount());
 			} else
 				stacks.put(r.getItem(), r);
 		});
-		for (var st : stacks.values()) {
+		for(var st : stacks.values()) {
 			var k = addQueue(st);
 			container.child(k);
-			if (last == null)
+			if(last == null)
 				last = k;
 		}
 	}
@@ -86,15 +91,15 @@ public class PlayerInventoryGui extends PlayerBasedGui<VanillaPlayerInvMokup> {
 		cli.surface2(Surface.VANILLA_TRANSLUCENT.and(Surface.outline(0xc4c9c3FF)));
 		cli.gap(2).padding(Insets.of(2)).surface(Surface.VANILLA_TRANSLUCENT).margins(Insets.vertical(1));
 		var ings = recipe.ingredients(client.player);
-		for (var ing : ings) {
-			if (ing.getType().isItem)
+		for(var ing : ings) {
+			if(ing.getType().isItem)
 				cli.child(Components.item(ing.getCurrentItem(client.getRenderTime())).showOverlay(true).setTooltipFromStack(true));
 
 		}
 		cli.child(arrow_c.get());
 
 		var res = recipe.result(client.player);
-		if (res.getType().isItem)
+		if(res.getType().isItem)
 			cli.child(Components.item(res.getCurrentItem(client.getRenderTime())).showOverlay(true).setTooltipFromStack(true));
 		return cli;
 	}
@@ -102,8 +107,8 @@ public class PlayerInventoryGui extends PlayerBasedGui<VanillaPlayerInvMokup> {
 	@Override
 	protected void handledScreenTick() {
 		super.handledScreenTick();
-		if (playerinv != null && last != null) {
-			if (last.children().get(0) instanceof ItemCooldownComponent co)
+		if(playerinv != null && last != null) {
+			if(last.children().get(0) instanceof ItemCooldownComponent co)
 				co.setCooldown(playerinv.getCrafterProvider().getCraftProgress());
 
 		}

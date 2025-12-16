@@ -5,10 +5,8 @@ import com.diamssword.greenresurgence.containers.EquipmentScreenHandler;
 import com.diamssword.greenresurgence.gui.components.BetterEntityComponent;
 import com.diamssword.greenresurgence.gui.components.InventoryComponent;
 import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinItem;
-import com.diamssword.greenresurgence.systems.equipement.EquipmentSkins;
-import com.diamssword.greenresurgence.systems.equipement.Equipments;
-import com.diamssword.greenresurgence.systems.equipement.IEquipmentBlueprint;
-import com.diamssword.greenresurgence.systems.equipement.IEquipmentUpgrade;
+import com.diamssword.greenresurgence.systems.equipement.*;
+import com.diamssword.greenresurgence.utils.Utils;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.container.GridLayout;
@@ -68,7 +66,7 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 		contL.margins(Insets.vertical(5));
 		contL.gap(10);
 		this.handler.onEquipmentReady(v -> {
-			var g = simpleGridSlotSetup(v.getSlots());
+			var g = simpleGridSlotSetup(handler.getEquipment(), v.getSlots());
 			panel.child(contL);
 			if(g != null)
 				panel.child(g);
@@ -84,7 +82,7 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 			if(st.getItem() instanceof IEquipmentUpgrade eq) {
 				var name = this.handler.getInventoryForSlot(slot);
 				if(name.contains("equipment_")) {
-					if(eq.slot(handler.getEquipment()).equals(name.replace("equipment_", "")))
+					if(Utils.arrayContains(eq.slots(handler.getEquipment()), name.replace("equipment_", "")))
 						ctx.fill(x, y, x + 16, y + 16, 0x603A6218);
 				}
 
@@ -107,16 +105,34 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 		}
 	}
 
-	private static GridLayout simpleGridSlotSetup(String[] slots) {
-		if(slots.length == 7 || slots.length == 10) {
+	private static GridLayout simpleGridSlotSetup(IEquipmentDef equipment, String[] slots) {
+		if(slots.length == 7 || slots.length == 8) {
 			var b = slots.length == 7;
 			var grid = Containers.grid(Sizing.content(), Sizing.content(), 4, b ? 2 : 3);
 			grid.padding(Insets.of(2));
 			for(int i = 0; i < slots.length; i++) {
 				var slot = slots[i];
 				var x = i < 4 ? 0 : (i > 6 ? 2 : 1);
-				var y = i < 4 ? i : 1 + (i % 3);
-				grid.child(new InventoryComponent("equipment_" + slot, 1, 1, "disabled").margins(Insets.of(1)), y, x);
+				var y = 0;
+				if(i != 0) {
+					if(slot.endsWith("head"))
+						y = 1;
+					else if(slot.endsWith("binding"))
+						y = 2;
+					else
+						y = 3;
+				}
+				InventoryComponent comp = new InventoryComponent("equipment_" + slot, 1, 1, "disabled");
+				comp.margins(Insets.of(1));
+
+				var texture = slot;
+				if(slot.startsWith("extra"))
+					texture = "skin";
+				if(slot.equals(Equipments.P_HEAD))
+					texture = equipment.getEquipmentType();
+				comp.setIcon(0, GreenResurgence.asRessource("textures/gui/slots/indicators/equipment_" + texture + ".png"));
+
+				grid.child(comp, y, x);
 			}
 			return grid;
 		}

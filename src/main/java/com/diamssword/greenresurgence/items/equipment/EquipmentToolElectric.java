@@ -105,6 +105,11 @@ public class EquipmentToolElectric extends EquipmentTool implements SimpleEnergy
 	}
 
 	@Override
+	public boolean allowNbtUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
+		return false;
+	}
+
+	@Override
 	public IUpgradableEquipment getEquipment(ItemStack stack) {
 		return new ElectricStackBasedEquipment(category, subCategory, stack);
 	}

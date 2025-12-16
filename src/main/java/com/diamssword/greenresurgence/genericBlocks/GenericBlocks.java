@@ -137,7 +137,7 @@ public class GenericBlocks {
 				.addSub(BlockType.PILLAR, ModelType.CARPET, HitBox.SMALL_TOP).togglable().light(12).setTransparency(Transparency.CUTOUT).addGroup("lamps").disableGen(true);
 		diams.create("lamp_neon_vertical_empty", "lamp_neon_vertical_broken")
 				.addSub(BlockType.PILLAR, ModelType.CARPET, HitBox.SMALL_TOP).setTransparency(Transparency.CUTOUT).addGroup("lamps").disableGen(true);
-		diams.create("lamp/ceiling_lamp_fan").addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.FIXED_SLAB_TOP).togglable().light(16).setTransparency(Transparency.TRANSPARENT).disableGen(true).addGroup("lamps");
+		diams.create("lamp/ceiling_lamp_fan").addSub(BlockType.PILLAR, ModelType.PILLAR, HitBox.FIXED_SLAB_TOP).togglable().light(15).setTransparency(Transparency.TRANSPARENT).disableGen(true).addGroup("lamps");
 		diams.create(allColors("lampshade_wool_")).addSub(BlockType.PILLAR, ModelType.CARPET, HitBox.MEDIUM).togglable().light(12).setTransparency(Transparency.CUTOUT).addGroup("lampshade").disableGen(true);
 		diams.create("lamp_base_stick_spruce", "lamp_base_stick_oak", "lamp_base_spruce", "lamp_base_oak").addSub(BlockType.PILLAR, ModelType.CARPET, HitBox.CENTER).setTransparency(Transparency.CUTOUT).addGroup("lampshade").disableGen(true);
 		//cartons
@@ -183,7 +183,8 @@ public class GenericBlocks {
 		//shower
 		diams.create(simpleList("shower_", "", "wall_head", "round_wall_head", "round_head_with_hand", "round_head", "round_ceiling_head", "mixer", "head_with_hand", "head", "ceiling_head"))
 				.addSub(BlockType.PILLAR, ModelType.CARPET, HitBox.CARPET).notSolid().setTransparency(Transparency.CUTOUT).disableGen(true).addGroup("shower");
-		diams.create("pendantlight_rattan_light", "pendantlight_rattan_dark", "trash_can_round_green", "trash_can_round_iron", "dino_meat_mascot", "trash_can_fast_food_red", "trash_can_fast_food_green", "trash_can_fast_food_gray", "trash_can_fast_food_black", "trash_can_square_exterior_wood", "trash_can_square_exterior_green", "restaurant_display_light", "restaurant_display_dark").addSub(BlockType.PILLAR).setTransparency(Transparency.CUTOUT).disableGen(true);
+		diams.create("pendantlight_rattan_light", "pendantlight_rattan_dark").addSub(BlockType.PILLAR).togglable().light(13).setTransparency(Transparency.CUTOUT).addGroup("lamps").disableGen(true);
+		diams.create("trash_can_round_green", "trash_can_round_iron", "dino_meat_mascot", "trash_can_fast_food_red", "trash_can_fast_food_green", "trash_can_fast_food_gray", "trash_can_fast_food_black", "trash_can_square_exterior_wood", "trash_can_square_exterior_green", "restaurant_display_light", "restaurant_display_dark").addSub(BlockType.PILLAR).setTransparency(Transparency.CUTOUT).disableGen(true);
 		diams.create(simpleList("luggage_", "", "antique_small_brown", "antique_small_white", "basket", "basket_stand", "picnic")).addSub(BlockType.PILLAR, ModelType.SLAB, HitBox.SLAB).setTransparency(Transparency.NOTFULL).disableGen(true);
 		diams.create(append(simpleList("bathtub_", new String[]{"right_", "left_"}, new String[]{"empty", "water"}))).addSub(BlockType.PILLAR, ModelType.SLAB).setTransparency(Transparency.CUTOUT).seat(CHAIR_SLAB).disableGen(true);
 		//baricade
@@ -298,8 +299,7 @@ public class GenericBlocks {
 	static GenericBlockSet conquest = new GenericBlockSet("conquest");
 
 	static {
-		conquest.create("dark_green_sphagnum_moss", "elegant_sunburst_lichen", "maritime_sunburst_lichen", "wolf_lichen", "reindeer_lichen", "red_sphagnum_moss", "yellow_sphagnum_moss", "green_sphagnum_moss").addSub(BlockType.ALL_SIDE_PANEL).disableGen(false).sound(BlockSoundGroup.VINE).setTransparency(Transparency.TRANSPARENT).addGroup("lichen");
-
+		conquest.create("dark_green_sphagnum_moss", "elegant_sunburst_lichen", "maritime_sunburst_lichen", "wolf_lichen", "reindeer_lichen", "red_sphagnum_moss", "yellow_sphagnum_moss", "green_sphagnum_moss", "glow_lichen").addSub(BlockType.ALL_SIDE_PANEL).disableGen(false).sound(BlockSoundGroup.VINE).setTransparency(Transparency.CUTOUT).addGroup("lichen");
 		sets.add(conquest);
 	}
 

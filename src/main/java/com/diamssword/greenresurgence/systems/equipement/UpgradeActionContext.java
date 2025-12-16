@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.systems.equipement;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,22 +11,60 @@ import java.util.Map;
 public class UpgradeActionContext {
 	public static enum ItemContext {
 		TOOL,
-		UPGRADE
+		UPGRADE,
+		BLUEPRINT
 	}
 
 	protected LivingEntity target;
-	protected PlayerEntity source;
+	protected LivingEntity source;
+	protected ItemStack weapon = ItemStack.EMPTY;
+	/**
+	 * Used mostly to pass and  modify attack damages
+	 */
+	protected float contextValue = 0f;
+	protected float returnValue = 0f;
 	public final ItemContext context;
 	protected Map<String, EffectLevel> levels = new HashMap<>();
 
-	public UpgradeActionContext(PlayerEntity source, LivingEntity target, ItemContext context) {
+	public UpgradeActionContext(LivingEntity source, LivingEntity target, ItemContext context) {
 		this.source = source;
 		this.target = target;
 		this.context = context;
 	}
 
+	public boolean isClient() {
+		return source.getWorld().isClient;
+	}
+
 	public UpgradeActionContext setLevels(Map<String, EffectLevel> levels) {
 		this.levels = levels;
+		return this;
+	}
+
+	public UpgradeActionContext setContextValue(float value) {
+		this.contextValue = value;
+		return this;
+	}
+
+	public float getContextValue() {
+		return contextValue;
+	}
+
+	public ItemStack getWeapon() {
+		return weapon;
+	}
+
+	public float getReturnValue() {
+		return returnValue;
+	}
+
+	public UpgradeActionContext setReturnValue(float value) {
+		this.returnValue = value;
+		return this;
+	}
+
+	public UpgradeActionContext setWeapon(ItemStack weapon) {
+		this.weapon = weapon;
 		return this;
 	}
 
@@ -35,7 +74,7 @@ public class UpgradeActionContext {
 	}
 
 	public EffectLevel getLevel(String id) {
-		return levels.getOrDefault(id, new EffectLevel(0));
+		return levels.getOrDefault(id, new EffectLevel(0f));
 	}
 
 	public LivingEntity getTarget() {
@@ -43,6 +82,13 @@ public class UpgradeActionContext {
 	}
 
 	public PlayerEntity getPlayerSource() {
+		if(source instanceof PlayerEntity pl)
+			return pl;
+		return null;
+	}
+
+
+	public LivingEntity getLivingSource() {
 		return source;
 	}
 

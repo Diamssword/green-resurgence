@@ -23,6 +23,10 @@ import net.minecraft.util.shape.VoxelShape;
 
 public class BoxRenderers {
 	public static void drawAdventureOutline(BlockPos pos, net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext ctx) {
+		drawAdventureOutline(pos, ctx, 1, 1, 1);
+	}
+
+	public static void drawAdventureOutline(BlockPos pos, net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext ctx, float r, float g, float b) {
 		BlockState st = ctx.world().getBlockState(pos);
 		VertexConsumerProvider.Immediate store = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
 		MatrixStack matrix = ctx.matrixStack();
@@ -35,16 +39,16 @@ public class BoxRenderers {
 			Box box = shape.getBoundingBox().expand(0.005);
 			long ticks = MinecraftClient.getInstance().world.getTime();
 			float tot = (float) (Math.sin(2 * Math.PI * ticks / 40) * (0.7f - -0f) / 2 + (0.7f + -0f) / 2); // Math.min(0.5f,(ticks % 20) / 20f);
-			WorldRenderer.drawBox(matrix, store.getBuffer(RenderLayer.LINES), box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, 1, 1, 1, 0.3f + tot);
+			WorldRenderer.drawBox(matrix, store.getBuffer(RenderLayer.LINES), box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, r, g, b, 0.3f + tot);
 		}
 		matrix.pop();
 	}
 
 	public static void drawStructureBox(MatrixStack matrix, Vec3d pos, Vec3d size, float r, float g, float b, float a) {
 		MinecraftClient mc = MinecraftClient.getInstance();
-		VertexConsumerProvider.Immediate store = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
+		VertexConsumerProvider.Immediate store = mc.getBufferBuilders().getEntityVertexConsumers();
 		matrix.push();
-		Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
+		Camera camera = mc.gameRenderer.getCamera();
 		if(camera.isReady()) {
 
 			Box box = new Box(pos.x, pos.y, pos.z, pos.x + size.x, pos.y + size.y, pos.z + size.z).expand(0.005);
@@ -113,8 +117,8 @@ public class BoxRenderers {
 				}
 			}
 
-			drawStructureBox(matrix, new Vec3d(pos.getX(), pos.getY() + 1, pos.getZ()), new Vec3d(1, 1, 1), 0.5f, 1f, 1, 1);
-			drawStructureBox(matrix, new Vec3d(pos1.getX(), pos1.getY() + 1, pos1.getZ()), new Vec3d(inf.size().getX() + i, inf.size().getY() + j, inf.size().getZ() + k), 1, 0.5f, 1, 1);
+			drawStructureBox(matrix, new Vec3d(pos.getX(), pos.getY(), pos.getZ()), new Vec3d(1, 1, 1), 0.5f, 1f, 1, 1);
+			drawStructureBox(matrix, new Vec3d(pos1.getX(), pos1.getY(), pos1.getZ()), new Vec3d(inf.size().getX() + i, inf.size().getY() + j, inf.size().getZ() + k), 1, 0.5f, 1, 1);
 		}
 	}
 

@@ -39,12 +39,12 @@ public class UniversalPlacerItem extends Item implements IStructureProvider {
 
 	@Override
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		if (stack.hasNbt()) {
-			if (stack.getNbt().contains("pos")) {
+		if(stack.hasNbt()) {
+			if(stack.getNbt().contains("pos")) {
 				BlockPos p = BlockPos.fromLong(stack.getNbt().getLong("pos"));
 				tooltip.add(Text.of(p.getX() + " " + p.getY() + " " + p.getZ()));
 			}
-			if (stack.getNbt().contains("dir")) {
+			if(stack.getNbt().contains("dir")) {
 
 				tooltip.add(Text.of(Direction.byId(stack.getNbt().getInt("dir")).toString()));
 			}
@@ -53,17 +53,18 @@ public class UniversalPlacerItem extends Item implements IStructureProvider {
 
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
-		if (context.getWorld().isClient || context.getPlayer() == null) return ActionResult.PASS;
+		if(context.getWorld().isClient || context.getPlayer() == null) return ActionResult.PASS;
 		BlockPos pos1 = context.getBlockPos().add(0, 1, 0);
 
 		NbtCompound tag = context.getStack().getOrCreateNbt();
-		if (tag.contains("pos")) {
+		if(tag.contains("pos")) {
 			BlockPos pos = BlockPos.fromLong(tag.getLong("pos"));
-			if (pos.equals(context.getBlockPos())) {
-				boolean res = loadStructure((ServerWorld) context.getWorld(), this.getStructureName(context.getStack(), context.getWorld()), pos1, context.getHorizontalPlayerFacing(), context.getStack());
+			var dir = Direction.byId(tag.getInt("dir"));
+			if(pos.equals(context.getBlockPos())) {
+				boolean res = loadStructure((ServerWorld) context.getWorld(), this.getStructureName(context.getStack(), context.getWorld()), pos1, dir, context.getStack());
 				tag.remove("pos");
 				tag.remove("dir");
-				if (!res) {
+				if(!res) {
 					context.getPlayer().sendMessage(Text.of("Impossible de charger " + this.getStructureName(context.getStack(), context.getWorld())), true);
 				}
 				return res ? ActionResult.SUCCESS : ActionResult.FAIL;
@@ -81,10 +82,10 @@ public class UniversalPlacerItem extends Item implements IStructureProvider {
 	}
 
 	public boolean loadStructure(ServerWorld serverLevel, Identifier structureName, BlockPos blockPos, Direction facing, ItemStack st) {
-		if (structureName != null) {
+		if(structureName != null) {
 			try {
 				StructureType type = strutctureType(st, serverLevel);
-				if (type == StructureType.jigsaw)
+				if(type == StructureType.jigsaw)
 					return loadJigSaw(serverLevel, blockPos, facing, structureName);
 				else {
 					StructureTemplateManager structureManager = serverLevel.getStructureTemplateManager();
@@ -92,7 +93,7 @@ public class UniversalPlacerItem extends Item implements IStructureProvider {
 					structure2 = structureManager.getTemplate(structureName);
 					return structure2.filter(structureTemplate -> this.place(serverLevel, structureTemplate, blockPos, facing, false, type == StructureType.centered)).isPresent();
 				}
-			} catch (Exception e) {
+			} catch(Exception e) {
 				e.printStackTrace();
 				return false;
 			}
@@ -112,12 +113,12 @@ public class UniversalPlacerItem extends Item implements IStructureProvider {
 		Random random = world.getRandom();
 		Structure.Context context = new Structure.Context(world.getRegistryManager(), chunkGenerator, chunkGenerator.getBiomeSource(), world.getChunkManager().getNoiseConfig(), structureTemplateManager, world.getSeed(), new ChunkPos(pos), world, biome -> true);
 		Optional<Structure.StructurePosition> optional = JigsawHelper.generate(context, registryEntry, Optional.of(StructureInfos.PLACER_ENTRY), 7, blockPos, false, Optional.empty(), 128, StructureInfos.getRotation(dir));
-		if (optional.isEmpty())
+		if(optional.isEmpty())
 			optional = JigsawHelper.generate(context, registryEntry, Optional.empty(), 7, blockPos, true, Optional.empty(), 128, StructureInfos.getRotation(dir));
-		if (optional.isPresent()) {
+		if(optional.isPresent()) {
 			StructurePiecesCollector structurePiecesCollector = optional.get().generate();
-			for (StructurePiece structurePiece : structurePiecesCollector.toList().pieces()) {
-				if (!(structurePiece instanceof PoolStructurePiece poolStructurePiece)) continue;
+			for(StructurePiece structurePiece : structurePiecesCollector.toList().pieces()) {
+				if(!(structurePiece instanceof PoolStructurePiece poolStructurePiece)) continue;
 				poolStructurePiece.generate(world, structureAccessor, chunkGenerator, random, BlockBox.infinite(), pos, false);
 			}
 			return true;
@@ -137,7 +138,7 @@ public class UniversalPlacerItem extends Item implements IStructureProvider {
 	@Override
 	public BlockPos getPosition(ItemStack stack, World w) {
 		NbtCompound tag = stack.getOrCreateNbt();
-		if (tag.contains("pos")) {
+		if(tag.contains("pos")) {
 			return BlockPos.fromLong(tag.getLong("pos"));
 		}
 		return null;
@@ -146,7 +147,7 @@ public class UniversalPlacerItem extends Item implements IStructureProvider {
 	@Override
 	public Direction getDirection(ItemStack stack, World w) {
 		NbtCompound tag = stack.getOrCreateNbt();
-		if (tag.contains("dir")) {
+		if(tag.contains("dir")) {
 			return Direction.byId(tag.getInt("dir"));
 		}
 		return Direction.NORTH;
@@ -161,7 +162,7 @@ public class UniversalPlacerItem extends Item implements IStructureProvider {
 	@Override
 	public Identifier getStructureName(ItemStack stack, World w) {
 		NbtCompound tag = stack.getOrCreateNbt();
-		if (tag.contains("structure")) {
+		if(tag.contains("structure")) {
 			return Optional.ofNullable(Identifier.tryParse(tag.getString("structure"))).orElse(new Identifier("empty"));
 		}
 		return new Identifier("empty");
@@ -170,7 +171,7 @@ public class UniversalPlacerItem extends Item implements IStructureProvider {
 	@Override
 	public StructureType strutctureType(ItemStack stack, World w) {
 		NbtCompound tag = stack.getOrCreateNbt();
-		if (tag.contains("type")) {
+		if(tag.contains("type")) {
 			return StructureType.getById(tag.getInt("type"));
 		}
 		return StructureType.normal;

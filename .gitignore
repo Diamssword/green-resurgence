@@ -34,3 +34,4 @@ skin_conf_gen/textures
 skin_conf_gen/node_modules
 skin_conf_gen/cloths.json
 src/main/resources/assets/green_resurgence/textures/cloth
+.idea

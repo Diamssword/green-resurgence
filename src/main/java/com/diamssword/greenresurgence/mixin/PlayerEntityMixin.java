@@ -1,11 +1,17 @@
 package com.diamssword.greenresurgence.mixin;
 
+import com.diamssword.greenresurgence.items.equipment.IOffHandAttack;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.PosesPackets;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.attributs.Attributes;
 import com.diamssword.greenresurgence.systems.character.HealthManager;
-import com.mojang.authlib.GameProfile;
+import com.diamssword.greenresurgence.systems.character.PlayerData;
+import com.diamssword.greenresurgence.systems.equipement.AdvEquipmentSlot;
+import com.diamssword.greenresurgence.systems.equipement.IEquipementItem;
+import com.diamssword.greenresurgence.systems.equipement.IEquipmentUpgrade;
+import com.diamssword.greenresurgence.systems.equipement.utils.DamageHandling;
+import com.diamssword.greenresurgence.systems.equipement.utils.ExtraEntityHitResult;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -20,7 +26,6 @@ import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
@@ -55,21 +60,72 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	@Shadow
 	public abstract void playSound(SoundEvent sound, float volume, float pitch);
 
-	@Inject(at = @At("HEAD"), method = "attack")
+	@Inject(at = @At("HEAD"), method = "attack", cancellable = true)
+	private void cleanedOnAttack(Entity target, CallbackInfo ci) {
+		var main = this.getMainHandStack();
+		var off = this.getOffHandStack();
+		var inverted = this.getComponent(Components.PLAYER_DATA).nextHandSwing == Hand.OFF_HAND;
+		if(inverted && off.getItem() instanceof IOffHandAttack && off.getItem() instanceof IEquipementItem eq) {
+			DamageHandling.attackWithTool((PlayerEntity) (Object) this, target, Hand.OFF_HAND, off, eq);
+			ci.cancel();
+		} else if(main.getItem() instanceof IEquipementItem eq) {
+			DamageHandling.attackWithTool((PlayerEntity) (Object) this, target, Hand.MAIN_HAND, main, eq);
+			ci.cancel();
+		} else if(off.getItem() instanceof IOffHandAttack)
+			this.getComponent(Components.PLAYER_DATA).nextHandSwing = inverted ? Hand.MAIN_HAND : Hand.OFF_HAND;
+
+	}
+
+	//DONE
+	//@Inject(at = @At("HEAD"), method = "attack")
 	private void onAttack(Entity target, CallbackInfo ci) {
 		this.originalIsOnGround = this.isOnGround();
 		this.setOnGround(true);
+		var off = this.getOffHandStack();
+
+		if(off.getItem() instanceof IOffHandAttack && this.getComponent(Components.PLAYER_DATA).nextHandSwing == Hand.OFF_HAND) {
+			var main = this.getMainHandStack();
+			if(!main.isEmpty()) {
+				this.getAttributes().removeModifiers(main.getAttributeModifiers(EquipmentSlot.MAINHAND));
+			}
+			this.getAttributes().addTemporaryModifiers(off.getAttributeModifiers(EquipmentSlot.MAINHAND));
+
+		}
+
 	}
 
-	@Inject(at = @At("TAIL"), method = "attack")
+	//DONE
+	//@Inject(at = @At("TAIL"), method = "attack")
+	private void onAttackEnd(Entity target, CallbackInfo ci) {
+		var off = this.getOffHandStack();
+		var comp = this.getComponent(Components.PLAYER_DATA);
+		if(off.getItem() instanceof IOffHandAttack) {
+			if(comp.nextHandSwing == Hand.OFF_HAND) {
+				var main = this.getMainHandStack();
+				this.getAttributes().removeModifiers(off.getAttributeModifiers(EquipmentSlot.MAINHAND));
+				if(!main.isEmpty()) {
+					this.getAttributes().addTemporaryModifiers(main.getAttributeModifiers(EquipmentSlot.MAINHAND));
+				}
+				comp.nextHandSwing = Hand.MAIN_HAND;
+			} else
+				comp.nextHandSwing = Hand.OFF_HAND;
+			if(!this.getWorld().isClient)
+				PlayerData.syncApparence((PlayerEntity) (Object) this);
+		} else
+			comp.nextHandSwing = Hand.MAIN_HAND;
+
+	}
+
+	//DONE
+//	@Inject(at = @At("TAIL"), method = "attack")
 	private void onAttackTail(Entity target, CallbackInfo ci) {
 		this.setOnGround(this.originalIsOnGround);
 	}
 
-	@Inject(at = @At("TAIL"), method = "<init>")
+	/*@Inject(at = @At("TAIL"), method = "<init>")
 	private void init(World world, BlockPos pos, float yaw, GameProfile gameProfile, CallbackInfo ci) {
 	}
-
+*/
 
 	@Inject(at = @At("TAIL"), method = "canFoodHeal", cancellable = true)
 	private void canFoodHeal(CallbackInfoReturnable<Boolean> cir) {
@@ -91,6 +147,9 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	@Shadow
 	public abstract PlayerInventory getInventory();
 
+	@Shadow
+	public abstract float getAttackCooldownProgress(float baseTime);
+
 	@Inject(at = @At("HEAD"), method = "dismountVehicle")
 	public void dismountVehicle(CallbackInfo ci) {
 		if(this.getVehicle() instanceof PlayerEntity && !this.getEntityWorld().isClient) {
@@ -98,7 +157,33 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 		}
 	}
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;onAttacking(Lnet/minecraft/entity/Entity;)V"), method = "attack")
+	//DONE
+/*	@Redirect(
+			method = "attack",
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"
+			)
+	)
+
+ */
+	private boolean onDamageRedirect(Entity target, DamageSource source, float f) {
+		var stack = this.getMainHandStack();
+		if(stack.getItem() instanceof IEquipementItem eq) {
+			var modifiedDmg = eq.getEquipment(stack).onInteraction(this, AdvEquipmentSlot.MAINHAND, IEquipmentUpgrade.InteractType.PRE_ATTACK, new ExtraEntityHitResult(target, stack, f));
+			return target.damage(source, modifiedDmg);
+		}
+		return target.damage(source, f);
+	}
+
+	//DONE
+	//@Inject(at = @At(value = "HEAD"), method = "resetLastAttackedTicks")
+	public void captureCooldown(CallbackInfo ci) {
+		this.getComponent(Components.PLAYER_DATA).lastCooldownProgress = this.getAttackCooldownProgress(0.5f);
+	}
+
+	//DONE
+	//@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;onAttacking(Lnet/minecraft/entity/Entity;)V"), method = "attack")
 	public void attack(Entity target, CallbackInfo ci) {
 		float g = (float) this.getAttributeValue(Attributes.PLAYER_KNOCKBACK);
 		if(g > 0.0F) {
@@ -108,10 +193,11 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 			} else {
 				target.addVelocity(-MathHelper.sin(this.getYaw() * (float) (Math.PI / 180.0)) * g, 0.1, MathHelper.cos(this.getYaw() * (float) (Math.PI / 180.0)) * g);
 			}
+			this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_KNOCKBACK, this.getSoundCategory(), 1.0F, 1.0F);
 		}
 	}
 
-	@Inject(at = @At("HEAD"), method = "applyDamage", cancellable = true)
+	//	@Inject(at = @At("HEAD"), method = "applyDamage", cancellable = true)
 	protected void applyDamage(DamageSource source, float amount, CallbackInfo ci) {
 		if(!this.isInvulnerableTo(source)) {
 			var man = this.getComponent(Components.PLAYER_DATA).healthManager;
@@ -170,7 +256,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 		}
 	}
 
-	@Inject(at = @At("HEAD"), method = "disableShield")
+	@Inject(at = @At("HEAD"), method = "disableShield", cancellable = true)
 	public void disableShield(boolean sprinting, CallbackInfo ci) {
 		var pl = (PlayerEntity) (Object) this;
 

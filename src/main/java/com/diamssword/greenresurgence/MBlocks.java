@@ -32,10 +32,7 @@ public class MBlocks implements BlockRegistryContainer {
 	public static final ConnectorBlock CONNECTOR = new ConnectorBlock(AbstractBlock.Settings.create().nonOpaque().strength(99999, 99999).suffocates(Blocks::never), new Vec3d(0, 0.25, 0));
 	@DiamsGroup
 	public static final ConnectorBlock ELECTRICAL_POWER_COIL = new ConnectorBlock(AbstractBlock.Settings.create().nonOpaque().strength(99999, 99999).suffocates(Blocks::never), new Vec3d(0, 0.8, 0));
-	@DiamsGroup
-	public static final PostBlock ELECTRIC_POST = new PostBlock(AbstractBlock.Settings.create().nonOpaque().sounds(BlockSoundGroup.WOOD), true);
-	@DiamsGroup
-	public static final PostBlock WOOD_POST = new PostBlock(AbstractBlock.Settings.create().nonOpaque().sounds(BlockSoundGroup.WOOD), false);
+
 	@DiamsGroup
 	public static final MetroCorridorFull METRO_CORRIDOR = new MetroCorridorFull(AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL), 0);
 	@DiamsGroup

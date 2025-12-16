@@ -1,7 +1,6 @@
 package com.diamssword.greenresurgence.blockEntities;
 
 import com.diamssword.greenresurgence.blocks.ConnectorBlock;
-import com.diamssword.greenresurgence.systems.CableNetwork;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -21,6 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ConnectorBlockEntity extends BlockEntity {
+	public static List<Pair<BlockPos, BlockPos>> clientCables = new ArrayList<>();
+
 	public List<BlockPos> connections = new ArrayList<>();
 	public BlockPos basePos;
 	public Direction baseDir;
@@ -37,7 +38,7 @@ public class ConnectorBlockEntity extends BlockEntity {
 
 	private void markUpdate() {
 		this.markDirty();
-		if (this.world instanceof ServerWorld sw)
+		if(this.world instanceof ServerWorld sw)
 			sw.getChunkManager().markForUpdate(pos);
 	}
 
@@ -56,12 +57,12 @@ public class ConnectorBlockEntity extends BlockEntity {
 	}
 
 	public void onBreak() {
-		if (this.world != null && !this.world.isClient)
+		if(this.world != null && !this.world.isClient)
 			this.connections.forEach(c -> {
 				BlockState st = this.world.getBlockState(c);
-				if (st.getBlock() instanceof ConnectorBlock) {
+				if(st.getBlock() instanceof ConnectorBlock) {
 					ConnectorBlockEntity te = ((ConnectorBlock) st.getBlock()).getBlockEntity(c, this.world);
-					if (te != null && !te.isRemoved())
+					if(te != null && !te.isRemoved())
 						te.clearConnection(this.pos);
 				}
 			});
@@ -70,16 +71,16 @@ public class ConnectorBlockEntity extends BlockEntity {
 	@Override
 	public void writeNbt(NbtCompound nbt) {
 		nbt.putLongArray("connections", this.connections.stream().map(BlockPos::asLong).toList());
-		if (this.basePos == null)
+		if(this.basePos == null)
 			this.basePos = this.pos.add(0, 0, 0);
-		if (this.baseDir == null) {
-			if (this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
+		if(this.baseDir == null) {
+			if(this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
 				this.baseDir = this.getCachedState().get(Properties.HORIZONTAL_FACING);
 			}
 
 		}
 		nbt.putLong("base", this.basePos.asLong());
-		if (this.baseDir != null)
+		if(this.baseDir != null)
 			nbt.putInt("baseDir", this.baseDir.getId());
 		super.writeNbt(nbt);
 	}
@@ -87,24 +88,24 @@ public class ConnectorBlockEntity extends BlockEntity {
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
-		if (nbt.contains("base"))
+		if(nbt.contains("base"))
 			this.basePos = BlockPos.fromLong(nbt.getLong("base"));
 		else {
 			this.basePos = this.pos.add(0, 0, 0);
 			this.markDirty();
 		}
-		if (nbt.contains("baseDir"))
+		if(nbt.contains("baseDir"))
 			this.baseDir = Direction.byId(nbt.getInt("baseDir"));
-		else if (this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
+		else if(this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
 			this.baseDir = this.getCachedState().get(Properties.HORIZONTAL_FACING);
 			this.markDirty();
 		}
 
 		this.connections = new ArrayList<>(Arrays.stream(nbt.getLongArray("connections")).mapToObj(BlockPos::fromLong).toList());
-		if (this.world != null)
+		if(this.world != null)
 			calculateNewConnections();
-		if (world != null) {
-			if (world.isClient)
+		if(world != null) {
+			if(world.isClient)
 				loadClientCables();
 			else
 				markUpdate();
@@ -115,14 +116,14 @@ public class ConnectorBlockEntity extends BlockEntity {
 	public void loadClientCables() {
 		this.connections.forEach(c -> {
 
-			if (CableNetwork.clientCables.stream().noneMatch(p -> (p.getLeft().equals(this.pos) && p.getRight().equals(c)) || (p.getLeft().equals(c) && p.getRight().equals(this.pos))))
-				CableNetwork.clientCables.add(new Pair<>(this.pos, c));
+			if(clientCables.stream().noneMatch(p -> (p.getLeft().equals(this.pos) && p.getRight().equals(c)) || (p.getLeft().equals(c) && p.getRight().equals(this.pos))))
+				clientCables.add(new Pair<>(this.pos, c));
 		});
 	}
 
 	public void unloadClientCables() {
 		this.connections.forEach(c -> {
-			CableNetwork.clientCables.removeAll(CableNetwork.clientCables.stream().filter(p -> (p.getLeft().equals(this.pos) || p.getRight().equals(this.pos))).toList());
+			clientCables.removeAll(clientCables.stream().filter(p -> (p.getLeft().equals(this.pos) || p.getRight().equals(this.pos))).toList());
 
 		});
 	}
@@ -139,12 +140,12 @@ public class ConnectorBlockEntity extends BlockEntity {
 	}
 
 	private void calculateNewConnections() {
-		if (!this.pos.equals(this.basePos)) {
+		if(!this.pos.equals(this.basePos)) {
 			BlockPos off = this.pos.subtract(this.basePos);
 			this.connections = new ArrayList<>(this.connections.stream().map(v -> this.pos.add(rotateConnections(v.add(off)))).toList());
 			this.basePos = pos.add(0, 0, 0);
 
-			if (this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
+			if(this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
 				this.baseDir = this.getCachedState().get(Properties.HORIZONTAL_FACING);
 			}
 			markUpdate();
@@ -153,13 +154,13 @@ public class ConnectorBlockEntity extends BlockEntity {
 
 	private BlockPos rotateConnections(BlockPos pos) {
 		BlockPos v = pos.subtract(this.pos);
-		if (this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
+		if(this.getCachedState().getProperties().contains(Properties.HORIZONTAL_FACING)) {
 			Direction newDir = this.getCachedState().get(Properties.HORIZONTAL_FACING);
-			if (this.baseDir.getOpposite() == newDir) {
+			if(this.baseDir.getOpposite() == newDir) {
 				return new BlockPos(-v.getX(), v.getY(), -v.getZ());
-			} else if (this.baseDir.rotateYClockwise() == newDir) {
+			} else if(this.baseDir.rotateYClockwise() == newDir) {
 				return new BlockPos(-v.getZ(), v.getY(), v.getX());
-			} else if (this.baseDir.rotateYCounterclockwise() == newDir) {
+			} else if(this.baseDir.rotateYCounterclockwise() == newDir) {
 				return new BlockPos(v.getZ(), v.getY(), -v.getX());
 			}
 		}

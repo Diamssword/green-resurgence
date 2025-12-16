@@ -27,14 +27,16 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public abstract class EquipmentTool extends StackBasedGeckoItem implements FabricItem, IEquipementItem {
+public class EquipmentTool extends StackBasedGeckoItem implements FabricItem, IEquipementItem {
 
 	public final String category;
 	public final String subCategory;
+	protected Map<String, EffectLevel> baseUpgrades = new HashMap<>();
 	private static final BiConsumer<Item, ItemGroup.Entries> generator = (i, e) -> {
 
 		var st = i.getDefaultStack();
@@ -49,6 +51,13 @@ public abstract class EquipmentTool extends StackBasedGeckoItem implements Fabri
 		this.subCategory = subCategory;
 	}
 
+	public EquipmentTool(String category, String subCategory, Map<String, EffectLevel> baseEffects) {
+		super(new OwoItemSettings().maxCount(1).group(MItems.GROUP).tab(1).stackGenerator(generator));
+		this.category = category;
+		this.subCategory = subCategory;
+		this.baseUpgrades = baseEffects;
+	}
+
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
 		super.inventoryTick(stack, world, entity, slot, selected);
@@ -60,7 +69,8 @@ public abstract class EquipmentTool extends StackBasedGeckoItem implements Fabri
 				eslot = AdvEquipmentSlot.OFFHAND;
 
 		}
-		this.getEquipment(stack).onTick(entity, eslot);
+		//TODO enable if needed
+		//	this.getEquipment(stack).onTick(entity, eslot);
 
 	}
 
@@ -85,7 +95,7 @@ public abstract class EquipmentTool extends StackBasedGeckoItem implements Fabri
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		var equipment = getEquipmentStack(stack);
 		if(attacker instanceof PlayerEntity pl)
-			equipment.onInteraction(pl, AdvEquipmentSlot.MAINHAND, IEquipmentUpgrade.InteractType.ATTACK, new EntityHitResult(target));
+			equipment.onInteraction(pl, AdvEquipmentSlot.MAINHAND, IEquipmentUpgrade.InteractType.POST_ATTACK, new EntityHitResult(target));
 		var broken = equipment.onToolDamage(attacker, AdvEquipmentSlot.MAINHAND);
 		if(broken) {
 			attacker.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND);
@@ -121,7 +131,9 @@ public abstract class EquipmentTool extends StackBasedGeckoItem implements Fabri
 		return true;
 	}
 
-	public abstract Map<String, EffectLevel> getBaseUpgrades();
+	public Map<String, EffectLevel> getBaseUpgrades() {
+		return baseUpgrades;
+	}
 
 	@Override
 	public IUpgradableEquipment getEquipment(ItemStack stack) {

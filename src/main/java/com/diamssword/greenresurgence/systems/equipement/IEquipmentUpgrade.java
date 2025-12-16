@@ -10,7 +10,7 @@ public interface IEquipmentUpgrade {
 
 	public Map<String, EffectLevel> getEffectsLevels();
 
-	String slot(IEquipmentDef equipment);
+	String[] slots(IEquipmentDef equipment);
 
 	public default Map<String, IEquipmentEffect> getEffects() {
 		var res = new HashMap<String, IEquipmentEffect>();
@@ -27,7 +27,11 @@ public interface IEquipmentUpgrade {
 
 
 	enum InteractType {
-		ATTACK,
+		POST_ATTACK,
+		/**
+		 * Append before damage is applied, you can set the Return value to modify the damage output and the context value to know the base damage
+		 */
+		PRE_ATTACK,
 		ATTACKED,
 		BREAK,
 		INTERACT,
