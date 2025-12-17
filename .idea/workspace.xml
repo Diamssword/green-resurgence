@@ -5,20 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2280433-581a-4b82-ab53-687b6ee5ff53" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Data_Generation.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Data_Generation.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/GreenResurgenceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/GreenResurgenceClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/RenderersRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/RenderersRegister.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/CustomPoseRender/CustomPoseRenderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/CustomPoseRender/CustomPoseRenderManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/Entities.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/devResources/lang/_en_us.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/devResources/lang/_en_us.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/GreenResurgence.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/GreenResurgence.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/CustomPoseRender/RidingBikeRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/CustomPoseRender/RidingBikeRenderer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MEntities.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MEntities.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MItems.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/entities/TwoPassengerVehicle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/entities/TwoPassengerVehicle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/character/PosesManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/character/PosesManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/animations/entity/bike.animation.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/animations/entity/bike.animation.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/geo/entity/bike.geo.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/geo/entity/bike.geo.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/entity/bike.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/entity/bike.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,37 +93,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.(1)Minecraft Client .executor": "Debug",
-    "Application.Data Generation.executor": "Run",
-    "Application.Minecraft Client (1).executor": "Debug",
-    "Application.Minecraft Client.executor": "Debug",
-    "Application.Minecraft Server.executor": "Debug",
-    "Gradle.Download Sources.executor": "Run",
-    "Gradle.green-resurgence [:net.fabricmc.devlaunchinjector.Main.main()].executor": "Debug",
-    "Gradle.green-resurgence [build].executor": "Debug",
-    "Gradle.green-resurgence [clean].executor": "Run",
-    "Gradle.green-resurgence [configureLaunch].executor": "Run",
-    "Gradle.green-resurgence [downloadAssets].executor": "Run",
-    "Gradle.green-resurgence [genCommonSources].executor": "Run",
-    "Gradle.green-resurgence [genSources].executor": "Run",
-    "Gradle.green-resurgence [runClient].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/diamssword/Dev/Git/green-resurgence/src/main/resources/assets/green_resurgence/textures/entity",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.keymap"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.(1)Minecraft Client .executor&quot;: &quot;Debug&quot;,
+    &quot;Application.Data Generation.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Minecraft Client (1).executor&quot;: &quot;Debug&quot;,
+    &quot;Application.Minecraft Client.executor&quot;: &quot;Debug&quot;,
+    &quot;Application.Minecraft Server.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [:net.fabricmc.devlaunchinjector.Main.main()].executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.green-resurgence [build].executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.green-resurgence [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [configureLaunch].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [downloadAssets].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [genCommonSources].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [genSources].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [runClient].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/diamssword/Dev/Git/green-resurgence/src/main/resources/assets/green_resurgence/textures/entity&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.diamssword.greenresurgence.gui.faction" />

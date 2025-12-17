@@ -16,7 +16,7 @@ public class MEntities implements EntityRegistryContainer {
 	public static final EntityType<Entity> CHAIR = FabricEntityTypeBuilder.create(SpawnGroup.MISC, ChairEntity::new).dimensions(EntityDimensions.fixed(0.1f, 0.1f)).build();
 	public static final EntityType<BackpackEntity> BACKPACK = FabricEntityTypeBuilder.create(SpawnGroup.MISC, (EntityType.EntityFactory<BackpackEntity>) BackpackEntity::new).dimensions(EntityDimensions.fixed(0.8f, 0.4f)).build();
 	public static final EntityType<TwoPassengerVehicle> CADDIE = FabricEntityTypeBuilder.create(SpawnGroup.MISC, (EntityType.EntityFactory<TwoPassengerVehicle>) TwoPassengerVehicle::new).dimensions(EntityDimensions.fixed(1f, 1.2f)).build();
-	public static final EntityType<BikeEntity> BIKE = FabricEntityTypeBuilder.create(SpawnGroup.MISC, (EntityType.EntityFactory<BikeEntity>) BikeEntity::new).fireImmune().dimensions(EntityDimensions.fixed(1f, 0.99f)).build();
+	public static final EntityType<BikeEntity> BIKE = FabricEntityTypeBuilder.create(SpawnGroup.MISC, (EntityType.EntityFactory<BikeEntity>) BikeEntity::new).fireImmune().dimensions(EntityDimensions.fixed(1f, 1.2f)).build();
 
 	public static void addAtributs() {
 		FabricDefaultAttributeRegistry.register(BIKE, BikeEntity.createAttributes());

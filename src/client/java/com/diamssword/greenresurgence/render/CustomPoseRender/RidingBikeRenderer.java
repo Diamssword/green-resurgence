@@ -31,7 +31,7 @@ public class RidingBikeRenderer implements ICustomPoseRenderer {
 		model.rightLeg.yaw = (float) Math.toRadians(5);
 		model.rightLeg.roll = (float) Math.toRadians(5);
 		//model.rightLeg.pitch = (float) Math.toRadians(-10);
-		//model.leftLeg.pitch = (float) Math.toRadians(-15);
+		model.leftLeg.yaw = (float) Math.toRadians(-5);
 		model.leftLeg.roll = (float) Math.toRadians(-5);
 		model.rightArm.pitch = (float) Math.toRadians(-50);
 		model.leftArm.pitch = (float) Math.toRadians(-50);
