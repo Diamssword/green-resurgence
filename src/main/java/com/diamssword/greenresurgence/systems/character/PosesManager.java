@@ -13,6 +13,7 @@ public class PosesManager {
 	public static final String TWOHANDWIELD = "two_hand_wield";
 	public static final String CARRYINGENTITY = "carrying_entity";
 	public static final String PUSHINGCART = "pushing_cart";
+	public static final String RIDING_BIKE = "riding_bike";
 	private static final Map<String, Function<PlayerEntity, IPlayerCustomPose>> posesRegister = new HashMap<>();
 
 	static {
@@ -20,6 +21,7 @@ public class PosesManager {
 		posesRegister.put(TWOHANDWIELD, TwoHandWield::new);
 		posesRegister.put(CARRYINGENTITY, CarryingPose::new);
 		posesRegister.put(PUSHINGCART, PushingCartPose::new);
+		posesRegister.put(RIDING_BIKE, PushingCartPose::new);
 	}
 
 	public static IPlayerCustomPose createPose(String id, PlayerEntity player) {

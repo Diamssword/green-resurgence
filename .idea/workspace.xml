@@ -6,48 +6,19 @@
   <component name="ChangeListManager">
     <list default="true" id="d2280433-581a-4b82-ab53-687b6ee5ff53" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Data_Generation.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Data_Generation.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/GreenResurgenceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/GreenResurgenceClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/RenderersRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/RenderersRegister.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/MultiInvHandledScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/MultiInvHandledScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/EquipmentTinkererContainerGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/EquipmentTinkererContainerGui.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/CustomPoseRender/CustomPoseRenderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/CustomPoseRender/CustomPoseRenderManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/Entities.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/devResources/lang/_en_us.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/devResources/lang/_en_us.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/GreenResurgence.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/GreenResurgence.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MBlocks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MBlocks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MEntities.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MEntities.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MItems.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/EquipmentTinkererBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/EquipmentTinkererBlockEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/LootedBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/LootedBlockEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/EquipmentItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/EquipmentItems.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/EquipmentSecondHand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/EquipmentSecondHand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/EquipmentTool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/EquipmentTool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/EquipmentToolElectric.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/EquipmentToolElectric.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/EquipmentToolHammer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/EquipmentToolHammer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/EquipmentTwoHanded.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/EquipmentTwoHanded.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/EquipmentUpgradeItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/EquipmentUpgradeItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/upgrades/EquipmentBatteryUpgrade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/upgrades/EquipmentBatteryUpgrade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/upgrades/EquipmentSkinItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/equipment/upgrades/EquipmentSkinItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/weapons/ActivatedSword.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/items/weapons/ActivatedSword.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/AdventureInteract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/AdventureInteract.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/equipement/AdvEquipmentSlot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/equipement/AdvEquipmentSlot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/equipement/Equipments.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/equipement/Equipments.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/equipement/IEquipmentUpgrade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/equipement/IEquipmentUpgrade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/equipement/IUpgradableEquipment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/equipement/IUpgradableEquipment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/equipement/StackBasedEquipment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/equipement/StackBasedEquipment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/equipement/upgrades/SweepingEffectUpgrade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/equipement/effects/SweepingEffectUpgrade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/lootables/LootableLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/lootables/LootableLogic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/item/multiblock_linker.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/item/rail.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/item/resource_wood_furniture.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/item/wrench.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fabric.mod.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/green_resurgence.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/green_resurgence.mixins.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/entities/TwoPassengerVehicle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/entities/TwoPassengerVehicle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/character/PosesManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/character/PosesManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,17 +43,6 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="green-resurgence" type="f1a62948:ProjectNode" />
               </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="green-resurgence" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="green-resurgence" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="fabric" type="c8890929:TasksNode$1" />
-              </path>
             </expand>
             <select />
           </tree_state>
@@ -97,8 +57,8 @@
         <option value="FabricItem" />
         <option value="FabricBlock" />
         <option value="Record" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -141,46 +101,48 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.(1)Minecraft Client .executor&quot;: &quot;Debug&quot;,
-    &quot;Application.Data Generation.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Minecraft Client (1).executor&quot;: &quot;Debug&quot;,
-    &quot;Application.Minecraft Client.executor&quot;: &quot;Debug&quot;,
-    &quot;Application.Minecraft Server.executor&quot;: &quot;Debug&quot;,
-    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.green-resurgence [:net.fabricmc.devlaunchinjector.Main.main()].executor&quot;: &quot;Debug&quot;,
-    &quot;Gradle.green-resurgence [build].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.green-resurgence [configureLaunch].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.green-resurgence [downloadAssets].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.green-resurgence [genCommonSources].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.green-resurgence [genSources].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.green-resurgence [runClient].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/diamssword/Dev/Git/green-resurgence/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-common-c108170cf8/1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2/minecraft-common-c108170cf8-1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2-sources.jar&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.editor&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.(1)Minecraft Client .executor": "Debug",
+    "Application.Data Generation.executor": "Run",
+    "Application.Minecraft Client (1).executor": "Debug",
+    "Application.Minecraft Client.executor": "Debug",
+    "Application.Minecraft Server.executor": "Debug",
+    "Gradle.Download Sources.executor": "Run",
+    "Gradle.green-resurgence [:net.fabricmc.devlaunchinjector.Main.main()].executor": "Debug",
+    "Gradle.green-resurgence [build].executor": "Debug",
+    "Gradle.green-resurgence [clean].executor": "Run",
+    "Gradle.green-resurgence [configureLaunch].executor": "Run",
+    "Gradle.green-resurgence [downloadAssets].executor": "Run",
+    "Gradle.green-resurgence [genCommonSources].executor": "Run",
+    "Gradle.green-resurgence [genSources].executor": "Run",
+    "Gradle.green-resurgence [runClient].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/diamssword/Dev/Git/green-resurgence/src/main/resources/assets/green_resurgence/textures/entity",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.diamssword.greenresurgence.gui.faction" />
       <recent name="com.diamssword.greenresurgence" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/entity" />
+      <recent name="$PROJECT_DIR$/src/main/resources/assets/simple_radio" />
+      <recent name="$PROJECT_DIR$/run/mods" />
+      <recent name="$PROJECT_DIR$/src/main/devResources/lang" />
       <recent name="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/dynamicLight" />
-      <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/item/equipment" />
-      <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival" />
-      <recent name="D:\Git\green-resurgence\src\main\resources\data\green_resurgence" />
-      <recent name="D:\Git\green-resurgence\libs" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Git\green-resurgence\src\main\resources\assets\green_resurgence\owo_ui\survival\subpanel" />
@@ -199,14 +161,14 @@
       <recent name="com.diamssword.greenresurgence.systems.base" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.diamssword.greenresurgence.systems.equipement" />
-      <recent name="com.diamssword.greenresurgence.commands" />
-      <recent name="com.diamssword.greenresurgence.dynamicLight" />
-      <recent name="com.diamssword.greenresurgence.mixin" />
+      <recent name="com.diamssword.greenresurgence.render.CustomPoseRender" />
+      <recent name="com.diamssword.greenresurgence.systems.character.customPoses" />
+      <recent name="com.diamssword.greenresurgence.render.entities" />
+      <recent name="com.diamssword.greenresurgence.items.equipment" />
       <recent name="com.diamssword.greenresurgence.systems.equipement.effects" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Minecraft Client">
+  <component name="RunManager" selected="Application.Minecraft Client (1)">
     <configuration name="Minecraft Client (1)" type="Application" factoryName="Application">
       <option name="ALTERNATIVE_JRE_PATH" value="21" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -253,30 +215,36 @@
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
       <DebugAllEnabled>false</DebugAllEnabled>
       <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
-    <configuration name="green-resurgence [configureLaunch]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="green-resurgence [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
+        <option name="scriptParameters" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value="configureLaunch" />
+            <option value="clean" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
       <DebugAllEnabled>false</DebugAllEnabled>
       <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
     <configuration name="green-resurgence [genCommonSources]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -297,8 +265,11 @@
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
       <DebugAllEnabled>false</DebugAllEnabled>
       <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
     <configuration name="green-resurgence [genSources]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -319,8 +290,11 @@
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
       <DebugAllEnabled>false</DebugAllEnabled>
       <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
     <configuration name="green-resurgence [runClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -341,8 +315,11 @@
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
       <DebugAllEnabled>false</DebugAllEnabled>
       <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
     <list>
@@ -351,19 +328,19 @@
       <item itemvalue="Application.Minecraft Client" />
       <item itemvalue="Application.Data Generation" />
       <item itemvalue="Application.Minecraft Server" />
+      <item itemvalue="Gradle.green-resurgence [clean]" />
       <item itemvalue="Gradle.green-resurgence [genCommonSources]" />
       <item itemvalue="Gradle.green-resurgence [build]" />
-      <item itemvalue="Gradle.green-resurgence [configureLaunch]" />
       <item itemvalue="Gradle.green-resurgence [genSources]" />
       <item itemvalue="Gradle.green-resurgence [runClient]" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.green-resurgence [build]" />
-        <item itemvalue="Gradle.green-resurgence [genSources]" />
-        <item itemvalue="Gradle.green-resurgence [genCommonSources]" />
-        <item itemvalue="Gradle.green-resurgence [configureLaunch]" />
+        <item itemvalue="Gradle.green-resurgence [clean]" />
         <item itemvalue="Gradle.green-resurgence [runClient]" />
+        <item itemvalue="Gradle.green-resurgence [genSources]" />
+        <item itemvalue="Gradle.green-resurgence [build]" />
+        <item itemvalue="Gradle.green-resurgence [genCommonSources]" />
       </list>
     </recent_temporary>
   </component>
@@ -377,6 +354,9 @@
       <updated>1711096313289</updated>
     </task>
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:net.fabricmc:fabric-loader" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

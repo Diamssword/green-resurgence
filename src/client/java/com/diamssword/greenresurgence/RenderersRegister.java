@@ -9,19 +9,28 @@ import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinTool
 import com.diamssword.greenresurgence.items.weapons.GeckoActivated;
 import com.diamssword.greenresurgence.render.blockEntityRenderer.*;
 import com.diamssword.greenresurgence.render.cosmetics.ModularArmorLayerRenderer;
+import com.diamssword.greenresurgence.render.entities.BackpackEntityRenderer;
+import com.diamssword.greenresurgence.render.entities.BikeEntityRenderer;
+import com.diamssword.greenresurgence.render.entities.CaddieEntityRenderer;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
 import com.diamssword.greenresurgence.structure.MultiblockInstance;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.Identifier;
 
 public class RenderersRegister {
 
 	public static void init() {
 		blocksRenderers();
+		initEntities();
 		ArmorRenderer.register(
 				new ModularArmorLayerRenderer(GreenResurgence.asRessource("textures/modular/armor/default.png")),
 				MItems.MODULAR_BOOT, MItems.MODULAR_HEAD, MItems.MODULAR_CHEST, MItems.MODULAR_LEG
@@ -41,6 +50,14 @@ public class RenderersRegister {
 		if(FabricLoader.getInstance().isModLoaded("lambdynlights")) {
 			DynLightEventHandler.register();
 		}
+	}
+
+	private static void initEntities() {
+		EntityRendererRegistry.register(MEntities.CHAIR, RenderersRegister::emptyEntityRender);
+		EntityRendererRegistry.register(MEntities.BACKPACK, BackpackEntityRenderer::new);
+		EntityRendererRegistry.register(MEntities.CADDIE, CaddieEntityRenderer::new);
+		EntityRendererRegistry.register(MEntities.BIKE, BikeEntityRenderer::new);
+
 	}
 
 	private static void blocksRenderers() {
@@ -77,5 +94,15 @@ public class RenderersRegister {
 		BlockEntityRendererFactories.register(MBlocks.SHELF_BLOCK.getEntityType(), ShelfBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(MBlocks.ARMOR_TINKERER.getEntityType(), ArmorTinkererBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(MBlocks.CRUMBELING_BLOCK.getEntityType(), CrumbelingBlockEntityRenderer::new);
+	}
+
+
+	public static EntityRenderer emptyEntityRender(EntityRendererFactory.Context ctx) {
+		return new EntityRenderer<Entity>(ctx) {
+			@Override
+			public Identifier getTexture(Entity entity) {
+				return null;
+			}
+		};
 	}
 }

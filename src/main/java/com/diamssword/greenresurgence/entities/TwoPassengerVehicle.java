@@ -239,7 +239,7 @@ public class TwoPassengerVehicle extends Entity implements GeoEntity {
 		}
 
 		super.tick();
-		//this.updatePositionAndRotation();
+		this.updatePositionAndRotation();
 		if(this.isLogicalSideForUpdatingMovement()) {
 
 			var hei = this.getPos().y;

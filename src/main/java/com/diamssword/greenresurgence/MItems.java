@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence;
 
+import com.diamssword.greenresurgence.entities.BikeEntity;
 import com.diamssword.greenresurgence.entities.TwoPassengerVehicle;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.items.*;
@@ -42,6 +43,7 @@ public class MItems implements ItemRegistryContainer {
 	public static final Item BACKPACK = new BackPackItem(new OwoItemSettings().group(GROUP), 5, 2);
 	public static final Item SATCHEL = new SatchelItem(new OwoItemSettings().group(GROUP), 1, 2);
 	public static final EntityPlacerItem CADDIE = new EntityPlacerItem((u, p) -> new TwoPassengerVehicle(MEntities.CADDIE, u.getWorld(), p.x, p.y, p.z), new OwoItemSettings().maxCount(1).group(GROUP));
+	public static final EntityPlacerItem BIKE = new EntityPlacerItem((u, p) -> new BikeEntity(MEntities.BIKE, u.getWorld(), p.x, p.y, p.z), new OwoItemSettings().maxCount(1).group(GROUP));
 	public static final FlashlightItem FLASHLIGHT = new FlashlightItem(new OwoItemSettings().group(GROUP).tab(1).maxCount(1));
 
 	@Override

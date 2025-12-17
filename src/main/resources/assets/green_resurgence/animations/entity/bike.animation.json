@@ -1,0 +1,93 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"misc.idle": {
+			"loop": true,
+			"bones": {
+				"fourche_correct": {
+					"rotation": {
+						"vector": [0, "-query.yaw_change", 0]
+					}
+				},
+				"base": {
+					"rotation": {
+						"vector": ["query.wobble", -90, 0]
+					}
+				}
+			}
+		},
+		"move.drive": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"front_wheel": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.25": {
+							"vector": [0, 0, 360]
+						},
+						"0.5": {
+							"vector": [0, 0, 0]
+						},
+						"0.75": {
+							"vector": [0, 0, 360]
+						},
+						"1.0": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"back_wheel": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.25": {
+							"vector": [0, 0, 360]
+						},
+						"0.5": {
+							"vector": [0, 0, 0]
+						},
+						"0.75": {
+							"vector": [0, 0, 360]
+						},
+						"1.0": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"fourche_correct": {
+					"rotation": {
+						"vector": [0, "-query.yaw_change", 0]
+					}
+				},
+				"base": {
+					"rotation": {
+						"0.0": {
+							"vector": ["query.wobble", -90, 0]
+						},
+						"0.25": {
+							"vector": ["query.wobble-2", -90, 1],
+							"easing": "linear"
+						},
+						"0.5": {
+							"vector": ["query.wobble-0", -90, 2],
+							"easing": "linear"
+						},
+						"0.75": {
+							"vector": ["query.wobble-2", -90, 1],
+							"easing": "linear"
+						},
+						"1.0": {
+							"vector": ["query.wobble", -90, 0],
+							"easing": "linear"
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}
