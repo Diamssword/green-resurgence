@@ -1,0 +1,4 @@
+v1   1    official    intermediary    yarn
+c   net/minecraft/entity/vehicle/VehicleInventory
+m   net/minecraft/entity/vehicle/VehicleInventory getLootTableSeed ()J    method_42277    getLootTableSeed
+m   net/minecraft/entity/vehicle/VehicleInventory getLootTableId ()Lnet/minecraft/util/Identifier;    method_42276    getLootTableId
