@@ -1,0 +1,7 @@
+{
+  "entity.bike.driving": {
+    "sounds": [
+      "green_resurgence:bike_sound"
+    ]
+  }
+}

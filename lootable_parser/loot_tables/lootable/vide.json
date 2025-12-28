@@ -1,0 +1,14 @@
+{
+   "type": "minecraft:advancement_location",
+   "pools": [
+      {
+         "bonus_rolls": 0,
+         "entries": [],
+         "rolls": {
+            "type": "minecraft:uniform",
+            "max": 0,
+            "min": 10
+         }
+      }
+   ]
+}

@@ -131,6 +131,10 @@ public class InventoryComponent extends BaseComponent implements IHideableCompon
 			var d = MinecraftClient.getInstance().textRenderer.getWidth(name.getString());
 			if(width() >= d)
 				context.drawText(name, visibleArea.x(), visibleArea.y(), 0.9f, 0xffffff);
+			else {
+				var t = MinecraftClient.getInstance().textRenderer.trimToWidth(name, width());
+				context.drawText(Text.literal(t.getString()), visibleArea.x(), visibleArea.y(), 0.9f, 0xffffff);
+			}
 		}
 		context.drawTexture(SLOT_TEXTURE,
 				visibleArea.x() - 1,

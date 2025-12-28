@@ -20,7 +20,7 @@ public class GenericContainerGui extends PlayerBasedGui<GenericContainer> {
 	protected void build(FlowLayout rootComponent) {
 		super.build(rootComponent);
 		var cont = rootComponent.childById(InventoryComponent.class, "container");
-		if (cont != null) {
+		if(cont != null) {
 			cont.customName = title;
 		}
 	}

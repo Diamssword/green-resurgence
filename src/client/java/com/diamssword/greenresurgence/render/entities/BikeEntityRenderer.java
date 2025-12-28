@@ -5,7 +5,10 @@ import com.diamssword.greenresurgence.entities.BikeEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.molang.MolangParser;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
@@ -18,13 +21,41 @@ public class BikeEntityRenderer extends GeoEntityRenderer<BikeEntity> {
 
 	@Override
 	public int getPackedOverlay(BikeEntity animatable, float u, float partialTick) {
-		//	if (!(animatable instanceof LivingEntity entity))
 		return OverlayTexture.DEFAULT_UV;
 	}
 
 	public static class BikeModele extends DefaultedEntityGeoModel<BikeEntity> {
+
+		private final Identifier[] texturesPath = new Identifier[16];
+
 		public BikeModele() {
 			super(GreenResurgence.asRessource("bike"));
+			for(var col : DyeColor.values()) {
+				texturesPath[col.getId()] = buildFormattedTexturePath(GreenResurgence.asRessource("bike_" + col.getName()));
+			}
+		}
+
+		@Override
+		public Identifier getTextureResource(BikeEntity animatable) {
+			return this.getTexture(animatable);
+		}
+
+		@Override
+		public Identifier getTexture(BikeEntity animatable) {
+			if(animatable != null) {
+				return texturesPath[Math.max(0, Math.min(animatable.getColor(), 15))];
+			}
+			return super.getTexture(null);
+		}
+
+		@Override
+		public void setCustomAnimations(BikeEntity animatable, long instanceId, AnimationState<BikeEntity> animationState) {
+			super.setCustomAnimations(animatable, instanceId, animationState);
+			CoreGeoBone sac = getAnimationProcessor().getBone("Backpack");
+
+			if(sac != null) {
+				sac.setHidden(!animatable.hasChest());
+			}
 		}
 
 		@Override

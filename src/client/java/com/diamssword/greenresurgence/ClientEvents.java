@@ -53,6 +53,7 @@ public class ClientEvents {
 
 			if(mc.player != null && !mc.player.isCreative() && !mc.player.isSpectator() && !(mc.currentScreen instanceof PlayerInventoryGui) && mc.options.inventoryKey.wasPressed()) {
 				Channels.MAIN.clientHandle().send(new GuiPackets.KeyPress(GuiPackets.KEY.PInventory));
+
 			}
 		});
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {

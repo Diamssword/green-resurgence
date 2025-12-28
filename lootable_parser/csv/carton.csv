@@ -1,10 +1,8 @@
-categorie,item,quantitée,pourcentage,rolls
-paper,cardboard,1-2,100,1-2
-paper,poster,2-3,30,
-wood,furniture,1,10,
-adesive,scotch,1,20,
-adesive,glue,1,20,
-paper,newspaper,2-3,40,
-metal,scrap,1-2,10,
-plastic,film,1,10,
-paper,paper,2-3,12,
+categorie,item,quantitée,pourcentage 1,pourcentage 2,rolls
+paper,cardboard,1,53,45,1-2
+paper,cardboard,2,5,3,
+,air,1,40,33,
+adesive,scotch,1,2,2,
+adesive,nail,1,,2,
+wood,furniture,1,,10,
+fabric,jute,1,    ,5,

@@ -1,0 +1,11 @@
+categorie,item,quantitée,pourcentage 1,pourcentage 2,pourcentage 3,rolls
+,air,1,60,35,40,1-2
+bones,human,1,9,17,,
+bones,small,1,12,22,,
+bones,dog,1,9,,,
+bones,fish,1,9,,,
+,skeleton_skull,1,1,1,,
+bones,medium,1,,20,,
+bones,big,1,,,45,
+bones,ivory,1,,,15,
+compost,compost,1,,5,,

@@ -11,30 +11,14 @@
                      "add": false,
                      "count": {
                         "type": "minecraft:uniform",
-                        "max": 2,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_metal_scrap",
-               "weight": 20
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
                         "max": 1,
                         "min": 1
                      },
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_metal_scrap",
-               "weight": 5
+               "name": "air",
+               "weight": 80
             },
             {
                "type": "minecraft:item",
@@ -44,301 +28,13 @@
                      "count": {
                         "type": "minecraft:uniform",
                         "max": 2,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_metal_copperwire",
-               "weight": 30
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_component_board",
-               "weight": 40
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_component_socket",
-               "weight": 40
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 2,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_component_diode",
-               "weight": 40
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_component_case",
-               "weight": 40
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_metal_ironbar",
-               "weight": 30
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 2,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_component_diode1",
-               "weight": 50
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_component_board1",
-               "weight": 50
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 3,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_cables_tin",
-               "weight": 20
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_cables_house",
-               "weight": 20
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 2,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_energy_battery",
-               "weight": 30
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_cables_high",
-               "weight": 5
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_plastic_film",
-               "weight": 5
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 3,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_plastic_film",
-               "weight": 15
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_alloy_brass",
-               "weight": 20
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_metal_copperplate",
-               "weight": 20
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 2,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_adesive_screw",
-               "weight": 10
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 2,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_adesive_nail",
-               "weight": 10
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 3,
                         "min": 1
                      },
                      "function": "minecraft:set_count"
                   }
                ],
                "name": "green_resurgence:material_glass_shards",
-               "weight": 10
+               "weight": 13
             },
             {
                "type": "minecraft:item",
@@ -354,7 +50,7 @@
                   }
                ],
                "name": "green_resurgence:material_glass_window",
-               "weight": 15
+               "weight": 4
             },
             {
                "type": "minecraft:item",
@@ -363,13 +59,29 @@
                      "add": false,
                      "count": {
                         "type": "minecraft:uniform",
-                        "max": 2,
+                        "max": 1,
                         "min": 1
                      },
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_plastic_bottle",
+               "name": "green_resurgence:material_adesive_screw",
+               "weight": 1
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 3,
+                        "min": 2
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_adesive_screw",
                "weight": 20
             },
             {
@@ -385,8 +97,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_plastic_sheet",
-               "weight": 30
+               "name": "green_resurgence:material_metal_scrap",
+               "weight": 1
             },
             {
                "type": "minecraft:item",
@@ -401,13 +113,157 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_plastic_bin",
+               "name": "green_resurgence:material_metal_scrap",
                "weight": 10
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 2,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_scrap",
+               "weight": 10
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_ironbar",
+               "weight": 1
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 2,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_wood_log",
+               "weight": 20
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 3,
+                        "min": 2
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_wood_furniture",
+               "weight": 100
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_alloy_brass",
+               "weight": 10
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_adesive_scotch",
+               "weight": 10
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_paper_cardboard",
+               "weight": 15
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 4,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_adesive_nail",
+               "weight": 20
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 2,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_adesive_nuts",
+               "weight": 15
             }
          ],
          "rolls": {
             "type": "minecraft:uniform",
-            "max": 2,
+            "max": 1,
             "min": 1
          }
       }

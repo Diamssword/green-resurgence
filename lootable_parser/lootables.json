@@ -1,319 +1,141 @@
 [
    {
-      "block": "green_resurgence:cereals",
+      "block": "green_resurgence:diams_cardboard_bed",
       "empty": "minecraft:air",
       "tables": {
-         "hammer": "green_resurgence:lootable/carton"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_carton_gros",
-      "empty": "minecraft:air",
-      "tables": {
-         "hammer": "green_resurgence:lootable/carton"
-      }
-   },
-   {
-      "block": "green_resurgence:teien_shulker_orange",
-      "empty": "minecraft:air",
-      "tables": {
-         "hammer": "green_resurgence:lootable/carton"
+         "hammer": "green_resurgence:lootable/carton_1"
       }
    },
    {
       "block": "green_resurgence:diams_carton_petit",
       "empty": "minecraft:air",
       "tables": {
-         "hammer": "green_resurgence:lootable/carton"
+         "hammer": "green_resurgence:lootable/carton_1"
       }
    },
    {
       "block": "green_resurgence:diams_carton_petit_entreouvert",
       "empty": "minecraft:air",
       "tables": {
-         "hammer": "green_resurgence:lootable/carton"
+         "hammer": "green_resurgence:lootable/carton_1"
       }
    },
    {
       "block": "green_resurgence:diams_carton_petit_travers",
       "empty": "minecraft:air",
       "tables": {
-         "hammer": "green_resurgence:lootable/carton"
+         "hammer": "green_resurgence:lootable/carton_1"
       }
+   },
+   {
+      "block": "green_resurgence:milk_cardboard",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/carton_1"
+      }
+   },
+   {
+      "block": "green_resurgence:cereals",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/carton_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_carton_gros",
+      "empty": "green_resurgence:teien_scaffolding",
+      "tables": {
+         "hammer": "green_resurgence:lootable/carton_1"
+      },
+      "connected": "green_resurgence:teien_scaffolding"
+   },
+   {
+      "block": "green_resurgence:teien_shulker_orange",
+      "empty": "green_resurgence:teien_scaffolding",
+      "tables": {
+         "hammer": "green_resurgence:lootable/carton_1"
+      },
+      "connected": "green_resurgence:teien_scaffolding"
    },
    {
       "block": "green_resurgence:teien_pumpkin",
-      "empty": "minecraft:air",
+      "empty": "green_resurgence:teien_scaffolding",
       "tables": {
-         "hammer": "green_resurgence:lootable/carton"
-      }
+         "hammer": "green_resurgence:lootable/carton_2"
+      },
+      "connected": "green_resurgence:teien_scaffolding"
    },
    {
-      "block": "green_resurgence:last_days_purple_glazed_terracotta",
+      "block": "green_resurgence:teien_emerald_block",
       "empty": "minecraft:cracked_nether_bricks",
       "tables": {
          "hammer": "green_resurgence:lootable/feraille"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
-      "block": "green_resurgence:last_days_redstone_ore",
+      "block": "green_resurgence:teien_dispenser",
       "empty": "minecraft:cracked_nether_bricks",
       "tables": {
          "hammer": "green_resurgence:lootable/feraille"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
-      "block": "green_resurgence:teien_shulker_green_slab",
+      "block": "green_resurgence:teien_chest",
       "empty": "minecraft:cracked_nether_bricks",
       "tables": {
          "hammer": "green_resurgence:lootable/feraille"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
-      "block": "green_resurgence:teien_shulker_gray_slab",
+      "block": "green_resurgence:teien_barrel",
       "empty": "minecraft:cracked_nether_bricks",
       "tables": {
          "hammer": "green_resurgence:lootable/feraille"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
-      "block": "green_resurgence:last_days_lectern",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_barrel_toxic_up",
+      "block": "green_resurgence:teien_redstone_block",
       "empty": "minecraft:cracked_nether_bricks",
       "tables": {
          "hammer": "green_resurgence:lootable/feraille"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
-      "block": "green_resurgence:diams_barrel_toxic_down",
+      "block": "green_resurgence:last_days_smithing_table",
       "empty": "minecraft:cracked_nether_bricks",
       "tables": {
          "hammer": "green_resurgence:lootable/feraille"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
-      "block": "green_resurgence:diams_barrel_rust_up",
+      "block": "green_resurgence:diams_bike/bike_black",
       "empty": "minecraft:cracked_nether_bricks",
       "tables": {
          "hammer": "green_resurgence:lootable/feraille"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
-      "block": "green_resurgence:diams_barrel_rust_down",
+      "block": "green_resurgence:diams_bucket_metal_water",
       "empty": "minecraft:cracked_nether_bricks",
       "tables": {
          "hammer": "green_resurgence:lootable/feraille"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
-      "block": "green_resurgence:diams_barrel_red_up",
+      "block": "green_resurgence:diams_bucket_metal_empty",
       "empty": "minecraft:cracked_nether_bricks",
       "tables": {
          "hammer": "green_resurgence:lootable/feraille"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_barrel_red_down",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_barrel_blue_up",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_barrel_blue_down",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_fridge_up",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_fridge_bottom",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_fridge_up_square",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_microwave_gray",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_microwave_cyan",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_microwave_orange",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_microwave_magenta",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_microwave_lime",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_microwave_light_gray",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_microwave_light_blue",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_microwave_green",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_microwave_brown",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_microwave_black",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_microwave_yellow",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_microwave_white",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_microwave_red",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_microwave_pink",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_microwave_purple",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:teien_lectern",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_air_vent",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:teien_shulker_white",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille",
-         "wrench": "green_resurgence:lootable/electromenager_plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_trash_can_big",
-      "empty": "minecraft:cracked_nether_bricks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/feraille"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
       "block": "green_resurgence:diams_register_black",
@@ -321,21 +143,385 @@
       "tables": {
          "hammer": "green_resurgence:lootable/feraille",
          "wrench": "green_resurgence:lootable/electromenager"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_kitchen_cloth_cleaning_machine",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_kitchen_dish_washer",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_fire_extinguisher_wall",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_fire_extinguisher",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_gaz_bottle_pile",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_gaz_bottle_big",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_gaz_bottle",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:last_days_purple_glazed_terracotta",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:last_days_redstone_ore",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:teien_shulker_green_slab",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:teien_shulker_gray_slab",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:last_days_lectern",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_verre_3"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_barrel_toxic_up",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_barrel_toxic_down",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_barrel_rust_up",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_barrel_rust_down",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_barrel_red_up",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_barrel_red_down",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_barrel_blue_up",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_barrel_blue_down",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_fridge_up",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_fridge_bottom",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_fridge_up_square",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_microwave_gray",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille_verre_1",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_microwave_cyan",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille_verre_1",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_microwave_orange",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille_verre_1",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_microwave_magenta",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille_verre_1",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_microwave_lime",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille_verre_1",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_microwave_light_gray",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille_verre_1",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_microwave_light_blue",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille_verre_1",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_microwave_green",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille_verre_1",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_microwave_brown",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille_verre_1",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_microwave_black",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille_verre_1",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_microwave_yellow",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille_verre_1",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_microwave_white",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille_verre_1",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_microwave_red",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille_verre_1",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_microwave_pink",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille_verre_1",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_microwave_purple",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille_verre_1",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:teien_lectern",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_air_vent",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:teien_shulker_white",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille",
+         "wrench": "green_resurgence:lootable/electromenager_plastique"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_trash_can_big",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/feraille"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
       "block": "green_resurgence:diams_trash_can_round_green",
       "empty": "minecraft:cracked_nether_bricks",
       "tables": {
          "hammer": "green_resurgence:lootable/feraille"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
       "block": "green_resurgence:diams_trash_can_round_iron",
       "empty": "minecraft:cracked_nether_bricks",
       "tables": {
          "hammer": "green_resurgence:lootable/feraille"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
       "block": "green_resurgence:last_days_furnace",
@@ -343,7 +529,8 @@
       "tables": {
          "hammer": "green_resurgence:lootable/feraille",
          "wrench": "green_resurgence:lootable/electromenager"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
       "block": "green_resurgence:teien_smoker",
@@ -351,7 +538,8 @@
       "tables": {
          "hammer": "green_resurgence:lootable/feraille",
          "wrench": "green_resurgence:lootable/electromenager"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
       "block": "green_resurgence:last_days_smoker",
@@ -359,28 +547,32 @@
       "tables": {
          "hammer": "green_resurgence:lootable/feraille",
          "wrench": "green_resurgence:lootable/electromenager"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
       "block": "conquest:cast_iron_bowl",
       "empty": "minecraft:cracked_nether_bricks",
       "tables": {
          "hammer": "green_resurgence:lootable/feraille"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
       "block": "conquest:cast_iron_pot",
       "empty": "minecraft:cracked_nether_bricks",
       "tables": {
          "hammer": "green_resurgence:lootable/feraille"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
       "block": "conquest:cast_iron_cauldron",
       "empty": "minecraft:cracked_nether_bricks",
       "tables": {
          "hammer": "green_resurgence:lootable/feraille"
-      }
+      },
+      "connected": "minecraft:cracked_nether_bricks"
    },
    {
       "block": "green_resurgence:diams_luggage_picnic",
@@ -432,25 +624,3924 @@
       }
    },
    {
+      "block": "minecraft:bone_block",
+      "empty": "conquest:dusty_white_dirt",
+      "tables": {
+         "hammer": "green_resurgence:lootable/os_3"
+      },
+      "connected": "conquest:dusty_white_dirt"
+   },
+   {
+      "block": "conquest:bone_wall_with_skeleton",
+      "empty": "conquest:rocky_soil",
+      "tables": {
+         "hammer": "green_resurgence:lootable/os_2"
+      },
+      "connected": "conquest:rocky_soil"
+   },
+   {
+      "block": "conquest:loamy_dirt_with_bones",
+      "empty": "conquest:rocky_soil",
+      "tables": {
+         "hammer": "green_resurgence:lootable/os_2"
+      },
+      "connected": "conquest:rocky_soil"
+   },
+   {
+      "block": "conquest:wall_of_skulls_and_bones",
+      "empty": "conquest:rocky_soil",
+      "tables": {
+         "hammer": "green_resurgence:lootable/os_2"
+      },
+      "connected": "conquest:rocky_soil"
+   },
+   {
+      "block": "green_resurgence:diams_computer_portable",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_1",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_2",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_tv_old_black",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_tv_old_black_broken",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_tv_old_gray",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_tv_old_gray_broken",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_tv_realy_old_oak",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_tv_realy_old_oak_broken",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_tv_realy_old_spruce",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_tv_realy_old_spruce_broken",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "minecraft:diamond_block",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2"
+      }
+   },
+   {
+      "block": "conquest:oxidized_copper_mirror",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2"
+      }
+   },
+   {
+      "block": "conquest:fancy_gold_mirror",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2"
+      }
+   },
+   {
+      "block": "conquest:mirror",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2"
+      }
+   },
+   {
+      "block": "conquest:tailor_mirror",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2"
+      }
+   },
+   {
+      "block": "conquest:hourglass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_2"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_dropper",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_distributor_food_a_up_left",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_distributor_food_a_up_right",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_distributor_food_a_middle_left",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_distributor_food_a_middle_right",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1",
+         "wrench": "green_resurgence:lootable/electromenager"
+      }
+   },
+   {
+      "block": "conquest:glass_paned_cabinets",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1_bois"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_lime_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_purple_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_blue_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_lime_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_purple_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_blue_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_lime_stained_glass_carpet",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_purple_stained_glass_carpet",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_blue_stained_glass_carpet",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:wooden_mullion_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_tinted_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:wooden_mullion_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_tinted_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:wooden_mullion_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_tinted_glass_carpet",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_glass_carpet",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:wooden_mullion_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:wooden_mullion_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:square_byzantine_lattice_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:white_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_white_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:square_byzantine_lattice_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_white_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:square_byzantine_lattice_window_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_stained_glass_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_white_stained_glass_carpet",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:square_byzantine_lattice_window_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_stained_glass_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:square_byzantine_lattice_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_stained_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:square_byzantine_lattice_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_stained_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:square_byzantine_lattice_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_stained_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:tinted_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_yellow_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:glass_paned_cabinets_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_yellow_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:glass_paned_cabinets_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_yellow_stained_glass_carpet",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:glass_paned_cabinets_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_light_blue_stained_glass_alt",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_light_blue_stained_glass_alt_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_light_blue_stained_glass_alt_carpet",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_glass_trapdoor",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_light_blue_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_light_blue_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_light_blue_stained_glass_carpet",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_broken_glass_trapdoor",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_microwave_blue",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_photo_frame_tree_table",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_photo_frame_portrait_wall",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_photo_frame_zen_table",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_photo_frame_tree_wall",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_photo_frame_portrait_table",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_photo_frame_zen_wall",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_brown_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_brown_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_brown_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_brown_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_brown_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:fancy_dragon_border_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_green_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:purple_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:fancy_dragon_border_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_green_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:purple_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:fancy_dragon_border_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_green_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:purple_stained_glass_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:fancy_dragon_border_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_green_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:purple_stained_glass_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:fancy_dragon_border_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_green_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:purple_stained_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:purple_stained_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:purple_stained_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:straight_glass_2",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_green_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:magenta_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:straight_glass_2_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_green_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:magenta_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:straight_glass_2_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_green_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:magenta_stained_glass_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:straight_glass_2_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_green_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:magenta_stained_glass_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:straight_glass_2_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_green_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:magenta_stained_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:straight_glass_2_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:magenta_stained_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:straight_glass_2_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:magenta_stained_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:fancy_sharp_arch_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_green_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:pink_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:fancy_sharp_arch_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_green_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:pink_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:fancy_sharp_arch_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_green_wooden_frame_window_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:pink_stained_glass_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:fancy_sharp_arch_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_green_wooden_frame_window_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:pink_stained_glass_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:fancy_sharp_arch_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_green_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:pink_stained_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_green_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:pink_stained_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_green_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:pink_stained_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:circular_glass_2",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_yellow_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_brown_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:circular_glass_2_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_yellow_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_brown_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:circular_glass_2_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_yellow_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_brown_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:circular_glass_2_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_yellow_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_brown_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:circular_glass_2_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_yellow_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_brown_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:circular_glass_2_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:circular_glass_2_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_yellow_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_brown_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:circular_glass_1_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_yellow_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_brown_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:circular_glass_1_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_yellow_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_brown_wooden_frame_window_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:circular_glass_1_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_yellow_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_brown_wooden_frame_window_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:circular_glass_1_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_yellow_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_brown_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:circular_glass_1_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_brown_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:circular_glass_1_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_brown_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:wooden_gothic_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_brown_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_green_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:wooden_gothic_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_brown_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_green_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:wooden_gothic_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_brown_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_green_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:wooden_gothic_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_brown_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_green_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:wooden_gothic_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_brown_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_green_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:wooden_arch_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:limestone_gothic_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:lime_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:wooden_arch_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:limestone_gothic_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lime_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:wooden_arch_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:limestone_gothic_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lime_stained_glass_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:wooden_arch_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:limestone_gothic_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lime_stained_glass_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:wooden_arch_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:limestone_gothic_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lime_stained_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lime_stained_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lime_stained_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:tan_sandstone_gothic_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_gothic_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:green_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:tan_sandstone_gothic_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_gothic_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:green_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:tan_sandstone_gothic_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_gothic_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:green_stained_glass_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:tan_sandstone_gothic_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_gothic_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:green_stained_glass_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:tan_sandstone_gothic_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_gothic_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:green_stained_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:green_stained_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:green_stained_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:sandstone_gothic_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:straight_glass_1",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:yellow_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:sandstone_gothic_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:straight_glass_1_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:sandstone_gothic_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:straight_glass_1_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_stained_glass_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:sandstone_gothic_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:straight_glass_1_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_stained_glass_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:sandstone_gothic_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:straight_glass_1_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_stained_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:straight_glass_1_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_stained_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:straight_glass_1_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_stained_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:asian_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:black_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:light_blue_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:asian_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:black_stained_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_blue_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:asian_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:black_stained_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_blue_stained_glass_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:asian_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:black_stained_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_blue_stained_glass_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:asian_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:black_stained_glass_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_blue_stained_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:black_stained_glass_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_blue_stained_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:black_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_blue_stained_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:leaded_glass_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:tree_decorated_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:blue_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:leaded_glass_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:tree_decorated_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:blue_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:leaded_glass_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:tree_decorated_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:blue_stained_glass_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:leaded_glass_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:tree_decorated_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:blue_stained_glass_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:leaded_glass_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:tree_decorated_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:blue_stained_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:blue_stained_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:blue_stained_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:gothic_sliding_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arabian_arched_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:orange_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:gothic_sliding_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arabian_arched_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:orange_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:gothic_sliding_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arabian_arched_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:orange_stained_glass_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:gothic_sliding_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arabian_arched_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:orange_stained_glass_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:gothic_sliding_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arabian_arched_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:orange_stained_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:orange_stained_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:orange_stained_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lattice_window_panel_1",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_plaster_with_reinforced_circular_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:brown_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lattice_window_panel_1_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_plaster_with_reinforced_circular_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:brown_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lattice_window_panel_1_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_plaster_with_reinforced_circular_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:brown_stained_glass_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lattice_window_panel_1_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_plaster_with_reinforced_circular_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:brown_stained_glass_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lattice_window_panel_1_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_plaster_with_reinforced_circular_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:brown_stained_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:brown_stained_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:brown_stained_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lattice_window_panel",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_plaster_with_circular_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:red_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lattice_window_panel_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_plaster_with_circular_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:red_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lattice_window_panel_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_plaster_with_circular_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:red_stained_glass_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lattice_window_panel_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_plaster_with_circular_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:red_stained_glass_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:lattice_window_panel_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:yellow_plaster_with_circular_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:red_stained_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:red_stained_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:red_stained_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:small_diamond_pattern_glass_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_plaster_with_reinforced_circular_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_roundel_leaded_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:small_diamond_pattern_glass_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_plaster_with_reinforced_circular_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_roundel_leaded_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:small_diamond_pattern_glass_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_plaster_with_reinforced_circular_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_roundel_leaded_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:small_diamond_pattern_glass_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_plaster_with_reinforced_circular_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_roundel_leaded_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:small_diamond_pattern_glass_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_plaster_with_reinforced_circular_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_roundel_leaded_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_square_pattern_glass_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_plaster_with_circular_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:light_gray_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_square_pattern_glass_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_plaster_with_circular_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_gray_stained_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_square_pattern_glass_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_plaster_with_circular_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_gray_stained_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_square_pattern_glass_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_plaster_with_circular_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_gray_stained_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_square_pattern_glass_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:white_plaster_with_circular_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_gray_stained_glass_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_gray_stained_glass_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_gray_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:diagonal_square_pattern_glass_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:red_asian_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "minecraft:gray_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:diagonal_square_pattern_glass_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:red_asian_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:gray_stained_glass_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:diagonal_square_pattern_glass_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:red_asian_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:gray_stained_glass_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:diagonal_square_pattern_glass_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:red_asian_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:gray_stained_glass_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:diagonal_square_pattern_glass_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:red_asian_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:gray_stained_glass_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:gray_stained_glass_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:gray_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_lattice_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_white_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_yellow_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_lattice_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_white_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_yellow_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_lattice_window_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_white_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_yellow_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_lattice_window_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_white_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_yellow_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_lattice_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_white_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:elongated_yellow_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_lattice_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_lattice_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:granite_art_noveau_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_white_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_yellow_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:granite_art_noveau_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_white_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_yellow_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:granite_art_noveau_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_white_wooden_frame_window_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_yellow_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:granite_art_noveau_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_white_wooden_frame_window_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_yellow_wooden_frame_window_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:granite_art_noveau_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_white_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_yellow_wooden_frame_window_stairs",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_white_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_yellow_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_white_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_yellow_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_arch_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:limestone_sun_lattice_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_white_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_arch_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:limestone_sun_lattice_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_white_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_arch_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:limestone_sun_lattice_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_white_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_arch_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:limestone_sun_lattice_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_white_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:simple_arch_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:limestone_sun_lattice_window_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:round_white_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:limestone_sun_lattice_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:stained_glass_gothic_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_sun_lattice_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_white_wooden_frame_window",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:stained_glass_gothic_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_sun_lattice_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_white_wooden_frame_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:stained_glass_gothic_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_sun_lattice_window_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_white_wooden_frame_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:stained_glass_gothic_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_sun_lattice_window_vertical_corner",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_white_wooden_frame_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:stained_glass_gothic_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_sun_lattice_window_vertical_quarter",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:arched_white_wooden_frame_window_vertical_slab",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "conquest:light_limestone_sun_lattice_window_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "hammer": "green_resurgence:lootable/verre_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_small_wood_table",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      },
+      "connected": "conquest:narrow_oak_wood_planks"
+   },
+   {
+      "block": "green_resurgence:diams_big_plank",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      },
+      "connected": "conquest:narrow_oak_wood_planks"
+   },
+   {
+      "block": "conquest:cabinet",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      },
+      "connected": "conquest:narrow_oak_wood_planks"
+   },
+   {
+      "block": "conquest:cupboards",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      },
+      "connected": "conquest:narrow_oak_wood_planks"
+   },
+   {
+      "block": "conquest:fancy_oak_wood_cabinets",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      },
+      "connected": "conquest:narrow_oak_wood_planks"
+   },
+   {
+      "block": "conquest:poor_wardrobe",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      },
+      "connected": "conquest:narrow_oak_wood_planks"
+   },
+   {
+      "block": "conquest:fancy_wardrobe",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      },
+      "connected": "conquest:narrow_oak_wood_planks"
+   },
+   {
+      "block": "conquest:rounded_chest",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      },
+      "connected": "conquest:narrow_oak_wood_planks"
+   },
+   {
+      "block": "conquest:carpenters_chest",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      },
+      "connected": "conquest:narrow_oak_wood_planks"
+   },
+   {
+      "block": "green_resurgence:last_days_chest",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      },
+      "connected": "conquest:narrow_oak_wood_planks"
+   },
+   {
+      "block": "green_resurgence:last_days_chest1",
+      "empty": "conquest:narrow_oak_wood_planks",
+      "tables": {
+         "hammer": "green_resurgence:lootable/bois"
+      },
+      "connected": "conquest:narrow_oak_wood_planks"
+   },
+   {
+      "block": "conquest:hanging_scroll",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_polaroid",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_1"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_paper_torn_carpet",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_paper_post_it_c",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_paper_post_it_b",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_1"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_paper_post_it_a",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_1"
+      }
+   },
+   {
+      "block": "conquest:open_scroll",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_2_papier"
+      }
+   },
+   {
+      "block": "conquest:pile_of_paper_on_the_ground",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_2_papier"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_letter_antique_carpet",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_2"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_newspaper_carpet",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_2"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_book_horizontal_e",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_book_horizontal_c",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_book_horizontal_d",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_book_horizontal_b",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_book_horizontal_a",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_3"
+      }
+   },
+   {
+      "block": "green_resurgence:book_vertical_b",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_3"
+      }
+   },
+   {
+      "block": "green_resurgence:book_vertical_a",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_3"
+      }
+   },
+   {
+      "block": "conquest:open_book_and_inkwell",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_3_papier"
+      }
+   },
+   {
+      "block": "conquest:books_on_the_ground",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/papier_3_papier"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_clock_wall_white",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_distributor_orange_down_right",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_distributor_orange_middle_right",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_distributor_orange_up_right",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_distributor_orange_down_left",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_distributor_orange_middle_left",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_distributor_orange_up_left",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_distributor_green_down_right",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_distributor_green_middle_right",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_distributor_green_up_right",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_distributor_green_down_left",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_distributor_green_middle_left",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_distributor_green_up_left",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_distributor_food_a_down_right",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_distributor_food_a_down_left",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_lamp/traffic_lamp_vertical",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_lamp/traffic_lamp_horizontal",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_electrical_power_box_broken",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_electrical_power_box",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_electrical_power_house",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_electrical_power_distributor",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_electrical_power_switch",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_generator_small",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_black",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager_verre_3"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_air_conditioner_right",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:diams_air_conditioner_left",
+      "empty": "minecraft:cracked_nether_bricks",
+      "tables": {
+         "wrench": "green_resurgence:lootable/electromenager"
+      },
+      "connected": "minecraft:cracked_nether_bricks"
+   },
+   {
+      "block": "green_resurgence:last_days_bookshelf",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/plastique"
+      }
+   },
+   {
+      "block": "green_resurgence:last_days_nether_gold_ore",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/plastique"
+      }
+   },
+   {
       "block": "green_resurgence:teien_lily_pad_slab",
       "empty": "minecraft:air",
       "tables": {
-         "hand": "green_resurgence:lootable/verre",
-         "wrench": "green_resurgence:lootable/plastique"
+         "wrench": "green_resurgence:lootable/plastique",
+         "hand": "green_resurgence:lootable/verre"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_yellow",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_white",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_red",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_purple",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_blue",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_brown",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_cyan",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_gray",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_green",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_light_blue",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_light_gray",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_lime",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_magenta",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_pink",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:diams_computer_big_orange",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_magenta_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_orange_stained_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:last_days_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_magenta_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_orange_stained_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:last_days_glass_pane",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_magenta_stained_glass_carpet",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:teien_orange_stained_glass_carpet",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
+      }
+   },
+   {
+      "block": "green_resurgence:last_days_glass_carpet",
+      "empty": "minecraft:air",
+      "tables": {
+         "wrench": "green_resurgence:lootable/verre_3"
       }
    },
    {
       "block": "conquest:soda_bottle",
       "empty": "minecraft:air",
       "tables": {
-         "hand": "green_resurgence:lootable/verre"
+         "hand": "green_resurgence:lootable/verre_verre_4"
       }
    },
    {
       "block": "conquest:bottle",
       "empty": "minecraft:air",
       "tables": {
-         "hand": "green_resurgence:lootable/verre"
+         "hand": "green_resurgence:lootable/verre_verre_4"
+      }
+   },
+   {
+      "block": "conquest:hanging_corpse",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/os_2"
+      }
+   },
+   {
+      "block": "conquest:bones_on_the_ground",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/os_1"
+      }
+   },
+   {
+      "block": "minecraft:crimson_pressure_plate",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/os_1"
+      }
+   },
+   {
+      "block": "minecraft:skeleton_skull",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/os_1"
+      }
+   },
+   {
+      "block": "conquest:jam_jars",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/verre_4"
+      }
+   },
+   {
+      "block": "conquest:short_crystal_wine_glass",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/verre_4"
+      }
+   },
+   {
+      "block": "conquest:bottle_of_frankincense",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/verre_4"
+      }
+   },
+   {
+      "block": "conquest:brown_bottle",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/verre_4"
+      }
+   },
+   {
+      "block": "conquest:broken_bottle",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/verre_4"
+      }
+   },
+   {
+      "block": "conquest:small_bottle",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/verre_4"
+      }
+   },
+   {
+      "block": "conquest:blue_bottle",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/verre_4"
+      }
+   },
+   {
+      "block": "conquest:white_bottle",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/verre_4"
+      }
+   },
+   {
+      "block": "conquest:water_jug",
+      "empty": "minecraft:air",
+      "tables": {
+         "hand": "green_resurgence:lootable/verre_4"
       }
    },
    {
@@ -482,129 +4573,19 @@
       }
    },
    {
-      "block": "conquest:pile_of_paper_on_the_ground",
-      "empty": "minecraft:air",
+      "block": "green_resurgence:diams_car/car_1/car_1_back_trunk_right",
+      "empty": "green_resurgence:diams_car/car_1/car_1_back_trunk_right_open",
       "tables": {
-         "hand": "green_resurgence:lootable/papier"
-      }
+         "hand": "green_resurgence:lootable/vide"
+      },
+      "connected": "green_resurgence:diams_car/car_1/car_1_back_trunk_right_open"
    },
    {
-      "block": "conquest:open_scroll",
-      "empty": "minecraft:air",
+      "block": "green_resurgence:diams_car/car_1/car_1_back_trunk_left",
+      "empty": "green_resurgence:diams_car/car_1/car_1_back_trunk_left_open",
       "tables": {
-         "hand": "green_resurgence:lootable/papier"
-      }
-   },
-   {
-      "block": "conquest:books_on_the_ground",
-      "empty": "minecraft:air",
-      "tables": {
-         "hand": "green_resurgence:lootable/papier"
-      }
-   },
-   {
-      "block": "conquest:open_book_and_inkwell",
-      "empty": "minecraft:air",
-      "tables": {
-         "hand": "green_resurgence:lootable/papier"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_small_wood_table",
-      "empty": "conquest:narrow_oak_wood_planks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/bois"
-      }
-   },
-   {
-      "block": "green_resurgence:diams_big_plank",
-      "empty": "conquest:narrow_oak_wood_planks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/bois"
-      }
-   },
-   {
-      "block": "conquest:cabinet",
-      "empty": "conquest:narrow_oak_wood_planks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/bois"
-      }
-   },
-   {
-      "block": "conquest:cupboards",
-      "empty": "conquest:narrow_oak_wood_planks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/bois"
-      }
-   },
-   {
-      "block": "conquest:fancy_oak_wood_cabinets",
-      "empty": "conquest:narrow_oak_wood_planks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/bois"
-      }
-   },
-   {
-      "block": "conquest:glass_paned_cabinets",
-      "empty": "conquest:narrow_oak_wood_planks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/bois"
-      }
-   },
-   {
-      "block": "conquest:poor_wardrobe",
-      "empty": "conquest:narrow_oak_wood_planks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/bois"
-      }
-   },
-   {
-      "block": "conquest:fancy_wardrobe",
-      "empty": "conquest:narrow_oak_wood_planks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/bois"
-      }
-   },
-   {
-      "block": "conquest:rounded_chest",
-      "empty": "conquest:narrow_oak_wood_planks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/bois"
-      }
-   },
-   {
-      "block": "conquest:carpenters_chest",
-      "empty": "conquest:narrow_oak_wood_planks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/bois"
-      }
-   },
-   {
-      "block": "green_resurgence:last_days_chest",
-      "empty": "conquest:narrow_oak_wood_planks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/bois"
-      }
-   },
-   {
-      "block": "green_resurgence:last_days_chest1",
-      "empty": "conquest:narrow_oak_wood_planks",
-      "tables": {
-         "hammer": "green_resurgence:lootable/bois"
-      }
-   },
-   {
-      "block": "green_resurgence:last_days_bookshelf",
-      "empty": "minecraft:air",
-      "tables": {
-         "wrench": "green_resurgence:lootable/plastique"
-      }
-   },
-   {
-      "block": "green_resurgence:last_days_nether_gold_ore",
-      "empty": "minecraft:air",
-      "tables": {
-         "wrench": "green_resurgence:lootable/plastique"
-      }
+         "hand": "green_resurgence:lootable/vide"
+      },
+      "connected": "green_resurgence:diams_car/car_1/car_1_back_trunk_left_open"
    }
 ]

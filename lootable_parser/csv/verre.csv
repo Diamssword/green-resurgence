@@ -1,4 +1,12 @@
-categorie,item,quantitée,pourcentage,rolls
-glass,shards,1-5,40,1-2
-glass,bottle,1-2,30,
-glass,window,1-2,20,
+categorie,item,quantitée,pourcentage 1,pourcentage 2,pourcentage 3,pourcentage 4,rolls
+,air,1,80,10,30,40,1
+glass,shards,1-2,13,72,30,30,
+glass,window,1,4,15,,,
+adesive,screw,1,1,1,1,,
+metal,scrap,1,1,1,1,,
+metal,ironbar,1,1,1,1,,
+adesive,nuts,1,,,1,,
+adesive,rivet,1,,,1,,
+glass,window1,1,,,25,,
+glass,cup,1,,,,15,
+glass,bottle,1,,,,15,

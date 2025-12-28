@@ -18,7 +18,7 @@
                   }
                ],
                "name": "air",
-               "weight": 60
+               "weight": 40
             },
             {
                "type": "minecraft:item",
@@ -33,8 +33,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_paper_paper",
-               "weight": 5
+               "name": "green_resurgence:material_bones_big",
+               "weight": 45
             },
             {
                "type": "minecraft:item",
@@ -49,14 +49,14 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_paper_poster",
-               "weight": 35
+               "name": "green_resurgence:material_bones_ivory",
+               "weight": 15
             }
          ],
          "rolls": {
             "type": "minecraft:uniform",
-            "max": 5,
-            "min": 2
+            "max": 2,
+            "min": 1
          }
       }
    ]

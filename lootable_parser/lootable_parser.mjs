@@ -1,7 +1,7 @@
 import * as fs from "fs"
 const table_dic={};
 
-//TODO  prendre en compte 'pourcentage 1', 'pourcentage 2', et lier tables <num> aux pourcentages (electromenager 1 > electromenager/pourcentage_1)
+fs.mkdirSync("loot_tables/lootable/",{recursive:true})
 parseBlocks(fs.readFileSync("csv/blocks.csv").toString());
 /**
  * 
@@ -9,10 +9,13 @@ parseBlocks(fs.readFileSync("csv/blocks.csv").toString());
  */
 function combineTable(files)
 {
-    const res={rollMin:1000,rollMax:0,items:{}}
+    const res={rollMin:10,rollMax:0,items:{}}
     files.forEach(f=>{
         let parts=f.trim().split(" ");
         const number=parseInt(parts[1])||1
+        if(parts[0]=="vide")
+            return {rollMin: 1,rollMax: 1,items: {}}
+        
         var ob=parse(fs.readFileSync("csv/"+parts[0]+".csv").toString());
         for(var k in ob)
             {
@@ -33,16 +36,21 @@ function combineTable(files)
                     {
                         item="green_resurgence:material_"+o["categorie"]+"_"+item;
                     }
-                    if(!res.items[item])
+                    const qts=splitNb(o["quantitée"])
+                    let d=o["pourcentage"];
+                    if(o["pourcentage "+number])
+                        d=o["pourcentage "+number]
+                    //else
+                        //console.error("didn't find row 'pourcentage "+number+"' for "+f+" : defaulting to row 'pourcentage'")
+                    if(d && d.trim().length>0)
                     {
-                        
-                        const qts=splitNb(o["quantitée"])
-                        let d=o["pourcentage"];
-                        if(o["pourcentage "+number])
-                            d=o["pourcentage "+number]
-                        else
-                            console.error("didn't find row 'pourcentage "+number+"' for "+f+" : defaulting to row 'pourcentage'")
-                        res.items[item]={min:qts[0],max:qts[1],perc:parseFloat(d)};
+                        const per=parseFloat(d);
+                        if(per >0)
+                        {
+                            if(!res.items[item])
+                                res.items[item]=[];
+                            res.items[item].push({min:qts[0],max:qts[1],perc:parseFloat(d)});
+                        }
                     }
                 }
                 else
@@ -58,7 +66,7 @@ function combineTable(files)
 }
 /**
  * 
- * @param {{rollMin:number,rollMax:number,items:{[id:string]:{min:number,max:number,perc:number}}}} table 
+ * @param {{rollMin:number,rollMax:number,items:{[id:string]:[{min:number,max:number,perc:number}]}}} table 
  * @param {string} name 
  * @returns 
  */
@@ -67,7 +75,8 @@ function parseTable(table,name)
     var res={"bonus_rolls": 0.0,entries:[],rolls:{"type": "minecraft:uniform","max": table.rollMax,"min": table.rollMin}}
     for(var id in table.items)
     {
-        var o=table.items[id];
+        var items=table.items[id];
+        items.forEach(o=>{
         res.entries.push({ "type": "minecraft:item","functions": [
             {
               "add": false,
@@ -81,6 +90,7 @@ function parseTable(table,name)
           ],
           "name": id,
           "weight": o.perc})
+        })
     }
     res={"type": "minecraft:advancement_location",
     "pools": [res]};
@@ -108,7 +118,7 @@ function handleBlock(id,props)
         d.connected=props.connected
     for(var tool in props.tables)
     {
-        var tn=props.tables[tool].join("_");
+        var tn=props.tables[tool].join("_").replaceAll(" ","_");
         if(!table_dic[tn])
         {
            var t=combineTable(props.tables[tool]);
@@ -128,8 +138,8 @@ var result={};
 for(var k in ob)
 {
     const o=ob[k];
-    var table=o["Table"].trim();
-    var tool=  o["Outils"].trim();
+    var table=(o["Table"]||"").trim();
+    var tool=  (o["Outils"]||"").trim();
     var replace= o["Remplace"]?o["Remplace"]:"minecraft:air"
     var connected= o["Remplace"];
     if(table && tool && replace)

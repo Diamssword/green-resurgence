@@ -18,23 +18,7 @@
                   }
                ],
                "name": "air",
-               "weight": 80
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 2,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_glass_shards",
-               "weight": 13
+               "weight": 35
             },
             {
                "type": "minecraft:item",
@@ -49,8 +33,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_glass_window",
-               "weight": 4
+               "name": "green_resurgence:material_bones_human",
+               "weight": 17
             },
             {
                "type": "minecraft:item",
@@ -65,7 +49,23 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_adesive_screw",
+               "name": "green_resurgence:material_bones_small",
+               "weight": 22
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "skeleton_skull",
                "weight": 1
             },
             {
@@ -81,8 +81,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_metal_scrap",
-               "weight": 1
+               "name": "green_resurgence:material_bones_medium",
+               "weight": 20
             },
             {
                "type": "minecraft:item",
@@ -97,13 +97,13 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_metal_ironbar",
-               "weight": 1
+               "name": "green_resurgence:material_compost_compost",
+               "weight": 5
             }
          ],
          "rolls": {
             "type": "minecraft:uniform",
-            "max": 1,
+            "max": 2,
             "min": 1
          }
       }

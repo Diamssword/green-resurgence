@@ -2,10 +2,12 @@ package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
+import com.diamssword.greenresurgence.containers.IOptionalInventory;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.systems.Components;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.RideableInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.NamedScreenHandlerFactory;
@@ -52,7 +54,7 @@ public class GuiPackets {
 		public double asDouble() {
 			try {
 				return Double.parseDouble(this.value);
-			} catch (NumberFormatException ignored) {
+			} catch(NumberFormatException ignored) {
 			}
 			return 0;
 		}
@@ -60,7 +62,7 @@ public class GuiPackets {
 		public int asInt() {
 			try {
 				return Integer.parseInt(this.value);
-			} catch (NumberFormatException ignored) {
+			} catch(NumberFormatException ignored) {
 			}
 			return 0;
 		}
@@ -68,7 +70,7 @@ public class GuiPackets {
 		public float asFloat() {
 			try {
 				return Float.parseFloat(this.value);
-			} catch (NumberFormatException ignored) {
+			} catch(NumberFormatException ignored) {
 			}
 			return 0;
 		}
@@ -83,16 +85,16 @@ public class GuiPackets {
 		Channels.MAIN.registerClientboundDeferred(ReturnError.class);
 		Channels.MAIN.registerServerbound(GuiTileValue.class, (msg, ctx) -> {
 			BlockEntity te = ctx.player().getWorld().getBlockEntity(msg.pos);
-			if (te != null && ctx.player().isCreative()) {
-				if (te instanceof ItemBlockEntity ib) {
+			if(te != null && ctx.player().isCreative()) {
+				if(te instanceof ItemBlockEntity ib) {
 					ib.receiveGuiPacket(msg);
-				} else if (te instanceof ImageBlockEntity ib) {
+				} else if(te instanceof ImageBlockEntity ib) {
 					ib.receiveGuiPacket(msg);
 				}
 			}
 		});
 		Channels.MAIN.registerServerbound(KeyPress.class, (msg, ctx) -> {
-			switch (msg.key) {
+			switch(msg.key) {
 
 				case Inventory -> {
 					var ls = ctx.player().getWorld().getComponent(Components.BASE_LIST);
@@ -116,7 +118,18 @@ public class GuiPackets {
 
 
 				}
-				case PInventory -> CustomPlayerInventory.openInventoryScreen(ctx.player());
+				case PInventory -> {
+					if(ctx.player().getVehicle() instanceof RideableInventory rideableInventory) {
+						if(rideableInventory instanceof IOptionalInventory op) {
+							if(op.hasInventory(ctx.player()))
+								rideableInventory.openInventory(ctx.player());
+							else
+								CustomPlayerInventory.openInventoryScreen(ctx.player());
+						} else
+							rideableInventory.openInventory(ctx.player());
+					} else
+						CustomPlayerInventory.openInventoryScreen(ctx.player());
+				}
 				case Crawl -> {
 					var dt = ctx.player().getComponent(Components.PLAYER_DATA);
 					dt.setForcedPose(dt.getPose() == EntityPose.SWIMMING ? EntityPose.STANDING : EntityPose.SWIMMING);

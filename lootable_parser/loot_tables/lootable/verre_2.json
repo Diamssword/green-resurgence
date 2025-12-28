@@ -18,7 +18,7 @@
                   }
                ],
                "name": "air",
-               "weight": 80
+               "weight": 10
             },
             {
                "type": "minecraft:item",
@@ -34,7 +34,7 @@
                   }
                ],
                "name": "green_resurgence:material_glass_shards",
-               "weight": 13
+               "weight": 72
             },
             {
                "type": "minecraft:item",
@@ -50,7 +50,7 @@
                   }
                ],
                "name": "green_resurgence:material_glass_window",
-               "weight": 4
+               "weight": 15
             },
             {
                "type": "minecraft:item",

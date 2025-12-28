@@ -17,8 +17,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "air",
-               "weight": 80
+               "name": "green_resurgence:material_paper_cardboard",
+               "weight": 53
             },
             {
                "type": "minecraft:item",
@@ -28,13 +28,13 @@
                      "count": {
                         "type": "minecraft:uniform",
                         "max": 2,
-                        "min": 1
+                        "min": 2
                      },
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_glass_shards",
-               "weight": 13
+               "name": "green_resurgence:material_paper_cardboard",
+               "weight": 5
             },
             {
                "type": "minecraft:item",
@@ -49,8 +49,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_glass_window",
-               "weight": 4
+               "name": "air",
+               "weight": 40
             },
             {
                "type": "minecraft:item",
@@ -65,45 +65,13 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_adesive_screw",
-               "weight": 1
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_metal_scrap",
-               "weight": 1
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_metal_ironbar",
-               "weight": 1
+               "name": "green_resurgence:material_adesive_scotch",
+               "weight": 2
             }
          ],
          "rolls": {
             "type": "minecraft:uniform",
-            "max": 1,
+            "max": 2,
             "min": 1
          }
       }
