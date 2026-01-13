@@ -9,10 +9,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Lootable {
 	private final Map<Identifier, Identifier> tables = new HashMap<>();
@@ -24,10 +21,10 @@ public class Lootable {
 	public Lootable(Identifier block, Identifier empty) throws Exception {
 		Block b = Registries.BLOCK.get(block);
 		Block b1 = Registries.BLOCK.get(empty);
-		if (b == null || b == Blocks.AIR)
+		if(b == null || b == Blocks.AIR)
 			throw new Exception();
 		this.block = b;
-		if (b1 == null)
+		if(b1 == null)
 			b1 = Blocks.AIR;
 		this.empty = b1;
 	}
@@ -58,6 +55,10 @@ public class Lootable {
 		return block;
 	}
 
+	public Collection<Identifier> getTables() {
+		return tables.values();
+	}
+
 	public Identifier getLootForTool(Identifier tool) {
 		return tables.get(tool);
 	}
@@ -69,9 +70,9 @@ public class Lootable {
 
 	public boolean playerMeetRequirement(Identifier tool, PlayerEntity player) {
 		var req = statRequirement.get(tool);
-		if (req != null) {
-			for (var v : req) {
-				if (v.getRight() <= ComponentManager.getPlayerDatas(player).getStats().getPalier(v.getLeft()))
+		if(req != null) {
+			for(var v : req) {
+				if(v.getRight() <= ComponentManager.getPlayerDatas(player).getStats().getPalier(v.getLeft()))
 					return true;
 			}
 			return req.isEmpty();
@@ -81,7 +82,7 @@ public class Lootable {
 	}
 
 	public Lootable addRequirement(Identifier tool, String classe, int min_level) {
-		if (!statRequirement.containsKey(tool))
+		if(!statRequirement.containsKey(tool))
 			statRequirement.put(tool, new ArrayList<>());
 		statRequirement.get(tool).add(new Pair<>(classe, min_level));
 		return this;

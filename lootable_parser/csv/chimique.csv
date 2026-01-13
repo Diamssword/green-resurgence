@@ -1,0 +1,10 @@
+categorie,item,quantitée,pourcentage 1,pourcentage 2,pourcentage 3,pourcentage 4,pourcentage 5,rolls
+,air,1,15,20,30,47,70,1
+fuel,gas,1,50,,,10,50,
+fuel,bio_fuel,1,25,50,,15,,
+fuel,gasoline,1,,30,,10,,
+chemical,amonia,1,10,,,2,15,
+chemical,acetone,1,,,10,2,,
+chemical,acid,1,,,40,10,,
+chemical,acide1,1,,,10,2,,
+chemical,solvant,1,,,10,2,,

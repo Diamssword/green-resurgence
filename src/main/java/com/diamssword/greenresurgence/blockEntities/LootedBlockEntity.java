@@ -25,7 +25,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -74,8 +73,9 @@ public class LootedBlockEntity extends BlockEntity {
 	public void attackBlock(ServerPlayerEntity player) {
 
 		if(this.durability > 0) {
-			LootableLogic.giveLoot(player, pos, getRealBlock());
-			getWorld().playSound(null, this.pos, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 0.5f, 1f + (float) Math.random());
+			var b = getRealBlock();
+			LootableLogic.giveLoot(player, pos, b);
+			getWorld().playSound(null, this.pos, b.getSoundGroup().getBreakSound(), SoundCategory.BLOCKS, 0.5f, 1f + (float) Math.random());
 			getWorld().syncWorldEvent(WorldEvents.BLOCK_BROKEN, pos, Block.getRawIdFromState(getRealBlock()));
 			this.durability--;
 			if(this.durability == 0) {this.inventory = null;}

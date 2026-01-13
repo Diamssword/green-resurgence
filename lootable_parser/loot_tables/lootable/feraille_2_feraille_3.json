@@ -1,0 +1,351 @@
+{
+   "type": "minecraft:advancement_location",
+   "pools": [
+      {
+         "bonus_rolls": 0,
+         "entries": [
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "air",
+               "weight": 10
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 2,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_scrap",
+               "weight": 40
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 2,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_scrap",
+               "weight": 15
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_lead",
+               "weight": 5
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_lead",
+               "weight": 10
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 2,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_copperplate",
+               "weight": 10
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_alloy_brass",
+               "weight": 5
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_alloy_brass",
+               "weight": 10
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_copperwire",
+               "weight": 5
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_lead1",
+               "weight": 5
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_lead1",
+               "weight": 10
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_ironbar",
+               "weight": 10
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_alloy_magnets",
+               "weight": 5
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_alloy_ferro",
+               "weight": 5
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_silver",
+               "weight": 10
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_goldbar",
+               "weight": 10
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_alloy_bronze",
+               "weight": 10
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_graphite",
+               "weight": 10
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_alloy_aluminium",
+               "weight": 5
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_alloy_electrum",
+               "weight": 5
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_alloy_steel",
+               "weight": 5
+            }
+         ],
+         "rolls": {
+            "type": "minecraft:uniform",
+            "max": 1,
+            "min": 1
+         }
+      }
+   ]
+}

@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence;
 
 import com.diamssword.greenresurgence.blockEntities.ModBlockEntity;
 import com.diamssword.greenresurgence.blocks.*;
+import com.diamssword.greenresurgence.blocks.SpawnerBlock;
 import com.diamssword.greenresurgence.datagen.BlockLootGenerator;
 import com.diamssword.greenresurgence.datagen.ModelGenerator;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
@@ -133,6 +134,8 @@ public class MBlocks implements BlockRegistryContainer {
 	public static final CameleonBlock CAMO_WALL = new CameleonBlock(true);
 	@ModelGen
 	public static final CameleonBlock CAMO_FLOOR = new CameleonBlock(false);
+	@ModelGen
+	public static final SpawnerBlock SPAWNER = new SpawnerBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque());
 
 	@Override
 	public void afterFieldProcessing() {

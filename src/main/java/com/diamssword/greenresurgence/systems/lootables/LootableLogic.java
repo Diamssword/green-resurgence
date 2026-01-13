@@ -27,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -57,14 +58,25 @@ public class LootableLogic {
 	}
 
 	public static void giveLoot(ServerPlayerEntity player, BlockPos pos, BlockState state) {
-		LootContextParameterSet lootContextParameterSet = new LootContextParameterSet.Builder((ServerWorld) player.getWorld())
+		LootContextParameterSet.Builder lootContextParameterSetB = new LootContextParameterSet.Builder((ServerWorld) player.getWorld())
 				.add(LootContextParameters.TOOL, player.getMainHandStack())
 				.add(LootContextParameters.BLOCK_STATE, state)
-				.add(LootContextParameters.ORIGIN, pos.toCenterPos())
-				.build(LootContextTypes.BLOCK);
+				.add(LootContextParameters.ORIGIN, pos.toCenterPos());
+		lootContextParameterSetB.addDynamicDrop(Lootables.ANY_LOOTABLEFN, c -> {
+			var tables1 = new ArrayList<>(Lootables.loader.getTables());
+			var tables = tables1.get((int) (Math.random() * tables1.size()));
+			var t = new ArrayList<>(tables.getTables());
+			var table = t.get((int) (Math.random() * t.size()));
+			LootTable lootTable = player.getWorld().getServer().getLootManager().getLootTable(table);
+			lootTable.generateLoot(lootContextParameterSetB.build(LootContextTypes.BLOCK), c);
+		});
+		var lootContextParameterSet = lootContextParameterSetB.build(LootContextTypes.BLOCK);
+
 		ServerWorld serverWorld = lootContextParameterSet.getWorld();
 		ItemStack st = lootContextParameterSet.get(LootContextParameters.TOOL);
 		var tool = getGoodTool(st, state, 2);
+
+
 		if(tool != null) {
 			var loot = findLootTag(state, tool);
 			if(loot != null) {

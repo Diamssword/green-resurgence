@@ -1,0 +1,79 @@
+{
+   "type": "minecraft:advancement_location",
+   "pools": [
+      {
+         "bonus_rolls": 0,
+         "entries": [
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "air",
+               "weight": 40
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 2,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_scrap",
+               "weight": 50
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_lead",
+               "weight": 5
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_adesive_screw",
+               "weight": 5
+            }
+         ],
+         "rolls": {
+            "type": "minecraft:uniform",
+            "max": 1,
+            "min": 1
+         }
+      }
+   ]
+}

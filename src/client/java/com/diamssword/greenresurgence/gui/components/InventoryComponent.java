@@ -31,6 +31,7 @@ public class InventoryComponent extends BaseComponent implements IHideableCompon
 	protected boolean blend = false;
 	private boolean hidden;
 	private int slotWidth;
+	private boolean noTextCut = false;
 
 	public InventoryComponent(String inventoryId, int width, int height, String name) {
 		this.inventoryId = inventoryId;
@@ -102,6 +103,8 @@ public class InventoryComponent extends BaseComponent implements IHideableCompon
 			return Text.translatable("container.inventory");
 		else if(this.inventoryId.equals("hotbar") || this.name.isEmpty())
 			return null;
+		if(this.name.startsWith("!!"))
+			return Text.literal(this.name.substring(2));
 		return Text.translatable(GreenResurgence.ID + ".container." + this.name);
 	}
 
@@ -129,7 +132,7 @@ public class InventoryComponent extends BaseComponent implements IHideableCompon
 
 		if(name != null) {
 			var d = MinecraftClient.getInstance().textRenderer.getWidth(name.getString());
-			if(width() >= d)
+			if(width() >= d || noTextCut)
 				context.drawText(name, visibleArea.x(), visibleArea.y(), 0.9f, 0xffffff);
 			else {
 				var t = MinecraftClient.getInstance().textRenderer.trimToWidth(name, width());
@@ -214,10 +217,12 @@ public class InventoryComponent extends BaseComponent implements IHideableCompon
 		var invId = element.getAttributeNode("id").getValue();
 		var w = UIParsing.parseUnsignedInt(element.getAttributeNode("width"));
 		var h = UIParsing.parseUnsignedInt(element.getAttributeNode("height"));
+		var b = element.hasAttribute("textOverFlow");
+
 		if(element.hasAttribute("name")) {
-			return new InventoryComponent(invId, w, h, element.getAttributeNode("name").getValue(), text);
+			return new InventoryComponent(invId, w, h, element.getAttributeNode("name").getValue(), text).setNoTextCut(b);
 		}
-		return new InventoryComponent(invId, w, h, invId, text);
+		return new InventoryComponent(invId, w, h, invId, text).setNoTextCut(b);
 	}
 
 	@Override
@@ -234,5 +239,14 @@ public class InventoryComponent extends BaseComponent implements IHideableCompon
 	@Override
 	public boolean isHidden() {
 		return hidden;
+	}
+
+	public boolean isNoTextCut() {
+		return noTextCut;
+	}
+
+	public InventoryComponent setNoTextCut(boolean noTextCut) {
+		this.noTextCut = noTextCut;
+		return this;
 	}
 }

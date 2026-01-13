@@ -30,4 +30,5 @@ public class EquipmentValues {
 	public static final Map<String, EffectLevel> SMALL_SPIKE_BASE = MapEffectMaker.create(EquipmentEffects.ATTACK_SPEED, SPEED_FAST).add(EquipmentEffects.ATTACK_DAMAGE, 2.4f).add(EquipmentEffects.ATTACK_RANGE, -1).get();
 	public static final Map<String, EffectLevel> MEDIUM_SPIKE_BASE = MapEffectMaker.create(EquipmentEffects.ATTACK_SPEED, SPEED_NORMAL).add(EquipmentEffects.ATTACK_DAMAGE, 2.4f).add(EquipmentEffects.ATTACK_RANGE, 1f).get();
 	public static final Map<String, EffectLevel> LONG_SPIKE_BASE = MapEffectMaker.create(EquipmentEffects.ATTACK_SPEED, SPEED_NORMAL).add(EquipmentEffects.ATTACK_DAMAGE, 4f).add(EquipmentEffects.ATTACK_RANGE, 2f).get();
+	
 }

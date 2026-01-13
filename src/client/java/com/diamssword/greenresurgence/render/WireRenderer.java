@@ -4,11 +4,9 @@ import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.blockEntities.ConnectorBlockEntity;
 import com.diamssword.greenresurgence.blocks.IDisplayOffset;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -16,9 +14,6 @@ import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import org.joml.Math;
 import org.joml.Matrix4f;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class WireRenderer {
 	private static final Vec3d UP = new Vec3d(0, 1, 0);
@@ -31,18 +26,15 @@ public class WireRenderer {
 
 	public static void render(net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext ctx) {
 		PlayerEntity p = ctx.gameRenderer().getClient().player;
-		List<Pair<BlockPos, BlockPos>> toRemove = new ArrayList<>();
 		ConnectorBlockEntity.clientCables.forEach((k) -> {
-			if(!k.getRight().isWithinDistance(p.getPos(), 1000) && !k.getLeft().isWithinDistance(p.getPos(), 256)) {
-				toRemove.add(k);
-			} else {
+			if(k.getRight().isWithinDistance(p.getPos(), GreenResurgence.CONFIG.clientOptions.renders.wireAnchorMaxRenderDistance()) || k.getLeft().isWithinDistance(p.getPos(), GreenResurgence.CONFIG.clientOptions.renders.wireAnchorMaxRenderDistance())) {
 				Vec3d off1 = Vec3d.ZERO;
 				Vec3d off2 = Vec3d.ZERO;
 				float scale = 1f;
 				BlockState st1 = ctx.world().getBlockState(k.getLeft());
 				BlockState st2 = ctx.world().getBlockState(k.getRight());
-				if(st1.getBlock() == Blocks.AIR && st2.getBlock() == Blocks.AIR)
-					toRemove.add(k);
+				//if(st1.getBlock() == Blocks.AIR && st2.getBlock() == Blocks.AIR)
+				//toRemove.add(k);
 				if(st1.getBlock() instanceof IDisplayOffset) {
 					off1 = ((IDisplayOffset) st1.getBlock()).getOffset(st1, ctx.world());
 					scale = ((IDisplayOffset) st1.getBlock()).getScale(st1, ctx.world());
@@ -56,7 +48,6 @@ public class WireRenderer {
 				//renderLeashFrom(ctx, k.getLeft().toCenterPos().add(off1), k.getRight().toCenterPos().add(off2), scale);
 			}
 		});
-		toRemove.forEach(ConnectorBlockEntity.clientCables::remove);
 	}
 
 	public static void renderWire(World level, VertexConsumerProvider source, MatrixStack poseStack, Vec3d from, Vec3d to) {

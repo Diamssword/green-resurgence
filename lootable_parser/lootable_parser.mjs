@@ -1,6 +1,10 @@
 import * as fs from "fs"
 const table_dic={};
 
+const tableGenerators={
+    default:simpleTableGenerator,
+    "green_resurgence:any_lootable":anyTableFnGenerator
+}
 fs.mkdirSync("loot_tables/lootable/",{recursive:true})
 parseBlocks(fs.readFileSync("csv/blocks.csv").toString());
 /**
@@ -42,6 +46,7 @@ function combineTable(files)
                         d=o["pourcentage "+number]
                     //else
                         //console.error("didn't find row 'pourcentage "+number+"' for "+f+" : defaulting to row 'pourcentage'")
+
                     if(d && d.trim().length>0)
                     {
                         const per=parseFloat(d);
@@ -75,22 +80,23 @@ function parseTable(table,name)
     var res={"bonus_rolls": 0.0,entries:[],rolls:{"type": "minecraft:uniform","max": table.rollMax,"min": table.rollMin}}
     for(var id in table.items)
     {
-        var items=table.items[id];
-        items.forEach(o=>{
-        res.entries.push({ "type": "minecraft:item","functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": o.max,
-                "min": o.min
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": id,
-          "weight": o.perc})
-        })
+        let gen="default";
+        let items=table.items[id];
+        if(id.startsWith("#"))
+        {
+            id=id.substring(1);
+            gen=id;
+        }
+        if(!tableGenerators[gen])
+        {
+            console.error("no generator function for :"+gen)
+        }
+        else
+        {
+            items.forEach(o=>{
+                res.entries.push(tableGenerators[gen](id,o))
+            })
+        }
     }
     res={"type": "minecraft:advancement_location",
     "pools": [res]};
@@ -141,7 +147,7 @@ for(var k in ob)
     var table=(o["Table"]||"").trim();
     var tool=  (o["Outils"]||"").trim();
     var replace= o["Remplace"]?o["Remplace"]:"minecraft:air"
-    var connected= o["Remplace"];
+    var connected= o["Connecté"];
     if(table && tool && replace)
     {
             o["blocs"].split(" ").forEach(b=>{
@@ -199,4 +205,46 @@ function parse(text)
         res.push(ob);
     }
     return res;
+}
+/**
+ * @param {string} id
+ * @param {{min:number,max:number,perc:number}} table
+ * @returns
+ */
+function simpleTableGenerator(id,table)
+{
+return { "type": "minecraft:item","functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": table.max,
+                "min": table.min
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": id,
+          "weight": table.perc}
+}
+/**
+ * @param {string} id
+ * @param {{min:number,max:number,perc:number}} table
+ * @returns
+ */
+function anyTableFnGenerator(id,table)
+{
+return { "type": "minecraft:dynamic","functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": table.max,
+                "min": table.min
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": id,
+          "weight": table.perc}
 }

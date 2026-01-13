@@ -8,12 +8,13 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
 import org.jetbrains.annotations.Nullable;
 
-public class ImageBlockEntity extends BlockEntity {
+public class ImageBlockEntity extends BlockEntity implements IGuiPacketReceiver {
 	private float rotation = 0;
 	private Vec2f size = new Vec2f(1, 1);
 	private String content = "";
@@ -101,7 +102,7 @@ public class ImageBlockEntity extends BlockEntity {
 
 	private void saveAndUpdate() {
 		this.markDirty();
-		if (this.world instanceof ServerWorld sw)
+		if(this.world instanceof ServerWorld sw)
 			sw.getChunkManager().markForUpdate(pos);
 	}
 
@@ -132,8 +133,10 @@ public class ImageBlockEntity extends BlockEntity {
 		return offsetY;
 	}
 
-	public void receiveGuiPacket(GuiPackets.GuiTileValue msg) {
-		switch (msg.key()) {
+	public void receiveGuiPacket(ServerPlayerEntity player, GuiPackets.GuiTileValue msg) {
+		if(!player.isCreative())
+			return;
+		switch(msg.key()) {
 			case "sizeX" -> this.setSizeX(msg.asFloat());
 			case "sizeY" -> this.setSizeY(msg.asFloat());
 			case "rotation" -> this.setRotation(msg.asFloat());

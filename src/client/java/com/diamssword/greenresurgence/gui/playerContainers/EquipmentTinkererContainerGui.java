@@ -135,8 +135,26 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 				grid.child(comp, y, x);
 			}
 			return grid;
+		} else {
+			var grid = Containers.grid(Sizing.content(), Sizing.content(), 5, 1);
+			grid.padding(Insets.of(2));
+			for(int i = 0; i < slots.length; i++) {
+				var slot = slots[i];
+
+				InventoryComponent comp = new InventoryComponent("equipment_" + slot, 1, 1, "disabled");
+				comp.margins(Insets.of(1));
+
+				var texture = slot;
+				if(slot.startsWith("extra"))
+					texture = "skin";
+				if(slot.equals(Equipments.P_HEAD))
+					texture = equipment.getEquipmentType();
+				comp.setIcon(0, GreenResurgence.asRessource("textures/gui/slots/indicators/equipment_" + texture + ".png"));
+
+				grid.child(comp, i, 0);
+			}
+			return grid;
 		}
-		return null;
 	}
 }
 

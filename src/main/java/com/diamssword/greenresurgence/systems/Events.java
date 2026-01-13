@@ -2,7 +2,7 @@ package com.diamssword.greenresurgence.systems;
 
 import com.diamssword.greenresurgence.entities.BackpackEntity;
 import com.diamssword.greenresurgence.events.PlayerTickEvent;
-import com.diamssword.greenresurgence.items.AbstractBackpackItem;
+import com.diamssword.greenresurgence.items.helpers.AbstractBackpackItem;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.network.DictionaryPackets;
@@ -34,14 +34,14 @@ public class Events {
 		ServerTickEvents.START_WORLD_TICK.register(w -> {
 			w.getEntitiesByType(TypeFilter.instanceOf(ItemEntity.class), i -> i.getStack().getItem() instanceof AbstractBackpackItem).forEach(v -> {
 
-				if (!((AbstractBackpackItem) v.getStack().getItem()).isInventoryEmpty(v.getStack())) {
+				if(!((AbstractBackpackItem) v.getStack().getItem()).isInventoryEmpty(v.getStack())) {
 					w.spawnEntity(new BackpackEntity(w, v.getX(), v.getY(), v.getZ(), v.getStack()));
 					v.discard();
 				}
 			});
 		});
 		ServerTickEvents.END_SERVER_TICK.register((s) -> {
-			if (s.getOverworld().getTime() % 20 == 0) {
+			if(s.getOverworld().getTime() % 20 == 0) {
 				var ls = new ArrayList<>(scheluded);
 
 				ls.forEach(l1 -> {//on laisse le temps a MC d'envoyer les tags et autres données avant

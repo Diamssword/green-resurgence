@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -79,7 +78,8 @@ public class AdventureInteract {
 					st.postMine(ctx.player().getWorld(), state, msg.pos, ctx.player());
 					LootableLogic.giveLoot(ctx.player(), msg.pos, state);
 					ctx.player().getWorld().syncWorldEvent(WorldEvents.BLOCK_BROKEN, msg.pos, Block.getRawIdFromState(state));
-					ctx.player().getWorld().playSound(null, msg.pos, SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.BLOCKS, 0.5f, 1f + (float) Math.random());
+
+					ctx.player().getWorld().playSound(null, msg.pos, state.getSoundGroup().getBreakSound(), SoundCategory.BLOCKS, 0.5f, 1f + (float) Math.random());
 					Lootables.loader.getTable(state.getBlock()).ifPresent(l -> {
 						if(l.getConnected() != null) {
 							for(var dir : Direction.values()) {

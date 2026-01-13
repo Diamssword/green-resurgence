@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence.systems.equipement;
 
-import com.diamssword.greenresurgence.items.SimpleEnergyItemTiered;
+import com.diamssword.greenresurgence.items.helpers.ISimpleBatteryHolder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Pair;
 
@@ -11,9 +11,9 @@ public class ElectricStackBasedEquipment extends StackBasedEquipment {
 		super(category, subcategory, stack);
 	}
 
-	public Optional<Pair<SimpleEnergyItemTiered, ItemStack>> getBattery() {
+	public Optional<Pair<ISimpleBatteryHolder, ItemStack>> getBattery() {
 		var st = getUpgradeItem(Equipments.P_BATTERY);
-		if(st.getItem() instanceof SimpleEnergyItemTiered tiered) {
+		if(st.getItem() instanceof ISimpleBatteryHolder tiered) {
 			return Optional.of(new Pair<>(tiered, st));
 		}
 		return Optional.empty();

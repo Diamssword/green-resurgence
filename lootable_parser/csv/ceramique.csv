@@ -1,0 +1,8 @@
+categorie,item,quantitée,pourcentage 1,pourcentage 2,pourcentage 3,rolls
+,air,1,40,55,40,1
+build,ceramic,1-2,50,25,45,
+build,sand,1,10,15,10,
+build,marble,1,,1,,
+metal,lead,1,,2,,
+metal,lead1,1,,2,,
+,#green_resurgence:any_lootable,1,,,5,

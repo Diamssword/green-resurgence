@@ -8,7 +8,8 @@
     "PlayerEntityMixin",
     "PlayerInventoryMixin",
     "PlayerPlaceBlockMixin",
-    "PlayerScreenHandlerMixin"
+    "PlayerScreenHandlerMixin",
+    "SinglePoolElementMixin"
   ],
   "injectors": {
     "defaultRequire": 1

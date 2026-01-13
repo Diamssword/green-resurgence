@@ -9,7 +9,7 @@ import com.diamssword.greenresurgence.containers.player.grids.ArmorGrid;
 import com.diamssword.greenresurgence.containers.player.grids.BagsGrid;
 import com.diamssword.greenresurgence.containers.player.grids.OffHandGrid;
 import com.diamssword.greenresurgence.containers.player.grids.PlayerGrid;
-import com.diamssword.greenresurgence.items.AbstractBackpackItem;
+import com.diamssword.greenresurgence.items.helpers.AbstractBackpackItem;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.InventoryPackets;
 import com.diamssword.greenresurgence.systems.Components;

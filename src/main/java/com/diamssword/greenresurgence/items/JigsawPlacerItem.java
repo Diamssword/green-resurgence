@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.items;
 
+import com.diamssword.greenresurgence.items.helpers.IStructureProvider;
 import com.diamssword.greenresurgence.structure.JigsawHelper;
 import com.diamssword.greenresurgence.structure.StructureInfos;
 import net.minecraft.client.item.TooltipContext;

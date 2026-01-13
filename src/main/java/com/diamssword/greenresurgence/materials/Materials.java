@@ -73,11 +73,13 @@ public class Materials {
 				.add(1, "bottle", "Bouteille en Plastique", "Une simple bouteille")
 				.add(1, "sheet", "Rideau de Douche", "Un vieux rideau en plastique")
 				.add(1, "rubber_duck", "Canard en Plastique", "Coin Coin.")
+				.add(1, "soft", "Plastique Mou", "Un morceau de plastique mou")
 				.add(1, "film", "Film Plastique", "Un film en plastique souple")
 				.add(2, "bin", "Corbeille", "Une petite corbeille en plastique")
 				.add(2, "bac", "Bac en Plastique", "Une bac en plastique solide")
 				.add(2, "litter", "Litière en Plastique", "Une litière en plastique solide")
 				.add(2, "tupperware", "Tupperware", "Une boite en plastique ")
+				.add(2, "hard", "Plastique Dur", "Un morceau de plastique dur")
 				.add(4, "plastacier", "Lingot de Plastacier", "Un alliage de plastique particulièrement résistant. Autrefois utilisé dans le sport extrême ou par les militaires");
 
 		//Building
@@ -86,6 +88,7 @@ public class Materials {
 				.add(1, "brick", "Brique", "Une brique.")
 				.add(1, "parpaing", "Parpaing", "Par monts et parpaings!")
 				.add(1, "sand", "Sable", "Du sable fin")
+				.add(2, "ceramic", "Céramique", "Autrefois un beau vase")
 				.add(3, "cement", "Béton", "Pilier du monde moderne")
 				.add(4, "plaster", "Plâtre", "Pour une finition propre")
 				.add(5, "marble", "Marbre", "Pour l'élégance");
@@ -124,16 +127,16 @@ public class Materials {
 
 		//Energy
 		energy = MaterialSet.createSet("energy")
-				.add(1, "battery", "Pile", "Une pile à usage unique", false, (a, b, c, d) -> new BatteryItem(a.maxCount(16), b, c, d, BatteryTiers.BATTERY, 1f))
-				.add(3, "cell", "Batterie", "Une batterie rechargable")
-				.add(5, "cell1", "Batterie Haute Capacitée", "Une batterie rechargable de haute capacitée");
+				.add(1, "battery", "Pile", "Une pile à usage unique", true, (a, b, c, d) -> new BatteryItem(a.maxCount(16), b, c, d, BatteryTiers.BATTERY, 1f))
+				.add(3, "cell", "Batterie", "Une batterie rechargable", true, (a, b, c, d) -> new BatteryItem(a.maxCount(8), b, c, d, BatteryTiers.LIPO, 1f))
+				.add(5, "cell1", "Batterie Haute Capacitée", "Une batterie rechargable de haute capacitée", true, (a, b, c, d) -> new BatteryItem(a.maxCount(4), b, c, d, BatteryTiers.HIGH_TECH, 1f));
 		//Chemical
 		chemical = MaterialSet.createSet("chemical")
 				.add(1, "vinegar", "Vinaigre", "Bon pour la plomberie et en salade")
 				.add(1, "bleach", "Javel", "Bon pour le ménage, pas en salade")
 				.add(1, "chlorine", "Chlore", "Blanchi un peu les doigts")
 				.add(1, "house", "Produit ménager", "Finnish Brang")
-				.add(3, "alcool", "Alcool à Brulé", "Pique un peu la gorge...")
+				.add(3, "alcool", "Alcool à Bruler", "Pique un peu la gorge...")
 				.add(3, "water", "Eau Déminéralisée", "Peu rafraichissant")
 				.add(3, "acid", "Acide", "De l'acide peut puissant")
 				.add(4, "acid1", "Acide Sulfurique", "Un acide extrémement corrosif")
@@ -143,7 +146,7 @@ public class Materials {
 		leather = MaterialSet.createSet("leather")
 				.add(1, "pig", "cuir de Cochon", "")
 				.add(1, "cow", "Cuir de Vache", "")
-				.add(2, "corcodile", "Cuir de Crocodile", "")
+				.add(2, "crocodile", "Cuir de Crocodile", "")
 				.add(2, "bear", "Cuir d'Ours'", "")
 				.add(3, "rino", "Cuir de Rhinocéros", "Le meilleur ami de l'homme...");
 		fabric = MaterialSet.createSet("fabric")
@@ -191,6 +194,7 @@ public class Materials {
 		fuel = MaterialSet.createSet("fuel")
 				.add(2, "bio_fuel", "Biocarburant", "")
 				.add(2, "coal", "Charbon", "")
+				.add(3, "gas", "Gaz", "")
 				.add(3, "gasoline", "Essence", "");
 	}
 }

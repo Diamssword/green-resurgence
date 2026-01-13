@@ -17,6 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec2f;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 import org.joml.Matrix3d;
@@ -42,17 +43,25 @@ public class FlashlightLightBehavior implements DynamicLightBehavior {
 	private float prevYaw;
 	private float prevPitch;
 	private Matrix3d rotationMatrix;
+	private Vec2f offset;
 	private Matrix3d inverseRotationMatrix;
 
 	public FlashlightLightBehavior(Entity entity) {
 		this.entity = entity;
+		this.offset = new Vec2f(-1f, 0);
 		this.computeMatrices();
+	}
+
+	public FlashlightLightBehavior(Entity entity, Vec2f offset) {
+		this.entity = entity;
+		this.computeMatrices();
+		this.offset = offset;
 	}
 
 	@Override
 	public @Range(from = 0L, to = 15L) double lightAtPos(BlockPos pos, double falloffRatio) {
 		double x = pos.getX() + 0.5;
-		double y = pos.getY() + 0.5;
+		double y = pos.getY() + 0.5 + offset.y;
 		double z = pos.getZ() + 0.5;
 
 		Vector3d coord = this.worldToEntitySpace(new Vector3d(x, y, z));
@@ -182,8 +191,7 @@ public class FlashlightLightBehavior implements DynamicLightBehavior {
 	private Vector3d worldToEntitySpace(Vector3d in) {
 		in.sub(entity.getX(), entity.getEyeY(), entity.getZ());
 		in.mul(this.rotationMatrix);
-		in.y += -1 + DEPTH / 2 - DISTANCE_DELTA;
-
+		in.y += offset.x + DEPTH / 2 - DISTANCE_DELTA;
 		return in;
 	}
 

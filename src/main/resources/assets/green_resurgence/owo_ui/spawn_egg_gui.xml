@@ -1,0 +1,114 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+    <components>
+        <flow-layout direction="vertical">
+            <children>
+                <flow-layout direction="horizontal"> <!---->
+                    <children>
+                        <flow-layout direction="vertical">
+                            <children>
+                                <flow-layout direction="horizontal">
+                                    <children>
+                                        <inventory id="egg" name="disabled" width="1" height="1"/>
+                                        <text-box id="in_entity">
+                                            <tooltip-text>Entity ID</tooltip-text>
+                                            <sizing>
+                                                <horizontal method="fill">80</horizontal>
+                                            </sizing>
+                                        </text-box>
+                                    </children>
+                                    <padding>
+                                        <top>2</top>
+                                        <bottom>2</bottom>
+                                        <left>5</left>
+                                    </padding>
+                                    <sizing>
+                                        <horizontal method="fill">100</horizontal>
+                                    </sizing>
+                                    <horizontal-alignment>left</horizontal-alignment>
+                                </flow-layout>
+                                <flow-layout direction="horizontal">
+                                    <children>
+                                        <flow-layout direction="vertical">
+                                            <children>
+                                                <inventory id="armor" textOverFlow="true" name="!!Armor" width="9"
+                                                           height="3"/>
+                                                <inventory id="hands" textOverFlow="true" name="!!Main|Off Hands"
+                                                           width="2" height="1"/>
+                                            </children>
+                                            <sizing>
+                                                <horizontal method="fixed">40</horizontal>
+                                            </sizing>
+                                            <allow-overflow>true</allow-overflow>
+                                        </flow-layout>
+                                        <flow-layout direction="vertical">
+                                            <children>
+                                                <text-box id="in_name">
+                                                    <tooltip-text>Nom Custom</tooltip-text>
+                                                    <sizing>
+                                                        <horizontal method="fill">100</horizontal>
+                                                    </sizing>
+                                                </text-box>
+                                                <text-box id="in_vie">
+                                                    <tooltip-text>Vie</tooltip-text>
+                                                    <sizing>
+                                                        <horizontal method="fill">100</horizontal>
+                                                    </sizing>
+                                                </text-box>
+                                                <text-box id="in_potions">
+                                                    <tooltip-text>Potions</tooltip-text>
+                                                    <sizing>
+                                                        <horizontal method="fill">100</horizontal>
+                                                    </sizing>
+                                                </text-box>
+
+                                            </children>
+                                            <sizing>
+                                                <horizontal method="fill">55</horizontal>
+                                            </sizing>
+                                        </flow-layout>
+                                    </children>
+
+                                </flow-layout>
+
+                                <inventory id="player" name="!!Inventory" width="9" height="3"/>
+                                <inventory id="hotbar" width="9" height="1">
+                                </inventory>
+                            </children>
+                            <surface>
+                                <panel dark="true"/>
+                            </surface>
+                            <padding>
+                                <all>2</all>
+                            </padding>
+                            <horizontal-alignment>center</horizontal-alignment>
+                            <vertical-alignment>bottom</vertical-alignment>
+                            <positioning type="relative">50,97</positioning>
+                            <sizing>
+                                <horizontal method="fixed">170</horizontal>
+
+                            </sizing>
+                        </flow-layout>
+                    </children>
+                    <horizontal-alignment>left</horizontal-alignment>
+                    <vertical-alignment>top</vertical-alignment>
+                    <sizing>
+                        <vertical method="fill">100</vertical>
+                        <horizontal method="fill">100</horizontal>
+                    </sizing>
+                    <!---->
+                    <padding>
+                        <all>10</all>
+                    </padding>
+                    <margins>
+                        <all>1</all>
+                    </margins>
+
+                </flow-layout>
+            </children>
+            <vertical-alignment>top</vertical-alignment>
+            <horizontal-alignment>left</horizontal-alignment>
+        </flow-layout>
+
+    </components>
+</owo-ui>

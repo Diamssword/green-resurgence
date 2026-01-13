@@ -33,7 +33,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class MyVehicleInventory extends AnimalEntity implements Inventory, NamedScreenHandlerFactory, IOptionalInventory {
+public abstract class MyVehicleInventory extends AnimalEntity implements Inventory, NamedScreenHandlerFactory, IOptionalInventory, ISPawnableVehicle {
 
 	@org.jetbrains.annotations.Nullable
 	private Identifier lootTableId;

@@ -1,15 +1,19 @@
 package com.diamssword.greenresurgence.items.equipment;
 
-import com.diamssword.greenresurgence.items.SimpleEnergyItemTiered;
+import com.diamssword.greenresurgence.items.helpers.ISimpleBatteryHolder;
+import com.diamssword.greenresurgence.items.helpers.ISimpleEnergyItemTiered;
 import com.diamssword.greenresurgence.materials.BatteryTiers;
 import com.diamssword.greenresurgence.systems.equipement.EffectLevel;
 import com.diamssword.greenresurgence.systems.equipement.ElectricStackBasedEquipment;
 import com.diamssword.greenresurgence.systems.equipement.IUpgradableEquipment;
+import net.minecraft.client.item.TooltipData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.ClickType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Pair;
 import net.minecraft.util.TypedActionResult;
@@ -25,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class EquipmentToolElectric extends EquipmentTool implements SimpleEnergyItemTiered {
+public class EquipmentToolElectric extends EquipmentTool implements ISimpleEnergyItemTiered {
 	public static final RawAnimation POWERED_ANIM = RawAnimation.begin().thenLoop("powered");
 	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
 	private final boolean emissive;
@@ -58,7 +62,7 @@ public class EquipmentToolElectric extends EquipmentTool implements SimpleEnergy
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		if(hand == Hand.MAIN_HAND) {
-			if(user.getOffHandStack().getItem() instanceof SimpleEnergyItemTiered) {
+			if(user.getOffHandStack().getItem() instanceof ISimpleEnergyItemTiered) {
 				return TypedActionResult.pass(user.getMainHandStack());
 			}
 		}
@@ -105,6 +109,16 @@ public class EquipmentToolElectric extends EquipmentTool implements SimpleEnergy
 	}
 
 	@Override
+	public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
+		return this.getBattery(stack).map(v -> v.getLeft().getBatteryStorage().onStackClicked(v.getRight(), slot, clickType, player)).orElse(super.onStackClicked(stack, slot, clickType, player));
+	}
+
+	@Override
+	public Optional<TooltipData> getTooltipData(ItemStack stack) {
+		return this.getBattery(stack).map(v -> v.getLeft().getBatteryStorage().getTooltipData(v.getRight()));
+	}
+
+	@Override
 	public boolean allowNbtUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
 		return false;
 	}
@@ -118,7 +132,7 @@ public class EquipmentToolElectric extends EquipmentTool implements SimpleEnergy
 		return (ElectricStackBasedEquipment) getEquipment(stack);
 	}
 
-	protected Optional<Pair<SimpleEnergyItemTiered, ItemStack>> getBattery(ItemStack stack) {
+	protected Optional<Pair<ISimpleBatteryHolder, ItemStack>> getBattery(ItemStack stack) {
 		return getEquipmentStack(stack).getBattery();
 	}
 

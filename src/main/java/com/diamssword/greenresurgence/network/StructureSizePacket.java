@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence.network;
 
-import com.diamssword.greenresurgence.items.IStructureProvider;
+import com.diamssword.greenresurgence.items.helpers.IStructureProvider;
 import com.diamssword.greenresurgence.structure.JigsawHelper;
 import com.diamssword.greenresurgence.structure.StructureInfos;
 import net.minecraft.registry.Registry;

@@ -20,7 +20,8 @@ public class LangGenerator extends FabricLanguageProvider {
 	private static final String[] pathsPrefixes = new String[]{
 			"",
 			"stats",
-			"equipment"
+			"equipment",
+			"gui"
 	};
 	public static Map<Identifier, String> auto_name = new HashMap<>();
 

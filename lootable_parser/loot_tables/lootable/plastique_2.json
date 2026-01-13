@@ -1,0 +1,47 @@
+{
+   "type": "minecraft:advancement_location",
+   "pools": [
+      {
+         "bonus_rolls": 0,
+         "entries": [
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "air",
+               "weight": 70
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_plastic_hard",
+               "weight": 30
+            }
+         ],
+         "rolls": {
+            "type": "minecraft:uniform",
+            "max": 2,
+            "min": 1
+         }
+      }
+   ]
+}

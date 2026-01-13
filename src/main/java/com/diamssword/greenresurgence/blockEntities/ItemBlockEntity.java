@@ -13,6 +13,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +21,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
-public class ItemBlockEntity extends BlockEntity {
+public class ItemBlockEntity extends BlockEntity implements IGuiPacketReceiver {
 	protected Vec3d rotation = Vec3d.ZERO;
 	protected Vec3d position = Vec3d.ZERO;
 	private boolean lightOffset = false;
@@ -76,7 +77,9 @@ public class ItemBlockEntity extends BlockEntity {
 		}
 	}
 
-	public void receiveGuiPacket(GuiPackets.GuiTileValue msg) {
+	public void receiveGuiPacket(ServerPlayerEntity player, GuiPackets.GuiTileValue msg) {
+		if(!player.isCreative())
+			return;
 		var pos = this.getPosition();
 		var rot = this.getRotation();
 		switch(msg.key()) {

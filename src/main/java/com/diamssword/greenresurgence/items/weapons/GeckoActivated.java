@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence.items.weapons;
 
-import com.diamssword.greenresurgence.items.SimpleEnergyItemTiered;
+import com.diamssword.greenresurgence.items.helpers.ISimpleEnergyItemTiered;
 import com.diamssword.greenresurgence.materials.BatteryTiers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,7 +24,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class GeckoActivated extends ActivatedSword implements GeoItem, SimpleEnergyItemTiered {
+public class GeckoActivated extends ActivatedSword implements GeoItem, ISimpleEnergyItemTiered {
 	public static final RawAnimation POWERED_ANIM = RawAnimation.begin().thenLoop("powered");
 	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -66,7 +66,7 @@ public class GeckoActivated extends ActivatedSword implements GeoItem, SimpleEne
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		if(hand == Hand.MAIN_HAND) {
-			if(user.getOffHandStack().getItem() instanceof SimpleEnergyItemTiered) {
+			if(user.getOffHandStack().getItem() instanceof ISimpleEnergyItemTiered) {
 				return TypedActionResult.pass(user.getMainHandStack());
 			}
 		}

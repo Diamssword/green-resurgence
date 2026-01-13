@@ -7,15 +7,26 @@ import io.wispforest.owo.config.annotation.Nest;
 @Modmenu(modId = "green_resurgence")
 @Config(name = "resurgence", wrapperName = "ResurgenceConfig")
 public class ConfigModel {
-
+	@Nest
+	public Client clientOptions = new Client();
 	@Nest
 	public Server serverOptions = new Server();
 
 	public static class Server {
+		public int __ = 0;
 		@Nest
 		public Cooldowns cooldowns = new Cooldowns();
 	}
 
+	public static class Client {
+		public int __ = 0;
+		@Nest
+		public Renders renders = new Renders();
+	}
+
+	public static class Renders {
+		public int wireAnchorMaxRenderDistance = 64;
+	}
 
 	public static class Cooldowns {
 		public int respawnLootedBlockInSec = 60;

@@ -4,7 +4,7 @@ import com.diamssword.greenresurgence.containers.grids.GridContainerSyncer;
 import com.diamssword.greenresurgence.containers.grids.IGridContainer;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.entities.BackpackEntity;
-import com.diamssword.greenresurgence.items.AbstractBackpackItem;
+import com.diamssword.greenresurgence.items.helpers.AbstractBackpackItem;
 import com.diamssword.greenresurgence.systems.Components;
 import io.wispforest.owo.client.screens.SyncedProperty;
 import net.minecraft.entity.player.PlayerEntity;

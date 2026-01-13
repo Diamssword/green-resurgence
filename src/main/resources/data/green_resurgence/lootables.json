@@ -1,5 +1,12 @@
 [
   {
+    "block": "crimson_trapdoor",
+    "empty": "minecraft:air",
+    "tables": {
+      "hand": "green_resurgence:lootable/dynamic"
+    }
+  },
+  {
     "block": "green_resurgence:cereals",
     "empty": "minecraft:air",
     "tables": {

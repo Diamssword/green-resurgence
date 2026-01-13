@@ -2,7 +2,7 @@ package com.diamssword.greenresurgence.containers.player.grids;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
-import com.diamssword.greenresurgence.items.AbstractBackpackItem;
+import com.diamssword.greenresurgence.items.helpers.AbstractBackpackItem;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
@@ -36,14 +36,14 @@ public class BagsGrid extends PlayerGrid {
 		return new Slot(this.getInventory(), index, x, y) {
 			@Override
 			public void setStack(ItemStack stack) {
-				if (inventory instanceof CustomPlayerInventory.PlayerLinkedInventory pl) {
-					if (!pl.player.getWorld().isClient() && !pl.player.isSilent()) {
+				if(inventory instanceof CustomPlayerInventory.PlayerLinkedInventory pl) {
+					if(!pl.player.getWorld().isClient() && !pl.player.isSilent()) {
 						pl.player.getWorld().playSound(null, pl.player.getX(), pl.player.getY(), pl.player.getZ(), SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, pl.player.getSoundCategory(), 1.0F, 1.0F);
 					}
 					super.setStack(stack);
-					if (parent != null) {
+					if(parent != null) {
 						parent.clearCache();
-						if (!parent.getPlayer().getWorld().isClient) {
+						if(!parent.getPlayer().getWorld().isClient) {
 							parent.InventoryScreenNeedRefresh = true;
 						}
 					}
@@ -59,7 +59,7 @@ public class BagsGrid extends PlayerGrid {
 
 			@Override
 			public boolean canInsert(ItemStack stack) {
-				if (stack.getItem() instanceof AbstractBackpackItem ab) {
+				if(stack.getItem() instanceof AbstractBackpackItem ab) {
 					return (ab.slot == AbstractBackpackItem.PackSlot.Backpack && index == 0) || (ab.slot == AbstractBackpackItem.PackSlot.Satchel && index > 0);
 				}
 				return false;

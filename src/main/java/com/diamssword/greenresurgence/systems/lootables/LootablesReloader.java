@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -34,6 +35,10 @@ public class LootablesReloader implements SimpleSynchronousResourceReloadListene
 	private boolean shouldSync = false;
 
 	public LootablesReloader() {
+	}
+
+	public Collection<Lootable> getTables() {
+		return lootables.values();
 	}
 
 	public Optional<Lootable> getTable(Block g) {
@@ -57,32 +62,32 @@ public class LootablesReloader implements SimpleSynchronousResourceReloadListene
 					JsonArray jsonElement = JsonHelper.deserialize(GSON, reader, JsonArray.class);
 					jsonElement.forEach(v -> {
 						var ob = v.getAsJsonObject();
-						if (ob.has("block")) {
+						if(ob.has("block")) {
 							try {
 								Lootable table = new Lootable(new Identifier(ob.get("block").getAsString()), new Identifier(ob.get("empty").getAsString()));
-								if (ob.has("tables")) {
+								if(ob.has("tables")) {
 									var tables = ob.get("tables").getAsJsonObject();
 									tables.keySet().forEach(k -> {
 										table.addTool(GreenResurgence.asRessource("lootable/tools/" + k), new Identifier(tables.get(k).getAsString()));
 									});
 								}
-								if (ob.has("requirements")) {
+								if(ob.has("requirements")) {
 									var tables = ob.get("requirements").getAsJsonObject();
 									tables.keySet().forEach(k -> {
 										var st1 = tables.get(k).getAsString().split(",");
-										for (var d : st1) {
+										for(var d : st1) {
 											var st = d.split(":");
-											if (st.length > 1)
+											if(st.length > 1)
 												table.addRequirement(GreenResurgence.asRessource("lootable/tools/" + k), st[0], Integer.parseInt(st[1]));
 										}
 
 									});
 								}
-								if (ob.has("connected")) {
+								if(ob.has("connected")) {
 									table.setConnected(new Identifier(ob.get("connected").getAsString()));
 								}
 								lootables.put(table.getBlock(), table);
-							} catch (Exception e) {
+							} catch(Exception e) {
 								LOGGER.error("Couldn't parse block from file {} for {}", id, ob.get("block").getAsString());
 							}
 						} else
@@ -92,7 +97,7 @@ public class LootablesReloader implements SimpleSynchronousResourceReloadListene
 					((Reader) reader).close();
 					shouldSync = true;
 				}
-			} catch (JsonParseException | IOException | IllegalArgumentException exception) {
+			} catch(JsonParseException | IOException | IllegalArgumentException exception) {
 				LOGGER.error("Couldn't parse data file {} from {}", id, getFabricId(), exception);
 			}
 		});
@@ -100,7 +105,7 @@ public class LootablesReloader implements SimpleSynchronousResourceReloadListene
 	}
 
 	public void worldTick(MinecraftServer server) {
-		if (shouldSync) {
+		if(shouldSync) {
 			shouldSync = false;
 			Channels.serverHandle(server).send(new DictionaryPackets.LootableList(this));
 		}
@@ -126,7 +131,7 @@ public class LootablesReloader implements SimpleSynchronousResourceReloadListene
 			try {
 				var t = Lootable.fromNBT((NbtCompound) el);
 				loader.lootables.put(t.getBlock(), t);
-			} catch (Exception e) {
+			} catch(Exception e) {
 				LOGGER.error("Couldn't parse packet data for lootable: {}", el, e);
 			}
 		});

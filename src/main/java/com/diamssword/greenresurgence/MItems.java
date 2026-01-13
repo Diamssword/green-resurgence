@@ -45,6 +45,7 @@ public class MItems implements ItemRegistryContainer {
 	public static final EntityPlacerItem CADDIE = new EntityPlacerItem((u, p) -> new TwoPassengerVehicle(MEntities.CADDIE, u.getWorld(), p.x, p.y, p.z), new OwoItemSettings().maxCount(1).group(GROUP));
 	public static final EntityPlacerItem BIKE = new EntityPlacerItem((u, p) -> new BikeEntity(MEntities.BIKE, u.getWorld(), p.x, p.y, p.z), new OwoItemSettings().maxCount(1).group(GROUP));
 	public static final FlashlightItem FLASHLIGHT = new FlashlightItem(new OwoItemSettings().group(GROUP).tab(1).maxCount(1));
+	public static final CustomSpawnEgg CUSTOM_SPAWN_EGG = new CustomSpawnEgg();
 
 	@Override
 	public void afterFieldProcessing() {

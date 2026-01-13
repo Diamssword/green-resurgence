@@ -6,6 +6,7 @@ import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.items.*;
 import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinItem;
 import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinTooltipData;
+import com.diamssword.greenresurgence.items.helpers.BatteryStorageHelper;
 import com.diamssword.greenresurgence.items.weapons.GeckoActivated;
 import com.diamssword.greenresurgence.render.blockEntityRenderer.*;
 import com.diamssword.greenresurgence.render.cosmetics.ModularArmorLayerRenderer;
@@ -43,6 +44,8 @@ public class RenderersRegister {
 		TooltipComponentCallback.EVENT.register((a) -> {
 			if(a instanceof EquipmentSkinTooltipData dt)
 				return new EquipmentSkinTooltipComponent(dt);
+			else if(a instanceof BatteryStorageHelper.BatteryHolderTooltipData dt)
+				return new BatteryHolderTooltipComponent(dt);
 			return null;
 		});
 
@@ -94,6 +97,7 @@ public class RenderersRegister {
 		BlockEntityRendererFactories.register(MBlocks.SHELF_BLOCK.getEntityType(), ShelfBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(MBlocks.ARMOR_TINKERER.getEntityType(), ArmorTinkererBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(MBlocks.CRUMBELING_BLOCK.getEntityType(), CrumbelingBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(MBlocks.SPAWNER.getEntityType(), SpawnerBlockEntityRenderer::new);
 	}
 
 

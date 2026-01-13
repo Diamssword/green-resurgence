@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence.systems.equipement.utils;
 
-import com.diamssword.greenresurgence.items.SimpleEnergyItemTiered;
+import com.diamssword.greenresurgence.items.helpers.ISimpleEnergyItemTiered;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
@@ -13,7 +13,7 @@ import team.reborn.energy.api.base.DelegatingEnergyStorage;
 
 public class EquipmentEnergyStorage implements EnergyStorage {
 	public static EnergyStorage createEquipmentStorage(ContainerItemContext ctx, ItemStack stack) {
-		if(stack.getItem() instanceof SimpleEnergyItemTiered tiered) {
+		if(stack.getItem() instanceof ISimpleEnergyItemTiered tiered) {
 			var cap = tiered.getEnergyCapacity(stack);
 			StoragePreconditions.notNegative(cap);
 			var maxI = tiered.getEnergyMaxInput(stack);
@@ -50,7 +50,7 @@ public class EquipmentEnergyStorage implements EnergyStorage {
 
 		ItemStack newStack = ctx.getItemVariant().toStack();
 
-		SimpleEnergyItemTiered tiered = (SimpleEnergyItemTiered) newStack.getItem();
+		ISimpleEnergyItemTiered tiered = (ISimpleEnergyItemTiered) newStack.getItem();
 		tiered.setStoredEnergy(newStack, energyAmountPerCount);
 		ItemVariant newVariant = ItemVariant.of(newStack);
 
@@ -114,7 +114,7 @@ public class EquipmentEnergyStorage implements EnergyStorage {
 
 		ItemStack newStack = ctx.getItemVariant().toStack();
 
-		SimpleEnergyItemTiered tiered = (SimpleEnergyItemTiered) newStack.getItem();
+		ISimpleEnergyItemTiered tiered = (ISimpleEnergyItemTiered) newStack.getItem();
 		var stored = tiered.getStoredEnergy(newStack);
 		return ctx.getAmount() * stored;
 	}

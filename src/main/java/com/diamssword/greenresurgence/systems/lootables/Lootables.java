@@ -19,6 +19,7 @@ public class Lootables {
 	public static final TagKey<Item> HAMMER = createTool("hammer");
 	public static final TagKey<Item> HAND = createTool("hand");
 	public static final TagKey<Item> CONTAINER = createTool("container");
+	public static final Identifier ANY_LOOTABLEFN = GreenResurgence.asRessource("any_lootable");
 
 	private static TagKey<Item> createTool(String name) {
 		return TagKey.of(RegistryKeys.ITEM, GreenResurgence.asRessource("lootable/tools/" + name));
@@ -31,9 +32,9 @@ public class Lootables {
 	public static boolean meetRequirement(Block b, Identifier tool, PlayerEntity player) {
 
 		return loader.getTable(b).map(lootable -> {
-					if (lootable.asTool(tool)) {
+					if(lootable.asTool(tool)) {
 						var req = lootable.playerMeetRequirement(tool, player);
-						if (req)
+						if(req)
 							return true;
 						else {
 							player.sendMessage(Text.literal("Vous n'avez pas l'expertise pour récuperer ça."), true);
@@ -47,7 +48,7 @@ public class Lootables {
 
 	public static Identifier getTableForBlock(Block b, Identifier tool) {
 		var val = loader.getTable(b);
-		if (val.isPresent() && val.get().asTool(tool)) {
+		if(val.isPresent() && val.get().asTool(tool)) {
 			return val.get().getLootForTool(tool);
 		}
 		return null;

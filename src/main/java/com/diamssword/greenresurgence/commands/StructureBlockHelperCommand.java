@@ -1,18 +1,23 @@
 package com.diamssword.greenresurgence.commands;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.JigsawBlockEntity;
 import net.minecraft.block.entity.StructureBlockBlockEntity;
 import net.minecraft.block.pattern.CachedBlockPosition;
 import net.minecraft.command.argument.BlockPosArgumentType;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.StringUtils;
@@ -26,10 +31,29 @@ public class StructureBlockHelperCommand {
 
 
 	public static void register(LiteralArgumentBuilder<ServerCommandSource> builder) {
-		builder.requires(ctx -> ctx.hasPermissionLevel(2))
-				.then(CommandManager.literal("rename").then(CommandManager.argument("from", BlockPosArgumentType.blockPos()).then(CommandManager.argument("to", BlockPosArgumentType.blockPos()).then(CommandManager.argument("startAt", IntegerArgumentType.integer(0)).executes(StructureBlockHelperCommand::renameExec)))))
-				.then(CommandManager.literal("save").then(CommandManager.argument("from", BlockPosArgumentType.blockPos()).then(CommandManager.argument("to", BlockPosArgumentType.blockPos()).executes(StructureBlockHelperCommand::saveExec))));
+		builder.requires(ctx -> ctx.hasPermissionLevel(2)).then(CommandManager.argument("from", BlockPosArgumentType.blockPos()).then(CommandManager.argument("to", BlockPosArgumentType.blockPos())
+				.then(CommandManager.literal("rename").then(CommandManager.argument("startAt", IntegerArgumentType.integer(0)).executes(StructureBlockHelperCommand::renameExec)))
+				.then(CommandManager.literal("replace").then(CommandManager.argument("replace", StringArgumentType.string()).then(CommandManager.argument("with", StringArgumentType.string()).executes(StructureBlockHelperCommand::regexExec))))
+				.then(CommandManager.literal("save").executes(StructureBlockHelperCommand::saveExec)))
+		);
+	}
 
+	private static int regexExec(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
+		String from = StringArgumentType.getString(ctx, "replace");
+		String to = StringArgumentType.getString(ctx, "with");
+		int res = iterateBlocksAndJiggsaw(ctx, s -> {
+			String n = s.getTemplateName();
+			s.setTemplateName(n.replaceAll(from, to));
+			s.markDirty();
+			ctx.getSource().getWorld().updateListeners(s.getPos(), s.getCachedState(), s.getCachedState(), Block.NOTIFY_ALL);
+		}, (s) -> {
+			String n = s.getPool().getValue().toString();
+			s.setPool(RegistryKey.of(RegistryKeys.TEMPLATE_POOL, new Identifier(n.replaceAll(from, to))));
+			s.markDirty();
+			ctx.getSource().getWorld().updateListeners(s.getPos(), s.getCachedState(), s.getCachedState(), Block.NOTIFY_ALL);
+		});
+		ctx.getSource().sendFeedback(() -> Text.literal("Modifications de " + res + " structures!"), false);
+		return res;
 
 	}
 
@@ -39,19 +63,17 @@ public class StructureBlockHelperCommand {
 		int res = iterateBlocks(ctx, s -> {
 			String n = s.getTemplateName();
 			int ind = n.lastIndexOf('_');
-			if (ind > -1) {
+			if(ind > -1) {
 
-				if (n.length() > ind + 1 && StringUtils.isNumeric(n.substring(ind + 1))) {
+				if(n.length() > ind + 1 && StringUtils.isNumeric(n.substring(ind + 1))) {
 					Integer ct = map.getOrDefault(n.substring(0, ind), start);
 					s.setTemplateName(n.substring(0, ind) + "_" + ct);
 					s.markDirty();
 					ctx.getSource().getWorld().updateListeners(s.getPos(), s.getCachedState(), s.getCachedState(), Block.NOTIFY_ALL);
 					map.put(n.substring(0, ind), ct + 1);
-					ctx.getSource().sendFeedback(() -> Text.literal("Sauvegarde de " + s.getTemplateName()), false);
+					ctx.getSource().sendFeedback(() -> Text.literal("Rename de " + s.getTemplateName()), false);
 
 				}
-
-
 			}
 		});
 		ctx.getSource().sendFeedback(() -> Text.literal("Sauvgarde de " + res + " structures!"), false);
@@ -60,23 +82,40 @@ public class StructureBlockHelperCommand {
 	}
 
 	private static int saveExec(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
-
-
 		int res = iterateBlocks(ctx, StructureBlockBlockEntity::saveStructure);
 		ctx.getSource().sendFeedback(() -> Text.literal("Sauvgarde de " + res + " structures!"), false);
 		return res;
 
 	}
 
+	private static int iterateBlocksAndJiggsaw(CommandContext<ServerCommandSource> ctx, Consumer<StructureBlockBlockEntity> forEach, Consumer<JigsawBlockEntity> forEach2) throws CommandSyntaxException {
+		BlockBox range = BlockBox.create(BlockPosArgumentType.getLoadedBlockPos(ctx, "from"), BlockPosArgumentType.getLoadedBlockPos(ctx, "to"));
+		int k = 0;
+		Predicate<CachedBlockPosition> filter = (v) -> v.getBlockState().getBlock() == Blocks.STRUCTURE_BLOCK || v.getBlockState().getBlock() == Blocks.JIGSAW;
+		for(BlockPos blockPos : BlockPos.iterate(range.getMinX(), range.getMinY(), range.getMinZ(), range.getMaxX(), range.getMaxY(), range.getMaxZ())) {
+			if(filter.test(new CachedBlockPosition(ctx.getSource().getWorld(), blockPos, true))) {
+				BlockEntity ent = ctx.getSource().getWorld().getBlockEntity(blockPos);
+				if(ent instanceof StructureBlockBlockEntity ste) {
+					forEach.accept(ste);
+					k++;
+				} else if(ent instanceof JigsawBlockEntity ste) {
+					forEach2.accept(ste);
+					k++;
+				}
+			}
+		}
+		return k;
+	}
+
 	private static int iterateBlocks(CommandContext<ServerCommandSource> ctx, Consumer<StructureBlockBlockEntity> forEach) throws CommandSyntaxException {
 		BlockBox range = BlockBox.create(BlockPosArgumentType.getLoadedBlockPos(ctx, "from"), BlockPosArgumentType.getLoadedBlockPos(ctx, "to"));
 		int k = 0;
 		Predicate<CachedBlockPosition> filter = (v) -> v.getBlockState().getBlock() == Blocks.STRUCTURE_BLOCK;
-		for (BlockPos blockPos : BlockPos.iterate(range.getMinX(), range.getMinY(), range.getMinZ(), range.getMaxX(), range.getMaxY(), range.getMaxZ())) {
+		for(BlockPos blockPos : BlockPos.iterate(range.getMinX(), range.getMinY(), range.getMinZ(), range.getMaxX(), range.getMaxY(), range.getMaxZ())) {
 
-			if (filter.test(new CachedBlockPosition(ctx.getSource().getWorld(), blockPos, true))) {
+			if(filter.test(new CachedBlockPosition(ctx.getSource().getWorld(), blockPos, true))) {
 				BlockEntity ent = ctx.getSource().getWorld().getBlockEntity(blockPos);
-				if (ent instanceof StructureBlockBlockEntity ste) {
+				if(ent instanceof StructureBlockBlockEntity ste) {
 					forEach.accept(ste);
 					k++;
 				}

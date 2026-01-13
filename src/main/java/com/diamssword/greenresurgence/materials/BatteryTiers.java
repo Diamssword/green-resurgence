@@ -2,7 +2,8 @@ package com.diamssword.greenresurgence.materials;
 
 public enum BatteryTiers {
 	BATTERY(100, 60000, 5),
-	LIPO(1000, 600000, 50);
+	LIPO(1000, 600000, 50),
+	HIGH_TECH(10000, 6000000, 500);
 
 	public final int maxIO;
 	public final float dischargeInMinutes;

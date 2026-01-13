@@ -122,7 +122,7 @@ dependencies {
     //swap with modImplementation to run on test client
     modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
     //swap with modImplementation to run on test client
-    modCompileOnly("com.terraformersmc:modmenu:${modmenu_version}")
+    modImplementation("com.terraformersmc:modmenu:${modmenu_version}")
 
     modLocalRuntime("maven.modrinth:sodium:${sodium_version}")
 

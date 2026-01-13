@@ -3,7 +3,7 @@ package com.diamssword.greenresurgence.entities;
 import com.diamssword.greenresurgence.MEntities;
 import com.diamssword.greenresurgence.containers.GenericContainer;
 import com.diamssword.greenresurgence.containers.grids.GridContainer;
-import com.diamssword.greenresurgence.items.AbstractBackpackItem;
+import com.diamssword.greenresurgence.items.helpers.AbstractBackpackItem;
 import com.diamssword.greenresurgence.systems.Components;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

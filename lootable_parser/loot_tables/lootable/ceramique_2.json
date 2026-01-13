@@ -1,0 +1,111 @@
+{
+   "type": "minecraft:advancement_location",
+   "pools": [
+      {
+         "bonus_rolls": 0,
+         "entries": [
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "air",
+               "weight": 55
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 2,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_build_ceramic",
+               "weight": 25
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_build_sand",
+               "weight": 15
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_build_marble",
+               "weight": 1
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_lead",
+               "weight": 2
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_metal_lead1",
+               "weight": 2
+            }
+         ],
+         "rolls": {
+            "type": "minecraft:uniform",
+            "max": 1,
+            "min": 1
+         }
+      }
+   ]
+}

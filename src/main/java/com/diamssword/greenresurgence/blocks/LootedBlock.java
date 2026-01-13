@@ -12,8 +12,10 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,6 +35,12 @@ public class LootedBlock extends ModBlockEntity<LootedBlockEntity> implements Wa
 	}
 
 	@Override
+	public BlockState getAppearance(BlockState state, BlockRenderView renderView, BlockPos pos, Direction side, @Nullable BlockState sourceState, @Nullable BlockPos sourcePos) {
+		return getBlockEntity(pos, renderView).getDisplayBlock();
+		//return super.getAppearance(state, renderView, pos, side, sourceState, sourcePos);
+	}
+
+	@Override
 	public BlockRenderType getRenderType(BlockState state) {
 		// With inheriting from BlockWithEntity this defaults to INVISIBLE, so we need to change that!
 		return BlockRenderType.INVISIBLE;
@@ -45,7 +53,7 @@ public class LootedBlock extends ModBlockEntity<LootedBlockEntity> implements Wa
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		if (state.get(WATERLOGGED)) {
+		if(state.get(WATERLOGGED)) {
 			return Fluids.WATER.getStill(false);
 		}
 		return super.getFluidState(state);
@@ -85,7 +93,7 @@ public class LootedBlock extends ModBlockEntity<LootedBlockEntity> implements Wa
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 
 		LootedBlockEntity et = getBlockEntity(pos, world);
-		if (et != null && et.getDisplayBlock() != null) {
+		if(et != null && et.getDisplayBlock() != null) {
 			return et.getDisplayBlock().getOutlineShape(world, pos, context);
 		}
 
@@ -95,7 +103,7 @@ public class LootedBlock extends ModBlockEntity<LootedBlockEntity> implements Wa
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		LootedBlockEntity et = getBlockEntity(pos, world);
-		if (et != null && et.getDisplayBlock() != null) {
+		if(et != null && et.getDisplayBlock() != null) {
 			return getBlockEntity(pos, world).getDisplayBlock().getCollisionShape(world, pos, context);
 		}
 		return VoxelShapes.fullCube();
@@ -104,7 +112,7 @@ public class LootedBlock extends ModBlockEntity<LootedBlockEntity> implements Wa
 	@Override
 	public VoxelShape getSidesShape(BlockState state, BlockView world, BlockPos pos) {
 		LootedBlockEntity et = getBlockEntity(pos, world);
-		if (et != null && et.getDisplayBlock() != null) {
+		if(et != null && et.getDisplayBlock() != null) {
 			return getBlockEntity(pos, world).getDisplayBlock().getSidesShape(world, pos);
 		}
 		return VoxelShapes.fullCube();
@@ -113,8 +121,8 @@ public class LootedBlock extends ModBlockEntity<LootedBlockEntity> implements Wa
 	@Override
 	public VoxelShape getCameraCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		LootedBlockEntity et = getBlockEntity(pos, world);
-		if (et != null) {
-			if (et.durability <= 0)
+		if(et != null) {
+			if(et.durability <= 0)
 				return VoxelShapes.empty();
 			return getBlockEntity(pos, world).getRealBlock().getCameraCollisionShape(world, pos, context);
 		}

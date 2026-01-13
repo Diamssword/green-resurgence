@@ -1,18 +1,10 @@
 package com.diamssword.greenresurgence.items;
 
+import com.diamssword.greenresurgence.items.helpers.ISimpleEnergyItemTiered;
 import com.diamssword.greenresurgence.materials.BatteryTiers;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
-import net.minecraft.world.World;
-import team.reborn.energy.api.EnergyStorage;
 
-public class BatteryItem extends MaterialItem implements SimpleEnergyItemTiered {
+public class BatteryItem extends MaterialItem implements ISimpleEnergyItemTiered {
 	private final BatteryTiers type;
 	private final float scaler;
 
@@ -44,7 +36,7 @@ public class BatteryItem extends MaterialItem implements SimpleEnergyItemTiered 
 		return type.maxIO(scaler);
 	}
 
-	@Override
+	/*@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		var stack = user.getStackInHand(hand);
 
@@ -72,7 +64,7 @@ public class BatteryItem extends MaterialItem implements SimpleEnergyItemTiered 
 	public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
 		if(user instanceof PlayerEntity pl && pl.getActiveHand() == Hand.OFF_HAND) {
 			var otherStack = user.getStackInHand(Hand.MAIN_HAND);
-			if(otherStack.getItem() instanceof SimpleEnergyItemTiered rei) {
+			if(otherStack.getItem() instanceof ISimpleEnergyItemTiered rei) {
 				var storage = EnergyStorage.ITEM.find(stack, ContainerItemContext.ofPlayerHand(pl, Hand.OFF_HAND));
 				var recp = EnergyStorage.ITEM.find(otherStack, ContainerItemContext.ofPlayerHand(pl, Hand.MAIN_HAND));
 				if(storage == null || !storage.supportsExtraction() || recp == null || !recp.supportsInsertion()) {
@@ -96,7 +88,7 @@ public class BatteryItem extends MaterialItem implements SimpleEnergyItemTiered 
 			}
 		}
 	}
-
+*/
 	@Override
 	public BatteryTiers getBatteryTier(ItemStack var1) {
 		return type;

@@ -1,6 +1,8 @@
 package com.diamssword.greenresurgence.items;
 
+import com.diamssword.greenresurgence.MItems;
 import com.diamssword.greenresurgence.Shields;
+import net.fabricmc.fabric.impl.client.rendering.ColorProviderRegistryImpl;
 import net.minecraft.client.item.ClampedModelPredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.util.Identifier;
@@ -11,6 +13,9 @@ public class ItemModelOverrideProvider {
 
 	public static void init() {
 		Shields.specialRenderRegister.forEach(v -> ModelPredicateProviderRegistry.register(v, new Identifier("blocking"), shield_predicate));
+		ModelPredicateProviderRegistry.register(MItems.FLASHLIGHT, new Identifier("activated"), activated_predicate);
 		Shields.specialRenderRegister.clear();
+		ColorProviderRegistryImpl.ITEM.register(MItems.CUSTOM_SPAWN_EGG::getColor, MItems.CUSTOM_SPAWN_EGG);
+
 	}
 }

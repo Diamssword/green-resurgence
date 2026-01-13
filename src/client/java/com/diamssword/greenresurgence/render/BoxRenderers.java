@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence.render;
 
-import com.diamssword.greenresurgence.items.IStructureProvider;
+import com.diamssword.greenresurgence.items.helpers.IStructureProvider;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.structure.StructureInfos;
 import net.minecraft.block.BlockState;

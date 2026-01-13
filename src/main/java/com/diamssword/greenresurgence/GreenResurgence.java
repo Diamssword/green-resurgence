@@ -10,6 +10,7 @@ import com.diamssword.greenresurgence.items.equipment.EquipmentItems;
 import com.diamssword.greenresurgence.materials.Materials;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
+import com.diamssword.greenresurgence.structure.StructureProcessor;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.Events;
 import com.diamssword.greenresurgence.systems.armor.ArmorLoader;
@@ -48,7 +49,6 @@ public class GreenResurgence implements ModInitializer {
 		return new Identifier(ID, name);
 	}
 
-	//public static StatusEffect CONQUEST_SLOWNESS = null;
 	public static final com.diamssword.greenresurgence.ResurgenceConfig CONFIG = com.diamssword.greenresurgence.ResurgenceConfig.createAndLoad();
 	public static ClientSideHelper clientHelper = new ClientSideHelper();
 
@@ -69,6 +69,7 @@ public class GreenResurgence implements ModInitializer {
 		FieldRegistrationHandler.register(ResurgenceEffects.class, ID, false);
 		MEntities.addAtributs();
 		ItemPlacers.init();
+		StructureProcessor.init();
 		MSounds.init();
 		MItems.GROUP.initialize();
 		Channels.initialize();

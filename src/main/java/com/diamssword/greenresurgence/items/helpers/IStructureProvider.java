@@ -1,0 +1,43 @@
+package com.diamssword.greenresurgence.items.helpers;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
+
+public interface IStructureProvider {
+	public BlockPos getPosition(ItemStack stack, World w);
+
+	public Direction getDirection(ItemStack stack, World w);
+
+	public Identifier getStructureName(ItemStack stack, World w);
+
+	public StructureType strutctureType(ItemStack stack, World w);
+
+	public static enum StructureType implements StringIdentifiable {
+		normal(0),
+		centered(1),
+		jigsaw(2);
+
+		public final int id;
+
+		private StructureType(int id) {
+			this.id = id;
+		}
+
+		public static StructureType getById(int id) {
+			for(StructureType t : StructureType.values()) {
+				if(t.id == id)
+					return t;
+			}
+			return StructureType.values()[0];
+		}
+
+		@Override
+		public String asString() {
+			return this.toString();
+		}
+	}
+}

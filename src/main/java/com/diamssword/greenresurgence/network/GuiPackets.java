@@ -1,17 +1,20 @@
 package com.diamssword.greenresurgence.network;
 
-import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
-import com.diamssword.greenresurgence.blockEntities.ItemBlockEntity;
+import com.diamssword.greenresurgence.blockEntities.IGuiPacketReceiver;
 import com.diamssword.greenresurgence.containers.IOptionalInventory;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
+import com.diamssword.greenresurgence.entities.ILightAndSoundMount;
+import com.diamssword.greenresurgence.items.helpers.IGuiStackPacketReceiver;
 import com.diamssword.greenresurgence.systems.Components;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.RideableInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
@@ -21,6 +24,8 @@ public class GuiPackets {
 		Inventory,
 		PInventory,
 		Crawl,
+		Klaxon,
+		Flashlight
 	}
 
 	public enum GUI {
@@ -38,6 +43,8 @@ public class GuiPackets {
 	public record ReturnError(String topic, Text message) {
 	}
 
+	public record ItemStackValue(NbtCompound tag) {}
+
 	public record GuiTileValue(BlockPos pos, String key, String value) {
 		public GuiTileValue(BlockPos pos, String key, float value) {
 			this(pos, key, value + "");
@@ -49,6 +56,10 @@ public class GuiPackets {
 
 		public GuiTileValue(BlockPos pos, String key, double value) {
 			this(pos, key, value + "");
+		}
+
+		public GuiTileValue(BlockPos pos, String key, boolean value) {
+			this(pos, key, value ? "1" : "0");
 		}
 
 		public double asDouble() {
@@ -67,6 +78,14 @@ public class GuiPackets {
 			return 0;
 		}
 
+		public boolean asBool() {
+			try {
+				return Integer.parseInt(this.value) == 1;
+			} catch(NumberFormatException ignored) {
+			}
+			return false;
+		}
+
 		public float asFloat() {
 			try {
 				return Float.parseFloat(this.value);
@@ -83,14 +102,17 @@ public class GuiPackets {
 		Channels.MAIN.registerClientboundDeferred(GuiPacket.class);
 		Channels.MAIN.registerClientboundDeferred(ReturnValue.class);
 		Channels.MAIN.registerClientboundDeferred(ReturnError.class);
+		Channels.MAIN.registerServerbound(ItemStackValue.class, (msg, ctx) -> {
+			var hand = ctx.player().getMainHandStack();
+			if(hand.getItem() instanceof IGuiStackPacketReceiver re) {
+				re.receiveGuiPacket(ctx.player(), hand, msg.tag);
+			}
+		});
 		Channels.MAIN.registerServerbound(GuiTileValue.class, (msg, ctx) -> {
 			BlockEntity te = ctx.player().getWorld().getBlockEntity(msg.pos);
 			if(te != null && ctx.player().isCreative()) {
-				if(te instanceof ItemBlockEntity ib) {
-					ib.receiveGuiPacket(msg);
-				} else if(te instanceof ImageBlockEntity ib) {
-					ib.receiveGuiPacket(msg);
-				}
+				if(te instanceof IGuiPacketReceiver ib)
+					ib.receiveGuiPacket(ctx.player(), msg);
 			}
 		});
 		Channels.MAIN.registerServerbound(KeyPress.class, (msg, ctx) -> {
@@ -134,6 +156,21 @@ public class GuiPackets {
 					var dt = ctx.player().getComponent(Components.PLAYER_DATA);
 					dt.setForcedPose(dt.getPose() == EntityPose.SWIMMING ? EntityPose.STANDING : EntityPose.SWIMMING);
 
+				}
+				case Klaxon -> {
+					var v = ctx.player().getVehicle();
+					if(v instanceof ILightAndSoundMount mount) {
+						var s = mount.getKlaxonSound();
+						if(s != null)
+							v.playSound(s, 1f, (float) (0.9f + (Math.random() * 0.5)));
+					}
+				}
+				case Flashlight -> {
+					var v = ctx.player().getVehicle();
+					if(v instanceof ILightAndSoundMount mount) {
+						v.playSound(SoundEvents.BLOCK_LEVER_CLICK, 0.5f, (float) (1f + Math.random()));
+						mount.setHasLight(!mount.isLightOn(v, null));
+					}
 				}
 			}
 		});

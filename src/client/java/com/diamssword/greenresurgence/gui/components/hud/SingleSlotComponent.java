@@ -79,11 +79,11 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
 
 	@Override
 	public void draw(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
-		if (hidden || hideTimer <= 0)
+		if(hidden || hideTimer <= 0)
 			return;
 		RenderSystem.enableDepthTest();
 
-		if (this.blend) {
+		if(this.blend) {
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
 			RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, this.hideTimer / 100f);
@@ -92,7 +92,7 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
 		var matrices = context.getMatrices();
 
 		var mc = MinecraftClient.getInstance();
-		if (!indicatorMode) {
+		if(!indicatorMode) {
 			matrices.push();
 			matrices.translate(x, y, 0);
 			context.drawTexture(this.texture, 0, 0, 22, 22, 0, 22, 22, 22, textureSize, textureSize);
@@ -105,9 +105,9 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
 		} else {
 			matrices.push();
 			matrices.translate(x, y, 0);
-			if (mc.options.getAttackIndicator().getValue() == AttackIndicator.HOTBAR) {
+			if(mc.options.getAttackIndicator().getValue() == AttackIndicator.HOTBAR) {
 				float f = mc.player.getAttackCooldownProgress(0.0F);
-				if (f < 1.0F) {
+				if(f < 1.0F) {
 					int p = (int) (f * 19.0F);
 					context.drawTexture(textureAtt, 2, 2, 18, 18, 0, 0, 18, 18, 36, 18);
 					context.drawTexture(textureAtt, 2, 2 + (18 - p), 18, p, 18, 18 - p, 18, p, 36, 18);
@@ -116,7 +116,7 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
 			}
 			matrices.pop();
 		}
-		if (this.blend) {
+		if(this.blend) {
 			RenderSystem.disableBlend();
 			RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1f);
 		}
@@ -128,11 +128,11 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
 	}
 
 	public void setStacks(ItemStack stack) {
-		if (stack != this.stack)
-			hideTimer = MinecraftClient.getInstance().player.isCreative() ? 200 : Math.max(hideTimer - 1, 0);
+
+		if(!HotBarComponent.areEqual(stack, this.stack))
+			hideTimer = 110;
 		this.stack = stack;
-		if (hideTimer > 0)
-			hideTimer--;
+		hideTimer = MinecraftClient.getInstance().player.isCreative() ? 200 : Math.max(hideTimer - 1, 0);
 	}
 
 	public boolean isIndicatorMode() {

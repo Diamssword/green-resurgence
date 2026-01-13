@@ -1,12 +1,14 @@
 package com.diamssword.greenresurgence.entities;
 
 import com.diamssword.greenresurgence.MItems;
+import com.diamssword.greenresurgence.MSounds;
 import com.diamssword.greenresurgence.containers.GenericContainer;
 import com.diamssword.greenresurgence.containers.grids.GridContainer;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.character.PosesManager;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -39,6 +41,7 @@ import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
@@ -47,6 +50,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
@@ -59,12 +63,14 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 
-public class BikeEntity extends MyVehicleInventory implements GeoEntity, InventoryChangedListener {
+public class BikeEntity extends MyVehicleInventory implements GeoEntity, InventoryChangedListener, ILightAndSoundMount {
 	private static final TrackedData<Boolean> CHEST = DataTracker.registerData(BikeEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	private static final TrackedData<Boolean> LIGHT = DataTracker.registerData(BikeEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	private static final TrackedData<Integer> COLOR = DataTracker.registerData(BikeEntity.class, TrackedDataHandlerRegistry.INTEGER);
 	private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4 * 4, ItemStack.EMPTY);
 	private int timeUntilMyRegen;
+	private int lastSoundTick;
 
 	public BikeEntity(EntityType<? extends BikeEntity> type, World level) {
 		super(type, level);
@@ -83,6 +89,7 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 	protected void initDataTracker() {
 		super.initDataTracker();
 		this.dataTracker.startTracking(CHEST, false);
+		this.dataTracker.startTracking(LIGHT, false);
 		this.dataTracker.startTracking(COLOR, 0);
 
 	}
@@ -119,7 +126,7 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 
 	@Override
 	protected void dropLoot(DamageSource damageSource, boolean causedByPlayer) {
-		this.dropStack(new ItemStack(this.asItem()));
+		this.dropStack(this.getVehicleItemStack());
 	}
 
 
@@ -258,16 +265,15 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 		}
 	}
 
-	/*@Override
-		protected void playStepSound(BlockPos pos, BlockState block) {
-			if(this.lastSoundTick >= 20)
-				this.playSound(MSounds.BIKE_DRIVING, 1f, 1);
-			this.lastSoundTick++;
-			if(this.lastSoundTick > 20)
-				this.lastSoundTick = 0;
-		}*/
+	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		this.playSound(SoundEvents.ENTITY_MINECART_RIDING, 0.1f, (float) (1.5 + (Math.random() * 0.5F)));
+		if(this.lastSoundTick >= 5)
+			this.playSound(MSounds.BIKE_DRIVING, 0.1f, 1);
+		this.lastSoundTick++;
+		if(this.lastSoundTick > 5)
+			this.lastSoundTick = 0;
+		BlockSoundGroup blockSoundGroup = block.getSoundGroup();
+		this.playSound(blockSoundGroup.getHitSound(), blockSoundGroup.getVolume() * 0.1F, blockSoundGroup.getPitch());
 	}
 
 	// Apply player-controlled movement
@@ -340,7 +346,7 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 
 	@Override
 	public ItemStack getPickBlockStack() {
-		return new ItemStack(this.asItem());
+		return this.getVehicleItemStack();
 	}
 
 	@Override
@@ -352,19 +358,31 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 	@Override
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
-		nbt.putBoolean("Chested", this.hasChest());
-		nbt.putInt("Color", this.getColor());
+		writeStackData(nbt);
 		if(this.hasChest()) {
 			this.writeInventoryToNbt(nbt);
 		}
 	}
 
+	@Override
+	public void writeStackData(NbtCompound nbt) {
+		nbt.putBoolean("Chested", this.hasChest());
+		nbt.putBoolean("Light", this.isLightOn(this, null));
+		nbt.putInt("Color", this.getColor());
+
+	}
+
+	@Override
+	public void readStackData(NbtCompound nbt) {
+		this.setHasChest(nbt.getBoolean("Chested"));
+		this.setHasLight(nbt.getBoolean("Light"));
+		this.setColor(nbt.getInt("Color"));
+	}
 
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
-		this.setHasChest(nbt.getBoolean("Chested"));
-		this.setColor(nbt.getInt("Color"));
+		this.readStackData(nbt);
 		if(this.hasChest()) {
 			this.readInventoryFromNbt(nbt);
 		}
@@ -422,4 +440,22 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 	}
 
 
+	@Override
+	public boolean isLightOn(@org.jetbrains.annotations.Nullable Entity owner, @org.jetbrains.annotations.Nullable ItemStack stack) {
+		return this.dataTracker.get(LIGHT);
+	}
+
+	public void setHasLight(boolean light) {
+		this.dataTracker.set(LIGHT, light);
+	}
+
+	@Override
+	public SoundEvent getKlaxonSound() {
+		return MSounds.BIKE_BELL;
+	}
+
+	@Override
+	public Vec2f lightOffset() {
+		return new Vec2f(1, 0.4f);
+	}
 }

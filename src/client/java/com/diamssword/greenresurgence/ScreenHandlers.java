@@ -1,9 +1,7 @@
 package com.diamssword.greenresurgence;
 
 import com.diamssword.greenresurgence.containers.Containers;
-import com.diamssword.greenresurgence.gui.BlockVariantScreen;
-import com.diamssword.greenresurgence.gui.ItemBlockGui;
-import com.diamssword.greenresurgence.gui.ItemBlockGuiSimple;
+import com.diamssword.greenresurgence.gui.*;
 import com.diamssword.greenresurgence.gui.playerContainers.*;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 
@@ -13,6 +11,8 @@ public class ScreenHandlers {
 		// HandledScreens.register(Containers.RELATIVE, SurvivalistInventory::new);
 		HandledScreens.register(Containers.ITEMBLOCK, ItemBlockGui::new);
 		HandledScreens.register(Containers.ITEMBLOCKSIMPLE, ItemBlockGuiSimple::new);
+		HandledScreens.register(Containers.SPAWNER_BLOCK, SpawnerBlockGui::new);
+		HandledScreens.register(Containers.SPAWN_EGG, SpawnEggGui::new);
 		HandledScreens.register(Containers.LOOTABLE_INV, LootableInvGui::new);
 		HandledScreens.register(Containers.BLOCK_VARIANT_INV, BlockVariantScreen::new);
 		HandledScreens.register(Containers.CRAFTER, CrafterScreen::new);

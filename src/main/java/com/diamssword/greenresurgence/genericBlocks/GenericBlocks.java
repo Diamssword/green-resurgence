@@ -206,7 +206,7 @@ public class GenericBlocks {
 
 		//distributor
 		diams.create(simpleList("distributor", new String[]{"_orange_", "_green_"}, new String[]{"up_left", "up_right", "middle_left", "middle_right", "down_right", "down_left"})).addSub(BlockType.PILLAR).disableGen(true).addGroup("distributor").setTransparency(Transparency.NOTFULL);
-		diams.create(simpleList("distributor", new String[]{"_food_a_"}, new String[]{"up_left", "up_right", "middle_left", "middle_right", "down_right", "down_left"})).addSub(BlockType.PILLAR).disableGen(true).addGroup("distributor").setTransparency(Transparency.TRANSPARENT);
+		diams.create(simpleList("distributor", new String[]{"_food_a_"}, new String[]{"up_left", "up_right", "middle_left", "middle_right", "down_right", "down_left"})).addSub(BlockType.PILLAR).disableGen(true).addGroup("distributor").setTransparency(Transparency.CUTOUT);
 
 		//bucket
 		diams.create("bucket_metal_water", "bucket_metal_empty").addSub(BlockType.PILLAR, ModelType.SIMPLE, HitBox.MEDIUM).setTransparency(Transparency.NOTFULL).disableGen(true).addGroup("bucket");

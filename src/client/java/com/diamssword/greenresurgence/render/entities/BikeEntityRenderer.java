@@ -31,7 +31,7 @@ public class BikeEntityRenderer extends GeoEntityRenderer<BikeEntity> {
 		public BikeModele() {
 			super(GreenResurgence.asRessource("bike"));
 			for(var col : DyeColor.values()) {
-				texturesPath[col.getId()] = buildFormattedTexturePath(GreenResurgence.asRessource("bike_" + col.getName()));
+				texturesPath[col.getId()] = buildFormattedTexturePath(GreenResurgence.asRessource("bike/bike_" + col.getName()));
 			}
 		}
 

@@ -76,5 +76,7 @@
   "equipment.green_resurgence.tooltip.equipment_type.two_hand": "Two Handed Weapon",
   "equipment.green_resurgence.tooltip.equipment_type.dual_wield": "Dual Wielded Weapon",
   "equipment.green_resurgence.tooltip.title.upgrade": "Upgrades:",
-  "equipment.green_resurgence.tooltip.title.base_stats": "Base Stats:"
+  "equipment.green_resurgence.tooltip.title.base_stats": "Base Stats:",
+  "green_resurgence.gui.battery_holder.content": "%d cells",
+  "green_resurgence.gui.battery_holder.required": "Require %d cells"
 }

@@ -1,0 +1,203 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+    <components>
+        <flow-layout direction="vertical">
+            <children>
+                <flow-layout direction="horizontal"> <!---->
+                    <children>
+                        <flow-layout direction="vertical">
+                            <children>
+                                <flow-layout direction="horizontal">
+                                    <children>
+                                        <text-box id="in_max_entity">
+                                            <sizing>
+                                                <horizontal method="fixed">30</horizontal>
+                                            </sizing>
+                                        </text-box>
+                                        <label>
+                                            <text>Max Entities Around</text>
+                                            <vertical-text-alignment>center</vertical-text-alignment>
+                                            <margins>
+                                                <left>2</left>
+                                            </margins>
+                                        </label>
+                                    </children>
+                                    <vertical-alignment>center</vertical-alignment>
+                                </flow-layout>
+                                <flow-layout direction="horizontal">
+                                    <children>
+                                        <text-box id="in_player_range">
+                                            <sizing>
+                                                <horizontal method="fixed">30</horizontal>
+                                            </sizing>
+                                        </text-box>
+                                        <label>
+                                            <text>Min Player Distance</text>
+                                            <vertical-text-alignment>center</vertical-text-alignment>
+                                            <margins>
+                                                <left>2</left>
+                                            </margins>
+                                        </label>
+                                    </children>
+                                    <vertical-alignment>center</vertical-alignment>
+                                </flow-layout>
+                                <flow-layout direction="horizontal">
+                                    <children>
+                                        <text-box id="in_spawncount">
+                                            <sizing>
+                                                <horizontal method="fixed">30</horizontal>
+                                            </sizing>
+                                        </text-box>
+                                        <label>
+                                            <text>Entities Spawned</text>
+                                            <vertical-text-alignment>center</vertical-text-alignment>
+                                            <margins>
+                                                <left>2</left>
+                                            </margins>
+                                        </label>
+                                    </children>
+                                    <vertical-alignment>center</vertical-alignment>
+                                </flow-layout>
+                                <flow-layout direction="horizontal">
+                                    <children>
+                                        <text-box id="in_cooldown">
+                                            <sizing>
+                                                <horizontal method="fixed">40</horizontal>
+                                            </sizing>
+                                        </text-box>
+                                        <label>
+                                            <text>Cooldown (sec)</text>
+                                            <vertical-text-alignment>center</vertical-text-alignment>
+                                            <margins>
+                                                <left>2</left>
+                                            </margins>
+                                        </label>
+                                    </children>
+                                    <vertical-alignment>center</vertical-alignment>
+                                </flow-layout>
+                                <flow-layout direction="horizontal">
+                                    <children>
+                                        <text-box id="in_radius">
+                                            <sizing>
+                                                <horizontal method="fixed">30</horizontal>
+                                            </sizing>
+                                        </text-box>
+                                        <label>
+                                            <text>Spawn Radius</text>
+                                            <vertical-text-alignment>center</vertical-text-alignment>
+                                            <margins>
+                                                <left>2</left>
+                                            </margins>
+                                        </label>
+                                    </children>
+                                    <vertical-alignment>center</vertical-alignment>
+                                </flow-layout>
+                                <flow-layout direction="horizontal">
+                                    <children>
+                                        <text-box id="in_height">
+                                            <sizing>
+                                                <horizontal method="fixed">30</horizontal>
+                                            </sizing>
+                                        </text-box>
+                                        <label>
+                                            <text>Spawn Height</text>
+                                            <vertical-text-alignment>center</vertical-text-alignment>
+                                            <margins>
+                                                <left>2</left>
+                                            </margins>
+                                        </label>
+                                    </children>
+                                    <vertical-alignment>center</vertical-alignment>
+                                </flow-layout>
+                                <flow-layout direction="horizontal">
+                                    <children>
+                                        <checkbox id="in_floor">
+                                            <sizing>
+                                                <horizontal method="fixed">30</horizontal>
+                                            </sizing>
+                                        </checkbox>
+                                        <label>
+                                            <text>Force Spawn Floor</text>
+                                            <vertical-text-alignment>center</vertical-text-alignment>
+                                            <margins>
+                                                <left>2</left>
+                                            </margins>
+                                        </label>
+                                    </children>
+                                    <vertical-alignment>center</vertical-alignment>
+                                </flow-layout>
+                            </children>
+                            <gap>2</gap>
+                            <vertical-alignment>bottom</vertical-alignment>
+                            <sizing>
+                                <horizontal method="fill">30</horizontal>
+                                <vertical method="fill">100</vertical>
+                            </sizing>
+                        </flow-layout>
+                        <flow-layout direction="vertical">
+                            <children>
+                                <flow-layout direction="horizontal">
+                                    <children>
+                                        <button id="lock">
+                                            <text> Locked </text>
+                                            <tooltip-text>Locked Spawner will not work, but unlock when placed as a structure</tooltip-text>
+                                        </button>
+                                        <label>
+                                            <text></text>
+                                            <sizing>
+                                                <horizontal method="fill">58</horizontal>
+                                            </sizing>
+                                        </label>
+                                        <inventory id="camo" name="!!Blc" width="1" height="1">
+                                        </inventory>
+                                    </children>
+
+                                    <sizing>
+                                        <horizontal method="fill">100</horizontal>
+                                    </sizing>
+                                    <horizontal-alignment>center</horizontal-alignment>
+                                </flow-layout>
+
+                                <inventory id="container" name="!!Spawn List" width="9" height="3"/>
+                                <inventory id="player" name="!!Inventory" width="9" height="3"/>
+                                <inventory id="hotbar" width="9" height="1">
+                                </inventory>
+                            </children>
+                            <surface>
+                                <panel dark="true"/>
+                            </surface>
+                            <padding>
+                                <all>2</all>
+                            </padding>
+                            <horizontal-alignment>center</horizontal-alignment>
+                            <vertical-alignment>bottom</vertical-alignment>
+                            <positioning type="relative">50,97</positioning>
+                            <sizing>
+                                <vertical method="fixed">180</vertical>
+                                <horizontal method="fixed">170</horizontal>
+
+                            </sizing>
+                        </flow-layout>
+                    </children>
+                    <horizontal-alignment>left</horizontal-alignment>
+                    <vertical-alignment>top</vertical-alignment>
+                    <sizing>
+                        <vertical method="fill">100</vertical>
+                        <horizontal method="fill">100</horizontal>
+                    </sizing>
+                    <!---->
+                    <padding>
+                        <all>10</all>
+                    </padding>
+                    <margins>
+                        <all>1</all>
+                    </margins>
+
+                </flow-layout>
+            </children>
+            <vertical-alignment>top</vertical-alignment>
+            <horizontal-alignment>left</horizontal-alignment>
+        </flow-layout>
+
+    </components>
+</owo-ui>

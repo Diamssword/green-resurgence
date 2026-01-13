@@ -79,11 +79,11 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 
 	@Override
 	public void draw(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
-		if (hidden || hideTimer == 0)
+		if(hidden || hideTimer == 0)
 			return;
 		RenderSystem.enableDepthTest();
 
-		if (this.blend) {
+		if(this.blend) {
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
 			RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, this.hideTimer / 100f);
@@ -95,7 +95,7 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 		matrices.translate(x, y, 0);
 		var mc = MinecraftClient.getInstance();
 		context.drawTexture(this.texture, 1, 1, 1, 22, 0, 0, 1, 22, textureSize, textureSize);
-		for (int i = 0; i < size; i++) {
+		for(int i = 0; i < size; i++) {
 			context.drawTexture(this.texture, 2 + (20 * i), 1, 20, 22, 1, 0, 20, 22, textureSize, textureSize);
 		}
 		context.drawTexture(this.texture, 2 + (20 * size), 1, 1, 22, 21, 0, 1, 22, textureSize, textureSize);
@@ -106,13 +106,13 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 		matrices.push();
 		matrices.translate(x, y, 0);
 
-		for (int i = 0; i < size; i++) {
+		for(int i = 0; i < size; i++) {
 			int n = i * 20 + 4;
 			int o = 4;
 			DrawUtils.renderHotbarItem(mc, context, n, o, delta, mc.player, stacks.get(i), i);
 		}
 		matrices.pop();
-		if (this.blend) {
+		if(this.blend) {
 			RenderSystem.disableBlend();
 			RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1f);
 		}
@@ -124,10 +124,10 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 	}
 
 	public void setStacks(DefaultedList<ItemStack> stacks) {
-		if (!stacks.equals(this.stacks))
+		if(!areEqual(stacks, this.stacks))
 			hideTimer = 110;
 		this.stacks = stacks;
-		if (this.size != stacks.size()) {
+		if(this.size != stacks.size()) {
 			this.size = stacks.size();
 			this.dirty = true;
 			this.applySizing();
@@ -146,9 +146,27 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 
 	public void setSelected(int selected) {
 		var s = Math.min(selected, size - 1);
-		if (this.selected != s)
+		if(this.selected != s)
 			hideTimer = 110;
 		this.selected = s;
+	}
+
+	public static boolean areEqual(DefaultedList<ItemStack> left, DefaultedList<ItemStack> right) {
+		if(left.size() != right.size())
+			return false;
+		for(int i = 0; i < left.size(); i++) {
+			if(!areEqual(left.get(i), right.get(i)))
+				return false;
+		}
+		return true;
+	}
+
+	public static boolean areEqual(ItemStack left, ItemStack right) {
+		if(left == right) {
+			return true;
+		} else {
+			return left.getCount() == right.getCount();
+		}
 	}
 
 	public void setSize(int size) {
