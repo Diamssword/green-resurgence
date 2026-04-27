@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.systems;
 
 import com.diamssword.greenresurgence.systems.character.PlayerData;
 import com.diamssword.greenresurgence.systems.character.PlayerInventoryData;
+import com.diamssword.greenresurgence.systems.environment.EnvironementAreas;
 import com.diamssword.greenresurgence.systems.faction.perimeter.FactionList;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
@@ -14,6 +15,7 @@ import net.minecraft.util.Identifier;
 
 public class Components implements EntityComponentInitializer, WorldComponentInitializer {
 	public static final ComponentKey<FactionList> BASE_LIST = ComponentRegistryV3.INSTANCE.getOrCreate(new Identifier("green_resurgence:base_list"), FactionList.class);
+	public static final ComponentKey<EnvironementAreas> ENVIRONMENT_AREAS = ComponentRegistryV3.INSTANCE.getOrCreate(new Identifier("green_resurgence:environment_areas"), EnvironementAreas.class);
 	public static final ComponentKey<PlayerData> PLAYER_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(new Identifier("green_resurgence:player_data"), PlayerData.class);
 	public static final ComponentKey<PlayerInventoryData> PLAYER_INVENTORY = ComponentRegistryV3.INSTANCE.getOrCreate(new Identifier("green_resurgence:player_inventory"), PlayerInventoryData.class);
 
@@ -27,5 +29,6 @@ public class Components implements EntityComponentInitializer, WorldComponentIni
 	@Override
 	public void registerWorldComponentFactories(WorldComponentFactoryRegistry registry) {
 		registry.register(BASE_LIST, FactionList::new);
+		registry.register(ENVIRONMENT_AREAS, EnvironementAreas::new);
 	}
 }

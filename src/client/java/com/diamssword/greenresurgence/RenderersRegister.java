@@ -13,6 +13,8 @@ import com.diamssword.greenresurgence.render.cosmetics.ModularArmorLayerRenderer
 import com.diamssword.greenresurgence.render.entities.BackpackEntityRenderer;
 import com.diamssword.greenresurgence.render.entities.BikeEntityRenderer;
 import com.diamssword.greenresurgence.render.entities.CaddieEntityRenderer;
+import com.diamssword.greenresurgence.render.environment.EnvironementAreas;
+import com.diamssword.greenresurgence.shaders.ShaderRegister;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
 import com.diamssword.greenresurgence.structure.MultiblockInstance;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -32,6 +34,7 @@ public class RenderersRegister {
 	public static void init() {
 		blocksRenderers();
 		initEntities();
+		itemRenderers();
 		ArmorRenderer.register(
 				new ModularArmorLayerRenderer(GreenResurgence.asRessource("textures/modular/armor/default.png")),
 				MItems.MODULAR_BOOT, MItems.MODULAR_HEAD, MItems.MODULAR_CHEST, MItems.MODULAR_LEG
@@ -53,6 +56,12 @@ public class RenderersRegister {
 		if(FabricLoader.getInstance().isModLoaded("lambdynlights")) {
 			DynLightEventHandler.register();
 		}
+		ShaderRegister.init();
+		EnvironementAreas.init();
+	}
+
+	private static void itemRenderers() {
+		//	BuiltinItemRendererRegistry.INSTANCE.register();
 	}
 
 	private static void initEntities() {

@@ -276,6 +276,8 @@ public class CustomSpawnEgg extends Item implements IGuiStackPacketReceiver {
 
 	@Override
 	public void receiveGuiPacket(ServerPlayerEntity player, ItemStack handStack, NbtCompound received) {
+		if(!player.isCreative())
+			return;
 		var tag = handStack.getOrCreateSubNbt("EntityTag");
 		if(received.contains("id", NbtElement.STRING_TYPE)) {
 			tag.putString("id", received.getString("id"));

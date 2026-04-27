@@ -30,8 +30,7 @@
   {
     "id": "accessories",
     "layer1": "15",
-    "layer2": "16",
-    "displayMode" : 1
+    "layer2": "16"
   },
   {
     "id": "jacket",

@@ -3,6 +3,7 @@
   "package": "com.diamssword.greenresurgence.mixin.client",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "BackgroundRendererMixin",
     "ClientAccessor",
     "ClientMixin",
     "ClientPlayerAccessor",

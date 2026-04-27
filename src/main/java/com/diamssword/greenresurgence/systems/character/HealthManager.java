@@ -12,12 +12,15 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.GameRules;
 
 public class HealthManager {
-	private final float shieldHealAmount = 1f;
+	public static final float shieldHealAmount = 1f;
+	public static float radiationHealSpeed = 0.001f;
 	private int shieldTickTimer;
+	private int radiationTickTimer;
 	private int energyTickTimer;
 	private boolean energyBurnout;
 	private double shieldAmount = 20;
 	private double energyAmount = 100;
+	private double radAmount = 0;
 	public final PlayerEntity player;
 	private int refreshTicks = 5;
 
@@ -74,7 +77,13 @@ public class HealthManager {
 		speedLogic();
 		if(refreshTicks > -1) {refreshTicks--;}
 		if(refreshTicks == 0 && !player.getWorld().isClient) {PlayerData.syncHUD(player);}
-
+		if(radiationTickTimer > 200) {
+			if(radAmount > 0) {
+				radAmount = Math.max(0, radAmount - radiationHealSpeed);
+				markDirty();
+			}
+		} else
+			radiationTickTimer++;
 
 	}
 
@@ -104,6 +113,8 @@ public class HealthManager {
 		this.shieldAmount = nbt.getDouble("shieldAmount");
 		this.energyTickTimer = nbt.getInt("energyTickTimer");
 		this.energyAmount = nbt.getDouble("energyAmount");
+		this.radAmount = nbt.getDouble("radiationAmount");
+		this.radiationTickTimer = nbt.getInt("radiationTickTimer");
 	}
 
 	public double getShieldAmount() {
@@ -118,8 +129,25 @@ public class HealthManager {
 		return player.getMaxHealth();
 	}
 
+	public void addRadiationAmount(double amount) {
+		var res = radAmount + amount;
+		if(radAmount < res) {
+			radAmount = Math.min(res, getMaxRadiationAmount());
+			markDirty();
+		}
+		radiationTickTimer = 0;
+	}
+
+	public double getRadiationAmount() {
+		return radAmount;
+	}
+
 	public double getEnergyAmount() {
 		return energyAmount;
+	}
+
+	public double getMaxRadiationAmount() {
+		return player.getAttributeValue(Attributes.MAX_RADIATION);
 	}
 
 	public double getMaxShieldAmount() {
@@ -151,6 +179,8 @@ public class HealthManager {
 		nbt.putDouble("shieldAmount", this.shieldAmount);
 		nbt.putDouble("energyAmount", energyAmount);
 		nbt.putDouble("energyTickTimer", this.energyTickTimer);
+		nbt.putInt("radiationTickTimer", this.radiationTickTimer);
+		nbt.putDouble("radiationAmount", this.radAmount);
 	}
 
 	public static boolean damageByPassShield(DamageSource source) {
@@ -160,5 +190,9 @@ public class HealthManager {
 				source.isOf(DamageTypes.FALL) || source.isOf(DamageTypes.FLY_INTO_WALL) ||
 				source.isOf(DamageTypes.IN_FIRE) || source.isOf(DamageTypes.ON_FIRE) ||
 				source.isOf(DamageTypes.LAVA) || source.isOf(DamageTypes.WITHER) || source.isOf(DamageTypes.WITHER_SKULL);
+	}
+
+	public void setRadiationAmount(double radiationAmount) {
+		this.radAmount = radiationAmount;
 	}
 }

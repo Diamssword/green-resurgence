@@ -16,6 +16,7 @@ public class Attributes {
 
 	public static final Map<Identifier, EntityAttribute> plAttributes = new HashMap<>();
 	public static final EntityAttribute MAX_SHIELD = register("max_shield", new ClampedEntityAttribute("attribute.name.green_resurgence.max_shield", 20, 0.0D, 1024.0D).setTracked(true));
+	public static final EntityAttribute MAX_RADIATION = register("max_radiation", new ClampedEntityAttribute("attribute.name.green_resurgence.max_radiation", 100, 1D, 1024.0D).setTracked(true));
 	public static final EntityAttribute MAX_ENERGY = register("max_energy", new ClampedEntityAttribute("attribute.name.green_resurgence.max_energy", 300.0D, 0.0D, 1024.0D).setTracked(true));
 	public static final EntityAttribute ENERGY_RATE = register("energy_rate", new ClampedEntityAttribute("attribute.name.green_resurgence.energy_rate", 0.5D, 0.0D, 100.0D).setTracked(true));
 	public static final EntityAttribute CRAFT_SPEED = register("craft_speed", new ClampedEntityAttribute("attribute.name.green_resurgence.craft_speed", 1D, 0.1D, 1024.0D).setTracked(true));
@@ -38,7 +39,7 @@ public class Attributes {
 
 	public static EntityAttributeModifier modifier(EntityAttribute attribute, float value, EntityAttributeModifier.Operation operation) {
 		var r = AttributeModifiers.BaseIdMap.get(attribute);
-		if (r == null)
+		if(r == null)
 			throw new NullPointerException();
 		return new EntityAttributeModifier(r, GreenResurgence.ID + ".role_modifier." + attribute.getTranslationKey(), value, operation);
 	}

@@ -6,12 +6,15 @@ import com.diamssword.greenresurgence.items.helpers.AbstractBackpackItem;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.network.DictionaryPackets;
+import com.diamssword.greenresurgence.network.EnvironmentPacket;
 import com.diamssword.greenresurgence.systems.armor.ArmorLoader;
 import com.diamssword.greenresurgence.systems.character.PlayerEvents;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
+import com.diamssword.greenresurgence.systems.environment.EnvironementAreas;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.lootables.LootableLogic;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
+import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -28,6 +31,10 @@ public class Events {
 		ServerPlayConnectionEvents.JOIN.register((h, s, serv) -> {
 			scheluded.add(h.player);
 		});
+		ServerPlayConnectionEvents.DISCONNECT.register((h, s) -> {
+			EnvironementAreas.onPlayerDisconnect(h.player);
+		});
+
 		ServerTickEvents.END_SERVER_TICK.register(Lootables.loader::worldTick);
 		ServerTickEvents.END_SERVER_TICK.register(Recipes.loader::worldTick);
 		ServerTickEvents.END_SERVER_TICK.register(ArmorLoader.loader::worldTick);
@@ -41,13 +48,14 @@ public class Events {
 			});
 		});
 		ServerTickEvents.END_SERVER_TICK.register((s) -> {
-			if(s.getOverworld().getTime() % 20 == 0) {
+			if(s.getOverworld().getTime() % 80 == 0) {
 				var ls = new ArrayList<>(scheluded);
 
 				ls.forEach(l1 -> {//on laisse le temps a MC d'envoyer les tags et autres données avant
 					Channels.sendToNonHost(l1, new DictionaryPackets.LootableList(Lootables.loader), new DictionaryPackets.RecipeList(Recipes.loader), new DictionaryPackets.ArmorList(ArmorLoader.loader));
 					Channels.MAIN.serverHandle(l1).send(BaseInteractions.getPacket());
 					CurrentZonePacket.sendDebugZone(l1.getWorld(), l1);
+					EnvironmentPacket.sendListFor(l1, l1.getWorld());
 					var g = l1.getWorld().getComponent(Components.BASE_LIST).getForPlayer(l1.getUuid(), false);
 					g.ifPresent(factionGuild -> Channels.MAIN.serverHandle(l1).send(new CurrentZonePacket.MyGuild(factionGuild.getId(), factionGuild.getName())));
 					l1.calculateDimensions();
@@ -56,6 +64,9 @@ public class Events {
 			}
 
 
+		});
+		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((p, from, to) -> {
+			EnvironmentPacket.sendListFor(p, to);
 		});
 		ServerTickEvents.START_SERVER_TICK.register((s) -> {
 			s.getPlayerManager().getPlayerList().forEach(pl -> {

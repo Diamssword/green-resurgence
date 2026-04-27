@@ -47,7 +47,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 	public WardrobeGui(String type) {
 		super(FlowLayout.class, DataSource.asset(GreenResurgence.asRessource("wardrobe")));
 		List<LayerDef> layers;
-		if (type == null || type.equals("default")) {
+		if(type == null || type.equals("default")) {
 			shouldShowOutifits = true;
 			layers = CharactersApi.clothing().getClothLayers();
 			layerBts.add(new Pair<>("all", layers.toArray(new LayerDef[0])));
@@ -58,7 +58,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 			layers = CharactersApi.clothing().getLayers().values().stream().filter(v -> type.equals(v.getSpecialEditor())).toList();
 			equippedProvider = (p) -> ComponentManager.getPlayerDatas(p).getAppearence().getEquippedLayers();
 		}
-		for (var l : layers) {
+		for(var l : layers) {
 			layerBts.add(new Pair<>(l.getId(), new LayerDef[]{l}));
 		}
 		currentLayer = layerBts.get(0);
@@ -71,18 +71,18 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 		oldCloths = equippedProvider.apply(player);
 		var equip = oldCloths.values().stream().filter(Objects::nonNull).toList();
 		List<Cloth> list;
-		if (currentLayer.getLeft().equals("current"))
+		if(currentLayer.getLeft().equals("current"))
 			list = equip;
 		else
 			list = CharactersApi.clothing().getAvailablesClothsCollectionForPlayer(MinecraftClient.getInstance().player, "all", currentLayer.getRight());
-		if (!filter.isEmpty())
+		if(!filter.isEmpty())
 			list = list.stream().filter(v -> v.name().toLowerCase().contains(filter) || (!v.collection().equals("default") && v.collection().toLowerCase().contains(filter))).toList();
 		layout.clear();
-		for (var c : list) {
+		for(var c : list) {
 			var bt = new ClothButtonComponent(c);
 			bt.onPress((__) -> {
 				var v = bt.getCloth();
-				if (oldCloths.containsValue(v)) {
+				if(oldCloths.containsValue(v)) {
 					dt.getAppearence().setCloth(v.layer().id, null);
 					CharactersApi.clothing().clientAskEquipCloth(new Identifier("null", "null"), v.layer().getId());
 				} else {
@@ -94,7 +94,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 
 			});
 			bt.onClothHovered().subscribe(v -> {
-				if (v != null)
+				if(v != null)
 					dt.getAppearence().setCloth(v);
 				else {
 					oldCloths.forEach((a, v1) -> {
@@ -108,8 +108,8 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 	}
 
 	private void updateSelected(FreeRowGridLayout layout, List<Cloth> equipped) {
-		for (Component child : layout.children()) {
-			if (child instanceof ClothButtonComponent cb) {
+		for(Component child : layout.children()) {
+			if(child instanceof ClothButtonComponent cb) {
 				cb.setSelected(equipped.stream().anyMatch(v -> v.id().equals(cb.getCloth().id())));
 			}
 		}
@@ -139,15 +139,15 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 		slider.onChanged().subscribe(v -> {
 			playerComp.rotation((int) (-180 + (v * 360f)));
 		});
-		if (!shouldShowOutifits) {
+		if(!shouldShowOutifits) {
 			var c = rootComponent.childById(FlowLayout.class, "outfits");
 			c.clearChildren();
 			c.surface(Surface.flat(0));
 		} else {
-			for (int i = 1; i <= 7; i++) {
+			for(int i = 1; i <= 7; i++) {
 				var v = Text.translatable(CHSHEET_ID + ".wardrobe.outfitbt", i);
 				final var i1 = i - 1;
-				if (i1 < outfits.size())
+				if(i1 < outfits.size())
 					v = Text.literal(outfits.get(i1).getLeft());
 				var ar = new ArrayList<Text>();
 				ar.add(v);
@@ -155,7 +155,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 				var bt = rootComponent.childById(RButtonComponent.class, "memory" + i);
 
 				bt.onPress(v1 -> {
-					if (Screen.hasShiftDown()) {
+					if(Screen.hasShiftDown()) {
 						createOutfitWindow(v1, i1);
 					} else {
 						CharactersApi.clothing().clientAskEquipOutfit(i1);
@@ -166,11 +166,11 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 				bt.setMessage(v);
 			}
 		}
-		if (flow != null) {
+		if(flow != null) {
 			final List<RButtonComponent> bts = new ArrayList<>();
-			for (Pair<String, LayerDef[]> value : layerBts) {
+			for(Pair<String, LayerDef[]> value : layerBts) {
 				var bt = new RButtonComponent(Text.empty(), (o) -> {
-					for (var d : bts) {
+					for(var d : bts) {
 						d.setActivated(false);
 					}
 					o.setActivated(true);
@@ -178,7 +178,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 					txt1.text(Text.translatable(GreenResurgence.ID + ".wardrobe.collection." + currentLayer.getLeft()));
 					loadCloths(wardLay, playerComp, lastSearch);
 				});
-				if (value.getLeft().equals("all"))
+				if(value.getLeft().equals("all"))
 					bt.setActivated(true);
 				bt.icon(value.getLeft()).sizing(Sizing.fixed(20)).tooltip(Text.translatable(GreenResurgence.ID + ".wardrobe.layerbt." + value.getLeft())).margins(Insets.of(2, 0, 2, 0));
 				flow.child(bt);

@@ -1,0 +1,59 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+    <components>
+        <flow-layout direction="vertical">
+            <children>
+                <flow-layout direction="vertical">
+                            <children>
+                                <flow-layout direction="horizontal">
+                                    <children>
+                                        <flow-layout direction="vertical">
+                                            <children>
+                                                <text-box id="in_coll">
+                                                    <tooltip-text>Collections</tooltip-text>
+                                                    <sizing>
+                                                        <horizontal method="fill">100</horizontal>
+                                                    </sizing>
+                                                </text-box>
+                                                <text-box id="in_niv">
+                                                    <tooltip-text>Niveaux</tooltip-text>
+                                                    <sizing>
+                                                        <horizontal method="fill">100</horizontal>
+                                                    </sizing>
+                                                </text-box>
+                                                <text-box id="in_type">
+                                                    <tooltip-text>Type</tooltip-text>
+                                                    <sizing>
+                                                        <horizontal method="fill">100</horizontal>
+                                                    </sizing>
+                                                </text-box>
+
+                                            </children>
+                                            <sizing>
+                                                <horizontal method="fill">90</horizontal>
+                                            </sizing>
+                                        </flow-layout>
+                                    </children>
+
+                                </flow-layout>
+                            </children>
+                            <surface>
+                                <panel dark="true"/>
+                            </surface>
+                            <padding>
+                                <all>5</all>
+                            </padding>
+                            <horizontal-alignment>center</horizontal-alignment>
+                            <vertical-alignment>center</vertical-alignment>
+                            <sizing>
+                                <horizontal method="fixed">180</horizontal>
+
+                            </sizing>
+                        </flow-layout>
+            </children>
+            <vertical-alignment>center</vertical-alignment>
+            <horizontal-alignment>center</horizontal-alignment>
+        </flow-layout>
+
+    </components>
+</owo-ui>

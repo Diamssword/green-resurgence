@@ -1,5 +1,9 @@
 package com.diamssword.greenresurgence.utils;
 
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.Box;
+import org.joml.Vector3f;
+
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -43,5 +47,32 @@ public class Utils {
 		}
 
 		return null; // Fallback, should not happen unless due to rounding
+	}
+
+	public static NbtCompound vecToNBT(Vector3f vec) {
+		var tag = new NbtCompound();
+		tag.putFloat("x", vec.z);
+		tag.putFloat("y", vec.y);
+		tag.putFloat("z", vec.z);
+		return tag;
+	}
+
+	public static Vector3f vecFromNBT(NbtCompound tag) {
+		return new Vector3f(tag.getFloat("x"), tag.getFloat("y"), tag.getFloat("z"));
+	}
+
+	public static NbtCompound boxToNBT(Box box) {
+		var tag = new NbtCompound();
+		tag.putDouble("x1", box.minX);
+		tag.putDouble("y1", box.minY);
+		tag.putDouble("z1", box.minZ);
+		tag.putDouble("x2", box.maxX);
+		tag.putDouble("y2", box.maxY);
+		tag.putDouble("z2", box.maxZ);
+		return tag;
+	}
+
+	public static Box boxFromNBT(NbtCompound box) {
+		return new Box(box.getDouble("x1"), box.getDouble("y1"), box.getDouble("z1"), box.getDouble("x2"), box.getDouble("y2"), box.getDouble("z2"));
 	}
 }

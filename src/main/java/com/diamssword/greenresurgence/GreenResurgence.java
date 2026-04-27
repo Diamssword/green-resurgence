@@ -86,6 +86,7 @@ public class GreenResurgence implements ModInitializer {
 		registerCommand("resurgenceGui", OpenScreenCommand::register);
 		registerCommand("recipeHelper", RecipeHelperCommand::register);
 		registerCommand("worldTools", WorldToolsCommand::register);
+		registerCommand("environmentAreas", EnvironmentAreaCommand::register);
 
 		ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
 			onPostInit();

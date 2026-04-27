@@ -38,8 +38,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.GameMode;
 import org.jetbrains.annotations.Nullable;
 
-import static com.diamssword.greenresurgence.render.BoxRenderers.drawBaseOverlays;
-import static com.diamssword.greenresurgence.render.BoxRenderers.drawStructureItemOverlay;
+import static com.diamssword.greenresurgence.render.BoxRenderers.*;
 
 public class ClientEvents {
 	static PlayerListEntry playerListEntry;
@@ -69,6 +68,7 @@ public class ClientEvents {
 		WorldRenderEvents.LAST.register((ctx) -> {
 			drawStructureItemOverlay(ctx.matrixStack());
 			drawBaseOverlays(ctx.matrixStack());
+			drawEnvironmentOverlays(ctx.matrixStack());
 			WireRenderer.render(ctx);
 		});
 

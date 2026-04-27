@@ -150,6 +150,8 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 			healthManager.setShieldAmount(tag.getDouble("shieldAmount"));
 		if(tag.contains("energyAmount"))
 			healthManager.setEnergyAmount(tag.getDouble("energyAmount"));
+		if(tag.contains("radiationAmount"))
+			healthManager.setRadiationAmount(tag.getDouble("radiationAmount"));
 	}
 
 	@Override
@@ -174,6 +176,7 @@ public class PlayerData implements ComponentV3, ServerTickingComponent, ClientTi
 		if(mode == SYNC_MODE_FULL || mode == SYNC_MODE_HUD) {
 			tag.putDouble("shieldAmount", healthManager.getShieldAmount());
 			tag.putDouble("energyAmount", healthManager.getEnergyAmount());
+			tag.putDouble("radiationAmount", healthManager.getRadiationAmount());
 		}
 		buf.writeNbt(tag);
 

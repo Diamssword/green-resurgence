@@ -43,13 +43,13 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 
 	private LivingEntity getRiddenEntity() {
 		PlayerEntity playerEntity = this.getCameraPlayer();
-		if (playerEntity != null) {
+		if(playerEntity != null) {
 			Entity entity = playerEntity.getVehicle();
-			if (entity == null) {
+			if(entity == null) {
 				return null;
 			}
 
-			if (entity instanceof LivingEntity) {
+			if(entity instanceof LivingEntity) {
 				return (LivingEntity) entity;
 			}
 		}
@@ -61,8 +61,15 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 	protected void build(FlowLayout rootComponent) {
 		this.root = rootComponent;
 		tickers.clear();
+		attachWithTicker(LabelComponent.class, "infectionText", (l) -> {
+			if(this.client.player != null) {
+				var man = this.client.player.getComponent(Components.PLAYER_DATA).healthManager;
+				int scale = (int) ((man.getRadiationAmount() / man.getMaxRadiationAmount()) * 100);
+				l.text(Text.literal(scale + "%"));
+			}
+		});
 		attachWithTicker(HealthIconComponent.class, "health", (h) -> {
-			if (this.client.player != null) {
+			if(this.client.player != null) {
 				h.animateForHealth(this.client.player);
 				h.animateForShield(this.client.player);
 			}
@@ -70,7 +77,7 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 		});
 		attachWithTicker(BarComponent.class, "mountHealth", (h) -> {
 			var rid = getRiddenEntity();
-			if (rid != null) {
+			if(rid != null) {
 				var p = rid.getHealth() / rid.getMaxHealth();
 				h.setFillPercent(p);
 			}
@@ -104,7 +111,7 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 			h.hidden(this.client.interactionManager.getCurrentGameMode() == GameMode.SPECTATOR);
 			var max = CustomPlayerInventory.getHotbarSlotCount(this.client.player);
 			var ls = DefaultedList.ofSize(max, ItemStack.EMPTY);
-			for (int i = 0; i < max; i++) {
+			for(int i = 0; i < max; i++) {
 				ls.set(i, client.player.getInventory().main.get(i));
 			}
 			var b = max != h.getSize();
@@ -112,7 +119,7 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 
 			root.onChildMutated(h);
 			h.setSelected(client.player.getInventory().selectedSlot);
-			if (b) {
+			if(b) {
 				this.resize(client, 0, 0);
 				this.resize(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight());
 			}
@@ -122,7 +129,7 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 			h.setIndicatorMode(ind);
 			var st = client.player.getOffHandStack();
 
-			if (!ind)
+			if(!ind)
 				h.hidden(st.isEmpty());
 			h.setStacks(st);
 		});
@@ -131,7 +138,7 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 			h.setIndicatorMode(ind);
 			var st = client.player.getOffHandStack();
 
-			if (!ind)
+			if(!ind)
 				h.hidden(st.isEmpty());
 			h.setStacks(st);
 		});
@@ -141,7 +148,7 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 		});
 		attachWithTicker(LabelComponent.class, "armorText", (h) -> {
 			var arm = client.player.getArmor();
-			if (!hideBars() && arm > 0) {
+			if(!hideBars() && arm > 0) {
 				h.text(Text.literal(arm + "").setStyle(Style.EMPTY.withColor(blueColor)));
 			} else
 				h.text(Text.literal(""));
@@ -156,7 +163,7 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 
 	private <T extends Component> void attachWithTicker(@NotNull Class<T> expectedClass, @NotNull String id, Consumer<T> ticker) {
 		var comp = this.root.childById(expectedClass, id);
-		if (comp != null)
+		if(comp != null)
 			tickers.add(() -> {
 				ticker.accept(comp);
 			});
@@ -170,7 +177,7 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 	}
 
 	public void debug(boolean enable) {
-		if (uiAdapter != null) {
+		if(uiAdapter != null) {
 			uiAdapter.enableInspector = enable;
 			uiAdapter.globalInspector = enable;
 		}

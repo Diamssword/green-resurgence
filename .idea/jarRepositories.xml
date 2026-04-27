@@ -156,5 +156,15 @@
       <option name="name" value="maven2" />
       <option name="url" value="https://maven.createmod.net" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="Chloe Maven" />
+      <option name="name" value="Chloe Maven" />
+      <option name="url" value="https://maven.chloeprime.cn:4080/releases/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="BlameJared Maven (CrT / Bookshelf)" />
+      <option name="name" value="BlameJared Maven (CrT / Bookshelf)" />
+      <option name="url" value="https://maven.blamejared.com" />
+    </remote-repository>
   </component>
 </project>

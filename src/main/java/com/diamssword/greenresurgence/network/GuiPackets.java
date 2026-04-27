@@ -32,6 +32,7 @@ public class GuiPackets {
 		ImageBlock,
 		Stats,
 		FactionClaimAntenna,
+		ClothBagEditGui
 	}
 
 	public record GuiPacket(GUI gui, @Nullable BlockPos pos) {

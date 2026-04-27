@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.render;
 
 import com.diamssword.greenresurgence.items.helpers.IStructureProvider;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
+import com.diamssword.greenresurgence.render.environment.EnvironementAreas;
 import com.diamssword.greenresurgence.structure.StructureInfos;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -143,6 +144,30 @@ public class BoxRenderers {
 				DebugRenderer.drawString(matrix, store1, "Camp: " + b.getLeft(), p1.getX(), p1.getY(), p1.getZ(), 0xffffff, 0.1f, true, 0, true);
 				DebugRenderer.drawString(matrix, store1, b.getMiddle().toString(), p1.getX(), p1.getY() - 1, p1.getZ(), 0xffffff, 0.1f, true, 0, true);
 				drawStructureBox(matrix, new Vec3d(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()), Vec3d.of(b.getRight().getDimensions().add(1, 1, 1)), red, green, blue, 1);
+			});
+		}
+
+
+	}
+
+	public static void drawEnvironmentOverlays(MatrixStack matrix) {
+		MinecraftClient mc = MinecraftClient.getInstance();
+
+		if(mc.world != null && mc.getEntityRenderDispatcher().shouldRenderHitboxes()) {
+			EnvironementAreas.fogAreas.forEach(b -> {
+				VertexConsumerProvider.Immediate store = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
+				VertexConsumerProvider.Immediate store1 = MinecraftClient.getInstance().getBufferBuilders().getEffectVertexConsumers();
+
+				int hash = b.hashCode();
+				int c1 = (hash) & 0xFF;
+				int c2 = (hash >> 8) & 0xFF;
+				int c3 = (hash >> 16) & 0xFF;
+				float red = Math.min(Math.max(c1 % 255f, 0f), 255f);
+				float green = Math.min(Math.max(c2 % 255f, 0f), 255f);
+				float blue = Math.min(Math.max(c3 % 255f, 0f), 255f);
+				Vec3d p1 = b.getBox().getCenter();
+				DebugRenderer.drawString(matrix, store1, "Fog Area ", p1.getX(), p1.getY(), p1.getZ(), 0xffffff, 0.1f, true, 0, true);
+				drawStructureBox(matrix, new Vec3d(b.getBox().minX, b.getBox().minY, b.getBox().minZ), new Vec3d(b.getBox().getXLength(), b.getBox().getYLength(), b.getBox().getZLength()).add(1, 1, 1), red, green, blue, 1);
 			});
 		}
 

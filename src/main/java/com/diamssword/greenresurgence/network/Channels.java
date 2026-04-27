@@ -51,6 +51,8 @@ public class Channels {
 		InventoryPackets.init();
 		GuildPackets.init();
 		ModularArmorPackets.init();
+		NotificationPackets.init();
+		EnvironmentPacket.init();
 	}
 
 	public static boolean isSelfHost(MinecraftServer server, PlayerEntity player) {

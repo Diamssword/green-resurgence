@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.blockEntities.ClaimBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
+import com.diamssword.greenresurgence.gui.ClothBagEditGui;
 import com.diamssword.greenresurgence.gui.IPacketNotifiedChange;
 import com.diamssword.greenresurgence.gui.ImageBlockGui;
 import com.diamssword.greenresurgence.gui.PlayerStatsGui;
@@ -15,7 +16,7 @@ public class ClientGuiPacket {
 	public static void init() {
 
 		Channels.MAIN.registerClientbound(GuiPackets.GuiPacket.class, (message, access) -> {
-			switch (message.gui()) {
+			switch(message.gui()) {
 
 				case ImageBlock -> {
 					openGui(new ImageBlockGui(getTile(ImageBlockEntity.class, message.pos())));
@@ -26,21 +27,24 @@ public class ClientGuiPacket {
 				case FactionClaimAntenna -> {
 					openGui(new ClaimAntennaGui(getTile(ClaimBlockEntity.class, message.pos())));
 				}
+				case ClothBagEditGui -> {
+					openGui(new ClothBagEditGui());
+				}
 			}
 		});
 		Channels.MAIN.registerClientbound(GuiPackets.ReturnValue.class, (m, c) -> {
-			if (MinecraftClient.getInstance().currentScreen instanceof IPacketNotifiedChange pn)
+			if(MinecraftClient.getInstance().currentScreen instanceof IPacketNotifiedChange pn)
 				pn.onChangeReceived(m.topic(), m.value());
 		});
 		Channels.MAIN.registerClientbound(GuiPackets.ReturnError.class, (m, c) -> {
-			if (MinecraftClient.getInstance().currentScreen instanceof IPacketNotifiedChange pn)
+			if(MinecraftClient.getInstance().currentScreen instanceof IPacketNotifiedChange pn)
 				pn.onErrorReceived(m.topic(), m.message());
 		});
 	}
 
 	public static <T extends BlockEntity> T getTile(Class<T> clazz, BlockPos pos) {
 		BlockEntity te = MinecraftClient.getInstance().world.getBlockEntity(pos);
-		if (clazz.isInstance(te))
+		if(clazz.isInstance(te))
 			return (T) te;
 		return null;
 	}
