@@ -1,9 +1,9 @@
 package com.diamssword.greenresurgence.mixin.client;
 
 import com.diamssword.greenresurgence.render.environment.EnvironementAreas;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.JumpingMount;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,9 +12,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(InGameHud.class)
 public class InGameHudMixin {
-	@Inject(method = "renderVignetteOverlay", at = @At("TAIL"))
-	private void renderCustomVignette(DrawContext context, Entity entity, CallbackInfo ci) {
-		EnvironementAreas.getCurrentFogModifier().ifPresent(f -> f.vignetteRender(context, entity));
+	@Inject(method = "render", at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/network/ClientPlayerEntity;getFrozenTicks()I",
+			shift = At.Shift.BEFORE
+	))
+	private void renderCustomVignette(DrawContext context, float tickDelta, CallbackInfo ci) {
+		EnvironementAreas.getCurrentFogModifier().ifPresent(f -> f.vignetteRender(context, MinecraftClient.getInstance().cameraEntity));
 	}
 
 	@Inject(method = "renderExperienceBar", at = @At("HEAD"), cancellable = true)
