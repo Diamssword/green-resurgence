@@ -4,8 +4,6 @@ import com.diamssword.greenresurgence.GreenResurgence;
 import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 
 public class ShaderRegister {
-	public static final ParticleEmitterInfo HERALD = new ParticleEmitterInfo(GreenResurgence.asRessource("herald"));
-	public static final ParticleEmitterInfo METEOR = new ParticleEmitterInfo(GreenResurgence.asRessource("meteor"));
 	public static final ParticleEmitterInfo SMOKE = new ParticleEmitterInfo(GreenResurgence.asRessource("smoke"));
 
 
