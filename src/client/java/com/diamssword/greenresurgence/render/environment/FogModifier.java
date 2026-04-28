@@ -18,10 +18,15 @@ import org.joml.Vector4f;
 public abstract class FogModifier {
 	private final Box box;
 	public boolean strongAtBottom;
+	public FogModifier fadeInFrom;
 
 	public FogModifier(Box box, boolean strongAtBottom) {
 		this.box = box;
 		this.strongAtBottom = strongAtBottom;
+	}
+
+	public void setSecondFog(FogModifier parentFog) {
+		this.fadeInFrom = parentFog;
 	}
 
 	public abstract Vector3f getFogColor(float intensity);
@@ -106,12 +111,12 @@ public abstract class FogModifier {
 		RenderSystem.setShaderFogColor(r, g, b);
 	}
 
-	static float getIntensity(Vec3d pos, Box box, boolean strongerAtBottom) {
+	public static float getIntensity(Vec3d pos, Box box, boolean strongerAtBottom) {
 		double dx = Math.min(pos.x - box.minX, box.maxX - pos.x);
 		double dz = Math.min(pos.z - box.minZ, box.maxZ - pos.z);
 		double distToEdge = Math.min(dx, dz);
 
-		double maxDistance = 20.0;
+		double maxDistance = Math.min(20.0, box.getAverageSideLength() / 4);
 		double intensity = distToEdge / maxDistance;
 		intensity = MathHelper.clamp(intensity, 0.0, 1.0);
 		intensity = intensity * intensity;

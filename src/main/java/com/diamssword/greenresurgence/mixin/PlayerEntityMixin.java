@@ -197,7 +197,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 		}
 	}
 
-	//	@Inject(at = @At("HEAD"), method = "applyDamage", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "applyDamage", cancellable = true)
 	protected void applyDamage(DamageSource source, float amount, CallbackInfo ci) {
 		if(!this.isInvulnerableTo(source)) {
 			var man = this.getComponent(Components.PLAYER_DATA).healthManager;

@@ -7,6 +7,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -29,17 +30,34 @@ public class FixedColorFogModifier extends FogModifier {
 
 	@Override
 	public Vector3f getFogColor(float intensity) {
+		if(fadeInFrom != null) {
+			var int1 = getIntensity(MinecraftClient.getInstance().player.getPos(), fadeInFrom.getBox(), fadeInFrom.strongAtBottom);
+			var c1 = fadeInFrom.getFogColor(int1);
+			float r = MathHelper.lerp(1f - intensity, fog.x, c1.x);
+			float g = MathHelper.lerp(1f - intensity, fog.y, c1.y);
+			float b = MathHelper.lerp(1f - intensity, fog.z, c1.z);
+			return new Vector3f(r, g, b);
+		}
 		return fog;
 	}
 
 	@Override
 	public Vector4f getVignetteColor(float intensity) {
-		return new Vector4f(vignette.x, vignette.y, vignette.z, intensity);
+		if(fadeInFrom != null) {
+			var int1 = getIntensity(MinecraftClient.getInstance().player.getPos(), fadeInFrom.getBox(), fadeInFrom.strongAtBottom);
+			var c1 = fadeInFrom.getVignetteColor(int1);
+			float r = MathHelper.lerp(1f - intensity, vignette.x, c1.x);
+			float g = MathHelper.lerp(1f - intensity, vignette.y, c1.y);
+			float b = MathHelper.lerp(1f - intensity, vignette.z, c1.z);
+			return new Vector4f(r, g, b, Math.min(1, int1 + intensity));
+		}
+		return
+				new Vector4f(vignette.x, vignette.y, vignette.z, intensity);
 	}
 
 	@Override
 	public void outsideZoneUpdate(double distance, long time) {
-		if(time % 200 == 0 && distance > 32 && distance < MinecraftClient.getInstance().options.getClampedViewDistance() * 16) {
+		if(time % 200 == 0 && distance > 10 && distance < MinecraftClient.getInstance().options.getClampedViewDistance() * 16) {
 			float s = (float) (getBox().getAverageSideLength() / 100f);
 			AAALevel.addParticle(MinecraftClient.getInstance().world, ShaderRegister.SMOKE.clone().scale(s).position(getBox().getCenter()));
 		}
@@ -52,6 +70,10 @@ public class FixedColorFogModifier extends FogModifier {
 		var cl = MinecraftClient.getInstance();
 
 		float intensity = getIntensity(cl.player.getPos(), getBox(), strongAtBottom);
+		if(time % 200 == 0 && intensity > 0.2f) {
+			float s = (float) (getBox().getAverageSideLength() / 100f);
+			AAALevel.addParticle(MinecraftClient.getInstance().world, ShaderRegister.SMOKE.clone().position(getBox().getCenter()).scale(s));
+		}
 		spawnFogParticles(cl, intensity);
 	}
 
