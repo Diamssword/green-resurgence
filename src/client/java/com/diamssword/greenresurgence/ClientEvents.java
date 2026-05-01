@@ -11,6 +11,7 @@ import com.diamssword.greenresurgence.network.AdventureInteract;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.network.GuiPackets;
+import com.diamssword.greenresurgence.particles.FogRenderer;
 import com.diamssword.greenresurgence.render.AdventureBlockHighlight;
 import com.diamssword.greenresurgence.render.BoxRenderers;
 import com.diamssword.greenresurgence.render.WireRenderer;
@@ -76,6 +77,8 @@ public class ClientEvents {
 		WorldRenderEvents.BEFORE_BLOCK_OUTLINE.register(ClientEvents::beforeBlockOutline);
 		PlaceBlockCallback.EVENT.register(ClientEvents::placeBlock);
 		ClientTickEvents.END_CLIENT_TICK.register(ClientEvents::vehicleControl);
+		ClientTickEvents.END_WORLD_TICK.register(FogRenderer::updateFog);
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(FogRenderer::render);
 	}
 
 	private static boolean beforeBlockOutline(WorldRenderContext ctx, @Nullable HitResult hit) {

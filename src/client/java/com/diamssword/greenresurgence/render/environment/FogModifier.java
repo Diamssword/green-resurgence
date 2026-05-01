@@ -33,6 +33,8 @@ public abstract class FogModifier {
 
 	public abstract Vector4f getVignetteColor(float intensity);
 
+	public abstract void onDestroy();
+
 	public Vec3d modifySky(Vec3d cameraPos, float tickDelta, Vec3d colorIn) {
 		float intensity = getIntensity(cameraPos, getBox(), strongAtBottom);
 		var col = getFogColor(intensity);
@@ -49,6 +51,7 @@ public abstract class FogModifier {
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.setShaderTexture(0, GreenResurgence.asRessource("textures/gui/fog_vignette.png"));
 		var col = getVignetteColor((float) intensity);
+
 		RenderSystem.setShaderColor(col.x, col.y, col.z, col.w);
 
 		context.drawTexture(
@@ -66,11 +69,11 @@ public abstract class FogModifier {
 	}
 
 
-	public void insideZoneUpdate(double distanceFromCenter, long time) {
+	public void insideZoneUpdate(long time, boolean isActiveZone) {
 
 	}
 
-	public void outsideZoneUpdate(double distance, long time) {
+	public void outsideZoneUpdate(long time) {
 
 	}
 

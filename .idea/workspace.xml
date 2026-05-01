@@ -6,7 +6,19 @@
   <component name="ChangeListManager">
     <list default="true" id="d2280433-581a-4b82-ab53-687b6ee5ff53" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/mixin/client/InGameHudMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/mixin/client/InGameHudMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/ClientEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/ClientEvents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/RenderersRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/RenderersRegister.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/network/EnvironmentPacketClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/network/EnvironmentPacketClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/environment/EnvironementAreas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/environment/EnvironementAreas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/environment/FixedColorFogModifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/environment/FixedColorFogModifier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/environment/FogModifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/environment/FogModifier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/shaders/ShaderRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/particles/ParticlesRegister.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/GreenResurgence.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/GreenResurgence.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/EnvironmentPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/EnvironmentPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/environment/EnvironementAreas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/environment/EnvironementAreas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/environment/FogArea.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/environment/FogArea.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/utils/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/effeks/smoke.efkefc" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/effeks/smoke.efkefc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,7 +177,7 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/diamssword/Dev/Git/green-resurgence/src/main/resources/assets/green_resurgence/effeks&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/diamssword/Dev/Git/green-resurgence/src/main/resources/assets/green_resurgence/textures/particle&quot;,
     &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.7468355&quot;,
@@ -179,11 +191,11 @@
       <recent name="com.diamssword.greenresurgence" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/particle" />
       <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/effeks" />
       <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/models/item" />
       <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui" />
       <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/effeks/meteor" />
-      <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/effeks/herald" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/shaders/program" />
@@ -202,11 +214,11 @@
       <recent name="com.diamssword.greenresurgence.systems.base" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.diamssword.greenresurgence.particles" />
+      <recent name="com.diamssword.greenresurgence.mixin.client" />
+      <recent name="com.diamssword.greenresurgence" />
       <recent name="com.diamssword.greenresurgence.commands" />
       <recent name="com.diamssword.greenresurgence.network" />
-      <recent name="com.diamssword.greenresurgence.mixin.client" />
-      <recent name="com.diamssword.greenresurgence.gui" />
-      <recent name="com.diamssword.greenresurgence.items" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -214,7 +226,7 @@
       <command value="+" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.green-resurgence [build]">
+  <component name="RunManager" selected="Application.Minecraft Client">
     <configuration name="Minecraft Client (1)" type="Application" factoryName="Application">
       <option name="ALTERNATIVE_JRE_PATH" value="21" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />

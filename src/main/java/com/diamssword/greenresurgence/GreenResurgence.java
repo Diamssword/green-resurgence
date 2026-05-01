@@ -71,6 +71,7 @@ public class GreenResurgence implements ModInitializer {
 		ItemPlacers.init();
 		StructureProcessor.init();
 		MSounds.init();
+		MParticles.init();
 		MItems.GROUP.initialize();
 		Channels.initialize();
 		GenericBlocks.register();

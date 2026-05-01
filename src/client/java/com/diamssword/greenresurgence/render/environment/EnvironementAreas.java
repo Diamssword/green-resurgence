@@ -6,7 +6,6 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
@@ -31,16 +30,19 @@ public class EnvironementAreas {
 		var pos = MinecraftClient.getInstance().player.getPos();
 		var time = world.getTime();
 		for(FogModifier fogArea : fogAreas) {
-			if(fogArea == currentFog) {
-				fogArea.insideZoneUpdate(pos.distanceTo(fogArea.getBox().getCenter()), time);
-			} else if(!fogArea.getBox().contains(pos)) {
-				var box = fogArea.getBox();
-				double dx = Math.min(pos.x - box.minX, box.maxX - pos.x);
-				double dy = Math.min(pos.y - box.minY, box.maxY - pos.y);
-				double dz = Math.min(pos.z - box.minZ, box.maxZ - pos.z);
-				double distance = Math.min(dx, Math.min(dy, dz));
-				fogArea.outsideZoneUpdate(Math.abs(distance), time);
+			/*var box = fogArea.getBox();
+			double dx = Math.min(pos.x - box.minX, box.maxX - pos.x);
+			double dy = Math.min(pos.y - box.minY, box.maxY - pos.y);
+			double dz = Math.min(pos.z - box.minZ, box.maxZ - pos.z);
+			double distance = Math.min(dx, Math.min(dy, dz));
+
+			 */
+			if(fogArea.getBox().contains(pos)) {
+				fogArea.insideZoneUpdate(time, fogArea == currentFog);
+			} else {
+				fogArea.outsideZoneUpdate(time);
 			}
+
 		}
 	}
 
@@ -100,10 +102,6 @@ public class EnvironementAreas {
 			}
 		}
 		return Optional.ofNullable(bestBox);
-	}
-
-	public static List<FogModifier> getFogModifiers(World world) {
-		return fogAreas;
 	}
 
 }

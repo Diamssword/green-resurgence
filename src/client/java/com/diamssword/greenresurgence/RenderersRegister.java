@@ -8,13 +8,13 @@ import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinItem
 import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinTooltipData;
 import com.diamssword.greenresurgence.items.helpers.BatteryStorageHelper;
 import com.diamssword.greenresurgence.items.weapons.GeckoActivated;
+import com.diamssword.greenresurgence.particles.ParticlesRegister;
 import com.diamssword.greenresurgence.render.blockEntityRenderer.*;
 import com.diamssword.greenresurgence.render.cosmetics.ModularArmorLayerRenderer;
 import com.diamssword.greenresurgence.render.entities.BackpackEntityRenderer;
 import com.diamssword.greenresurgence.render.entities.BikeEntityRenderer;
 import com.diamssword.greenresurgence.render.entities.CaddieEntityRenderer;
 import com.diamssword.greenresurgence.render.environment.EnvironementAreas;
-import com.diamssword.greenresurgence.shaders.ShaderRegister;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
 import com.diamssword.greenresurgence.structure.MultiblockInstance;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -56,7 +56,7 @@ public class RenderersRegister {
 		if(FabricLoader.getInstance().isModLoaded("lambdynlights")) {
 			DynLightEventHandler.register();
 		}
-		ShaderRegister.init();
+		ParticlesRegister.init();
 		EnvironementAreas.init();
 	}
 

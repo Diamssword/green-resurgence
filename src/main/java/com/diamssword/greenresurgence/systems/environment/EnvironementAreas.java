@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.systems.environment;
 
 import com.diamssword.greenresurgence.systems.Components;
+import com.diamssword.greenresurgence.utils.Utils;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -100,15 +101,28 @@ public class EnvironementAreas implements ServerTickingComponent {
 		var ls = tag.getList("areas", NbtElement.COMPOUND_TYPE);
 		ls.forEach(l -> {
 			createArea(((NbtCompound) l).getString("key")).ifPresent(a -> {
-				areas.add(a.fromNBT((NbtCompound) l));
+				areas.add(loadAreaFromNBT(a, (NbtCompound) l));
 			});
 		});
+	}
+
+	public static EffectArea loadAreaFromNBT(EffectArea area, NbtCompound nbt) {
+		area.fromNBT(nbt);
+		area.setArea(Utils.boxFromNBT(nbt.getCompound("box")));
+		return area;
+	}
+
+	public static NbtCompound areaToNBT(EffectArea area) {
+		var nbt = area.toNBT();
+		nbt.put("box", Utils.boxToNBT(area.getArea()));
+		nbt.putString("key", area.key());
+		return nbt;
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
 		var list = new NbtList();
-		getAreas().forEach(v -> list.add(v.toNBT()));
+		getAreas().forEach(v -> list.add(areaToNBT(v)));
 		tag.put("areas", list);
 	}
 

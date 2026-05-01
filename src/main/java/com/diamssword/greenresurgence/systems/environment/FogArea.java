@@ -8,6 +8,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import java.util.List;
 
@@ -15,7 +16,10 @@ public class FogArea implements EffectArea {
 	public Box box;
 	public Vector3f fogColor;
 	public Vector3f vignetteColor;
+
 	public boolean bottomHeavy;
+	private Vector4f particleColor;
+	private Vector4f particleColor1;
 
 	public FogArea() {
 		this.box = new Box(0, 0, 0, 0, 0, 0);
@@ -55,20 +59,21 @@ public class FogArea implements EffectArea {
 	@Override
 	public NbtCompound toNBT() {
 		var tag = new NbtCompound();
-		tag.putString("key", key());
-		tag.put("box", Utils.boxToNBT(getArea()));
 		tag.put("fog", Utils.vecToNBT(fogColor));
 		tag.put("vignette", Utils.vecToNBT(vignetteColor));
 		tag.putBoolean("bottom", bottomHeavy);
+		tag.put("particle", Utils.vec4ToNBT(this.particleColor));
+		tag.put("particle1", Utils.vec4ToNBT(this.particleColor1));
 		return tag;
 	}
 
 	@Override
 	public EffectArea fromNBT(NbtCompound nbt) {
-		box = Utils.boxFromNBT(nbt.getCompound("box"));
 		fogColor = Utils.vecFromNBT(nbt.getCompound("fog"));
 		vignetteColor = Utils.vecFromNBT(nbt.getCompound("vignette"));
 		bottomHeavy = nbt.getBoolean("bottom");
+		this.particleColor = Utils.vec4FromNBT(nbt.getCompound("particle"));
+		this.particleColor1 = Utils.vec4FromNBT(nbt.getCompound("particle1"));
 		return this;
 	}
 }

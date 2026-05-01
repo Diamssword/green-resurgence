@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.render.environment.EnvironementAreas;
 import com.diamssword.greenresurgence.render.environment.FixedColorFogModifier;
+import com.diamssword.greenresurgence.render.environment.FogModifier;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 
@@ -14,6 +15,7 @@ public class EnvironmentPacketClient {
 
 	public static void init() {
 		Channels.MAIN.registerClientbound(EnvironmentPacket.AreaList.class, (msg, handler) -> {
+			EnvironementAreas.fogAreas.forEach(FogModifier::onDestroy);
 			EnvironementAreas.fogAreas.clear();
 			msg.areas().getList("list", NbtElement.COMPOUND_TYPE).forEach(nbt -> {
 				var key = ((NbtCompound) nbt).getString("key");

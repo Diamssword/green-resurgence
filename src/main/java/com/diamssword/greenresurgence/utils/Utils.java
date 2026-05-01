@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.utils;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Box;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import java.util.List;
 import java.util.Random;
@@ -51,10 +52,23 @@ public class Utils {
 
 	public static NbtCompound vecToNBT(Vector3f vec) {
 		var tag = new NbtCompound();
-		tag.putFloat("x", vec.z);
+		tag.putFloat("x", vec.x);
 		tag.putFloat("y", vec.y);
 		tag.putFloat("z", vec.z);
 		return tag;
+	}
+
+	public static NbtCompound vec4ToNBT(Vector4f vec) {
+		var tag = new NbtCompound();
+		tag.putFloat("x", vec.x);
+		tag.putFloat("y", vec.y);
+		tag.putFloat("z", vec.z);
+		tag.putFloat("w", vec.w);
+		return tag;
+	}
+
+	public static Vector4f vec4FromNBT(NbtCompound tag) {
+		return new Vector4f(tag.getFloat("x"), tag.getFloat("y"), tag.getFloat("z"), tag.getFloat("w"));
 	}
 
 	public static Vector3f vecFromNBT(NbtCompound tag) {

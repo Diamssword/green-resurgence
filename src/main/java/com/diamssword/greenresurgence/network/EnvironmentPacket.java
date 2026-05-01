@@ -19,7 +19,7 @@ public class EnvironmentPacket {
 	public static void sendListFor(PlayerEntity player, World world) {
 		var list = new NbtList();
 		EnvironementAreas.getAreas(world).forEach(v -> {
-			list.add(v.toNBT());
+			list.add(EnvironementAreas.areaToNBT(v));
 		});
 		var comp = new NbtCompound();
 		comp.put("list", list);
@@ -29,7 +29,7 @@ public class EnvironmentPacket {
 	public static void sendListForAll(ServerWorld world) {
 		var list = new NbtList();
 		EnvironementAreas.getAreas(world).forEach(v -> {
-			list.add(v.toNBT());
+			list.add(EnvironementAreas.areaToNBT(v));
 		});
 		var comp = new NbtCompound();
 		comp.put("list", list);
