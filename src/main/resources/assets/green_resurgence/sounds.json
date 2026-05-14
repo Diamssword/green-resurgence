@@ -4,6 +4,11 @@
       "green_resurgence:bike_click"
     ]
   },
+  "player.mask.breath": {
+    "sounds": [
+      "green_resurgence:gasmask"
+    ]
+  },
    "entity.bike.bell": {
     "sounds": [
       "green_resurgence:bike_bell_1",

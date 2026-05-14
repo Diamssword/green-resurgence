@@ -10,6 +10,7 @@ import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
@@ -39,9 +40,9 @@ public class FactionList implements ServerTickingComponent {
 	}
 
 	public Optional<FactionZone> getTerrainAt(Vec3i pos) {
-		for (FactionGuild base : guilds) {
+		for(FactionGuild base : guilds) {
 			var b = base.getTerrainAt(pos);
-			if (b.isPresent())
+			if(b.isPresent())
 				return b;
 		}
 		return Optional.empty();
@@ -53,11 +54,12 @@ public class FactionList implements ServerTickingComponent {
 	}
 
 	public boolean addGuild(FactionGuild guild) {
-		if (guilds.stream().noneMatch(v -> v.getId().equals(guild.getId()))) {
+		if(guilds.stream().noneMatch(v -> v.getId().equals(guild.getId()))) {
 			guilds.add(guild);
 			guild.getOwner().asPlayer(this.provider).ifPresent(p -> {
-				if (!p.getWorld().isClient) {
-					CurrentZonePacket.sendDebugZone(this.provider, null);
+				if(!p.getWorld().isClient) {
+					CurrentZonePacket.sendCreativeDebugZone(this.provider, null);
+					CurrentZonePacket.sendDebugZone(this.provider, p);
 					Channels.MAIN.serverHandle(p).send(new CurrentZonePacket.MyGuild(guild.getId(), guild.getName()));
 				}
 			});
@@ -68,12 +70,24 @@ public class FactionList implements ServerTickingComponent {
 
 	public boolean delete(UUID id) {
 		Optional<FactionGuild> t = this.get(id);
-		if (t.isPresent()) {
+		if(t.isPresent()) {
 			guilds.remove(t.get());
 			return true;
 		}
 		return false;
 
+	}
+
+	public boolean doBoxIntersectWithOtherFaction(UUID guildOwner, BlockBox box) {
+		for(FactionGuild guild : guilds) {
+			for(FactionZone terrain : guild.getAllTerrains()) {
+				if(terrain.getBounds().intersects(box)) {
+					if(!guild.getOwner().getId().equals(guildOwner))
+						return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public Optional<FactionGuild> get(UUID id) {
@@ -83,7 +97,7 @@ public class FactionList implements ServerTickingComponent {
 	public Optional<FactionGuild> getForPlayer(UUID playerID, boolean ownerOnly) {
 		var ls = guilds.stream().filter(v -> v.getOwner().isPlayer() && v.getOwner().getId().equals(playerID));
 		var f = ls.findFirst();
-		if (f.isEmpty() && !ownerOnly) {
+		if(f.isEmpty() && !ownerOnly) {
 			f = guilds.stream().filter(v -> v.getMembers().contains(playerID)).findFirst();
 		}
 		return f;
@@ -95,7 +109,7 @@ public class FactionList implements ServerTickingComponent {
 		guilds.clear();
 		ls.forEach(c -> {
 			FactionGuild b = FactionGuild.fromNBT((NbtCompound) c);
-			if (b != null)
+			if(b != null)
 				guilds.add(b);
 		});
 
@@ -114,7 +128,7 @@ public class FactionList implements ServerTickingComponent {
 
 	@Override
 	public void serverTick() {
-		if (provider.getTime() % 40 == 0) {
+		if(provider.getTime() % 40 == 0) {
 
 			guilds.forEach(b -> b.tick((ServerWorld) provider));
 		}

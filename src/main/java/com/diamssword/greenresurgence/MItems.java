@@ -47,6 +47,9 @@ public class MItems implements ItemRegistryContainer {
 	public static final FlashlightItem FLASHLIGHT = new FlashlightItem(new OwoItemSettings().group(GROUP).tab(1).maxCount(1));
 	public static final CustomSpawnEgg CUSTOM_SPAWN_EGG = new CustomSpawnEgg();
 	public static final ClothBagItem CLOTH_BAG = new ClothBagItem();
+	public static final StackableDamagableItem AIR_FILTER = new StackableDamagableItem(new OwoItemSettings().group(GROUP).tab(1).maxCount(8), 2000);
+	public static final GasMaskItem GAS_MASK = new GasMaskItem(new OwoItemSettings().group(GROUP).tab(1).maxCount(1));
+	public static final GasTankItem SMALL_GAS_TANK = new GasTankItem(new OwoItemSettings().group(GROUP).tab(1).maxCount(1), 10000);
 
 	@Override
 	public void afterFieldProcessing() {

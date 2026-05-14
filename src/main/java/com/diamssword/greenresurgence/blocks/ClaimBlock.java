@@ -1,7 +1,6 @@
 package com.diamssword.greenresurgence.blocks;
 
 import com.diamssword.greenresurgence.blockEntities.ClaimBlockEntity;
-import com.diamssword.greenresurgence.blockEntities.ConnectorBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.ModBlockEntity;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.GuiPackets;
@@ -24,66 +23,70 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class ClaimBlock  extends ModBlockEntity<ClaimBlockEntity> {
-    public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
-    public static final VoxelShape SMALL=Block.createCuboidShape(2,0,2,14,16,14);
+public class ClaimBlock extends ModBlockEntity<ClaimBlockEntity> {
+	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+	public static final VoxelShape SMALL = Block.createCuboidShape(2, 0, 2, 14, 16, 14);
 
-    public ClaimBlock(Settings settings) {
-        super(settings);
-    }
+	public ClaimBlock(Settings settings) {
+		super(settings);
+	}
 
-    @Deprecated
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return SMALL;
-    }
-    @Override
-    public Class<ClaimBlockEntity> getBlockEntityClass() {
-        return ClaimBlockEntity.class;
-    }
+	@Deprecated
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		return SMALL;
+	}
 
-    @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
-    }
-    @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
-    }
+	@Override
+	public Class<ClaimBlockEntity> getBlockEntityClass() {
+		return ClaimBlockEntity.class;
+	}
 
-    @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
-    }
-    @Override
-    public BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(FACING, rotation.rotate(state.get(FACING)));
-    }
+	@Override
+	public BlockRenderType getRenderType(BlockState state) {
+		return BlockRenderType.MODEL;
+	}
 
-    @Override
-    public BlockState mirror(BlockState state, BlockMirror mirror) {
-        return state.rotate(mirror.getRotation(state.get(FACING)));
-    }
-    @Override
-    public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
-        return true;
-    }
-    @Override
-    public boolean hasSidedTransparency(BlockState state) {
-        return true;
-    }
+	@Override
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		builder.add(FACING);
+	}
 
-    @Override
-    public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
-        return 1f;
-    }
+	@Override
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+	}
 
-    @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if(!world.isClient && player.isCreative())
-        {
-            Channels.MAIN.serverHandle(player).send(new GuiPackets.GuiPacket(GuiPackets.GUI.FactionClaimAntenna,pos));
-            return ActionResult.SUCCESS;
-        }
-        return ActionResult.PASS;
-    }
+	@Override
+	public BlockState rotate(BlockState state, BlockRotation rotation) {
+		return state.with(FACING, rotation.rotate(state.get(FACING)));
+	}
+
+	@Override
+	public BlockState mirror(BlockState state, BlockMirror mirror) {
+		return state.rotate(mirror.getRotation(state.get(FACING)));
+	}
+
+	@Override
+	public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
+		return true;
+	}
+
+	@Override
+	public boolean hasSidedTransparency(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
+		return 1f;
+	}
+
+	@Override
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		if(!world.isClient && !player.isCreative()) {
+			Channels.MAIN.serverHandle(player).send(new GuiPackets.GuiPacket(GuiPackets.GUI.FactionClaimAntenna, pos));
+			return ActionResult.SUCCESS;
+		}
+		return ActionResult.PASS;
+	}
 }

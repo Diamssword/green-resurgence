@@ -8,6 +8,7 @@ public class MSounds {
 
 	public static SoundEvent BIKE_DRIVING = register("entity.bike.driving");
 	public static SoundEvent BIKE_BELL = register("entity.bike.bell");
+	public static SoundEvent BREATH = register("player.mask.breath");
 
 	private static SoundEvent register(String name) {
 		var ev = SoundEvent.of(GreenResurgence.asRessource(name));

@@ -7,6 +7,9 @@ import com.diamssword.greenresurgence.items.*;
 import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinItem;
 import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinTooltipData;
 import com.diamssword.greenresurgence.items.helpers.BatteryStorageHelper;
+import com.diamssword.greenresurgence.items.helpers.DurabilityStorageHelper;
+import com.diamssword.greenresurgence.items.helpers.GasStorageHelper;
+import com.diamssword.greenresurgence.items.helpers.ItemStorageHelper;
 import com.diamssword.greenresurgence.items.weapons.GeckoActivated;
 import com.diamssword.greenresurgence.particles.ParticlesRegister;
 import com.diamssword.greenresurgence.render.blockEntityRenderer.*;
@@ -49,6 +52,12 @@ public class RenderersRegister {
 				return new EquipmentSkinTooltipComponent(dt);
 			else if(a instanceof BatteryStorageHelper.BatteryHolderTooltipData dt)
 				return new BatteryHolderTooltipComponent(dt);
+			else if(a instanceof GasStorageHelper.GasHolderTooltipData dt)
+				return new GasHolderTooltipComponent(dt);
+			else if(a instanceof DurabilityStorageHelper.DurabilityHolderTooltipData dt)
+				return new DurabilityHolderTooltipComponent(dt);
+			else if(a instanceof ItemStorageHelper.BaseItemStorageTooltip dt)
+				return new BaseItemHolderTooltipComponent(dt.stacks());
 			return null;
 		});
 

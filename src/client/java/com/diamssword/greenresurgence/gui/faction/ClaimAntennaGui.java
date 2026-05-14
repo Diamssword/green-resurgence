@@ -7,11 +7,10 @@ import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.DiscreteSliderComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
 
 public class ClaimAntennaGui extends BaseUIModelScreen<FlowLayout> {
 
-	public static BlockPos viewedZone;
+	public static boolean viewBounds = false;
 	private final ClaimBlockEntity blockEntity;
 
 	public ClaimAntennaGui(ClaimBlockEntity be) {
@@ -28,23 +27,23 @@ public class ClaimAntennaGui extends BaseUIModelScreen<FlowLayout> {
 	@Override
 	protected void build(FlowLayout rootComponent) {
 		var seeZone = rootComponent.childById(ButtonComponent.class, "seeZone");
-		if (viewedZone != null && viewedZone.equals(blockEntity.getPos()))
-			seeZone.setMessage(Text.literal("Cacher la Zone"));
+		if(!viewBounds)
+			seeZone.setMessage(Text.literal("Voir les bordures"));
 		seeZone.onPress((b) -> {
-			if (viewedZone != null && viewedZone.equals(blockEntity.getPos())) {
-				viewedZone = null;
-				seeZone.setMessage(Text.literal("Voir la zone"));
+			if(!viewBounds) {
+				viewBounds = true;
+				seeZone.setMessage(Text.literal("Cacher les bordures"));
 				seeZone.parent().onChildMutated(seeZone);
 			} else {
-				viewedZone = blockEntity.getPos();
-				seeZone.setMessage(Text.literal("Cacher la zone"));
+				viewBounds = false;
+				seeZone.setMessage(Text.literal("Voir les bordures"));
 				seeZone.parent().onChildMutated(seeZone);
 			}
 
 		});
 		var unclaim = rootComponent.childById(ButtonComponent.class, "unclaim");
 		var sizeS = rootComponent.childById(DiscreteSliderComponent.class, "size");
-		
+
 
 	}
 }

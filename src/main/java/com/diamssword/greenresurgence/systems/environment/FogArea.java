@@ -51,7 +51,7 @@ public class FogArea implements EffectArea {
 	public void tick(List<PlayerEntity> playerInside, World world) {
 		playerInside.forEach(pl -> {
 			var dt = pl.getComponent(Components.PLAYER_DATA);
-			dt.healthManager.addRadiationAmount(HealthManager.radiationHealSpeed);
+			dt.healthManager.addRadiationMitigated(HealthManager.radiationHealSpeed);
 
 		});
 	}

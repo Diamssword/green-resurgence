@@ -6,6 +6,7 @@ import com.diamssword.greenresurgence.gui.components.ComponentsRegister;
 import com.diamssword.greenresurgence.gui.hud.CustomHud;
 import com.diamssword.greenresurgence.items.GeckoToolEquipmentRenderer;
 import com.diamssword.greenresurgence.items.ItemModelOverrideProvider;
+import com.diamssword.greenresurgence.render.environment.vignettes.VignetteItemsRegistry;
 import com.diamssword.greenresurgence.systems.equipement.EquipmentSkins;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -31,7 +32,7 @@ public class GreenResurgenceClient implements ClientModInitializer {
 		ClientNetwork.initialize();
 		ClientEvents.initialize();
 		ItemModelOverrideProvider.init();
-
+		VignetteItemsRegistry.init();
 		ScreenHandlers.init();
 		ComponentsRegister.init();
 		CustomHud.init();

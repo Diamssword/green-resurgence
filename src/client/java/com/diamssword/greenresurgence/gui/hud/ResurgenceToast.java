@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.gui.hud;
 
 import com.diamssword.characters.api.CharactersApi;
+import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.gui.components.ClothButtonComponent;
 import com.diamssword.greenresurgence.network.NotificationPackets;
 import net.minecraft.client.gui.DrawContext;
@@ -18,6 +19,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class ResurgenceToast implements Toast {
+
+	Identifier TEXTURE = GreenResurgence.asRessource("textures/gui/toasts.png");
 	public final NotificationPackets.Size size;
 	public final int duration;
 	public final Text title;

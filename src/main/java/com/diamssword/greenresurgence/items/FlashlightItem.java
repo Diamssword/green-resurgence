@@ -49,8 +49,8 @@ public class FlashlightItem extends Item implements ISimpleBatteryHolder, IFlash
 		super.inventoryTick(stack, world, entity, slot, selected);
 		if(world instanceof ServerWorld sw) {
 			GeoItem.getOrAssignId(stack, sw);
-			if(stack.getNbt().getBoolean("activated") && world.getTime() % 80 == 0) {
-				var v = Math.max(this.getStoredEnergy(stack) - (BatteryTiers.BATTERY.recommendedDischargeRate() * 80L), 0);
+			if(stack.getNbt().getBoolean("activated") && world.getTime() % 20 == 0) {
+				var v = Math.max(this.getStoredEnergy(stack) - (BatteryTiers.BATTERY.recommendedDischargeRate() * 10L), 0);
 				this.setStoredEnergy(stack, v);
 				if(v <= 0)
 					stack.getNbt().putBoolean("activated", false);

@@ -47,7 +47,6 @@ public class Channels {
 		CraftPackets.init();
 		StatsPackets.init();
 		PosesPackets.init();
-		EntitiesPackets.init();
 		InventoryPackets.init();
 		GuildPackets.init();
 		ModularArmorPackets.init();

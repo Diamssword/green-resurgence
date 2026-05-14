@@ -51,7 +51,7 @@ public class FactionGuild {
 	}
 
 	public boolean changeRole(FactionMember member, String role, World world) {
-		if (roles.containsKey(role)) {
+		if(roles.containsKey(role)) {
 			members.put(member, role);
 			onMemberUpdate(member, world);
 		}
@@ -82,8 +82,8 @@ public class FactionGuild {
 	}
 
 	private void onMemberUpdate(FactionMember member, World world) {
-		if (!world.isClient) {
-			if (member.isPlayer()) {
+		if(!world.isClient) {
+			if(member.isPlayer()) {
 				member.asPlayer(world).ifPresent(v -> {
 					CurrentZonePacket.sendDebugZone(world, v);
 					Channels.MAIN.serverHandle(v).send(new CurrentZonePacket.MyGuild(this.getId(), this.getName()));
@@ -94,13 +94,13 @@ public class FactionGuild {
 	}
 
 	public boolean replacePerm(String oldName, FactionPerm newPerm) {
-		if (oldName.equals(newPerm.getName())) {
+		if(oldName.equals(newPerm.getName())) {
 			roles.put(oldName, newPerm);
 			return true;
-		} else if (!roles.containsKey(newPerm.getName())) {
+		} else if(!roles.containsKey(newPerm.getName())) {
 			var list = new HashMap<FactionMember, String>();
 			members.forEach((k, v) -> {
-				if (v.equals(oldName))
+				if(v.equals(oldName))
 					list.put(k, newPerm.getName());
 				else
 					list.put(k, v);
@@ -117,8 +117,8 @@ public class FactionGuild {
 	}
 
 	public boolean addMember(FactionMember member, String role, World world) {
-		if (roles.containsKey(role)) {
-			if (!members.containsKey(member)) {
+		if(roles.containsKey(role)) {
+			if(!members.containsKey(member)) {
 				members.put(member, role);
 				onMemberUpdate(member, world);
 				return true;
@@ -130,15 +130,17 @@ public class FactionGuild {
 	public void addZone(BlockPos center, int size, @Nullable World world) {
 		terrains.add(new FactionZone(this, center, size));
 		this.getOwner().asPlayer(world).ifPresent(p -> {
-			if (!p.getWorld().isClient)
-				CurrentZonePacket.sendDebugZone(p.getWorld(), null);
+			if(!p.getWorld().isClient) {
+				CurrentZonePacket.sendDebugZone(p.getWorld(), p);
+				CurrentZonePacket.sendCreativeDebugZone(p.getWorld(), null);
+			}
 		});
 	}
 
-	public static FactionGuild createForPlayer(PlayerEntity player, BlockPos pos) {
+	public static FactionGuild createForPlayer(PlayerEntity player, BlockPos pos, int radius) {
 		var r = new FactionGuild();
 		r.owner = new FactionMember(player);
-		r.terrains.add(new FactionZone(r, pos, 16));
+		r.terrains.add(new FactionZone(r, pos, radius));
 		r.name = player.getName().getString() + "'s Claim" + r.getId().toString().substring(r.getId().toString().length() - 5);
 		r.addDefaultRole();
 		return r;
@@ -163,8 +165,8 @@ public class FactionGuild {
 	}
 
 	public boolean isIn(Vec3i pos) {
-		for (FactionZone b : terrains) {
-			if (b.isIn(pos))
+		for(FactionZone b : terrains) {
+			if(b.isIn(pos))
 				return true;
 		}
 		return false;
@@ -175,62 +177,62 @@ public class FactionGuild {
 	}
 
 	public Optional<FactionZone> getTerrainAt(Vec3i pos) {
-		for (var b : terrains) {
-			if (b.isIn(pos))
+		for(var b : terrains) {
+			if(b.isIn(pos))
 				return Optional.of(b);
 		}
 		return Optional.empty();
 	}
 
 	public FactionPerm getPermsOf(FactionMember member) {
-		if (this.owner.equals(member))
+		if(this.owner.equals(member))
 			return FactionPerm.ALL;
 		var p = this.members.get(member);
 
-		if (p != null)
+		if(p != null)
 			return this.roles.get(p);
 		var p1 = this.allies.get(member);
-		if (p1 != null)
+		if(p1 != null)
 			return p1;
 		return FactionPerm.NONE;
 	}
 
 	public boolean needSurvival(FactionMember member) {
-		if (this.owner.equals(member))
+		if(this.owner.equals(member))
 			return true;
 		var p = this.members.get(member);
 
-		if (p != null)
+		if(p != null)
 			return this.roles.get(p).needSurvival();
 		var p1 = this.allies.get(member);
-		if (p1 != null)
+		if(p1 != null)
 			return p1.needSurvival();
 		return false;
 	}
 
 	public boolean isAllowed(FactionMember member, Perms perm) {
-		if (this.owner.equals(member))
+		if(this.owner.equals(member))
 			return true;
 		var p = this.members.get(member);
 
-		if (p != null)
+		if(p != null)
 			return this.roles.get(p).isAllowed(perm);
 		var p1 = this.allies.get(member);
-		if (p1 != null)
+		if(p1 != null)
 			return p1.isAllowed(perm);
 		return false;
 	}
 
 	public void tick(ServerWorld world) {
 		world.getPlayers().forEach(p -> {
-			if (inBase.contains(p)) {
-				if (!this.isIn(p.getBlockPos())) {
+			if(inBase.contains(p)) {
+				if(!this.isIn(p.getBlockPos())) {
 					inBase.remove(p);
 					BaseEventCallBack.LEAVE.invoker().enterOrLeave(p, this);
 				}
 
 			} else {
-				if (this.isIn(p.getBlockPos())) {
+				if(this.isIn(p.getBlockPos())) {
 					inBase.add(p);
 					BaseEventCallBack.ENTER.invoker().enterOrLeave(p, this);
 				}
@@ -245,7 +247,7 @@ public class FactionGuild {
 
 	public static FactionGuild fromNBT(NbtCompound tag) {
 		var id = tag.getUuid("id");
-		if (id != null) {
+		if(id != null) {
 			var res = new FactionGuild(id);
 			res.name = tag.getString("name");
 			NbtList ls = tag.getList("terrains", NbtList.COMPOUND_TYPE);
@@ -258,21 +260,21 @@ public class FactionGuild {
 			res.roles.clear();
 			res.members.clear();
 			res.rolesPriority.clear();
-			for (var el : lsRoles) {
+			for(var el : lsRoles) {
 				var perm = FactionPerm.fromNBT((NbtCompound) el);
-				if (perm != null) {
+				if(perm != null) {
 					res.roles.put(perm.getName(), perm);
 					res.rolesPriority.put(perm.getName(), ((NbtCompound) el).getInt("priority"));
 				}
 			}
 			var br = tag.getString("defaultRole");
-			if (res.roles.containsKey(br))
+			if(res.roles.containsKey(br))
 				res.startingRole = br;
 			else
 				res.startingRole = res.roles.keySet().stream().findFirst().get();
 			var ml = tag.getCompound("members");
-			for (var k : ml.getKeys()) {
-				if (res.roles.containsKey(k)) {
+			for(var k : ml.getKeys()) {
+				if(res.roles.containsKey(k)) {
 					var tm = ml.getList(k, NbtElement.COMPOUND_TYPE);
 					tm.forEach(v -> {
 						res.members.put(new FactionMember((NbtCompound) v), k);
@@ -311,12 +313,12 @@ public class FactionGuild {
 		tag.put("energy", t1);
 		var permLS = new NbtList();
 		var memberLs = new NbtCompound();
-		for (var p : this.roles.values()) {
+		for(var p : this.roles.values()) {
 			var nb = p.toNBT();
 			nb.putInt("priority", this.rolesPriority.getOrDefault(p.getName(), 1));
 			permLS.add(nb);
 			var membs = getMembersWithRole(p.getName());
-			if (!membs.isEmpty()) {
+			if(!membs.isEmpty()) {
 				var ls = new NbtList();
 				membs.forEach(c -> {
 					var e = new NbtCompound();
@@ -344,7 +346,7 @@ public class FactionGuild {
 	public List<FactionMember> getMembersWithRole(String role) {
 		var res = new ArrayList<FactionMember>();
 		this.members.forEach((a, b) -> {
-			if (b.equals(role))
+			if(b.equals(role))
 				res.add(a);
 		});
 		return res;
@@ -353,7 +355,7 @@ public class FactionGuild {
 	public List<FactionMember> getMembersWithPerms(Perms... perms) {
 		var m1 = new ArrayList<FactionMember>();
 		roles.forEach((k, v) -> {
-			if (v.isAllowed(perms))
+			if(v.isAllowed(perms))
 				m1.addAll(this.getMembersWithRole(k));
 		});
 		m1.add(owner);
@@ -365,7 +367,7 @@ public class FactionGuild {
 	}
 
 	public boolean addRole(FactionPerm role) {
-		if (!roles.containsKey(role.getName())) {
+		if(!roles.containsKey(role.getName())) {
 			roles.put(role.getName(), role);
 			rolesPriority.put(role.getName(), 1);
 			return true;
@@ -378,8 +380,10 @@ public class FactionGuild {
 		return t.map(v -> {
 			this.terrains.remove(t.get());
 			this.getOwner().asPlayer(world).ifPresent(p1 -> {
-				if (!p1.getWorld().isClient)
-					CurrentZonePacket.sendDebugZone(p1.getWorld(), null);
+				if(!p1.getWorld().isClient) {
+					CurrentZonePacket.sendDebugZone(p1.getWorld(), p1);
+					CurrentZonePacket.sendCreativeDebugZone(p1.getWorld(), null);
+				}
 			});
 			return true;
 		}).orElse(false);

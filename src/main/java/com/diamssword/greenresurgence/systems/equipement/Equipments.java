@@ -21,6 +21,10 @@ public class Equipments {
 	public static final String TYPE_HAMMER = "hammer";
 	public static final String TYPE_SPIKE = "spike";
 	public static final String TYPE_ELECTRIC = "electric";
+	public static final String TYPE_HELMET = "armor_helmet";
+	public static final String TYPE_CHESTPLATE = "armor_chestplate";
+	public static final String TYPE_LEGGINGS = "armor_leggings";
+	public static final String TYPE_BOOTS = "armor_boots";
 	public static final String P_SKIN = "skin";
 	public static final String P_HEAD = "head";
 	public static final String P_BINDING = "binding";

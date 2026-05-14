@@ -6,7 +6,7 @@
                 <flow-layout direction="vertical">
                     <children>
                         <button id="seeZone">
-                            <text>Voir la zone</text>
+                            <text>Cacher les bordures</text>
                         </button>
                         <button id="unclaim">
                             <text>Abandonner la zone</text>

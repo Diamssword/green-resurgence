@@ -6,12 +6,18 @@ import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 
 import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class SporeParticle extends SpriteBillboardParticle {
+	private static final Random RANDOM = Random.create();
+	private static Vec3d windVelocity = Vec3d.ZERO;
+	private static int windTicks = 0;
+
+
 	SporeParticle(ClientWorld world, SpriteProvider spriteProvider, double x, double y, double z) {
 		super(world, x, y - 0.125, z);
 		this.setBoundingBoxSpacing(0.01F, 0.01F);
@@ -21,6 +27,7 @@ public class SporeParticle extends SpriteBillboardParticle {
 		this.collidesWithWorld = true;
 		this.velocityMultiplier = 1.0F;
 		this.gravityStrength = 0.0F;
+
 	}
 
 	SporeParticle(ClientWorld world, SpriteProvider spriteProvider, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
@@ -32,6 +39,47 @@ public class SporeParticle extends SpriteBillboardParticle {
 		this.collidesWithWorld = true;
 		this.velocityMultiplier = 1.0F;
 		this.gravityStrength = 0.0F;
+	}
+
+	private static void startWindBurst() {
+		windTicks = 100 + RANDOM.nextInt(100);
+
+		// Random direction
+		Vec3d dir = new Vec3d(
+				RANDOM.nextDouble() - 0.5,
+				(RANDOM.nextDouble() - 0.5) * 0.2, // weaker vertical
+				RANDOM.nextDouble() - 0.5
+		).normalize();
+
+		double strength = 0.03 + RANDOM.nextDouble() * 0.2;
+		windVelocity = new Vec3d(dir.x * strength, dir.y * strength, dir.z * strength);
+	}
+
+	public static void globalWindTick() {
+		if(windTicks <= 0 && RANDOM.nextInt(500) == 0) {
+
+			startWindBurst();
+		} else if(windTicks > 0) {
+			windTicks--;
+			if(windTicks == 0)
+				windVelocity = Vec3d.ZERO;
+			else if(windTicks < 80) {
+				windVelocity = windVelocity.multiply((windTicks / 80d));
+			}
+
+		}
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+
+		// Update global wind timer
+		if(windTicks > 0) {
+			this.onGround = false;
+			move(windVelocity.x, windVelocity.y, windVelocity.z);
+		}
+		
 	}
 
 	@Override

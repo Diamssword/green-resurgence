@@ -1,32 +1,44 @@
 package com.diamssword.greenresurgence.items;
 
-import com.diamssword.greenresurgence.items.helpers.BatteryStorageHelper;
+import com.diamssword.greenresurgence.MGas;
+import com.diamssword.greenresurgence.items.helpers.GasStorageHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
-public class BatteryHolderTooltipComponent extends BaseItemHolderTooltipComponent {
+public class GasHolderTooltipComponent extends BaseItemHolderTooltipComponent {
 	public static final Identifier TEXTURE = new Identifier("green_resurgence", "textures/gui/slots/battery_bundle.png");
 	private final Text text1;
 	private final Text text2;
 
-	public BatteryHolderTooltipComponent(BatteryStorageHelper.BatteryHolderTooltipData data) {
+	public GasHolderTooltipComponent(GasStorageHelper.GasHolderTooltipData data) {
 		super(data.stacks());
 		var filled = 0;
 		for(ItemStack stack : inventory) {
 			if(!stack.isEmpty())
 				filled++;
 		}
+		text1 = Text.literal("").append(data.gas().getTranslation()).append(": " + data.max() + "/" + data.capacity());
+		//text1 = Text.translatable("green_resurgence.gui.gas_holder.content", data.capacity() + "/" + data.max());
+		if(data.allowedGas().length > 0) {
+			MutableText literal = Text.literal("");
+			literal.append(Text.translatable("green_resurgence.gui.gas_holder.allowed"));
+			for(int i = 0; i < data.allowedGas().length; i++) {
+				literal.append(MGas.getGas(data.allowedGas()[i]).getTranslation());
+				if(i < data.allowedGas().length - 1)
+					literal.append(",");
+			}
 
-		var tiers = data.min() == data.max() ? data.min().name() : data.min().name() + " - " + data.max().name();
-		text1 = Text.translatable("green_resurgence.gui.battery_holder.content", filled + "/" + inventory.size());
-		text2 = Text.translatable("green_resurgence.gui.battery_holder.required", tiers);
+			text2 = literal;
+		} else
+			text2 = null;
 	}
 
 

@@ -71,6 +71,7 @@ public class FogRenderer {
 		for(FogArea area : areas) {
 			area.tick(clientWorld);
 		}
+		SporeParticle.globalWindTick();
 
 	}
 

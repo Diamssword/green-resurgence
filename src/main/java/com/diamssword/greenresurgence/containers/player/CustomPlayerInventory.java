@@ -46,6 +46,28 @@ public class CustomPlayerInventory implements ICharacterStored {
 
 	private int lastHotbarSize = 0;
 
+	public List<IGridContainer> getNonVanillaContainers() {
+		List<IGridContainer> res = new ArrayList<>();
+
+		var hot = getHotBar();
+		var b = getBackPack();
+		if(b != null) {
+			var dim = invDimsFor(0);
+			res.add(new PlayerGrid("backpack", b, dim.getLeft(), dim.getRight()));
+		}
+		b = getSatchelLeft();
+		if(b != null) {
+			var dim = invDimsFor(1);
+			res.add(new PlayerGrid("satchelLeft", b, dim.getLeft(), dim.getRight()));
+		}
+		b = getSatchelRight();
+		if(b != null) {
+			var dim = invDimsFor(2);
+			res.add(new PlayerGrid("satchelRight", b, dim.getLeft(), dim.getRight()));
+		}
+		return res;
+	}
+
 	public List<IGridContainer> getAsContainers() {
 		List<IGridContainer> res = new ArrayList<>();
 
@@ -80,15 +102,14 @@ public class CustomPlayerInventory implements ICharacterStored {
 	}
 
 	public void updateItems() {
-		this.getAsContainers().forEach(c -> {
-			var iHotbar = c.getName().equals("hotbar");
+		this.getNonVanillaContainers().forEach(c -> {
 			for(int j = 0; j < c.getInventory().size(); j++) {
 				var s = c.getInventory().getStack(j);
 
 				if(s != null && !s.isEmpty()) {
 					if(s.getItem() instanceof AbstractBackpackItem bi) {
 						if(!bi.bagInventoryTick(s, parent, j)) {c.getInventory().setStack(j, ItemStack.EMPTY);}
-					} else {s.inventoryTick(parent.getWorld(), parent, j, iHotbar && this.parent.getInventory().selectedSlot == j);}
+					} else {s.inventoryTick(parent.getWorld(), parent, 41 + j, false);}
 				}
 			}
 		});

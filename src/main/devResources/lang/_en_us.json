@@ -29,6 +29,9 @@
   "item.green_resurgence.backpack": "Backpack",
   "item.green_resurgence.modular_leg": "Leggings",
   "item.green_resurgence.modular_boot": "Boots",
+  "item.green_resurgence.gas_mask": "Gas Mask",
+  "item.green_resurgence.air_filter": "Air Filter",
+  "item.green_resurgence.small_gas_tank": "Small Gas Tank",
   "item.green_resurgence.satchel": "Satchel",
   "item.green_resurgence.caddie": "Working Shopping Cart",
   "item.green_resurgence.bike": "Working Bike",
@@ -66,5 +69,7 @@
   "block.green_resurgence.wood_crate_shelf_block": "Wooden Display Shelf",
   "block.green_resurgence.ice_cooler_shelf_left": "Big Freezer Left",
   "block.green_resurgence.ice_cooler_shelf_right": "Big Freezer Right",
-  "block.green_resurgence.spawner": "Editable Spawner"
+  "block.green_resurgence.spawner": "Editable Spawner",
+  "green_resurgence.gas.oxygen.name": "Oxygen",
+  "minecraft.gas.empty.name": "Empty"
 }

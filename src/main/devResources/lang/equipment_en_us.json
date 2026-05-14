@@ -78,5 +78,7 @@
   "equipment.green_resurgence.tooltip.title.upgrade": "Upgrades:",
   "equipment.green_resurgence.tooltip.title.base_stats": "Base Stats:",
   "green_resurgence.gui.battery_holder.content": "%d cells",
-  "green_resurgence.gui.battery_holder.required": "Require %d cells"
+  "green_resurgence.gui.battery_holder.required": "Require %d cells",
+  "green_resurgence.gui.gas_holder.allowed": "Accept: ",
+  "green_resurgence.gui.durability_holder.percent": "Durability: %d"
 }

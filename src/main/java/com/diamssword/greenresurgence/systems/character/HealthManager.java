@@ -1,8 +1,10 @@
 package com.diamssword.greenresurgence.systems.character;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.items.helpers.IRadiationMitigator;
 import com.diamssword.greenresurgence.systems.attributs.AttributeModifiers;
 import com.diamssword.greenresurgence.systems.attributs.Attributes;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -129,13 +131,21 @@ public class HealthManager {
 		return player.getMaxHealth();
 	}
 
-	public void addRadiationAmount(double amount) {
+	public void addRadiationUnmitigated(double amount) {
 		var res = radAmount + amount;
 		if(radAmount < res) {
 			radAmount = Math.min(res, getMaxRadiationAmount());
 			markDirty();
 		}
 		radiationTickTimer = 0;
+	}
+
+	public void addRadiationMitigated(double amount) {
+		var item = player.getEquippedStack(EquipmentSlot.HEAD);
+		if(item.getItem() instanceof IRadiationMitigator rm)
+			addRadiationUnmitigated(rm.getRadiationAfterMitigation(item, amount));
+		else
+			addRadiationUnmitigated(amount);
 	}
 
 	public double getRadiationAmount() {

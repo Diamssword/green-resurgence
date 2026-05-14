@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.render;
 
+import com.diamssword.greenresurgence.gui.faction.ClaimAntennaGui;
 import com.diamssword.greenresurgence.items.helpers.IStructureProvider;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.render.environment.EnvironementAreas;
@@ -126,28 +127,35 @@ public class BoxRenderers {
 	public static void drawBaseOverlays(MatrixStack matrix) {
 		MinecraftClient mc = MinecraftClient.getInstance();
 
-		if(mc.world != null && mc.getEntityRenderDispatcher().shouldRenderHitboxes()) {
+		if(mc.world != null) {
+			if(mc.getEntityRenderDispatcher().shouldRenderHitboxes()) {
+				CurrentZonePacket.DebugViews.forEach(b -> {
+					VertexConsumerProvider.Immediate store = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
+					VertexConsumerProvider.Immediate store1 = MinecraftClient.getInstance().getBufferBuilders().getEffectVertexConsumers();
 
-			CurrentZonePacket.DebugViews.forEach(b -> {
-				VertexConsumerProvider.Immediate store = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-				VertexConsumerProvider.Immediate store1 = MinecraftClient.getInstance().getBufferBuilders().getEffectVertexConsumers();
+					int hash = b.getLeft().hashCode();
+					int c1 = (hash) & 0xFF;
+					int c2 = (hash >> 8) & 0xFF;
+					int c3 = (hash >> 16) & 0xFF;
+					float red = Math.min(Math.max(c1 % 255f, 0f), 255f);
+					float green = Math.min(Math.max(c2 % 255f, 0f), 255f);
+					float blue = Math.min(Math.max(c3 % 255f, 0f), 255f);
+					DebugRenderer.drawBox(matrix, store, new BlockPos(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()), new BlockPos(b.getRight().getMaxX() + 1, b.getRight().getMaxY() + 1, b.getRight().getMaxZ() + 1), red, green, blue, 0.2f);
+					BlockPos p1 = b.getRight().getCenter();
+					DebugRenderer.drawString(matrix, store1, "Camp: " + b.getLeft(), p1.getX(), p1.getY(), p1.getZ(), 0xffffff, 0.1f, true, 0, true);
+					DebugRenderer.drawString(matrix, store1, b.getMiddle().toString(), p1.getX(), p1.getY() - 1, p1.getZ(), 0xffffff, 0.1f, true, 0, true);
+					drawStructureBox(matrix, new Vec3d(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()), Vec3d.of(b.getRight().getDimensions().add(1, 1, 1)), red, green, blue, 1);
+				});
+			} else if(ClaimAntennaGui.viewBounds && mc.player != null) {
+				CurrentZonePacket.OwnFactionBounds.forEach(b -> {
+					VertexConsumerProvider.Immediate store = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
+					VertexConsumerProvider.Immediate store1 = MinecraftClient.getInstance().getBufferBuilders().getEffectVertexConsumers();
 
-				int hash = b.getLeft().hashCode();
-				int c1 = (hash) & 0xFF;
-				int c2 = (hash >> 8) & 0xFF;
-				int c3 = (hash >> 16) & 0xFF;
-				float red = Math.min(Math.max(c1 % 255f, 0f), 255f);
-				float green = Math.min(Math.max(c2 % 255f, 0f), 255f);
-				float blue = Math.min(Math.max(c3 % 255f, 0f), 255f);
-				DebugRenderer.drawBox(matrix, store, new BlockPos(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()), new BlockPos(b.getRight().getMaxX() + 1, b.getRight().getMaxY() + 1, b.getRight().getMaxZ() + 1), red, green, blue, 0.2f);
-				BlockPos p1 = b.getRight().getCenter();
-				DebugRenderer.drawString(matrix, store1, "Camp: " + b.getLeft(), p1.getX(), p1.getY(), p1.getZ(), 0xffffff, 0.1f, true, 0, true);
-				DebugRenderer.drawString(matrix, store1, b.getMiddle().toString(), p1.getX(), p1.getY() - 1, p1.getZ(), 0xffffff, 0.1f, true, 0, true);
-				drawStructureBox(matrix, new Vec3d(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()), Vec3d.of(b.getRight().getDimensions().add(1, 1, 1)), red, green, blue, 1);
-			});
+					drawStructureBox(matrix, new Vec3d(b.getMinX(), mc.player.getBlockY(), b.getMinZ()), new Vec3d(b.getDimensions().getX() + 1, 0, b.getDimensions().getY() + 1), 1f, 0.8f, 0.8f, 0.8f);
+					drawStructureBox(matrix, new Vec3d(b.getMinX(), b.getMinY(), b.getMinZ()), Vec3d.of(b.getDimensions().add(1, 1, 1)), 1f, 1f, 1f, 1);
+				});
+			}
 		}
-
-
 	}
 
 	public static void drawEnvironmentOverlays(MatrixStack matrix) {

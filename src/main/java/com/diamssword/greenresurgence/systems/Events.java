@@ -55,6 +55,7 @@ public class Events {
 					Channels.sendToNonHost(l1, new DictionaryPackets.LootableList(Lootables.loader), new DictionaryPackets.RecipeList(Recipes.loader), new DictionaryPackets.ArmorList(ArmorLoader.loader));
 					Channels.MAIN.serverHandle(l1).send(BaseInteractions.getPacket());
 					CurrentZonePacket.sendDebugZone(l1.getWorld(), l1);
+					CurrentZonePacket.sendCreativeDebugZone(l1.getWorld(), l1);
 					EnvironmentPacket.sendListFor(l1, l1.getWorld());
 					var g = l1.getWorld().getComponent(Components.BASE_LIST).getForPlayer(l1.getUuid(), false);
 					g.ifPresent(factionGuild -> Channels.MAIN.serverHandle(l1).send(new CurrentZonePacket.MyGuild(factionGuild.getId(), factionGuild.getName())));
