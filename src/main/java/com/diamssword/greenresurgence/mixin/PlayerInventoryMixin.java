@@ -1,12 +1,15 @@
 package com.diamssword.greenresurgence.mixin;
 
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
+import com.diamssword.greenresurgence.items.ModularArmorItem;
 import com.diamssword.greenresurgence.systems.Components;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
@@ -28,6 +31,10 @@ public abstract class PlayerInventoryMixin {
 	@Shadow
 	@Final
 	public PlayerEntity player;
+
+	@Shadow
+	@Final
+	public DefaultedList<ItemStack> armor;
 	@Shadow
 	public int selectedSlot;
 	@Shadow
@@ -63,6 +70,23 @@ public abstract class PlayerInventoryMixin {
 			pinv.getInventory().syncHotbarToServer();
 		}
 
+	}
+
+	@Inject(at = @At("TAIL"), method = "damageArmor")
+	protected void damageArmor(DamageSource damageSource, float amount, int[] slots, CallbackInfo ci) {
+		if(!(amount <= 0.0F)) {
+			amount /= 4.0F;
+			if(amount < 1.0F) {
+				amount = 1.0F;
+			}
+
+			for(int i : slots) {
+				ItemStack itemStack = this.armor.get(i);
+				if((!damageSource.isIn(DamageTypeTags.IS_FIRE) || !itemStack.getItem().isFireproof()) && itemStack.getItem() instanceof ModularArmorItem mod) {
+					mod.onWearerDamaged(itemStack, this.player, damageSource, amount);
+				}
+			}
+		}
 	}
 
 	@Inject(at = @At("HEAD"), method = "scrollInHotbar", cancellable = true)

@@ -12,6 +12,7 @@ public class EquipmentValues {
 	public static final UUID ATTACK_SPEED_MODIFIER_ID = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
 	public static final UUID ATTACK_RANGE_MODIFIER_ID = UUID.fromString("ae5630ab-af0f-4c38-8f5e-b7d369078812");
 	public static final UUID REACH_RANGE_MODIFIER_ID = UUID.fromString("e3f95e9d-9eeb-48ba-ba90-a7c551b1608c");
+	public static final UUID ARMOR_MODIFIER_ID = UUID.fromString("20f73ab7-8067-4005-8b89-48acaa2f9409");
 	//BASE_ATTACK_SPEED is 4;
 	public static final float SPEED_SLOWER = -3.5f;
 	public static final float SPEED_SLOW = -3f;
@@ -30,5 +31,5 @@ public class EquipmentValues {
 	public static final Map<String, EffectLevel> SMALL_SPIKE_BASE = MapEffectMaker.create(EquipmentEffects.ATTACK_SPEED, SPEED_FAST).add(EquipmentEffects.ATTACK_DAMAGE, 2.4f).add(EquipmentEffects.ATTACK_RANGE, -1).get();
 	public static final Map<String, EffectLevel> MEDIUM_SPIKE_BASE = MapEffectMaker.create(EquipmentEffects.ATTACK_SPEED, SPEED_NORMAL).add(EquipmentEffects.ATTACK_DAMAGE, 2.4f).add(EquipmentEffects.ATTACK_RANGE, 1f).get();
 	public static final Map<String, EffectLevel> LONG_SPIKE_BASE = MapEffectMaker.create(EquipmentEffects.ATTACK_SPEED, SPEED_NORMAL).add(EquipmentEffects.ATTACK_DAMAGE, 4f).add(EquipmentEffects.ATTACK_RANGE, 2f).get();
-	
+
 }

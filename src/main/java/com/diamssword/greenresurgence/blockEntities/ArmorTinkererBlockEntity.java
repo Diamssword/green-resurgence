@@ -2,45 +2,34 @@ package com.diamssword.greenresurgence.blockEntities;
 
 import com.diamssword.greenresurgence.blocks.ArmorTinkererBlock;
 import com.diamssword.greenresurgence.containers.Containers;
-import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
+import com.diamssword.greenresurgence.containers.EquipmentScreenHandler;
 import com.diamssword.greenresurgence.containers.grids.ContainerArmorGrid;
 import com.diamssword.greenresurgence.containers.grids.IGridContainer;
+import com.diamssword.greenresurgence.systems.equipement.Equipments;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import org.jetbrains.annotations.Nullable;
 
-public class ArmorTinkererBlockEntity extends BlockEntity {
-
-	public SimpleInventory inventory = new SimpleInventory(4);
-
+public class ArmorTinkererBlockEntity extends MultiEquipmentTinkererBlockEntity {
 	public ArmorTinkererBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
+		inventory.addListener((l) -> markUpdate());
 	}
 
-	public void openInventory(ServerPlayerEntity player) {
-		if(inventory == null) {createInventory();}
-		Containers.createHandler(player, pos, (sync, inv, p1) -> new Container(sync, player, new ContainerArmorGrid("armor_tinkerer", inventory, 1, 4)));
-
-	}
-
-	public SimpleInventory getInventory() {
-		return inventory;
-	}
 
 	public ItemStack getArmorStack(EquipmentSlot slot) {
 		if(inventory != null) {
@@ -66,59 +55,41 @@ public class ArmorTinkererBlockEntity extends BlockEntity {
 		}
 	}
 
-	private void createInventory() {
-		inventory = new SimpleInventory(4);
-		inventory.addListener(ls -> this.markUpdate());
-		this.markDirty();
-	}
+	@Override
+	public void openInventory(ServerPlayerEntity player) {
+		if(currentTools[0] == null) {
+			onToolChange(null);
+		}
+		trackedPlayers.add(player);
+		Containers.createHandler(player, pos, (sync, inv, p1) -> {
+			var handler = new Container(sync, player, new Grid(inventory, 1, 4), upgrades);
+			handler.onClosed = () -> trackedPlayers.remove(player);
+			return handler;
+		});
 
-	protected void markUpdate() {
-		this.markDirty();
-		if(this.world instanceof ServerWorld sw) {sw.getChunkManager().markForUpdate(pos);}
 	}
 
 	@Override
 	public void writeNbt(NbtCompound nbt) {
 		if(!this.getCachedState().get(ArmorTinkererBlock.BOTTOM)) {
-			super.writeNbt(nbt);
 			return;
-		}
-		if(inventory != null) {
-
-			nbt.put("inventory", Inventories.writeNbt(new NbtCompound(), inventory.stacks));
 		}
 		super.writeNbt(nbt);
 	}
 
 	@Override
 	public void readNbt(NbtCompound nbt) {
-		super.readNbt(nbt);
 		if(!this.getCachedState().get(ArmorTinkererBlock.BOTTOM)) {return;}
-		if(nbt.contains("inventory")) {
-			inventory = new SimpleInventory(4);
-			Inventories.readNbt(nbt.getCompound("inventory"), inventory.stacks);
-			inventory.addListener(ls -> markUpdate());
-		}
+		super.readNbt(nbt);
 	}
 
-	@Nullable
-	@Override
-	public Packet<ClientPlayPacketListener> toUpdatePacket() {
-		return BlockEntityUpdateS2CPacket.create(this);
-	}
-
-	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		return createNbt();
-	}
-
-	public static class Container extends MultiInvScreenHandler {
+	public static class Container extends EquipmentScreenHandler {
 		public Container(int syncId, PlayerInventory playerInventory) {
 			super(syncId, playerInventory);
 		}
 
-		public Container(int syncId, PlayerEntity player, IGridContainer... inventories) {
-			super(syncId, player, inventories);
+		public Container(int syncId, PlayerEntity player, IGridContainer inventory, SimpleInventory... upgrades) {
+			super(syncId, player, inventory, upgrades);
 		}
 
 		@Override
@@ -127,4 +98,43 @@ public class ArmorTinkererBlockEntity extends BlockEntity {
 		}
 	}
 
+	public static class Grid extends ContainerArmorGrid {
+		protected static final ArmorItem.Type[] EQUIPMENT_SLOT_ORDER = new ArmorItem.Type[]{ArmorItem.Type.HELMET, ArmorItem.Type.CHESTPLATE, ArmorItem.Type.LEGGINGS, ArmorItem.Type.BOOTS};
+
+		public Grid(Inventory inv, int width, int height) {
+			super("tool_slot", inv, width, height);
+		}
+
+		public Grid(String s, int width, int height) {
+			super(s, width, height);
+		}
+
+		@Override
+		public int getQuickSlotPriority(ItemStack item) {
+			return 2000;
+		}
+
+		@Override
+		public Slot createSlotFor(int index, int x, int y) {
+
+			return new Slot(this.getInventory(), index, x, y) {
+				@Override
+				public int getMaxItemCount() {
+					return 1;
+				}
+
+				@Override
+				public boolean canInsert(ItemStack stack) {
+					var eq = Equipments.getEquipment("armor", EQUIPMENT_SLOT_ORDER[index].getName());
+					return eq.filter(iEquipmentDef -> stack.getItem() == iEquipmentDef.getBlueprintItem() || stack.getItem() == iEquipmentDef.getEquipmentItem()).isPresent();
+
+				}
+
+				@Override
+				public Pair<Identifier, Identifier> getBackgroundSprite() {
+					return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, EMPTY_ARMOR_SLOT_TEXTURES[index]);
+				}
+			};
+		}
+	}
 }

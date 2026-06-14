@@ -20,7 +20,8 @@ public class ScreenHandlers {
 		HandledScreens.register(Containers.FAC_CHEST, FactionChestGui::new);
 		HandledScreens.register(Containers.GENERIC_CONTAINER, GenericContainerGui::new);
 		HandledScreens.register(Containers.PLAYER, PlayerInventoryGui::new);
-		HandledScreens.register(Containers.ARMOR_TINKERER, ArmorTinkererContainerGui::new);
+		//HandledScreens.register(Containers.ARMOR_TINKERER, ArmorTinkererContainerGui::new);
+		HandledScreens.register(Containers.ARMOR_TINKERER, ArmorEquipmentTinkererContainerGui::new);
 		HandledScreens.register(Containers.EQUIPMENT_TINKERER, EquipmentTinkererContainerGui::new);
 
 	}

@@ -21,6 +21,7 @@ import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import org.jetbrains.annotations.Nullable;
@@ -189,7 +190,7 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 
 		Multimap<EntityAttribute, EntityAttributeModifier> map = ArrayListMultimap.create();
 		var ctx = new UpgradeActionContext(player, null, UpgradeActionContext.ItemContext.TOOL).setLevels(combinedEffectsString);
-
+		ctx.setWeapon(stack);
 		combinedEffects.forEach((k, v) -> {
 			k.getAttributeModifiers(map, slot, ctx);
 		});
@@ -253,11 +254,11 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 		return 0f;
 	}
 
-	public boolean onToolDamage(LivingEntity owner, AdvEquipmentSlot slot) {
+	public boolean onToolDamage(LivingEntity owner, AdvEquipmentSlot slot, float amount) {
 		if(content.isEmpty()) return true;
 		var keys = this.content.keySet().stream().filter(v -> getAsEquipment(v).map(EquipmentUpgradeItem::isDamageable).orElse(false));
 		var picked = Utils.selectRandomWeighted(keys.toList(), k -> getAsEquipment(k).map((e) -> e.damageWeight() + this.equipment.getDamageChance(k)).orElse(0f));
-		var dura = this.content.get(picked).getDamage() + 1;
+		var dura = this.content.get(picked).getDamage() + Math.max(1, amount);
 		if(dura >= getAsEquipment(picked).get().maxDurability()) {
 			if(owner instanceof PlayerEntity) {
 				((PlayerEntity) owner).incrementStat(Stats.BROKEN.getOrCreateStat(getAsEquipment(picked).get()));
@@ -270,7 +271,7 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 				if(vsl != null) {owner.sendEquipmentBreakStatus(vsl);}
 			}
 		} else {
-			this.content.get(picked).setDamage(dura);
+			this.content.get(picked).setDamage((int) dura);
 		}
 		return false;
 	}
@@ -279,6 +280,7 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 		if(!isComputed)
 			computeEffects();
 		var ctx = new UpgradeActionContext(null, null, UpgradeActionContext.ItemContext.TOOL).setLevels(combinedEffectsString);
+		ctx.setWeapon(stack);
 		for(AdvEquipmentSlot value : AdvEquipmentSlot.values()) {
 			List<Text> subList = new ArrayList<>();
 			combinedEffectsString.forEach((k, v) -> {
@@ -321,7 +323,7 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 		});
 	}
 
-	public float getDurabilityProgress() {
+	public Pair<Integer, Integer> getDurabilityAndMax() {
 		var ls = this.content.keySet().stream().filter(v -> getAsEquipment(v).map(EquipmentUpgradeItem::isDamageable).orElse(false)).toList();
 		var act = 0;
 		var max = 0;
@@ -336,9 +338,14 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 				act += up.maxDurability();
 			}
 		}
-		if(max == 0)
+		return new Pair<>(act, max);
+	}
+
+	public float getDurabilityProgress() {
+		var p = getDurabilityAndMax();
+		if(p.getRight() == 0)
 			return 1;
-		return 1f - ((float) act / (float) max);
+		return 1f - ((float) p.getLeft() / (float) p.getRight());
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.containers.grids;
 
+import com.diamssword.greenresurgence.blockEntities.ArmorTinkererBlockEntity;
 import com.diamssword.greenresurgence.containers.player.grids.ArmorGrid;
 import com.diamssword.greenresurgence.containers.player.grids.BagsGrid;
 import com.diamssword.greenresurgence.containers.player.grids.OffHandGrid;
@@ -31,6 +32,7 @@ public class GridContainerSyncer {
 		registerGridSerializer(OffHandGrid.class, "playerOffhand", OffHandGrid::new);
 		registerGridSerializer(BagsGrid.class, "bagSlots", BagsGrid::new);
 		registerGridSerializer(ContainerArmorGrid.class, "containerArmor", ContainerArmorGrid::new);
+		registerGridSerializer(ArmorTinkererBlockEntity.Grid.class, "containerArmorEq", ArmorTinkererBlockEntity.Grid::new);
 		registerGridSerializer(ExtractOnlyGrid.class, "extractOnly", ExtractOnlyGrid::new);
 	}
 

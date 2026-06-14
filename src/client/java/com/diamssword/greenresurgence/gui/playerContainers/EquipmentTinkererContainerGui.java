@@ -38,7 +38,7 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 			var s = handler.getInventory("tool_slot").getInventory().getStack(0);
 			if(s.getItem() instanceof IEquipmentBlueprint bp) {
 				s = new ItemStack(bp.getEquipment().getEquipmentItem(), 1);
-				var inv = handler.getInventory("equipment_" + Equipments.P_SKIN);
+				var inv = handler.getInventory("0_equipment_" + Equipments.P_SKIN);
 				if(inv != null) {
 					var d = inv.getInventory().getStack(0);
 					if(d.getItem() instanceof EquipmentSkinItem) {
@@ -49,6 +49,7 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 							s.getOrCreateNbt().putString("skin", EquipmentSkins.getDefault(bp.getEquipment().getEquipmentItem()).orElse(""));
 					} else
 						s.getOrCreateNbt().putString("skin", EquipmentSkins.getDefault(bp.getEquipment().getEquipmentItem()).orElse(""));
+
 				}
 
 			}
@@ -66,11 +67,13 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 		contL.margins(Insets.vertical(5));
 		contL.gap(10);
 		this.handler.onEquipmentReady(v -> {
-			var g = simpleGridSlotSetup(handler.getEquipment(), v.getSlots());
-			panel.child(contL);
-			if(g != null)
-				panel.child(g);
-			findInvComps(rootComponent);
+			if(v[0] != null) {
+				var g = simpleGridSlotSetup(handler.getEquipments()[0], v[0].getSlots());
+				panel.child(contL);
+				if(g != null)
+					panel.child(g);
+				findInvComps(rootComponent);
+			}
 		});
 
 	}
@@ -82,7 +85,7 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 			if(st.getItem() instanceof IEquipmentUpgrade eq) {
 				var name = this.handler.getInventoryForSlot(slot);
 				if(name.contains("equipment_")) {
-					if(Utils.arrayContains(eq.slots(handler.getEquipment()), name.replace("equipment_", "")))
+					if(Utils.arrayContains(eq.slots(handler.getEquipments()[0]), name.substring("0_equipment_".length())))
 						ctx.fill(x, y, x + 16, y + 16, 0x603A6218);
 				}
 
@@ -100,7 +103,7 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 			} else {
 				var name = this.handler.getInventoryForSlot(this.focusedSlot);
 				if(name.contains("equipment_"))
-					context.drawTooltip(this.textRenderer, Text.translatable("equipment." + GreenResurgence.ID + ".gui." + name.replace("equipment_", "")).formatted(Formatting.GRAY, Formatting.ITALIC), x, y);
+					context.drawTooltip(this.textRenderer, Text.translatable("equipment." + GreenResurgence.ID + ".gui." + name.replace("0_equipment_", "")).formatted(Formatting.GRAY, Formatting.ITALIC), x, y);
 			}
 		}
 	}
@@ -122,7 +125,7 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 					else
 						y = 3;
 				}
-				InventoryComponent comp = new InventoryComponent("equipment_" + slot, 1, 1, "disabled");
+				InventoryComponent comp = new InventoryComponent("0_equipment_" + slot, 1, 1, "disabled");
 				comp.margins(Insets.of(1));
 
 				var texture = slot;
@@ -141,7 +144,7 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 			for(int i = 0; i < slots.length; i++) {
 				var slot = slots[i];
 
-				InventoryComponent comp = new InventoryComponent("equipment_" + slot, 1, 1, "disabled");
+				InventoryComponent comp = new InventoryComponent("0_equipment_" + slot, 1, 1, "disabled");
 				comp.margins(Insets.of(1));
 
 				var texture = slot;

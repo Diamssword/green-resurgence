@@ -1,12 +1,12 @@
 package com.diamssword.greenresurgence.gui;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.MItems;
 import com.diamssword.greenresurgence.blockEntities.ArmorTinkererBlockEntity;
 import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.ModularArmorPackets;
 import com.diamssword.greenresurgence.systems.armor.ArmorLoader;
+import com.diamssword.greenresurgence.systems.equipement.Equipments;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
@@ -14,6 +14,8 @@ import io.wispforest.owo.ui.component.ItemComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Sizing;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -36,21 +38,26 @@ public class ArmorTinkererModelGui extends BaseUIModelScreen<FlowLayout> {
 		return false;
 	}
 
+	private static Item getArmorItem(ArmorItem.Type type) {
+		return Equipments.getEquipment(Equipments.TYPE_ARMOR, type.getName()).get().getEquipmentItem();
+	}
+
 	@Override
 	protected void build(FlowLayout rootComponent) {
 		rootComponent.childById(ButtonComponent.class, "back").onPress(v -> Channels.MAIN.clientHandle().send(new ModularArmorPackets.RequestGui(tilePos)));
-		switch (slot) {
-			case HEAD -> stack = new ItemStack(MItems.MODULAR_HEAD);
-			case CHEST -> stack = new ItemStack(MItems.MODULAR_CHEST);
-			case FEET -> stack = new ItemStack(MItems.MODULAR_BOOT);
-			case LEGS -> stack = new ItemStack(MItems.MODULAR_LEG);
+
+		switch(slot) {
+			case HEAD -> stack = new ItemStack(getArmorItem(ArmorItem.Type.HELMET));
+			case CHEST -> stack = new ItemStack(getArmorItem(ArmorItem.Type.CHESTPLATE));
+			case FEET -> stack = new ItemStack(getArmorItem(ArmorItem.Type.BOOTS));
+			case LEGS -> stack = new ItemStack(getArmorItem(ArmorItem.Type.LEGGINGS));
 		}
 
 		stack.getOrCreateNbt().putString("model", model);
 		rootComponent.childById(ItemComponent.class, "item").stack(stack);
 		var grid = rootComponent.childById(FreeRowGridLayout.class, "grid");
 		ArmorLoader.loader.getModels().forEach((k, v) -> {
-			if (ArmorLoader.isSLotValidFor(v, slot))
+			if(ArmorLoader.isSLotValidFor(v, slot))
 				grid.child(Components.button(Text.literal(v.model()), (d) -> setModel(k)).horizontalSizing(Sizing.fill(48)));
 		});
 

@@ -1,11 +1,13 @@
 package com.diamssword.greenresurgence.systems.equipement;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.items.ModularArmorItem;
 import com.diamssword.greenresurgence.items.equipment.EquipmentSecondHandNew;
 import com.diamssword.greenresurgence.items.equipment.EquipmentToolElectric;
 import com.diamssword.greenresurgence.items.equipment.EquipmentToolElectricTwoHanded;
 import com.diamssword.greenresurgence.items.equipment.EquipmentTwoHanded;
 import com.diamssword.greenresurgence.systems.equipement.utils.EquipmentEnergyStorage;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -21,13 +23,14 @@ public class Equipments {
 	public static final String TYPE_HAMMER = "hammer";
 	public static final String TYPE_SPIKE = "spike";
 	public static final String TYPE_ELECTRIC = "electric";
-	public static final String TYPE_HELMET = "armor_helmet";
-	public static final String TYPE_CHESTPLATE = "armor_chestplate";
-	public static final String TYPE_LEGGINGS = "armor_leggings";
-	public static final String TYPE_BOOTS = "armor_boots";
+	public static final String TYPE_ARMOR = "armor";
+
 	public static final String P_SKIN = "skin";
 	public static final String P_HEAD = "head";
 	public static final String P_BINDING = "binding";
+	public static final String P_FRAME = "frame";
+	public static final String P_PLATING = "plating";
+	public static final String P_PADDING = "padding";
 
 	public static final String P_BINDING_EXTRA = "extra_binding";
 	public static final String P_HANDLE_EXTRA = "extra_handle";
@@ -41,9 +44,9 @@ public class Equipments {
 	public static final String P_HANDLE = "handle";
 	public static final String P_EXTRA = "extra";
 	public static final String[] REQUIRED_SLOTS = new String[]{P_SKIN, P_HEAD, P_BINDING, P_HANDLE};
+	public static final String[] REQUIRED_SLOTS_ARMOR = new String[]{P_SKIN, P_FRAME, P_PADDING, P_PLATING};
 
 	public static void init() {
-		//TODO set durability modifer
 		register(TYPE_BLADE, "short", EquipmentValues.SMALL_BLADE_BASE, REQUIRED_SLOTS, ExtraSlots());
 		register(TYPE_BLADE, "medium", EquipmentValues.MEDIUM_BLADE_BASE, REQUIRED_SLOTS, ExtraSlots());
 		register(TYPE_BLADE, "long", EquipmentValues.LONG_BLADE_BASE, REQUIRED_SLOTS, ExtraSlots(P_HEAD_EXTRA_2));
@@ -58,7 +61,10 @@ public class Equipments {
 
 		register(TYPE_ELECTRIC, "cutter", new HashMap<>(), new String[]{P_SKIN, P_BATTERY}, P_EXTRA);
 		register(TYPE_ELECTRIC, "hot", new HashMap<>(), new String[]{P_SKIN, P_BATTERY}, P_EXTRA);
-
+		registerArmor(TYPE_ARMOR, ArmorItem.Type.HELMET, new HashMap<>(), REQUIRED_SLOTS_ARMOR);
+		registerArmor(TYPE_ARMOR, ArmorItem.Type.CHESTPLATE, new HashMap<>(), REQUIRED_SLOTS_ARMOR);
+		registerArmor(TYPE_ARMOR, ArmorItem.Type.LEGGINGS, new HashMap<>(), REQUIRED_SLOTS_ARMOR);
+		registerArmor(TYPE_ARMOR, ArmorItem.Type.BOOTS, new HashMap<>(), REQUIRED_SLOTS_ARMOR);
 		registers();
 		EquipmentSkins.init();
 		EquipmentEffects.init();
@@ -93,6 +99,17 @@ public class Equipments {
 				}
 			});
 		});
+
+	}
+
+	public static void registerArmor(String type, ArmorItem.Type piece, Map<String, EffectLevel> bases, String[] requiredSlots, String... extraSlots) {
+		bases.put(EquipmentEffects.BASE_DAMAGE_MOD, new EffectLevel(1f));
+		equipments.putIfAbsent(type, new HashMap<>());
+
+		var equ = new EquipmentDef(type, piece.getName(), (t, s) -> new ModularArmorItem(t, s, piece, bases), requiredSlots, extraSlots);
+		equ.setDamageChance(P_FRAME, 2f);
+		//equ.setDamageChance(P_HANDLE, 2f).setDamageChance(P_BINDING, 2f);
+		equipments.get(type).put(piece.getName(), equ);
 
 	}
 

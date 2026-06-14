@@ -20,45 +20,62 @@ import java.util.function.Consumer;
 
 public class EquipmentScreenHandler extends MultiInvScreenHandler {
 	public Runnable onClosed;
-	private IEquipmentDef equipment;
-	private ItemStack toolStack;
-	private SyncedProperty<EquipmentSync> equipmentProp;
-	private Consumer<IEquipmentDef> equipmentListener;
+	private IEquipmentDef[] equipments;
+	private ItemStack[] toolStacks;
+	private final SyncedProperty<EquipmentSync> equipmentProp;
+	private Consumer<IEquipmentDef[]> equipmentListener;
 
-	public static record EquipmentSync(String type, String subtype) {}
+	public static record EquipmentSync(String[] types, String[] subtypes) {}
 
 	public EquipmentScreenHandler(int syncId, PlayerInventory playerInventory) {
 		super(syncId, playerInventory);
-		equipmentProp = this.createProperty(EquipmentSync.class, new EquipmentSync("", ""));
+		equipmentProp = this.createProperty(EquipmentSync.class, new EquipmentSync(new String[0], new String[0]));
 		this.onReady(v -> {
-			if(equipment != null) {
-				equipmentListener.accept(equipment);
+			if(equipments != null) {
+				equipmentListener.accept(equipments);
 			}
 		});
 		equipmentProp.observe(v -> {
-			if(!v.subtype.isEmpty() && !v.type.isEmpty()) {
-				equipment = Equipments.getEquipment(v.type, v.subtype).orElse(null);
-				if(isReady())
-					equipmentListener.accept(equipment);
+			equipments = new IEquipmentDef[v.types.length];
+			for(int i = 0; i < v.types.length; i++) {
+				equipments[i] = Equipments.getEquipment(v.types[i], v.subtypes[i]).orElse(null);
 			}
+			if(isReady())
+				equipmentListener.accept(equipments);
 		});
 	}
 
-	public void onEquipmentReady(Consumer<IEquipmentDef> listener) {
+	public void onEquipmentReady(Consumer<IEquipmentDef[]> listener) {
 		this.equipmentListener = listener;
 	}
 
-	public EquipmentScreenHandler(int syncId, PlayerEntity player, SimpleInventory tool, SimpleInventory upgrades) {
-		super(syncId, player, new EquipmentGrid(tool));
-		toolStack = tool.getStack(0);
+	public EquipmentScreenHandler(int syncId, PlayerEntity player, IGridContainer toolContainer, SimpleInventory... upgrades) {
+		super(syncId, player, toolContainer);
+		var tool = toolContainer.getInventory();
+		toolStacks = new ItemStack[tool.size()];
+		for(int i = 0; i < tool.size(); i++) {
+			toolStacks[i] = tool.getStack(i);
+		}
 
 
-		equipmentProp = this.createProperty(EquipmentSync.class, new EquipmentSync("", ""));
+		equipmentProp = this.createProperty(EquipmentSync.class, new EquipmentSync(new String[0], new String[0]));
 
-		var eq = getEquipment();
-		if(eq != null)
-			equipmentProp.set(new EquipmentSync(eq.getEquipmentType(), eq.getEquipmentSubtype()));
-		recreateSlots(upgrades);
+		var eq = getEquipments();
+		if(eq != null && eq.length > 0) {
+			var t = new String[eq.length];
+			var st = new String[eq.length];
+			for(int i = 0; i < eq.length; i++) {
+				if(eq[i] != null) {
+					t[i] = eq[i].getEquipmentType();
+					st[i] = eq[i].getEquipmentSubtype();
+				} else
+					t[i] = st[i] = "";
+			}
+
+			equipmentProp.set(new EquipmentSync(t, st));
+		}
+		if(upgrades != null)
+			recreateSlots(upgrades);
 	}
 
 	@Override
@@ -68,29 +85,40 @@ public class EquipmentScreenHandler extends MultiInvScreenHandler {
 			onClosed.run();
 	}
 
-	public IEquipmentDef getEquipment() {
-		if(equipment == null && toolStack != null) {
-			if(toolStack.getItem() instanceof IEquipmentBlueprint bp)
-				equipment = bp.getEquipment();
-			else if(toolStack.getItem() instanceof IEquipementItem bp)
-				equipment = bp.getEquipment(toolStack).getEquipment();
+	public IEquipmentDef[] getEquipments() {
+		if(equipments == null && toolStacks != null) {
+			equipments = new IEquipmentDef[toolStacks.length];
+			for(int i = 0; i < toolStacks.length; i++) {
+				if(toolStacks[i].getItem() instanceof IEquipmentBlueprint bp)
+					equipments[i] = bp.getEquipment();
+				else if(toolStacks[i].getItem() instanceof IEquipementItem bp)
+					equipments[i] = bp.getEquipment(toolStacks[i]).getEquipment();
+			}
+
+
 		}
-		return equipment;
+		if(equipments == null)
+			return new IEquipmentDef[0];
+		return equipments;
 	}
 
-	protected void recreateSlots(SimpleInventory inv) {
+	protected void recreateSlots(SimpleInventory... inv) {
 		var list = new ArrayList<IGridContainer>();
-		IEquipmentDef eq = getEquipment();
+		IEquipmentDef[] eq = getEquipments();
 
-		if(eq != null) {
+
+		for(int j = 0; j < inv.length; j++) {
 			var i = 0;
-			for(String slot : eq.getSlots()) {
-				var off = new OffsetInventory(inv, i, 1);
-				list.add(new UpgradeGrid(slot, eq, off, 1, 1));
-
-				i++;
+			if(eq[j] != null && inv[j] != null) {
+				for(String slot : eq[j].getSlots()) {
+					var off = new OffsetInventory(inv[j], i, 1);
+					list.add(new UpgradeGrid(j, slot, eq[j], off, 1, 1));
+					i++;
+				}
 			}
 		}
+
+
 		var ls = new ArrayList<>(List.of(inventories));
 		ls.addAll(list);
 		inventories = ls.toArray(new IGridContainer[0]);
@@ -108,8 +136,8 @@ public class EquipmentScreenHandler extends MultiInvScreenHandler {
 		public final IEquipmentDef equipment;
 		private final String slot;
 
-		public UpgradeGrid(String slot, IEquipmentDef equipment, Inventory inv, int width, int height) {
-			super("equipment_" + slot, inv, width, height);
+		public UpgradeGrid(int upgradeInvIndex, String slot, IEquipmentDef equipment, Inventory inv, int width, int height) {
+			super(upgradeInvIndex + "_equipment_" + slot, inv, width, height);
 			this.equipment = equipment;
 			this.slot = slot;
 		}
@@ -120,17 +148,6 @@ public class EquipmentScreenHandler extends MultiInvScreenHandler {
 		}
 	}
 
-	public static class EquipmentGrid extends GridContainer {
-
-		public EquipmentGrid(Inventory inv) {
-			super("tool_slot", inv, 1, 1);
-		}
-
-		@Override
-		public Slot createSlotFor(int index, int x, int y) {
-			return new EquipmentSlot(this.getInventory(), index, x, y);
-		}
-	}
 
 	public static class EquipmentSlot extends Slot {
 

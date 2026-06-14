@@ -20,6 +20,7 @@ import com.diamssword.greenresurgence.render.entities.CaddieEntityRenderer;
 import com.diamssword.greenresurgence.render.environment.EnvironementAreas;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
 import com.diamssword.greenresurgence.structure.MultiblockInstance;
+import com.diamssword.greenresurgence.systems.equipement.Equipments;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -30,6 +31,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.util.Identifier;
 
 public class RenderersRegister {
@@ -38,9 +40,10 @@ public class RenderersRegister {
 		blocksRenderers();
 		initEntities();
 		itemRenderers();
+
 		ArmorRenderer.register(
 				new ModularArmorLayerRenderer(GreenResurgence.asRessource("textures/modular/armor/default.png")),
-				MItems.MODULAR_BOOT, MItems.MODULAR_HEAD, MItems.MODULAR_CHEST, MItems.MODULAR_LEG
+				Equipments.getEquipment(Equipments.TYPE_ARMOR, ArmorItem.Type.HELMET.getName()).get().getEquipmentItem(), Equipments.getEquipment(Equipments.TYPE_ARMOR, ArmorItem.Type.CHESTPLATE.getName()).get().getEquipmentItem(), Equipments.getEquipment(Equipments.TYPE_ARMOR, ArmorItem.Type.LEGGINGS.getName()).get().getEquipmentItem(), Equipments.getEquipment(Equipments.TYPE_ARMOR, ArmorItem.Type.BOOTS.getName()).get().getEquipmentItem()
 		);
 		ModularArmorItem.ProviderFunction = ModularArmorRenderer::RendererProvider;
 		GeckoActivated.ProviderFunction = GeckoItemRenderer::RendererProvider;

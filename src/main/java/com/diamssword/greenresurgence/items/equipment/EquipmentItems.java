@@ -6,6 +6,7 @@ import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinItem
 import com.diamssword.greenresurgence.materials.BatteryTiers;
 import com.diamssword.greenresurgence.systems.equipement.EquipmentEffects;
 import com.diamssword.greenresurgence.systems.equipement.Equipments;
+import com.diamssword.greenresurgence.systems.equipement.effects.ArmorEffectUpgrade;
 import com.diamssword.greenresurgence.systems.equipement.effects.SweepingEffectUpgrade;
 import com.diamssword.greenresurgence.systems.equipement.utils.MapEffectMaker;
 import io.wispforest.owo.registration.reflect.ItemRegistryContainer;
@@ -28,6 +29,13 @@ public class EquipmentItems implements ItemRegistryContainer {
 	public static final Item BASIC_BLADE = new EquipmentUpgradeItem("spike/*,blade/*", Equipments.P_HEAD, 50, 1).setEffect(MapEffectMaker.create().add(EquipmentEffects.ATTACK_DAMAGE, 4f));
 	public static final Item BASIC_HEAD = new EquipmentUpgradeItem("hammer/*", Equipments.P_HEAD, 50, 1).setEffect(MapEffectMaker.create().add(EquipmentEffects.ATTACK_DAMAGE, 3f).add(EquipmentEffects.SWEEPING, 2, SweepingEffectUpgrade.DAMAGE_BONUS, 12.5f));
 	public static final Item BASIC_HANDLE = new EquipmentUpgradeItem("*/*", Equipments.P_HANDLE, 80, 1).setEffect(MapEffectMaker.create().add(EquipmentEffects.ATTACK_SPEED, 0.2f));
+
+	public static final Item BASIC_PADDING = new EquipmentUpgradeItem("armor/*", Equipments.P_PADDING, 200, 1).setEffect(MapEffectMaker.create().add(EquipmentEffects.ARMOR, 0f, ArmorEffectUpgrade.ARMOR_TOUGHNESS, 2f));
+	public static final Item LEATHER_PLATING = new EquipmentUpgradeItem("armor/*", Equipments.P_PLATING, 200, 1).setEffect(MapEffectMaker.create().add(EquipmentEffects.ARMOR, 1f));
+	public static final Item IRON_PLATING = new EquipmentUpgradeItem("armor/*", Equipments.P_PLATING, 500, 1).setEffect(MapEffectMaker.create().add(EquipmentEffects.ARMOR, 2f));
+	public static final Item DIAMOND_PLATING = new EquipmentUpgradeItem("armor/*", Equipments.P_PLATING, 800, 1).setEffect(MapEffectMaker.create().add(EquipmentEffects.ARMOR, 3f));
+	public static final Item BASIC_FRAME = new EquipmentUpgradeItem("armor/*", Equipments.P_FRAME, 300, 2);
+	public static final Item TOUGH_FRAME = new EquipmentUpgradeItem("armor/*", Equipments.P_FRAME, 1800, 4);
 
 	@Override
 	public void postProcessField(String namespace, Item value, String identifier, Field field) {

@@ -4,6 +4,8 @@ import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.blockEntities.ArmorTinkererBlockEntity;
 import com.diamssword.greenresurgence.blocks.ArmorTinkererBlock;
 import com.diamssword.greenresurgence.items.ModularArmorItem;
+import com.diamssword.greenresurgence.items.equipment.EquipmentBlueprintItem;
+import com.diamssword.greenresurgence.systems.equipement.EquipmentSkins;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -19,7 +21,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.item.Equipment;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -38,8 +40,8 @@ public class ArmorTinkererBlockEntityRenderer implements BlockEntityRenderer<Arm
 	@Override
 	public void render(ArmorTinkererBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		var bstate = blockEntity.getWorld().getBlockState(blockEntity.getPos());
-		if (bstate.getBlock() instanceof ArmorTinkererBlock) {
-			if (bstate.get(ArmorTinkererBlock.BOTTOM)) {
+		if(bstate.getBlock() instanceof ArmorTinkererBlock) {
+			if(bstate.get(ArmorTinkererBlock.BOTTOM)) {
 				matrices.push();
 				var entity = new ArmorStandEntity(blockEntity.getWorld(), 0, 0, 0);
 				var scale = 1.65f;
@@ -61,15 +63,23 @@ public class ArmorTinkererBlockEntityRenderer implements BlockEntityRenderer<Arm
 
 	private void renderPiece(ArmorTinkererBlockEntity blockEntity, EquipmentSlot slot, Direction facing, float offset, ArmorStandEntity fakeEntity, MatrixStack matrices, VertexConsumer vertexConsumers, int light, int overlay) {
 		var item1 = blockEntity.getArmorStack(slot);
-		if (item1.getItem() instanceof Equipment eq) {
-			if (eq.getSlotType() != slot)
+		if(item1.getItem() instanceof ModularArmorItem eq) {
+			if(eq.getSlotType() != slot)
 				return;
-		}
+		} else if(item1.getItem() instanceof EquipmentBlueprintItem bp) {
+			item1 = new ItemStack(bp.getEquipment().getEquipmentItem());
+			var v = EquipmentSkins.getDefault(item1.getItem());
+			if(v.isPresent())
+				item1.getOrCreateNbt().putString("skin", v.get());
+
+
+		} else return;
+
 		RenderProvider rend = RenderProvider.of(item1);
 		var model = new BipedEntityModel<>(MinecraftClient.getInstance().getEntityModelLoader().getModelPart(EntityModelLayers.ARMOR_STAND));
-		if (item1.getItem() instanceof ModularArmorItem && rend != null) {
+		if(rend != null) {
 			matrices.push();
-			if (slot == EquipmentSlot.HEAD)
+			if(slot == EquipmentSlot.HEAD)
 				matrices.scale(0.7f, 0.7f, 0.78f);
 			matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
 			matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(facing.asRotation()));

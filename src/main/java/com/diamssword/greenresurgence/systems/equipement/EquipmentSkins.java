@@ -2,8 +2,10 @@ package com.diamssword.greenresurgence.systems.equipement;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.items.weapons.ICustomPoseWeapon;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,6 +49,22 @@ public class EquipmentSkins {
 		forAll("weedwacker", "electric/cutter", true);
 		forAll("flame_sword", "electric/hot", true);
 
+		forArmor("makeshift_light");
+		forArmor("makeshift_medium");
+		forArmor("makeshift_heavy", "makeshift_medium");
+		forArmor("bone_light", "bone_armor");
+		forArmor("bone_medium", "bone_armor");
+		forArmor("bone_heavy", "bone_armor");
+		forArmor("welding_mask", ArmorItem.Type.HELMET);
+		forArmor("welding_mask_strip", "welding_mask", ArmorItem.Type.HELMET);
+		forArmor("circulation_plot_hat", ArmorItem.Type.HELMET);
+		forArmor("gladiator_helmet_open", "gladiator", ArmorItem.Type.HELMET);
+		forArmor("gladiator");
+		forArmor("trash", ArmorItem.Type.CHESTPLATE, ArmorItem.Type.BOOTS, ArmorItem.Type.LEGGINGS);
+		forArmor("radiation_suit");
+		forArmor("gas_mask", "radiation_suit", ArmorItem.Type.HELMET);
+		forArmor("wolf_raider");
+
 	}
 
 	public static Optional<ItemSkinModelDef> get(String skin, Item item) {
@@ -64,14 +82,21 @@ public class EquipmentSkins {
 		return Optional.empty();
 	}
 
-	public static Optional<ItemSkinModelDef> get(String skin, long worldtime) {
+	public static Optional<Pair<Item, ItemSkinModelDef>> getPair(String skin, long worldtime) {
 		var s = skins.get(skin);
 
 		if(s != null) {
 			var arr = s.keySet().stream().toList();
-			return arr.isEmpty() ? Optional.empty() : Optional.of(s.get(arr.get(MathHelper.floor(worldtime / 40f) % arr.size())));
+			if(!arr.isEmpty()) {
+				var key = arr.get(MathHelper.floor(worldtime / 40f) % arr.size());
+				return Optional.of(new Pair<>(key, s.get(key)));
+			}
 		}
 		return Optional.empty();
+	}
+
+	public static Optional<ItemSkinModelDef> get(String skin, long worldtime) {
+		return getPair(skin, worldtime).map(Pair::getRight);
 	}
 
 	private static void forAll(String id, String allowed) {
@@ -108,6 +133,34 @@ public class EquipmentSkins {
 		}
 	}
 
+	private static void forArmor(String id) {
+		forArmor(id, (String) null);
+	}
+
+	private static void forArmor(String id, ArmorItem.Type slot) {
+		forArmor(id, null, slot);
+	}
+
+	private static void forArmor(String id, ArmorItem.Type... slots) {
+		for(ArmorItem.Type type : slots) {
+			forArmor(id, null, type);
+		}
+
+	}
+
+	private static void forArmor(String id, @Nullable String texture, ArmorItem.Type slot) {
+
+		var eq = Equipments.equipments.getOrDefault(Equipments.TYPE_ARMOR, new HashMap<>()).get(slot.getName());
+		skins.putIfAbsent("armor/" + id, new HashMap<>());
+		skins.get("armor/" + id).put(eq.getEquipmentItem(), new ItemSkinModelDef(GreenResurgence.asRessource(id), texture == null ? null : GreenResurgence.asRessource(texture)));
+	}
+
+	private static void forArmor(String id, @Nullable String texture) {
+		for(ArmorItem.Type value : ArmorItem.Type.values()) {
+			forArmor(id, texture, value);
+		}
+	}
+
 	private static void createOne(String skin, IEquipmentDef equipment, boolean isGecko, @Nullable Identifier texture, int modeForTwoHanded) {
 		skins.putIfAbsent(skin, new HashMap<>());
 		var item = equipment.getEquipmentItem();
@@ -123,6 +176,15 @@ public class EquipmentSkins {
 		public final int extra;
 		@Nullable
 		public final Identifier texture;
+		public final boolean isArmor;
+
+		public ItemSkinModelDef(Identifier geckoModel, @Nullable Identifier texture) {
+			this.isGecko = true;
+			this.model = geckoModel;
+			this.texture = texture;
+			this.extra = 0;
+			isArmor = true;
+		}
 
 		public ItemSkinModelDef(boolean isGecko, String skin, IEquipmentDef equipment, @Nullable Identifier texture) {
 			this(isGecko, skin, equipment, texture, 0);
@@ -136,6 +198,7 @@ public class EquipmentSkins {
 				this.model = GreenResurgence.asRessource(skin + "/" + equipment.getEquipmentType() + "_" + equipment.getEquipmentSubtype());
 			this.texture = texture;
 			this.extra = extra;
+			this.isArmor = false;
 		}
 
 		public Identifier getVanillaPath() {
@@ -145,11 +208,5 @@ public class EquipmentSkins {
 				return model.withPrefixedPath("equipments/skins/");
 		}
 
-		public ItemSkinModelDef(boolean isGecko, Identifier model, Identifier texture) {
-			this.isGecko = isGecko;
-			this.model = model;
-			this.texture = texture;
-			this.extra = 0;
-		}
 	}
 }

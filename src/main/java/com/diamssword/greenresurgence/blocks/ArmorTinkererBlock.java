@@ -74,12 +74,12 @@ public class ArmorTinkererBlock extends ModBlockEntity<ArmorTinkererBlockEntity>
 
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-		if (state.get(WATERLOGGED)) {
+		if(state.get(WATERLOGGED)) {
 			world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
-		if (direction == Direction.DOWN && !state.get(BOTTOM) && neighborState.getBlock() != this) {
+		if(direction == Direction.DOWN && !state.get(BOTTOM) && neighborState.getBlock() != this) {
 			return Blocks.AIR.getDefaultState();
-		} else if (direction == Direction.UP && state.get(BOTTOM) && neighborState.getBlock() != this) {
+		} else if(direction == Direction.UP && state.get(BOTTOM) && neighborState.getBlock() != this) {
 			return Blocks.AIR.getDefaultState();
 		}
 		return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
@@ -87,7 +87,7 @@ public class ArmorTinkererBlock extends ModBlockEntity<ArmorTinkererBlockEntity>
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		if (state.get(WATERLOGGED)) {
+		if(state.get(WATERLOGGED)) {
 			return Fluids.WATER.getStill(false);
 		}
 		return super.getFluidState(state);
@@ -104,8 +104,8 @@ public class ArmorTinkererBlock extends ModBlockEntity<ArmorTinkererBlockEntity>
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!world.isClient) {
-			if (!state.get(BOTTOM))
+		if(!world.isClient) {
+			if(!state.get(BOTTOM))
 				pos = pos.down();
 			this.getBlockEntity(pos, world).openInventory((ServerPlayerEntity) player);
 			return ActionResult.SUCCESS;

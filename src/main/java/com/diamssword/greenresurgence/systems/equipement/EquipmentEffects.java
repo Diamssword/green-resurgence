@@ -19,6 +19,8 @@ public class EquipmentEffects {
 	public static final String SWEEPING = "sweeping";
 	public static final String BASE_DAMAGE_MOD = "base_dmg_mod";
 	public static final String OPENING = "opening";
+	public static final String ARMOR = "armor";
+
 
 	public static void init() {
 		register(SWEEPING, new SweepingEffectUpgrade());
@@ -26,10 +28,14 @@ public class EquipmentEffects {
 		register(ATTACK_DAMAGE, new DamageEffectUpgrade());
 		register(ATTACK_RANGE, new AttackRangeEffectUpgrade());
 		register(CRITICAL_HIT, new CriticalHitEffectUpgrade());
+		register(CRITICAL_HIT, new CriticalHitEffectUpgrade());
 		register(BASE_DAMAGE_MOD, new DamageModifierEffectUpgrade());
 		register(OPENING, new OpeningEffectUpgrade());
 		register(TOOL_HAMMER, new LootingToolEffect(Lootables.HAMMER, "hammer"));
 		register(TOOL_WRENCH, new LootingToolEffect(Lootables.WRENCH, "wrench"));
+
+		register(ARMOR, new ArmorEffectUpgrade());
+		//register(ARMOR_TOUGHNESS, new ArmorEffectUpgrade());
 	}
 
 	private static void register(String id, IEquipmentEffect effect) {

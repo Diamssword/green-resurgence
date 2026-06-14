@@ -1,12 +1,12 @@
 package com.diamssword.greenresurgence.particles;
 
-import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.MParticles;
-import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 
+//import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
+
 public class ParticlesRegister {
-	public static final ParticleEmitterInfo SMOKE = new ParticleEmitterInfo(GreenResurgence.asRessource("smoke"));
+	//public static final ParticleEmitterInfo SMOKE = new ParticleEmitterInfo(GreenResurgence.asRessource("smoke"));
 
 
 	public static void init() {

@@ -96,7 +96,7 @@ public class EquipmentTool extends StackBasedGeckoItem implements FabricItem, IE
 		var equipment = getEquipmentStack(stack);
 		if(attacker instanceof PlayerEntity pl)
 			equipment.onInteraction(pl, AdvEquipmentSlot.MAINHAND, IEquipmentUpgrade.InteractType.POST_ATTACK, new EntityHitResult(target));
-		var broken = equipment.onToolDamage(attacker, AdvEquipmentSlot.MAINHAND);
+		var broken = equipment.onToolDamage(attacker, AdvEquipmentSlot.MAINHAND, 1f);
 		if(broken) {
 			attacker.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND);
 			Item item = stack.getItem();
@@ -116,7 +116,7 @@ public class EquipmentTool extends StackBasedGeckoItem implements FabricItem, IE
 		var equipment = getEquipmentStack(stack);
 		if(miner instanceof PlayerEntity pl)
 			equipment.onInteraction(pl, AdvEquipmentSlot.MAINHAND, IEquipmentUpgrade.InteractType.INTERACT, new BlockHitResult(pos.toCenterPos(), Direction.UP, pos, true));
-		var broken = equipment.onToolDamage(miner, AdvEquipmentSlot.MAINHAND);
+		var broken = equipment.onToolDamage(miner, AdvEquipmentSlot.MAINHAND, 1f);
 		if(broken) {
 			miner.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND);
 			Item item = stack.getItem();

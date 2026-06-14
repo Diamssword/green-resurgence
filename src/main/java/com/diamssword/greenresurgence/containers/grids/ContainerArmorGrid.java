@@ -14,7 +14,7 @@ public class ContainerArmorGrid extends PlayerGrid {
 	public static final Identifier[] EMPTY_ARMOR_SLOT_TEXTURES = new Identifier[]{
 			PlayerScreenHandler.EMPTY_HELMET_SLOT_TEXTURE, PlayerScreenHandler.EMPTY_CHESTPLATE_SLOT_TEXTURE, PlayerScreenHandler.EMPTY_LEGGINGS_SLOT_TEXTURE, PlayerScreenHandler.EMPTY_BOOTS_SLOT_TEXTURE
 	};
-	private static final EquipmentSlot[] EQUIPMENT_SLOT_ORDER = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+	protected static final EquipmentSlot[] EQUIPMENT_SLOT_ORDER = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
 
 
 	public ContainerArmorGrid(String name, int width, int height) {
@@ -23,6 +23,11 @@ public class ContainerArmorGrid extends PlayerGrid {
 
 	public ContainerArmorGrid(String name, Inventory inv, int width, int height) {
 		super(name, inv, width, height, 0);
+	}
+
+	@Override
+	public boolean isPlayerContainer() {
+		return false;
 	}
 
 	@Override

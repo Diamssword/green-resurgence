@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.blockEntities;
 
 import com.diamssword.greenresurgence.containers.Containers;
 import com.diamssword.greenresurgence.containers.EquipmentScreenHandler;
+import com.diamssword.greenresurgence.containers.grids.GridContainer;
 import com.diamssword.greenresurgence.systems.equipement.IEquipementItem;
 import com.diamssword.greenresurgence.systems.equipement.IEquipmentBlueprint;
 import com.diamssword.greenresurgence.systems.equipement.IEquipmentDef;
@@ -19,6 +20,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -125,7 +127,7 @@ public class EquipmentTinkererBlockEntity extends BlockEntity {
 		}
 		trackedPlayers.add(player);
 		Containers.createHandler(player, pos, (sync, inv, p1) -> {
-			var handler = new EquipmentScreenHandler(sync, player, inventory, upgrades);
+			var handler = new EquipmentScreenHandler(sync, player, new EquipmentGrid(inventory), upgrades);
 			handler.onClosed = () -> trackedPlayers.remove(player);
 			return handler;
 		});
@@ -166,5 +168,15 @@ public class EquipmentTinkererBlockEntity extends BlockEntity {
 		return createNbt();
 	}
 
+	public static class EquipmentGrid extends GridContainer {
 
+		public EquipmentGrid(Inventory inv) {
+			super("tool_slot", inv, 1, inv.size());
+		}
+
+		@Override
+		public Slot createSlotFor(int index, int x, int y) {
+			return new EquipmentScreenHandler.EquipmentSlot(this.getInventory(), index, x, y);
+		}
+	}
 }

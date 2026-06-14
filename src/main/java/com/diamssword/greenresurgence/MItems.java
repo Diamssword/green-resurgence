@@ -9,8 +9,6 @@ import io.wispforest.owo.itemgroup.OwoItemGroup;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.registration.reflect.ItemRegistryContainer;
 import net.minecraft.block.Block;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ArmorMaterials;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -36,10 +34,12 @@ public class MItems implements ItemRegistryContainer {
 	public static final Item CLAIM_PLACER = new ClaimBlockPlacerItem(new OwoItemSettings().group(GROUP));
 
 
-	public static final Item MODULAR_HEAD = new ModularArmorItem(ArmorMaterials.CHAIN, ArmorItem.Type.HELMET, new OwoItemSettings().group(GROUP));
+	/*public static final Item MODULAR_HEAD = new ModularArmorItem(ArmorMaterials.CHAIN, ArmorItem.Type.HELMET, new OwoItemSettings().group(GROUP));
 	public static final Item MODULAR_CHEST = new ModularArmorItem(ArmorMaterials.CHAIN, ArmorItem.Type.CHESTPLATE, new OwoItemSettings().group(GROUP));
 	public static final Item MODULAR_LEG = new ModularArmorItem(ArmorMaterials.CHAIN, ArmorItem.Type.LEGGINGS, new OwoItemSettings().group(GROUP));
 	public static final Item MODULAR_BOOT = new ModularArmorItem(ArmorMaterials.CHAIN, ArmorItem.Type.BOOTS, new OwoItemSettings().group(GROUP));
+
+	 */
 	public static final Item BACKPACK = new BackPackItem(new OwoItemSettings().group(GROUP), 5, 2);
 	public static final Item SATCHEL = new SatchelItem(new OwoItemSettings().group(GROUP), 1, 2);
 	public static final EntityPlacerItem CADDIE = new EntityPlacerItem((u, p) -> new TwoPassengerVehicle(MEntities.CADDIE, u.getWorld(), p.x, p.y, p.z), new OwoItemSettings().maxCount(1).group(GROUP));
