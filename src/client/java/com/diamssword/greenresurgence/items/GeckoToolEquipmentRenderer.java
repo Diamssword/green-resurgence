@@ -199,6 +199,7 @@ public final class GeckoToolEquipmentRenderer<T extends Item & GeoAnimatable> ex
 			if(this.renderPerspective == ModelTransformationMode.HEAD)
 				applyBoneVisibilityBySlot(EquipmentSlot.OFFHAND);
 			else if(mod != null) {
+				poseStack.translate(0, 0, -1);
 				if(mod.getSlotType() == EquipmentSlot.CHEST) {
 					poseStack.scale(0.7f, 0.7f, 0.7f);
 					poseStack.translate(0, -1, 0);

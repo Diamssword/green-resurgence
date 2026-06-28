@@ -50,7 +50,7 @@ public class FactionFriendsGui extends BaseUIModelScreen<FlowLayout> {
 		var search = rootComponent.childById(TextBoxComponent.class, "search");
 		rootComponent.childById(ButtonComponent.class, "back").onPress(v -> Channels.MAIN.clientHandle().send(new GuildPackets.RequestGui("main", guild)));
 		var addBt = rootComponent.childById(ButtonComponent.class, "add");
-		if (canAdd)
+		if(canAdd)
 			addBt.onPress(v -> Channels.MAIN.clientHandle().send(new GuildPackets.RequestGui("addFriends", guild)));
 		else
 			addBt.remove();
@@ -59,10 +59,10 @@ public class FactionFriendsGui extends BaseUIModelScreen<FlowLayout> {
 		var c = rootComponent.childById(FlowLayout.class, "list");
 		search.onChanged().subscribe(v -> {
 			List<FactionMember> list = members.keySet().stream().toList();
-			if (v.isBlank() || v.isEmpty()) {
+			if(v.isBlank() || v.isEmpty()) {
 				updateList(list, c);
 			} else {
-				if (v.startsWith("#")) {
+				if(v.startsWith("#")) {
 					list = list.stream().filter(m -> m.isGuild() && m.getName().toLowerCase().contains(v.substring(1).toLowerCase())).toList();
 				} else
 					list = list.stream().filter(m -> m.getName().toLowerCase().contains(v.toLowerCase())).toList();
@@ -81,7 +81,7 @@ public class FactionFriendsGui extends BaseUIModelScreen<FlowLayout> {
 		menu.horizontalAlignment(HorizontalAlignment.CENTER);
 		menu.child(Components.texture(texture, 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(32)));
 		var t = Components.label(Text.literal(member.getName()));
-		if (member.getName().length() > 15)
+		if(member.getName().length() > 15)
 			t.horizontalSizing(Sizing.fill(100));
 		menu.child(t);
 		menu.allowOverflow(true);
@@ -99,7 +99,7 @@ public class FactionFriendsGui extends BaseUIModelScreen<FlowLayout> {
 			bt.setMessage(txt);
 			bt.onPress(v -> roleMenu(menu, bt, member));
 		});
-		for (var d : roles.keySet()) {
+		for(var d : roles.keySet()) {
 			flow.child(cutLongText(d, 20, (b) -> {
 				scroll.remove();
 				bt.setMessage(Text.literal(d));
@@ -112,7 +112,7 @@ public class FactionFriendsGui extends BaseUIModelScreen<FlowLayout> {
 
 	public static ButtonComponent cutLongText(String text, int max, Consumer<ButtonComponent> consumer) {
 		var comp = Components.button(Text.literal(text), consumer);
-		if (text.length() > max) {
+		if(text.length() > max) {
 			var t1 = text.substring(0, max - 3) + "...";
 			comp.setMessage(Text.literal(t1));
 			comp.tooltip(Text.literal(text));
@@ -123,7 +123,7 @@ public class FactionFriendsGui extends BaseUIModelScreen<FlowLayout> {
 
 	private void updateList(List<FactionMember> names, FlowLayout parent) {
 		parent.clearChildren();
-		for (var n : names) {
+		for(var n : names) {
 			var l = new ClickableLayoutComponent(Sizing.fill(100), Sizing.fixed(24), FlowLayout.Algorithm.HORIZONTAL);
 			AtomicReference<Identifier> texture = new AtomicReference<>(n.isGuild() ? FactionFriendAddGui.GUILD_HEAD : FactionFriendAddGui.MISSING_HEAD);
 			var icon = Components.texture(texture.get(), 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(16));
@@ -136,8 +136,8 @@ public class FactionFriendsGui extends BaseUIModelScreen<FlowLayout> {
 			l.child(Components.label(Text.literal(members.get(n))).horizontalTextAlignment(HorizontalAlignment.RIGHT).horizontalSizing(Sizing.fill(30)));
 			l.alignment(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
 			l.onPress(v -> updateSelectedMenu(n, texture.get()));
-			if (n.isPlayer()) {
-				CharactersApi.skin().getHeadTexture(n.getId(), v -> {
+			if(n.isPlayer()) {
+				CharactersApi.skin().getPlayerHeadIconTexture(n.getId(), v -> {
 					texture.set(v);
 					l.removeChild(icon);
 					l.child(0, Components.texture(texture.get(), 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(16)));

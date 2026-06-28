@@ -19,9 +19,7 @@ public abstract class SinglePoolElementMixin {
 	)
 	private void addCustomProcessor(BlockRotation rotation, BlockBox box, boolean keepJigsaws, CallbackInfoReturnable<StructurePlacementData> cir) {
 		StructurePlacementData data = cir.getReturnValue();
-
 		data.addProcessor(StructureProcessor.INSTANCE);
-
 		cir.setReturnValue(data);
 	}
 }

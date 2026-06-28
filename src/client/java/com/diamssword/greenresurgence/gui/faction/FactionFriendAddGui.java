@@ -41,9 +41,9 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 	@Override
 	public void tick() {
 		super.tick();
-		if (needChange > -1) {
+		if(needChange > -1) {
 			needChange--;
-			if (needChange == 0) {
+			if(needChange == 0) {
 				addOffline(filterText, list);
 				needChange = -1;
 			}
@@ -67,13 +67,13 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 	}
 
 	private void refreshSearch(String text, FlowLayout parent) {
-		if (!text.isBlank() && !text.isEmpty()) {
+		if(!text.isBlank() && !text.isEmpty()) {
 			filterText = text;
 			needChange = 30;
 		}
 		parent.clearChildren();
 		addPlayers(text.toLowerCase(), parent);
-		if (text.startsWith("#"))
+		if(text.startsWith("#"))
 			addGuilds(text.substring(1).toLowerCase(), parent);
 	}
 
@@ -84,7 +84,7 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 		menu.horizontalAlignment(HorizontalAlignment.CENTER);
 		menu.child(Components.texture(texture, 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(32)));
 		var t = Components.label(Text.literal(member.getName()));
-		if (member.getName().length() > 15)
+		if(member.getName().length() > 15)
 			t.horizontalSizing(Sizing.fill(100));
 		menu.child(t);
 		menu.child(Components.button(Text.literal("Inviter"), (v) -> {
@@ -94,9 +94,9 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 
 	private void addPlayers(String filter, FlowLayout parent) {
 		var pls = client.player.networkHandler.getListedPlayerListEntries().stream().filter(v -> !v.getProfile().getId().equals(client.player.getUuid()));
-		if (!filter.isEmpty() && !filter.isBlank())
+		if(!filter.isEmpty() && !filter.isBlank())
 			pls = pls.filter(v -> v.getProfile().getName().toLowerCase().contains(filter));
-		for (var n : pls.toList()) {
+		for(var n : pls.toList()) {
 			var l = new ClickableLayoutComponent(Sizing.fill(100), Sizing.fixed(20), FlowLayout.Algorithm.HORIZONTAL);
 			AtomicReference<Identifier> texture = new AtomicReference<>(MISSING_HEAD);
 			l.onPress(v -> updateSelectedMenu(new FactionMember(n.getProfile().getId(), n.getProfile().getName(), false), texture.get()));
@@ -107,7 +107,7 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 			l.surface(Surface.PANEL);
 			l.surface2(Surface.DARK_PANEL);
 			l.alignment(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
-			CharactersApi.skin().getHeadTexture(n.getProfile().getId(), v -> {
+			CharactersApi.skin().getPlayerHeadIconTexture(n.getProfile().getId(), v -> {
 				texture.set(v);
 				l.removeChild(icon);
 				l.child(0, Components.texture(texture.get(), 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(16)));
@@ -118,9 +118,9 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 
 	private void addGuilds(String filter, FlowLayout parent) {
 		var pls = guilds.entrySet().stream();
-		if (!filter.isEmpty() && !filter.isBlank())
+		if(!filter.isEmpty() && !filter.isBlank())
 			pls = pls.filter(v -> v.getValue().toLowerCase().contains(filter));
-		for (var n : pls.toList()) {
+		for(var n : pls.toList()) {
 			var l = new ClickableLayoutComponent(Sizing.fill(100), Sizing.fixed(20), FlowLayout.Algorithm.HORIZONTAL);
 			l.child(Components.texture(GUILD_HEAD, 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(16)));
 			l.onPress(v -> updateSelectedMenu(new FactionMember(n.getKey(), n.getValue(), true), GUILD_HEAD));
@@ -135,7 +135,7 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 
 	private void addOffline(String filter, FlowLayout parent) {
 		CharactersApi.skin().requestPlayerProfiles(filter).thenAccept(v -> {
-			for (var d : v.entrySet()) {
+			for(var d : v.entrySet()) {
 				AtomicReference<Identifier> texture = new AtomicReference<>(MISSING_HEAD);
 				var l = new ClickableLayoutComponent(Sizing.fill(100), Sizing.fixed(20), FlowLayout.Algorithm.HORIZONTAL);
 				var icon = Components.texture(MISSING_HEAD, 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(16));
@@ -146,7 +146,7 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 				l.surface(Surface.PANEL);
 				l.surface2(Surface.DARK_PANEL);
 				l.alignment(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
-				CharactersApi.skin().getHeadTexture(d.getKey(), v1 -> {
+				CharactersApi.skin().getPlayerHeadIconTexture(d.getKey(), v1 -> {
 					texture.set(v1);
 					l.removeChild(icon);
 					l.child(0, Components.texture(v1, 0, 0, 8, 8, 8, 8).sizing(Sizing.fixed(16)));
@@ -161,7 +161,7 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 	@Override
 	public void onChangeReceived(String topic, String value) {
 
-		if (topic.equals("addMember")) {
+		if(topic.equals("addMember")) {
 			menu.clearChildren();
 			menu.child(Components.label(Text.literal(value + " à été ajouté!")));
 		}
@@ -169,7 +169,7 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 
 	@Override
 	public void onErrorReceived(String topic, Text message) {
-		if (topic.equals("addMember")) {
+		if(topic.equals("addMember")) {
 			menu.clearChildren();
 			menu.child(Components.label(message));
 		}

@@ -62,7 +62,6 @@ public class ClaimBlockPlacerItem extends Item {
 
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
-		System.out.println("use");
 		var pos = context.getBlockPos().offset(context.getSide());
 		if(isBlockReplacable(context.getWorld(), context.getBlockPos()))
 			pos = context.getBlockPos();

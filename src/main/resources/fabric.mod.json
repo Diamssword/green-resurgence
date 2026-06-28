@@ -49,7 +49,7 @@
     "fabric-api": "*",
     "geckolib": ">=4.7.2",
     "team_reborn_energy": ">=3.0.0",
-    "character_sheet": ">=1.2.0"
+    "character_sheet": ">=2.0.1"
   },
   "suggests": {
     "another-mod": "*"

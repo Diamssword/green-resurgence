@@ -60,7 +60,6 @@ public class RecipeHelperCommand {
 				var i = 0;
 				for(String s : list) {
 					var newID = new Identifier(id.getNamespace(), s.replaceAll("\\*", id.getPath()));
-					System.out.println(newID);
 					var bl1 = Registries.BLOCK.get(newID);
 					if(bl1 != null && bl1 != Blocks.AIR) {
 						i++;
