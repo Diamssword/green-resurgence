@@ -19,8 +19,8 @@ public class FixedColorFogModifier extends FogModifier {
 	public final Vector4f particleColor1;
 	public FogArea fogRender;
 
-	public FixedColorFogModifier(NbtCompound tag) {
-		super(Utils.boxFromNBT(tag.getCompound("box")), tag.getBoolean("bottom"));
+	public FixedColorFogModifier(String type, NbtCompound tag) {
+		super(Utils.boxFromNBT(tag.getCompound("box")), type, tag.getBoolean("bottom"));
 		this.fog = Utils.vecFromNBT(tag.getCompound("fog"));
 		this.vignette = Utils.vecFromNBT(tag.getCompound("vignette"));
 		this.particleColor = Utils.vec4FromNBT(tag.getCompound("particle"));
@@ -28,8 +28,8 @@ public class FixedColorFogModifier extends FogModifier {
 		setFogRenderer();
 	}
 
-	public FixedColorFogModifier(Vector3f fog, Vector3f vignette, Box box, boolean strongAtBottom, Vector4f particleColor, Vector4f particleColor1) {
-		super(box, strongAtBottom);
+	public FixedColorFogModifier(Vector3f fog, Vector3f vignette, Box box, String type, boolean strongAtBottom, Vector4f particleColor, Vector4f particleColor1) {
+		super(box, type, strongAtBottom);
 		this.fog = fog;
 		this.vignette = vignette;
 		this.particleColor = particleColor;
@@ -82,6 +82,10 @@ public class FixedColorFogModifier extends FogModifier {
 		float intensity = getIntensity(cl.player.getPos(), getBox(), strongAtBottom);
 		if(isActiveZone)
 			spawnSporeParticles(cl, intensity);
+	}
+
+	public void outsideZoneUpdate(long time) {
+
 	}
 
 	private void spawnSporeParticles(MinecraftClient client, float intensity) {

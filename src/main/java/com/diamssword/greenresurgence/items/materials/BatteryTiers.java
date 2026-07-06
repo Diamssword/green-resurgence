@@ -1,4 +1,4 @@
-package com.diamssword.greenresurgence.materials;
+package com.diamssword.greenresurgence.items.materials;
 
 public enum BatteryTiers {
 	BATTERY(100, 60000, 5),

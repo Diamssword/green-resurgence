@@ -174,7 +174,7 @@ public class BoxRenderers {
 				float green = Math.min(Math.max(c2 % 255f, 0f), 255f);
 				float blue = Math.min(Math.max(c3 % 255f, 0f), 255f);
 				Vec3d p1 = b.getBox().getCenter();
-				DebugRenderer.drawString(matrix, store1, "Fog Area ", p1.getX(), p1.getY(), p1.getZ(), 0xffffff, 0.1f, true, 0, true);
+				DebugRenderer.drawString(matrix, store1, "EnvArea:  " + b.getType(), p1.getX(), p1.getY(), p1.getZ(), 0xffffff, 0.1f, true, 0, true);
 				drawStructureBox(matrix, new Vec3d(b.getBox().minX, b.getBox().minY, b.getBox().minZ), new Vec3d(b.getBox().getXLength(), b.getBox().getYLength(), b.getBox().getZLength()).add(1, 1, 1), red, green, blue, 1);
 			});
 		}

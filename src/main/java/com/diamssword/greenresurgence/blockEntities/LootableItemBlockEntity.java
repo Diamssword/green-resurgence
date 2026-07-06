@@ -31,7 +31,7 @@ public class LootableItemBlockEntity extends ItemBlockEntity implements IAdvance
 		super(type, pos, state);
 		this.position = new Vec3d(0, -10, 0);
 		this.rotation = new Vec3d(90, 0, 0);
-		this.size = 4;
+		this.size = 3;
 	}
 
 	@Override

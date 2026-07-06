@@ -1,8 +1,7 @@
-package com.diamssword.greenresurgence.materials;
+package com.diamssword.greenresurgence.items.materials;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.MItems;
-import com.diamssword.greenresurgence.items.MaterialItem;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.data.client.*;
@@ -54,7 +53,7 @@ public class MaterialSet {
 	public static void registerModels(ItemModelGenerator builder) {
 		sets.forEach((m, v) -> {
 			v.items.forEach((i, it) -> {
-				if (!v.is3D.contains(it))
+				if(!v.is3D.contains(it))
 					new Model(Optional.of(new Identifier("item/generated")), Optional.empty(), TextureKey.LAYER0).upload(ModelIds.getItemModelId(it), TextureMap.layer0(new Identifier(GreenResurgence.ID, "item/materials/" + i.getPath().replace("material_", ""))), builder.writer);
 			});
 		});
@@ -63,7 +62,7 @@ public class MaterialSet {
 	public List<Integer> getTiers() {
 		List<Integer> ls = new ArrayList<Integer>();
 		this.items.forEach((n, i) -> {
-			if (!ls.contains(i.tier))
+			if(!ls.contains(i.tier))
 				ls.add(i.tier);
 		});
 		return ls;
@@ -86,12 +85,16 @@ public class MaterialSet {
 		return add(tier, id, name, desc, is3D, MaterialItem::new);
 	}
 
+	public MaterialSet add(int tier, String id, String name, String desc, boolean is3D, OwoItemSettings settings) {
+		return this.add(tier, id, name, desc, is3D, (a, b, c, d) -> new MaterialItem(settings.group(a.group()).tab(a.tab()), b, c, d));
+	}
+
 	public MaterialSet add(int tier, String id, String name, String desc, boolean is3D, MaterialItemFactory itemFactory) {
 		Identifier idd = GreenResurgence.asRessource("material_" + material + "_" + id);
 		var it = itemFactory.create(new OwoItemSettings().group(MItems.GROUP).tab(3), tier, id, material);
 		translates.put(idd, new Pair<>(name, desc));
 		items.put(idd, it);
-		if (is3D)
+		if(is3D)
 			this.is3D.add(it);
 		Registry.register(Registries.ITEM, idd, it);
 		return this;

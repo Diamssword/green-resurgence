@@ -42,6 +42,13 @@ public class ArmorEffectUpgrade implements IEquipmentEffect {
 				if(eff.getLevel(ARMOR_TOUGHNESS) != 0)
 					map.put(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, new EntityAttributeModifier(uuid, "Armor Toughness modifier", eff.getLevel(ARMOR_TOUGHNESS), EntityAttributeModifier.Operation.ADDITION));
 			}
+		} else if(ctx.context == UpgradeActionContext.ItemContext.UPGRADE && slot == AdvEquipmentSlot.FEET) {
+			var uuid = MODIFIERS.get(slot);
+			var eff = ctx.getLevel(EquipmentEffects.ARMOR);
+			if(eff.getLevel() != 0)
+				map.put(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(uuid, "Armor modifier", eff.getLevel() * getArmorPieceModifier(slot), EntityAttributeModifier.Operation.ADDITION));
+			if(eff.getLevel(ARMOR_TOUGHNESS) != 0)
+				map.put(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, new EntityAttributeModifier(uuid, "Armor Toughness modifier", eff.getLevel(ARMOR_TOUGHNESS), EntityAttributeModifier.Operation.ADDITION));
 		}
 
 	}
@@ -64,63 +71,67 @@ public class ArmorEffectUpgrade implements IEquipmentEffect {
 	public void addTooltips(UpgradeActionContext ctx, AdvEquipmentSlot slot, List<Text> tooltip) {
 		if(ctx.getWeapon().getItem() instanceof Equipment eq) {
 			if(slot == AdvEquipmentSlot.fromVanilla(eq.getSlotType())) {
+				makeTooltip(ctx, slot, tooltip);
+			}
+		} else if(ctx.context == UpgradeActionContext.ItemContext.UPGRADE) {
+			makeTooltip(ctx, slot, tooltip);
+		}
+	}
 
-				Multimap<EntityAttribute, EntityAttributeModifier> map = ArrayListMultimap.create();
-				getAttributeModifiers(map, slot, ctx);
-				if(!map.isEmpty()) {
+	private void makeTooltip(UpgradeActionContext ctx, AdvEquipmentSlot slot, List<Text> tooltip) {
 
-					for(Map.Entry<EntityAttribute, EntityAttributeModifier> entry : map.entries()) {
-						EntityAttributeModifier entityAttributeModifier = (EntityAttributeModifier) entry.getValue();
-						double d = entityAttributeModifier.getValue();
-						double e;
-						PlayerEntity player = GreenResurgence.clientHelper.getPlayer();
-						var bl = false;
-						if(player != null && ctx.context != UpgradeActionContext.ItemContext.UPGRADE) {
-							if(entry.getKey() == EntityAttributes.GENERIC_ATTACK_DAMAGE) {
-								d += player.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-								bl = true;
-							} else if(entry.getKey() == EntityAttributes.GENERIC_ATTACK_SPEED) {
-								d += player.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_SPEED);
-								bl = true;
-							}
-							if(bl)
-								tooltip.add(Text.translatable("attribute.modifier.equals." + entityAttributeModifier.getOperation().getId(), MODIFIER_FORMAT.format(d), Text.translatable((entry.getKey()).getTranslationKey())).formatted(Formatting.DARK_GREEN));
-						}
-						if(!bl) {
-							if(entityAttributeModifier.getOperation() == EntityAttributeModifier.Operation.MULTIPLY_BASE
-									|| entityAttributeModifier.getOperation() == EntityAttributeModifier.Operation.MULTIPLY_TOTAL) {
-								e = d * 100.0;
-							} else if(((EntityAttribute) entry.getKey()).equals(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE)) {
-								e = d * 10.0;
-							} else {
-								e = d;
-							}
-							if(d > 0.0) {
-								tooltip.add(
-										Text.translatable(
-														"attribute.modifier.plus." + entityAttributeModifier.getOperation().getId(),
-														MODIFIER_FORMAT.format(e),
-														Text.translatable(((EntityAttribute) entry.getKey()).getTranslationKey())
-												)
-												.formatted(Formatting.BLUE)
-								);
-							} else if(d < 0.0) {
-								e *= -1.0;
-								tooltip.add(
-										Text.translatable(
-														"attribute.modifier.take." + entityAttributeModifier.getOperation().getId(),
-														MODIFIER_FORMAT.format(e),
-														Text.translatable(((EntityAttribute) entry.getKey()).getTranslationKey())
-												)
-												.formatted(Formatting.RED)
-								);
-							}
-						}
+		Multimap<EntityAttribute, EntityAttributeModifier> map = ArrayListMultimap.create();
+		getAttributeModifiers(map, slot, ctx);
+		if(!map.isEmpty()) {
+
+			for(Map.Entry<EntityAttribute, EntityAttributeModifier> entry : map.entries()) {
+				EntityAttributeModifier entityAttributeModifier = (EntityAttributeModifier) entry.getValue();
+				double d = entityAttributeModifier.getValue();
+				double e;
+				PlayerEntity player = GreenResurgence.clientHelper.getPlayer();
+				var bl = false;
+				if(player != null && ctx.context != UpgradeActionContext.ItemContext.UPGRADE) {
+					if(entry.getKey() == EntityAttributes.GENERIC_ATTACK_DAMAGE) {
+						d += player.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+						bl = true;
+					} else if(entry.getKey() == EntityAttributes.GENERIC_ATTACK_SPEED) {
+						d += player.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_SPEED);
+						bl = true;
+					}
+					if(bl)
+						tooltip.add(Text.translatable("attribute.modifier.equals." + entityAttributeModifier.getOperation().getId(), MODIFIER_FORMAT.format(d), Text.translatable((entry.getKey()).getTranslationKey())).formatted(Formatting.DARK_GREEN));
+				}
+				if(!bl) {
+					if(entityAttributeModifier.getOperation() == EntityAttributeModifier.Operation.MULTIPLY_BASE
+							|| entityAttributeModifier.getOperation() == EntityAttributeModifier.Operation.MULTIPLY_TOTAL) {
+						e = d * 100.0;
+					} else if(entry.getKey().equals(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE)) {
+						e = d * 10.0;
+					} else {
+						e = d;
+					}
+					if(d > 0.0) {
+						tooltip.add(
+								Text.translatable(
+												"attribute.modifier.plus." + entityAttributeModifier.getOperation().getId(),
+												MODIFIER_FORMAT.format(e),
+												Text.translatable(((EntityAttribute) entry.getKey()).getTranslationKey())
+										)
+										.formatted(Formatting.BLUE)
+						);
+					} else if(d < 0.0) {
+						e *= -1.0;
+						tooltip.add(
+								Text.translatable(
+												"attribute.modifier.take." + entityAttributeModifier.getOperation().getId(),
+												MODIFIER_FORMAT.format(e),
+												Text.translatable(((EntityAttribute) entry.getKey()).getTranslationKey())
+										)
+										.formatted(Formatting.RED)
+						);
 					}
 				}
 			}
 		}
-
-
 	}
 }

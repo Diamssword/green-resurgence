@@ -1,6 +1,10 @@
-package com.diamssword.greenresurgence.materials;
+package com.diamssword.greenresurgence.items.materials;
 
-import com.diamssword.greenresurgence.items.BatteryItem;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.FoodComponent;
 
 public class Materials {
 	public static MaterialSet wood;
@@ -177,8 +181,8 @@ public class Materials {
 				.add(3, "ivory", "Ivoir", "De l'ivoir ");
 		//Bones
 		medicine = MaterialSet.createSet("medicine")
-				.add(1, "plant", "Plantes médicinales", "Un bon remède de grand-mère")
-				.add(1, "paracetamol", "Paracétamole", "Dollyprane");
+				.add(1, "plant", "Plantes médicinales", "Un bon remède de grand-mère", false, makeFoodEffect(StatusEffects.INSTANT_HEALTH, 1, 0))
+				.add(1, "paracetamol", "Paracétamole", "Dollyprane", false, makeFoodEffect(StatusEffects.REGENERATION, 1200, 0));
 		//Bones
 		water = MaterialSet.createSet("water");
 
@@ -196,5 +200,10 @@ public class Materials {
 				.add(2, "coal", "Charbon", "")
 				.add(3, "gas", "Gaz", "")
 				.add(3, "gasoline", "Essence", "");
+	}
+
+	private static OwoItemSettings makeFoodEffect(StatusEffect effect, int duration, int amplifier) {
+		var food = new FoodComponent.Builder().alwaysEdible().statusEffect(new StatusEffectInstance(effect, duration, amplifier), 1).build();
+		return new OwoItemSettings().food(food);
 	}
 }

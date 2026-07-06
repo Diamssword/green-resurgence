@@ -6,6 +6,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.property.Property;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.StructureTemplate;
@@ -28,7 +29,19 @@ public class StructureProcessor {
 			GreenResurgence.asRessource("structure_processor"),
 			() -> PROCESSOR_CODEC
 	);
+	private static final ThreadLocal<ServerPlayerEntity> PLACEMENT_DATA_PLAYER = new ThreadLocal<>();
 
+	public static void setPlayerPlacement(ServerPlayerEntity player) {
+		PLACEMENT_DATA_PLAYER.set(player);
+	}
+
+	public static ServerPlayerEntity getPlayerPlacement() {
+		return PLACEMENT_DATA_PLAYER.get();
+	}
+
+	public static void clearPlayerPlacement() {
+		PLACEMENT_DATA_PLAYER.remove();
+	}
 
 	public static void init() {
 	}
@@ -41,6 +54,14 @@ public class StructureProcessor {
 				@NotNull WorldView level, @NotNull BlockPos pos, @NotNull BlockPos pivot,
 				@NotNull StructureTemplate.StructureBlockInfo blockInfo, @NotNull StructureTemplate.StructureBlockInfo relativeBlockInfo,
 				@NotNull StructurePlacementData settings) {
+			if(PLACEMENT_DATA_PLAYER.get() != null) {
+				if(PLACEMENT_DATA_PLAYER.get().isSneaking()) {
+					if(!level.isAir(relativeBlockInfo.pos()) && !level.isWater(relativeBlockInfo.pos())) {
+
+						return null;
+					}
+				}
+			}
 			if(MBlocks.SPAWNER == relativeBlockInfo.state().getBlock()) {
 				relativeBlockInfo.nbt().remove("locked");
 			}

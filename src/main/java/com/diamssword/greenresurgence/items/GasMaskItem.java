@@ -2,7 +2,7 @@ package com.diamssword.greenresurgence.items;
 
 import com.diamssword.greenresurgence.MItems;
 import com.diamssword.greenresurgence.items.helpers.DurabilityStorageHelper;
-import com.diamssword.greenresurgence.items.helpers.IRadiationMitigator;
+import com.diamssword.greenresurgence.items.helpers.IContaminationMitigator;
 import net.minecraft.client.item.TooltipData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 import java.util.Optional;
 
-public class GasMaskItem extends Item implements Equipment, IRadiationMitigator {
+public class GasMaskItem extends Item implements Equipment, IContaminationMitigator {
 
 	public final DurabilityStorageHelper tank = new DurabilityStorageHelper(2, MItems.AIR_FILTER);
 
@@ -92,7 +92,7 @@ public class GasMaskItem extends Item implements Equipment, IRadiationMitigator 
 	}
 
 	@Override
-	public float getRadiationMultiplicator(ItemStack stack, double amount) {
+	public float getContaminationMultiplicator(ItemStack stack, double amount) {
 		return isFiltering(stack) ? 0.3f : 1f;
 	}
 }

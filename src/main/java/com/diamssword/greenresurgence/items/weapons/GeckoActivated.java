@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.items.weapons;
 
 import com.diamssword.greenresurgence.items.helpers.ISimpleEnergyItemTiered;
-import com.diamssword.greenresurgence.materials.BatteryTiers;
+import com.diamssword.greenresurgence.items.materials.BatteryTiers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

@@ -2,7 +2,7 @@ package com.diamssword.greenresurgence.datagen;
 
 import com.diamssword.greenresurgence.genericBlocks.GenericBlockSet;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
-import com.diamssword.greenresurgence.materials.MaterialSet;
+import com.diamssword.greenresurgence.items.materials.MaterialSet;
 import com.diamssword.greenresurgence.systems.equipement.Equipments;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;

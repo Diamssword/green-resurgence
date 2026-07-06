@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.systems.character;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.items.helpers.IRadiationMitigator;
+import com.diamssword.greenresurgence.items.helpers.IContaminationMitigator;
 import com.diamssword.greenresurgence.systems.attributs.AttributeModifiers;
 import com.diamssword.greenresurgence.systems.attributs.Attributes;
 import net.minecraft.entity.EquipmentSlot;
@@ -15,16 +15,17 @@ import net.minecraft.world.GameRules;
 
 public class HealthManager {
 	public static final float shieldHealAmount = 1f;
-	public static float radiationHealSpeed = 0.001f;
+	public static float passiveContaminationSpeed = 0.001f;
 	private int shieldTickTimer;
-	private int radiationTickTimer;
+	private int contaminationTickTimer;
 	private int energyTickTimer;
 	private boolean energyBurnout;
 	private double shieldAmount = 20;
 	private double energyAmount = 100;
-	private double radAmount = 0;
+	private double contaminationAmount = 0;
 	public final PlayerEntity player;
 	private int refreshTicks = 5;
+	private final ContaminationEffects contaminationEffectManager = new ContaminationEffects(this);
 
 	public HealthManager(PlayerEntity pl) {
 		this.player = pl;
@@ -67,7 +68,7 @@ public class HealthManager {
 		if(bl) {
 			this.shieldTickTimer++;
 			if(this.shieldTickTimer >= 10) {
-				float f = Math.min(this.shieldHealAmount, 6.0F);
+				float f = Math.min(shieldHealAmount, 6.0F);
 				var old = shieldAmount;
 				healShield(f / 6.0F);
 				if(old != shieldAmount) {markDirty();}
@@ -79,14 +80,15 @@ public class HealthManager {
 		speedLogic();
 		if(refreshTicks > -1) {refreshTicks--;}
 		if(refreshTicks == 0 && !player.getWorld().isClient) {PlayerData.syncHUD(player);}
-		if(radiationTickTimer > 200) {
-			if(radAmount > 0) {
-				radAmount = Math.max(0, radAmount - radiationHealSpeed);
+		if(contaminationTickTimer > 200) {
+			if(contaminationAmount > 0) {
+				contaminationAmount = Math.min(getMaxContaminationAmount(), Math.max(0, contaminationAmount + passiveContaminationSpeed));
 				markDirty();
 			}
 		} else
-			radiationTickTimer++;
-
+			contaminationTickTimer++;
+		if(!player.getWorld().isClient)
+			contaminationEffectManager.tick();
 	}
 
 	public void onRespawn(boolean wasAlive) {
@@ -97,10 +99,12 @@ public class HealthManager {
 			player.setHealth(player.getMaxHealth());
 			this.energyAmount = this.getMaxEnergyAmount();
 			this.shieldAmount = this.getMaxShieldAmount();
+			this.contaminationAmount = 0;
 		}
 	}
 
 	public double attackShield(double amount, PlayerEntity owner) {
+
 		if(owner.getWorld().isClient) {return 0;}
 		var m = this.shieldAmount - amount;
 		this.shieldAmount = Math.max(m, 0);
@@ -115,8 +119,8 @@ public class HealthManager {
 		this.shieldAmount = nbt.getDouble("shieldAmount");
 		this.energyTickTimer = nbt.getInt("energyTickTimer");
 		this.energyAmount = nbt.getDouble("energyAmount");
-		this.radAmount = nbt.getDouble("radiationAmount");
-		this.radiationTickTimer = nbt.getInt("radiationTickTimer");
+		this.contaminationAmount = nbt.getDouble("contaminationAmount");
+		this.contaminationTickTimer = nbt.getInt("contaminationTickTimer");
 	}
 
 	public double getShieldAmount() {
@@ -131,33 +135,41 @@ public class HealthManager {
 		return player.getMaxHealth();
 	}
 
-	public void addRadiationUnmitigated(double amount) {
-		var res = radAmount + amount;
-		if(radAmount < res) {
-			radAmount = Math.min(res, getMaxRadiationAmount());
-			markDirty();
-		}
-		radiationTickTimer = 0;
+	public void addContaminationUnmitigated(double amount) {
+		if(amount == 0)
+			return;
+		var res = contaminationAmount + amount;
+		if(contaminationAmount < res) {
+			contaminationAmount = Math.min(res, getMaxContaminationAmount());
+
+		} else
+			contaminationAmount = Math.max(0, res);
+		markDirty();
+		contaminationTickTimer = 0;
 	}
 
-	public void addRadiationMitigated(double amount) {
+	public void addContaminationMitigated(double amount) {
 		var item = player.getEquippedStack(EquipmentSlot.HEAD);
-		if(item.getItem() instanceof IRadiationMitigator rm)
-			addRadiationUnmitigated(rm.getRadiationAfterMitigation(item, amount));
+		if(amount > 0 && item.getItem() instanceof IContaminationMitigator rm)
+			addContaminationUnmitigated(rm.getContaminationAfterMitigation(item, amount));
 		else
-			addRadiationUnmitigated(amount);
+			addContaminationUnmitigated(amount);
 	}
 
-	public double getRadiationAmount() {
-		return radAmount;
+	public ContaminationEffects getContaminationEffectManager() {
+		return contaminationEffectManager;
+	}
+
+	public double getContaminationAmount() {
+		return contaminationAmount;
 	}
 
 	public double getEnergyAmount() {
 		return energyAmount;
 	}
 
-	public double getMaxRadiationAmount() {
-		return player.getAttributeValue(Attributes.MAX_RADIATION);
+	public double getMaxContaminationAmount() {
+		return player.getAttributeValue(Attributes.MAX_CONTAMINATION);
 	}
 
 	public double getMaxShieldAmount() {
@@ -189,8 +201,8 @@ public class HealthManager {
 		nbt.putDouble("shieldAmount", this.shieldAmount);
 		nbt.putDouble("energyAmount", energyAmount);
 		nbt.putDouble("energyTickTimer", this.energyTickTimer);
-		nbt.putInt("radiationTickTimer", this.radiationTickTimer);
-		nbt.putDouble("radiationAmount", this.radAmount);
+		nbt.putInt("contaminationTickTimer", this.contaminationTickTimer);
+		nbt.putDouble("contaminationAmount", this.contaminationAmount);
 	}
 
 	public static boolean damageByPassShield(DamageSource source) {
@@ -202,7 +214,7 @@ public class HealthManager {
 				source.isOf(DamageTypes.LAVA) || source.isOf(DamageTypes.WITHER) || source.isOf(DamageTypes.WITHER_SKULL);
 	}
 
-	public void setRadiationAmount(double radiationAmount) {
-		this.radAmount = radiationAmount;
+	public void setcontaminationAmount(double contaminationAmount) {
+		this.contaminationAmount = contaminationAmount;
 	}
 }

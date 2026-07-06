@@ -3,7 +3,7 @@ package com.diamssword.greenresurgence.items.equipment.upgrades;
 import com.diamssword.greenresurgence.items.equipment.EquipmentUpgradeItem;
 import com.diamssword.greenresurgence.items.helpers.BatteryStorageHelper;
 import com.diamssword.greenresurgence.items.helpers.ISimpleBatteryHolder;
-import com.diamssword.greenresurgence.materials.BatteryTiers;
+import com.diamssword.greenresurgence.items.materials.BatteryTiers;
 import com.diamssword.greenresurgence.systems.equipement.Equipments;
 import net.minecraft.client.item.TooltipData;
 import net.minecraft.entity.player.PlayerEntity;

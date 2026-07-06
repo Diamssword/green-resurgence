@@ -2,7 +2,7 @@ package com.diamssword.greenresurgence.items.equipment;
 
 import com.diamssword.greenresurgence.items.helpers.ISimpleBatteryHolder;
 import com.diamssword.greenresurgence.items.helpers.ISimpleEnergyItemTiered;
-import com.diamssword.greenresurgence.materials.BatteryTiers;
+import com.diamssword.greenresurgence.items.materials.BatteryTiers;
 import com.diamssword.greenresurgence.systems.equipement.EffectLevel;
 import com.diamssword.greenresurgence.systems.equipement.ElectricStackBasedEquipment;
 import com.diamssword.greenresurgence.systems.equipement.IUpgradableEquipment;

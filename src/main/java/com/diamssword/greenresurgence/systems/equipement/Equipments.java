@@ -128,11 +128,11 @@ public class Equipments {
 		}
 		var equ = new EquipmentDef(type, subType, gen, requiredSlots, extraSlots);
 		if(type.equals(TYPE_BLADE))
-			equ.setDamageChance(P_HEAD, 2f).setDamageChance(P_BINDING, 2f);
+			equ.setDamageChance(P_HEAD, 2f);
 		else if(type.equals(TYPE_HAMMER))
 			equ.setDamageChance(P_BINDING, 2f);
 		else if(type.equals(TYPE_SPIKE))
-			equ.setDamageChance(P_HANDLE, 2f).setDamageChance(P_BINDING, 2f);
+			equ.setDamageChance(P_HANDLE, 2f);
 		equipments.get(type).put(subType, equ);
 	}
 }

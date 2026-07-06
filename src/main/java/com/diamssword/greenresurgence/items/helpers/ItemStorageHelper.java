@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.items.helpers;
 
 import com.diamssword.greenresurgence.containers.FilteredInventory;
-import com.diamssword.greenresurgence.materials.BatteryTiers;
+import com.diamssword.greenresurgence.items.materials.BatteryTiers;
 import net.minecraft.client.item.TooltipData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;

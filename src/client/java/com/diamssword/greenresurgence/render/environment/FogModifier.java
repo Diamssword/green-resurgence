@@ -15,13 +15,12 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-public abstract class FogModifier {
-	private final Box box;
+public abstract class FogModifier extends BaseEnvironmentArea {
 	public boolean strongAtBottom;
 	public FogModifier fadeInFrom;
 
-	public FogModifier(Box box, boolean strongAtBottom) {
-		this.box = box;
+	public FogModifier(Box box, String type, boolean strongAtBottom) {
+		super(box, type);
 		this.strongAtBottom = strongAtBottom;
 	}
 
@@ -33,7 +32,6 @@ public abstract class FogModifier {
 
 	public abstract Vector4f getVignetteColor(float intensity);
 
-	public abstract void onDestroy();
 
 	public Vec3d modifySky(Vec3d cameraPos, float tickDelta, Vec3d colorIn) {
 		float intensity = getIntensity(cameraPos, getBox(), strongAtBottom);
@@ -66,19 +64,6 @@ public abstract class FogModifier {
 
 		RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 		RenderSystem.disableBlend();
-	}
-
-
-	public void insideZoneUpdate(long time, boolean isActiveZone) {
-
-	}
-
-	public void outsideZoneUpdate(long time) {
-
-	}
-
-	public Box getBox() {
-		return box;
 	}
 
 	public void effectRender(Camera camera, float tickDelta, ClientWorld world, int viewDistance, float skyDarkness, float red, float green, float blue) {

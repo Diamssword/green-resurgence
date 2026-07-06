@@ -64,7 +64,7 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 		attachWithTicker(LabelComponent.class, "infectionText", (l) -> {
 			if(this.client.player != null) {
 				var man = this.client.player.getComponent(Components.PLAYER_DATA).healthManager;
-				int scale = (int) ((man.getRadiationAmount() / man.getMaxRadiationAmount()) * 100);
+				int scale = (int) ((man.getContaminationAmount() / man.getMaxContaminationAmount()) * 100);
 				l.text(Text.literal(scale + "%"));
 			}
 		});

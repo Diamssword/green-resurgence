@@ -6,7 +6,6 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,22 +13,28 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class EnvironementAreas {
-	public static List<FogModifier> fogAreas = new LinkedList<>();
+	public static List<BaseEnvironmentArea> fogAreas = new LinkedList<>();
+	private static BaseEnvironmentArea currentZone;
 	private static FogModifier currentFog;
-	private static FogModifier secondCurrentFog;
 
 	public static void init() {
 		ClientTickEvents.END_WORLD_TICK.register(EnvironementAreas::onTick);
 	}
 
 	public static void onTick(ClientWorld world) {
-		var pair = getTwoClosestBox(MinecraftClient.getInstance().player.getBoundingBox(), fogAreas, FogModifier::getBox);
-		currentFog = pair.getLeft().orElse(null);
-		if(currentFog != null)
-			currentFog.setSecondFog(pair.getRight().orElse(null));
+		var pair = getTwoClosestBox(MinecraftClient.getInstance().player.getBoundingBox(), fogAreas, BaseEnvironmentArea::getBox);
+		currentZone = pair.getLeft().orElse(null);
+		if(currentZone instanceof FogModifier fo) {
+			if(pair.getRight().orElse(null) instanceof FogModifier fo1)
+				fo.setSecondFog(fo1);
+			else
+				fo.setSecondFog(null);
+			currentFog = fo;
+		} else
+			currentFog = null;
 		var pos = MinecraftClient.getInstance().player.getPos();
 		var time = world.getTime();
-		for(FogModifier fogArea : fogAreas) {
+		for(BaseEnvironmentArea fogArea : fogAreas) {
 			/*var box = fogArea.getBox();
 			double dx = Math.min(pos.x - box.minX, box.maxX - pos.x);
 			double dy = Math.min(pos.y - box.minY, box.maxY - pos.y);
@@ -46,13 +51,12 @@ public class EnvironementAreas {
 		}
 	}
 
-	@Nullable
-	private static FogModifier calculateCurrentFogModifier() {
-		return getClosestBox(MinecraftClient.getInstance().player.getBoundingBox(), fogAreas, FogModifier::getBox).orElse(null);
-	}
-
 	public static Optional<FogModifier> getCurrentFogModifier() {
 		return Optional.ofNullable(currentFog);
+	}
+
+	public static Optional<BaseEnvironmentArea> getCurrentZone() {
+		return Optional.ofNullable(currentZone);
 	}
 
 	public static <T> Pair<Optional<T>, Optional<T>> getTwoClosestBox(Box playerBox, List<T> elements, Function<T, Box> boxGetter) {

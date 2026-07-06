@@ -21,6 +21,7 @@ public class EnvironementAreas implements ServerTickingComponent {
 
 	static {
 		FACTORIES.put("fog", FogArea::new);
+		FACTORIES.put("zone", SimpleZoneArea::new);
 	}
 
 	private static final Map<PlayerEntity, EffectArea> PlayerAreaMap = new ConcurrentHashMap<>();

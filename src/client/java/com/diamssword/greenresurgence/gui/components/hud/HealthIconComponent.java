@@ -20,7 +20,7 @@ import org.w3c.dom.Element;
 public class HealthIconComponent extends TextureComponent implements IHideableComponent {
 	private static final float SHIELD_TRANSPARENCY = 0.6f;
 	private static final int HEART_COUNT = 20;
-	private static final float HEART_SCALE = 0.7f;
+	private static final float HEART_SCALE = 0.8f;
 	private static final int SHIELD_T_W = 192;
 	private static final int SHIELD_T_H = 64;
 	private static final Identifier SHIELD_TEXTURE = GreenResurgence.asRessource("textures/gui/hud/shield.png");
@@ -35,7 +35,7 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 	public float fillingShield = 1f;
 	public float goal = 1f;
 	public float goalShield = 1f;
-	private final HeartType type = HeartType.NORMAL;
+	private HeartType type = HeartType.NORMAL;
 
 	protected HealthIconComponent(Identifier texture, int u, int v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
 		super(texture, u, v, regionWidth, regionHeight, textureWidth, textureHeight);
@@ -50,7 +50,7 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 	@Override
 	protected int determineHorizontalContentSize(Sizing sizing) {
 		var v = verticalSizing.get();
-		if (v != null && !v.isContent() && height > 0) {
+		if(v != null && !v.isContent() && height > 0) {
 			return (int) (height * ((float) this.regionWidth / (float) this.regionHeight));
 		}
 		return this.regionWidth;
@@ -59,7 +59,7 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 	@Override
 	protected int determineVerticalContentSize(Sizing sizing) {
 		var v = horizontalSizing.get();
-		if (v != null && !v.isContent() && width > 0) {
+		if(v != null && !v.isContent() && width > 0) {
 			return (int) (width * ((float) this.regionHeight / (float) this.regionWidth));
 		}
 		return this.regionHeight;
@@ -70,7 +70,7 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 		final var horizontalSizing = this.horizontalSizing.get();
 		final var verticalSizing = this.verticalSizing.get();
 		final var margins = this.margins.get();
-		if (verticalSizing.isContent()) {
+		if(verticalSizing.isContent()) {
 			this.width = horizontalSizing.inflate(this.space.width() - margins.horizontal(), this::determineHorizontalContentSize);
 			this.height = verticalSizing.inflate(this.space.height() - margins.vertical(), this::determineVerticalContentSize);
 		} else {
@@ -82,44 +82,45 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 	public void animateForHealth(PlayerEntity pl) {
 
 		var v = pl.getHealth() / pl.getMaxHealth();
-		if (v > goal)
+		if(v > goal)
 			blinkTime = 5;
 		this.blink = blinkTime > 0;
-		if (blinkTime > 0)
+		if(blinkTime > 0)
 			blinkTime--;
 		this.sideBlink = pl.hurtTime > 0 && v < goal;
 		this.goal = v;
-		if (this.filling < goal)
+		if(this.filling < goal)
 			this.filling = Math.min(goal, filling + 0.1f);
-		else if (this.filling > goal)
+		else if(this.filling > goal)
 			this.filling = Math.max(goal, filling - 0.1f);
-		if (filling < 1f || fillingShield < 1f) {
+		if(filling < 1f || fillingShield < 1f) {
 			hideTimer = 200;
-		} else if (hideTimer > 0)
+		} else if(hideTimer > 0)
 			hideTimer--;
+		this.type = HeartType.fromPlayerState(pl);
 	}
 
 	public void animateForShield(PlayerEntity pl) {
 		var man = pl.getComponent(Components.PLAYER_DATA).healthManager;
 		var v = man.getShieldAmount() / man.getMaxShieldAmount();
-		if (v > goalShield)
+		if(v > goalShield)
 			blinkTimeShield = 5;
 		this.shieldblink = blinkTimeShield > 0;
-		if (blinkTimeShield > 0)
+		if(blinkTimeShield > 0)
 			blinkTimeShield--;
 		this.goalShield = (float) v;
-		if (this.fillingShield < goalShield)
+		if(this.fillingShield < goalShield)
 			this.fillingShield = Math.min(goalShield, fillingShield + 0.1f);
-		else if (this.fillingShield > goalShield)
+		else if(this.fillingShield > goalShield)
 			this.fillingShield = Math.max(goalShield, fillingShield - 0.1f);
 	}
 
 	@Override
 	public void draw(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
 		RenderSystem.enableDepthTest();
-		if (hidden || hideTimer == 0)
+		if(hidden || hideTimer == 0)
 			return;
-		if (this.blend) {
+		if(this.blend) {
 			RenderSystem.enableBlend();
 			RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
 		}
@@ -128,11 +129,11 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 		matrices.push();
 		matrices.translate(x, y, 0);
 		var cl = MinecraftClient.getInstance();
-		if (cl.player != null) {
-			if (this.blend)
+		if(cl.player != null) {
+			if(this.blend)
 				RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, Math.min((this.hideTimer / 100f) * SHIELD_TRANSPARENCY, SHIELD_TRANSPARENCY));
 			drawShield(context, shieldblink, 64f, fillingShield);
-			if (this.blend)
+			if(this.blend)
 				RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, this.hideTimer / 100f);
 			DrawUtils.drawTexture(
 					context,
@@ -158,7 +159,7 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 					this.textureWidth, this.textureHeight
 			);
 		}
-		if (this.blend) {
+		if(this.blend) {
 			RenderSystem.disableBlend();
 			RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1f);
 		}
@@ -218,26 +219,26 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 		UIParsing.expectAttributes(element, "texture");
 		var textureId = UIParsing.parseIdentifier(element.getAttributeNode("texture"));
 		int u = 0, v = 0, regionWidth = 0, regionHeight = 0, textureWidth = 256, textureHeight = 256;
-		if (element.hasAttribute("u")) {
+		if(element.hasAttribute("u")) {
 			u = UIParsing.parseSignedInt(element.getAttributeNode("u"));
 		}
 
-		if (element.hasAttribute("v")) {
+		if(element.hasAttribute("v")) {
 			v = UIParsing.parseSignedInt(element.getAttributeNode("v"));
 		}
-		if (element.hasAttribute("region-width")) {
+		if(element.hasAttribute("region-width")) {
 			regionWidth = UIParsing.parseSignedInt(element.getAttributeNode("region-width"));
 		}
 
-		if (element.hasAttribute("region-height")) {
+		if(element.hasAttribute("region-height")) {
 			regionHeight = UIParsing.parseSignedInt(element.getAttributeNode("region-height"));
 		}
 
-		if (element.hasAttribute("texture-width")) {
+		if(element.hasAttribute("texture-width")) {
 			textureWidth = UIParsing.parseSignedInt(element.getAttributeNode("texture-width"));
 		}
 
-		if (element.hasAttribute("texture-height")) {
+		if(element.hasAttribute("texture-height")) {
 			textureHeight = UIParsing.parseSignedInt(element.getAttributeNode("texture-height"));
 		}
 
@@ -272,16 +273,16 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 
 		static HeartType fromPlayerState(PlayerEntity player) {
 			HeartType heartType;
-			if (player.hasStatusEffect(StatusEffects.POISON)) {
+			if(player.hasStatusEffect(StatusEffects.POISON)) {
 				heartType = POISONED;
-			} else if (player.hasStatusEffect(StatusEffects.WITHER)) {
+			} else if(player.hasStatusEffect(StatusEffects.WITHER)) {
 				heartType = WITHERED;
-			} else if (player.isFrozen()) {
+			} else if(player.isFrozen()) {
 				heartType = FROZEN;
-			} else if (player.hasStatusEffect(StatusEffects.ABSORPTION) && player.getAbsorptionAmount() > 0) {
+			} else if(player.hasStatusEffect(StatusEffects.ABSORPTION) && player.getAbsorptionAmount() > 0) {
 				heartType = ABSORBING;
 			} else {
-				heartType = TRUE;
+				heartType = NORMAL;
 			}
 			return heartType;
 		}

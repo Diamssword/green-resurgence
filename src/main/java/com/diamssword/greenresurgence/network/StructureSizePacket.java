@@ -73,9 +73,9 @@ public class StructureSizePacket {
 		StructureAccessor structureAccessor = world.getStructureAccessor();
 		Random random = world.getRandom();
 		Structure.Context context = new Structure.Context(world.getRegistryManager(), chunkGenerator, chunkGenerator.getBiomeSource(), world.getChunkManager().getNoiseConfig(), structureTemplateManager, world.getSeed(), new ChunkPos(pos), world, biome -> true);
-		Optional<Structure.StructurePosition> optional = JigsawHelper.generate(context, registryEntry, Optional.of(PLACER_ENTRY), 7, blockPos, false, Optional.empty(), 128, StructureInfos.getRotation(dir));
+		Optional<Structure.StructurePosition> optional = JigsawHelper.generate(context, registryEntry, Optional.of(PLACER_ENTRY), 32, blockPos, false, Optional.empty(), 128, StructureInfos.getRotation(dir));
 		if(!optional.isPresent())
-			optional = JigsawHelper.generate(context, registryEntry, Optional.empty(), 7, blockPos, true, Optional.empty(), 128, StructureInfos.getRotation(dir));
+			optional = JigsawHelper.generate(context, registryEntry, Optional.empty(), 32, blockPos, true, Optional.empty(), 128, StructureInfos.getRotation(dir));
 		if(optional.isPresent()) {
 			StructurePiecesCollector structurePiecesCollector = optional.get().generate();
 			for(StructurePiece structurePiece : structurePiecesCollector.toList().pieces()) {

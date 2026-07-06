@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence.items.helpers;
 
-import com.diamssword.greenresurgence.materials.BatteryTiers;
+import com.diamssword.greenresurgence.items.materials.BatteryTiers;
 import net.minecraft.item.ItemStack;
 
 public interface ISimpleBatteryHolder extends ISimpleEnergyItemTiered {

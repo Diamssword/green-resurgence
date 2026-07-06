@@ -3,11 +3,13 @@ package com.diamssword.greenresurgence.items;
 
 import com.diamssword.greenresurgence.items.helpers.IStructureProvider;
 import com.diamssword.greenresurgence.structure.StructureInfos;
+import com.diamssword.greenresurgence.structure.StructureProcessor;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.StructureTemplate;
@@ -15,6 +17,7 @@ import net.minecraft.structure.StructureTemplateManager;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -40,13 +43,16 @@ public class StructurePlacerItem extends Item implements IStructureProvider {
 		if(stack.hasNbt()) {
 			if(stack.getNbt().contains("pos")) {
 				BlockPos p = BlockPos.fromLong(stack.getNbt().getLong("pos"));
-				tooltip.add(Text.of(p.getX() + " " + p.getY() + " " + p.getZ()));
+				tooltip.add(Text.literal("Placement à:").append(Text.of(p.getX() + " " + p.getY() + " " + p.getZ())));
 			}
 			if(stack.getNbt().contains("dir")) {
 
-				tooltip.add(Text.of(Direction.byId(stack.getNbt().getInt("dir")).toString()));
+				tooltip.add(Text.literal("Orientation:").append(Text.of(Direction.byId(stack.getNbt().getInt("dir")).toString())));
 			}
 		}
+		tooltip.add(Text.literal("Clique droit sur un bloc pour choisir le placement et la direction.").formatted(Formatting.GRAY));
+		tooltip.add(Text.literal("Clique droit à nouveau au même endroit pour placer").formatted(Formatting.GRAY));
+		tooltip.add(Text.literal("Sneak au moment du placement pour ne remplacer QUE l'air").formatted(Formatting.GRAY));
 	}
 
 	@Override
@@ -60,7 +66,7 @@ public class StructurePlacerItem extends Item implements IStructureProvider {
 			BlockPos pos = BlockPos.fromLong(tag.getLong("pos"));
 			var dir = Direction.byId(tag.getInt("dir"));
 			if(pos.equals(context.getBlockPos().offset(context.getSide()))) {
-				boolean res = loadStructure((ServerWorld) context.getWorld(), structureName, pos, dir, context.getPlayer().isSneaking());
+				boolean res = loadStructure((ServerPlayerEntity) context.getPlayer(), (ServerWorld) context.getWorld(), structureName, pos, dir, context.getPlayer().isSneaking());
 				tag.remove("pos");
 				tag.remove("dir");
 				if(!res) {
@@ -80,20 +86,22 @@ public class StructurePlacerItem extends Item implements IStructureProvider {
 
 	}
 
-	public boolean loadStructure(ServerWorld serverLevel, Identifier structureName, BlockPos blockPos, Direction facing, boolean mirror) {
+	public boolean loadStructure(ServerPlayerEntity player, ServerWorld serverLevel, Identifier structureName, BlockPos blockPos, Direction facing, boolean mirror) {
 		if(structureName != null) {
 			StructureTemplateManager structureManager = serverLevel.getStructureTemplateManager();
 			Optional<StructureTemplate> structure2;
 			structure2 = structureManager.getTemplate(structureName);
-			return structure2.filter(structureTemplate -> this.place(serverLevel, structureTemplate, blockPos, facing, mirror)).isPresent();
+			return structure2.filter(structureTemplate -> this.place(player, serverLevel, structureTemplate, blockPos, facing, mirror)).isPresent();
 		} else {return false;}
 	}
 
-	public boolean place(ServerWorld serverLevel, StructureTemplate structure, BlockPos blockPos, Direction facing, boolean mirror) {
+	public boolean place(ServerPlayerEntity player, ServerWorld serverLevel, StructureTemplate structure, BlockPos blockPos, Direction facing, boolean mirror) {
+		StructureProcessor.setPlayerPlacement(player);
 		StructurePlacementData structurePlacementData = new StructurePlacementData().setMirror(BlockMirror.values()[mirror ? 1 : 0]).setRotation(StructureInfos.getRotation(facing));
 		int[] off = StructureInfos.getOffsetSide(facing, this.centered);
 		BlockPos p1 = blockPos.add(off[0] * (structure.getSize().getX() / 2), 0, off[1] * (structure.getSize().getZ() / 2));
 		structure.place(serverLevel, p1, p1, structurePlacementData, serverLevel.getRandom(), 2);
+		StructureProcessor.clearPlayerPlacement();
 		return true;
 
 	}

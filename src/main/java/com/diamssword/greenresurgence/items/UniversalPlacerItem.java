@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.items;
 import com.diamssword.greenresurgence.items.helpers.IStructureProvider;
 import com.diamssword.greenresurgence.structure.JigsawHelper;
 import com.diamssword.greenresurgence.structure.StructureInfos;
+import com.diamssword.greenresurgence.structure.StructureProcessor;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,12 +13,14 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.*;
 import net.minecraft.structure.pool.StructurePool;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
@@ -43,13 +46,16 @@ public class UniversalPlacerItem extends Item implements IStructureProvider {
 		if(stack.hasNbt()) {
 			if(stack.getNbt().contains("pos")) {
 				BlockPos p = BlockPos.fromLong(stack.getNbt().getLong("pos"));
-				tooltip.add(Text.of(p.getX() + " " + p.getY() + " " + p.getZ()));
+				tooltip.add(Text.literal("Placement à:").append(Text.of(p.getX() + " " + p.getY() + " " + p.getZ())));
 			}
 			if(stack.getNbt().contains("dir")) {
 
-				tooltip.add(Text.of(Direction.byId(stack.getNbt().getInt("dir")).toString()));
+				tooltip.add(Text.literal("Orientation:").append(Text.of(Direction.byId(stack.getNbt().getInt("dir")).toString())));
 			}
 		}
+		tooltip.add(Text.literal("Clique droit sur un bloc pour choisir le placement et la direction.").formatted(Formatting.GRAY));
+		tooltip.add(Text.literal("Clique droit à nouveau au même endroit pour placer").formatted(Formatting.GRAY));
+		tooltip.add(Text.literal("Sneak au moment du placement pour ne remplacer QUE l'air").formatted(Formatting.GRAY));
 	}
 
 	@Override
@@ -62,7 +68,7 @@ public class UniversalPlacerItem extends Item implements IStructureProvider {
 			BlockPos pos = BlockPos.fromLong(tag.getLong("pos"));
 			var dir = Direction.byId(tag.getInt("dir"));
 			if(pos.equals(context.getBlockPos())) {
-				boolean res = loadStructure((ServerWorld) context.getWorld(), this.getStructureName(context.getStack(), context.getWorld()), pos1, dir, context.getStack());
+				boolean res = loadStructure((ServerPlayerEntity) context.getPlayer(), (ServerWorld) context.getWorld(), this.getStructureName(context.getStack(), context.getWorld()), pos1, dir, context.getStack());
 				tag.remove("pos");
 				tag.remove("dir");
 				if(!res) {
@@ -82,17 +88,17 @@ public class UniversalPlacerItem extends Item implements IStructureProvider {
 
 	}
 
-	public boolean loadStructure(ServerWorld serverLevel, Identifier structureName, BlockPos blockPos, Direction facing, ItemStack st) {
+	public boolean loadStructure(ServerPlayerEntity playerEntity, ServerWorld serverLevel, Identifier structureName, BlockPos blockPos, Direction facing, ItemStack st) {
 		if(structureName != null) {
 			try {
 				StructureType type = strutctureType(st, serverLevel);
 				if(type == StructureType.jigsaw)
-					return loadJigSaw(serverLevel, blockPos, facing, structureName);
+					return loadJigSaw(playerEntity, serverLevel, blockPos, facing, structureName);
 				else {
 					StructureTemplateManager structureManager = serverLevel.getStructureTemplateManager();
 					Optional<StructureTemplate> structure2;
 					structure2 = structureManager.getTemplate(structureName);
-					return structure2.filter(structureTemplate -> this.place(serverLevel, structureTemplate, blockPos, facing, false, type == StructureType.centered)).isPresent();
+					return structure2.filter(structureTemplate -> this.place(playerEntity, serverLevel, structureTemplate, blockPos, facing, false, type == StructureType.centered)).isPresent();
 				}
 			} catch(Exception e) {
 				e.printStackTrace();
@@ -102,7 +108,7 @@ public class UniversalPlacerItem extends Item implements IStructureProvider {
 		return false;
 	}
 
-	public boolean loadJigSaw(ServerWorld world, BlockPos pos, Direction dir, Identifier structure) {
+	public boolean loadJigSaw(ServerPlayerEntity playerEntity, ServerWorld world, BlockPos pos, Direction dir, Identifier structure) {
 		//BlockPos blockPos = pos.offset(dir);
 		BlockPos blockPos = pos.offset(Direction.UP);
 		Registry<StructurePool> registry = world.getRegistryManager().get(RegistryKeys.TEMPLATE_POOL);
@@ -113,25 +119,30 @@ public class UniversalPlacerItem extends Item implements IStructureProvider {
 		StructureAccessor structureAccessor = world.getStructureAccessor();
 		Random random = world.getRandom();
 		Structure.Context context = new Structure.Context(world.getRegistryManager(), chunkGenerator, chunkGenerator.getBiomeSource(), world.getChunkManager().getNoiseConfig(), structureTemplateManager, world.getSeed(), new ChunkPos(pos), world, biome -> true);
-		Optional<Structure.StructurePosition> optional = JigsawHelper.generate(context, registryEntry, Optional.of(StructureInfos.PLACER_ENTRY), 7, blockPos, false, Optional.empty(), 128, StructureInfos.getRotation(dir));
+		Optional<Structure.StructurePosition> optional = JigsawHelper.generate(context, registryEntry, Optional.of(StructureInfos.PLACER_ENTRY), 32, blockPos, false, Optional.empty(), 128, StructureInfos.getRotation(dir));
+		StructureProcessor.setPlayerPlacement(playerEntity);
 		if(optional.isEmpty())
-			optional = JigsawHelper.generate(context, registryEntry, Optional.empty(), 7, blockPos, true, Optional.empty(), 128, StructureInfos.getRotation(dir));
+			optional = JigsawHelper.generate(context, registryEntry, Optional.empty(), 32, blockPos, true, Optional.empty(), 128, StructureInfos.getRotation(dir));
 		if(optional.isPresent()) {
 			StructurePiecesCollector structurePiecesCollector = optional.get().generate();
 			for(StructurePiece structurePiece : structurePiecesCollector.toList().pieces()) {
 				if(!(structurePiece instanceof PoolStructurePiece poolStructurePiece)) continue;
 				poolStructurePiece.generate(world, structureAccessor, chunkGenerator, random, BlockBox.infinite(), pos, false);
 			}
+			StructureProcessor.clearPlayerPlacement();
 			return true;
 		}
+		StructureProcessor.clearPlayerPlacement();
 		return false;
 	}
 
-	public boolean place(ServerWorld serverLevel, StructureTemplate structure, BlockPos blockPos, Direction facing, boolean mirror, boolean centered) {
+	public boolean place(ServerPlayerEntity playerEntity, ServerWorld serverLevel, StructureTemplate structure, BlockPos blockPos, Direction facing, boolean mirror, boolean centered) {
+		StructureProcessor.setPlayerPlacement(playerEntity);
 		StructurePlacementData structurePlacementData = new StructurePlacementData().setMirror(BlockMirror.values()[mirror ? 1 : 0]).setRotation(StructureInfos.getRotation(facing));
 		int[] off = StructureInfos.getOffsetSide(facing, centered);
 		BlockPos p1 = blockPos.add(off[0] * (structure.getSize().getX() / 2), 0, off[1] * (structure.getSize().getZ() / 2));
 		structure.place(serverLevel, p1, p1, structurePlacementData, serverLevel.getRandom(), 2);
+		StructureProcessor.clearPlayerPlacement();
 		return true;
 
 	}

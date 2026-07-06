@@ -3,7 +3,7 @@ package com.diamssword.greenresurgence.datagen;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.Shields;
 import com.diamssword.greenresurgence.Weapons;
-import com.diamssword.greenresurgence.materials.MaterialSet;
+import com.diamssword.greenresurgence.items.materials.MaterialSet;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;

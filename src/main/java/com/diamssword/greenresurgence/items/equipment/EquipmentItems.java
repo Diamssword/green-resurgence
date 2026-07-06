@@ -3,7 +3,7 @@ package com.diamssword.greenresurgence.items.equipment;
 import com.diamssword.greenresurgence.datagen.LangGenerator;
 import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentBatteryUpgrade;
 import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinItem;
-import com.diamssword.greenresurgence.materials.BatteryTiers;
+import com.diamssword.greenresurgence.items.materials.BatteryTiers;
 import com.diamssword.greenresurgence.systems.equipement.EquipmentEffects;
 import com.diamssword.greenresurgence.systems.equipement.Equipments;
 import com.diamssword.greenresurgence.systems.equipement.effects.ArmorEffectUpgrade;

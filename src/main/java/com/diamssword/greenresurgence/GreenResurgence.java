@@ -7,7 +7,7 @@ import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.effects.ResurgenceEffects;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.items.equipment.EquipmentItems;
-import com.diamssword.greenresurgence.materials.Materials;
+import com.diamssword.greenresurgence.items.materials.Materials;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
 import com.diamssword.greenresurgence.structure.StructureProcessor;
