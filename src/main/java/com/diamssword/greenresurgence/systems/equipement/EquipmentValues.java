@@ -12,7 +12,9 @@ public class EquipmentValues {
 	public static final UUID ATTACK_SPEED_MODIFIER_ID = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
 	public static final UUID ATTACK_RANGE_MODIFIER_ID = UUID.fromString("ae5630ab-af0f-4c38-8f5e-b7d369078812");
 	public static final UUID REACH_RANGE_MODIFIER_ID = UUID.fromString("e3f95e9d-9eeb-48ba-ba90-a7c551b1608c");
-	public static final UUID ARMOR_MODIFIER_ID = UUID.fromString("20f73ab7-8067-4005-8b89-48acaa2f9409");
+	public static final UUID ARMOR_TOUGHNESS_MODIFIER_ID = UUID.fromString("416051de-26bd-4762-8409-af48e5110f45");
+	public static final UUID CONTAMINATION_REDUCTION_MODIFIER_ID = UUID.fromString("f78fcd5b-209a-405d-9292-4388f1287c3f");
+	public static final UUID MOVE_SPEED_MODIFIER_ID = UUID.fromString("4c3d595c-849d-42a9-8e16-b1d1a5bbe9dd");
 	//BASE_ATTACK_SPEED is 4;
 	public static final float SPEED_SLOWER = -3.5f;
 	public static final float SPEED_SLOW = -3f;

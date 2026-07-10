@@ -46,7 +46,7 @@ public interface IEquipmentEffect {
 						bl = true;
 					}
 					if(bl)
-						tooltip.add(Text.translatable("attribute.modifier.equals." + entityAttributeModifier.getOperation().getId(), MODIFIER_FORMAT.format(d), Text.translatable((entry.getKey()).getTranslationKey())).formatted(Formatting.DARK_GREEN));
+						tooltip.add(Text.translatable("attribute.modifier.equals." + entityAttributeModifier.getOperation().getId(), MODIFIER_FORMAT.format(d), Text.translatable((entry.getKey()).getTranslationKey())).formatted(d < 0 ? Formatting.RED : Formatting.DARK_GREEN));
 				}
 				if(!bl) {
 					if(entityAttributeModifier.getOperation() == EntityAttributeModifier.Operation.MULTIPLY_BASE

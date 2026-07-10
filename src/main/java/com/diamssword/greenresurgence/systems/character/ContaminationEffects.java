@@ -1,8 +1,10 @@
 package com.diamssword.greenresurgence.systems.character;
 
+import com.diamssword.characters.api.ComponentManager;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.Random;
 
@@ -16,20 +18,21 @@ public class ContaminationEffects {
 	}
 
 	public void tick() {
-		double perc = manager.getContaminationAmount() / manager.getMaxContaminationAmount();
-		if(perc > 0.2) {
-			if(effectCooldown <= 0) {
-				triggerEffect(manager.player, (float) perc);
-				effectCooldown = 1000 + rand.nextInt((int) (Math.max(1, (1f - perc) * 3000f)));
-			} else
-				effectCooldown--;
+		if(((ServerPlayerEntity) manager.player).interactionManager.getGameMode().isSurvivalLike()) {
+			double perc = manager.getContaminationAmount() / manager.getMaxContaminationAmount();
+			if(perc > 0.2) {
+				if(effectCooldown <= 0) {
+					triggerEffect(manager.player, (float) perc);
+					effectCooldown = 1000 + rand.nextInt((int) (Math.max(1, (1f - perc) * 3000f)));
+				} else
+					effectCooldown--;
+			}
 		}
-
 	}
 
 	public void triggerEffect(PlayerEntity player, float percent) {
 		var r1 = rand.nextFloat();
-		if(percent > 0.2 && percent < 0.4) {
+		if(percent > 0.2 && percent < 0.4 && ComponentManager.getPlayerDatas(player).getStats().getLevel("fermier") < 20) {
 			if(r1 < 0.8)
 				player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 10 + rand.nextInt(80), 0));
 			else

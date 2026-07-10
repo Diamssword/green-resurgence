@@ -28,7 +28,8 @@ public enum AdvEquipmentSlot {
 	BACKPACK(Type.BACKPACK, 0, "backpack"),
 	SATCHEL_LEFT(Type.SATCHEL, 0, "satchel_left"),
 	SATCHEL_RIGHT(Type.SATCHEL, 1, "satchel_right"),
-	UNKNOWN(Type.UNKNOWN, 1, "unknown");
+	UNKNOWN(Type.UNKNOWN, 0, "unknown"),
+	DISPLAY(Type.UNKNOWN, 0, "display");
 
 
 	private final AdvEquipmentSlot.Type type;

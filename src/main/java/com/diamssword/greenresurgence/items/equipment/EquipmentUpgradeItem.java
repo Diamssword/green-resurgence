@@ -63,7 +63,7 @@ public class EquipmentUpgradeItem extends Item implements IEquipmentUpgrade {
 	@Override
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
 		var lvls = getEffectsLevels();
-		var ctx = new UpgradeActionContext(null, null, UpgradeActionContext.ItemContext.UPGRADE).setLevels(lvls);
+		var ctx = new UpgradeActionContext(null, null, UpgradeActionContext.ItemContext.UPGRADE, false).setLevels(lvls);
 		tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.slot").formatted(Formatting.GRAY).append(Text.translatable("equipment.green_resurgence.gui." + slot).formatted(Formatting.LIGHT_PURPLE)));
 		List<MutableText> tools = new ArrayList<>();
 		for(String s : allowed) {
@@ -86,19 +86,19 @@ public class EquipmentUpgradeItem extends Item implements IEquipmentUpgrade {
 
 			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.applied.to").formatted(Formatting.GRAY).append(t));
 		}
-		for(AdvEquipmentSlot value : AdvEquipmentSlot.values()) {
-			List<Text> subList = new ArrayList<>();
-			lvls.forEach((k, v) -> {
-				var eff = EquipmentEffects.get(k);
-				eff.ifPresent(p -> {
-					p.addTooltips(ctx, value, subList);
-				});
+		//for(AdvEquipmentSlot value : AdvEquipmentSlot.values()) {
+		List<Text> subList = new ArrayList<>();
+		lvls.forEach((k, v) -> {
+			var eff = EquipmentEffects.get(k);
+			eff.ifPresent(p -> {
+				p.addTooltips(ctx, AdvEquipmentSlot.DISPLAY, subList);
 			});
-			if(!subList.isEmpty()) {
-				TooltipHelper.appendUpgradeHeader(this, value, ctx.context, tooltip);
-				tooltip.addAll(subList);
-			}
+		});
+		if(!subList.isEmpty()) {
+			TooltipHelper.appendUpgradeHeader(this, AdvEquipmentSlot.DISPLAY, ctx.context, tooltip);
+			tooltip.addAll(subList);
 		}
+//		}
 		if(this.maxDurability() > 0) {
 			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.max_durability", this.maxDurability()).formatted(Formatting.GRAY));
 			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.damage_weight", this.damageWeight()).formatted(Formatting.GRAY));

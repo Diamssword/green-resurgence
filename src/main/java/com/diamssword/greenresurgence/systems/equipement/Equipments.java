@@ -43,7 +43,7 @@ public class Equipments {
 	public static final String P_BATTERY = "battery";
 	public static final String P_HANDLE = "handle";
 	public static final String P_EXTRA = "extra";
-	public static final String[] REQUIRED_SLOTS = new String[]{P_SKIN, P_HEAD, P_BINDING, P_HANDLE};
+	public static final String[] REQUIRED_SLOTS = new String[]{P_HEAD, P_BINDING, P_HANDLE};
 	public static final String[] REQUIRED_SLOTS_ARMOR = new String[]{P_SKIN, P_FRAME, P_PADDING, P_PLATING};
 
 	public static void init() {
@@ -73,6 +73,7 @@ public class Equipments {
 
 	private static String[] ExtraSlots(String... addedSlots) {
 		var ls = new ArrayList<String>();
+		ls.add(P_SKIN);
 		ls.add(P_HEAD_EXTRA);
 		ls.add(P_BINDING_EXTRA);
 		ls.add(P_HANDLE_EXTRA);
@@ -106,7 +107,7 @@ public class Equipments {
 		bases.put(EquipmentEffects.BASE_DAMAGE_MOD, new EffectLevel(1f));
 		equipments.putIfAbsent(type, new HashMap<>());
 
-		var equ = new EquipmentDef(type, piece.getName(), (t, s) -> new ModularArmorItem(t, s, piece, bases), requiredSlots, extraSlots);
+		var equ = new EquipmentDef(type, piece.getName(), AdvEquipmentSlot.fromVanilla(piece.getEquipmentSlot()), (t, s) -> new ModularArmorItem(t, s, piece, bases), requiredSlots, extraSlots);
 		equ.setDamageChance(P_FRAME, 2f);
 		//equ.setDamageChance(P_HANDLE, 2f).setDamageChance(P_BINDING, 2f);
 		equipments.get(type).put(piece.getName(), equ);
@@ -126,7 +127,7 @@ public class Equipments {
 			else
 				gen = (a, b) -> new EquipmentToolElectric(a, b, true);
 		}
-		var equ = new EquipmentDef(type, subType, gen, requiredSlots, extraSlots);
+		var equ = new EquipmentDef(type, subType, AdvEquipmentSlot.MAINHAND, gen, requiredSlots, extraSlots);
 		if(type.equals(TYPE_BLADE))
 			equ.setDamageChance(P_HEAD, 2f);
 		else if(type.equals(TYPE_HAMMER))

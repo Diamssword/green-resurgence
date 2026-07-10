@@ -82,7 +82,7 @@ public class SweepingEffectUpgrade implements IEquipmentEffect {
 
 	@Override
 	public void addTooltips(UpgradeActionContext ctx, AdvEquipmentSlot slot, List<Text> tooltip) {
-		if(slot == AdvEquipmentSlot.MAINHAND) {
+		if(slot == AdvEquipmentSlot.MAINHAND || slot == AdvEquipmentSlot.DISPLAY) {
 			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.sweeping.targets", MODIFIER_FORMAT.format(ctx.getLevel(EquipmentEffects.SWEEPING).getLevel())).formatted(Formatting.BLUE));
 			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.sweeping.range", MODIFIER_FORMAT.format(ctx.getLevel(EquipmentEffects.SWEEPING).getLevel(RADIUS_BONUS, 1))).formatted(Formatting.BLUE));
 			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.percent.plus", MODIFIER_FORMAT.format(ctx.getLevel(EquipmentEffects.SWEEPING).getLevel(DAMAGE_BONUS, 20)), Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.sweeping.damage")).formatted(Formatting.BLUE));

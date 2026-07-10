@@ -1,4 +1,6 @@
 {
+  "death.attack.thrown_weapon": "%1$s was impaled by %2$s",
+  "death.attack.thrown_weapon.item": "%1$s was impaled by %2$s with %3$s",
   "entity.green_resurgence.bike": "Bike",
   "item.green_resurgence.placers.road_droit": "Straight Road Placer (x48)",
   "item.green_resurgence.placers.road_inter": "Cross Road Placer",

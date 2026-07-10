@@ -305,6 +305,7 @@ public class CustomPlayerInventory implements ICharacterStored {
 		if(cursorStack.isEmpty()) {
 			this.getPlayer().currentScreenHandler.setCursorStack(ItemStack.EMPTY);
 		}
+		syncHotbarToServer();
 		return i;
 	}
 

@@ -89,26 +89,22 @@ public class GreenResurgence implements ModInitializer {
 		registerCommand("recipeHelper", RecipeHelperCommand::register);
 		registerCommand("worldTools", WorldToolsCommand::register);
 		registerCommand("environmentAreas", EnvironmentAreaCommand::register);
-
 		ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
 			onPostInit();
 		});
-
+		CharactersApi.onReady(api -> {
+			ClassesRegister.init();
+			CharactersApi.get().unattachComponentFromCharacters(CharactersApi.CHARACTER_ATTACHED_COMPONENT_INVENTORY);
+			CharactersApi.get().attachComponentToCharacters(asRessource("inventory"), p -> p.getComponent(Components.PLAYER_INVENTORY).getInventory(), CustomPlayerInventory::serializer, CustomPlayerInventory::unserializer);
+		});
 	}
-
-	private static boolean havePostInited = false;
 
 	/**
 	 * Called when a client join a world
 	 * Called only once
 	 */
 	public static void onPostInit() {
-		if(!havePostInited) {
-			havePostInited = true;
-		}
-		ClassesRegister.init();
-		CharactersApi.instance.unattachComponentFromCharacters(CharactersApi.CHARACTER_ATTACHED_COMPONENT_INVENTORY);
-		CharactersApi.instance.attachComponentToCharacters(asRessource("inventory"), p -> p.getComponent(Components.PLAYER_INVENTORY).getInventory(), CustomPlayerInventory::serializer, CustomPlayerInventory::unserializer);
+
 	}
 
 	public void registerCommand(String name, Consumer<LiteralArgumentBuilder<ServerCommandSource>> builder) {

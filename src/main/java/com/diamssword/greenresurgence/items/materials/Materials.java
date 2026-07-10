@@ -18,15 +18,15 @@ public class Materials {
 	public static MaterialSet building;
 	public static MaterialSet nanite;
 	public static MaterialSet fuel;
-	private static MaterialSet cables;
-	private static MaterialSet energy;
-	private static MaterialSet chemical;
-	private static MaterialSet compost;
-	private static MaterialSet glass;
-	private static MaterialSet bones;
-	private static MaterialSet leather;
-	private static MaterialSet fabric;
-	private static MaterialSet medicine;
+	public static MaterialSet cables;
+	public static MaterialSet energy;
+	public static MaterialSet chemical;
+	public static MaterialSet compost;
+	public static MaterialSet glass;
+	public static MaterialSet bones;
+	public static MaterialSet leather;
+	public static MaterialSet fabric;
+	public static MaterialSet medicine;
 
 	public static void init() {
 		//WOOD

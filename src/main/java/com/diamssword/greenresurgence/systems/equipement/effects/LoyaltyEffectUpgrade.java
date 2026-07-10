@@ -1,21 +1,18 @@
 package com.diamssword.greenresurgence.systems.equipement.effects;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.systems.equipement.AdvEquipmentSlot;
-import com.diamssword.greenresurgence.systems.equipement.IEquipmentEffect;
-import com.diamssword.greenresurgence.systems.equipement.IEquipmentUpgrade;
-import com.diamssword.greenresurgence.systems.equipement.UpgradeActionContext;
+import com.diamssword.greenresurgence.systems.equipement.*;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.item.Item;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.util.List;
 
-public record LootingToolEffect(TagKey<Item> tool, String nameKey) implements IEquipmentEffect {
+import static net.minecraft.item.ItemStack.MODIFIER_FORMAT;
+
+public class LoyaltyEffectUpgrade implements IEquipmentEffect {
 
 	@Override
 	public void getAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> map, AdvEquipmentSlot slot, UpgradeActionContext ctx) {
@@ -28,14 +25,11 @@ public record LootingToolEffect(TagKey<Item> tool, String nameKey) implements IE
 	}
 
 	@Override
-	public List<TagKey<Item>> getTags(UpgradeActionContext ctx) {
-		return List.of(tool);
-	}
-
-	@Override
 	public void addTooltips(UpgradeActionContext ctx, AdvEquipmentSlot slot, List<Text> tooltip) {
-		if(slot == AdvEquipmentSlot.MAINHAND) {
-			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.tool." + nameKey).formatted(Formatting.BLUE));
+		if(slot == AdvEquipmentSlot.MAINHAND || slot == AdvEquipmentSlot.DISPLAY) {
+			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.loyalty", MODIFIER_FORMAT.format(ctx.getLevel(EquipmentEffects.LOYALTY).getLevel())).formatted(Formatting.BLUE));
+
 		}
+
 	}
 }

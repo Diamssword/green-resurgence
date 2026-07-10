@@ -41,21 +41,22 @@ public class EquipmentBlueprintItem extends Item implements IEquipmentBlueprint 
 	protected void tooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, EquipmentTool equipment) {
 
 		var lvls = equipment.getBaseUpgrades();
-		var ctx = new UpgradeActionContext(null, null, UpgradeActionContext.ItemContext.BLUEPRINT).setLevels(lvls);
+		var ctx = new UpgradeActionContext(null, null, UpgradeActionContext.ItemContext.BLUEPRINT, false).setLevels(lvls);
 
-		for(AdvEquipmentSlot value : AdvEquipmentSlot.values()) {
-			List<Text> subList = new ArrayList<>();
-			lvls.forEach((k, v) -> {
-				var eff = EquipmentEffects.get(k);
-				eff.ifPresent(p -> {
-					p.addTooltips(ctx, value, subList);
-				});
+		//for(AdvEquipmentSlot value : AdvEquipmentSlot.values()) {
+		List<Text> subList = new ArrayList<>();
+		lvls.forEach((k, v) -> {
+			var eff = EquipmentEffects.get(k);
+
+			eff.ifPresent(p -> {
+				p.addTooltips(ctx, AdvEquipmentSlot.DISPLAY, subList);
 			});
-			if(!subList.isEmpty()) {
-				TooltipHelper.appendUpgradeHeader(this, value, ctx.context, tooltip);
-				tooltip.addAll(subList);
-			}
+		});
+		if(!subList.isEmpty()) {
+			TooltipHelper.appendUpgradeHeader(this, AdvEquipmentSlot.DISPLAY, ctx.context, tooltip);
+			tooltip.addAll(subList);
 		}
+		//}
 
 
 	}

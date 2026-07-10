@@ -1,7 +1,6 @@
 package com.diamssword.greenresurgence.items.helpers;
 
 import com.diamssword.greenresurgence.containers.FilteredInventory;
-import com.diamssword.greenresurgence.items.materials.BatteryTiers;
 import net.minecraft.client.item.TooltipData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,9 +19,6 @@ import net.minecraft.util.collection.DefaultedList;
 public class ItemStorageHelper {
 
 	public int maxItems;
-
-	public record BatteryHolderTooltipData(DefaultedList<ItemStack> stacks, BatteryTiers min, BatteryTiers max) implements TooltipData {
-	}
 
 	public ItemStorageHelper(int maxItems) {
 		this.maxItems = maxItems;
@@ -60,10 +56,10 @@ public class ItemStorageHelper {
 
 	public SimpleInventory getAsInventory(ItemStack bundle) {
 		var inv = new FilteredInventory(this.maxItems, (t, s) -> true).setSingleItem(true);
-		inv.addListener(c -> bundle.setSubNbt("Sotrage", inv.toNbtList()));
+		inv.addListener(c -> bundle.setSubNbt("Storage", inv.toNbtList()));
 		NbtCompound nbtCompound = bundle.getOrCreateNbt();
-		if(nbtCompound.contains("Sotrage")) {
-			NbtList nbtList = nbtCompound.getList("Sotrage", NbtElement.COMPOUND_TYPE);
+		if(nbtCompound.contains("Storage")) {
+			NbtList nbtList = nbtCompound.getList("Storage", NbtElement.COMPOUND_TYPE);
 			inv.readNbtList(nbtList);
 		}
 		return inv;

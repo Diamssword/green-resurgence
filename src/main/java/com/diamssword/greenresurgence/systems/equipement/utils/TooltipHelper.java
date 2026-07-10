@@ -17,7 +17,7 @@ public class TooltipHelper {
 		if(context == UpgradeActionContext.ItemContext.UPGRADE) {
 			tooltip.add(ScreenTexts.EMPTY);
 			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.title.upgrade").formatted(Formatting.GRAY));
-		} else if(slot == AdvEquipmentSlot.MAINHAND) {
+		} else if(slot == AdvEquipmentSlot.MAINHAND || slot == AdvEquipmentSlot.DISPLAY) {
 			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.equipment_type." + (item instanceof EquipmentTwoHanded ? "two_hand" : "dual_wield")).formatted(Formatting.GRAY));
 			tooltip.add(ScreenTexts.EMPTY);
 		}

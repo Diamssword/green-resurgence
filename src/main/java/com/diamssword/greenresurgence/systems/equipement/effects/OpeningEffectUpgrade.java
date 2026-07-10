@@ -42,7 +42,7 @@ public class OpeningEffectUpgrade implements IEquipmentEffect {
 
 	@Override
 	public void addTooltips(UpgradeActionContext ctx, AdvEquipmentSlot slot, List<Text> tooltip) {
-		if(slot == AdvEquipmentSlot.MAINHAND) {
+		if(slot == AdvEquipmentSlot.MAINHAND || slot == AdvEquipmentSlot.DISPLAY) {
 			if(ctx.getLevel(EquipmentEffects.OPENING).getLevel() > 0f)
 				tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.effect", ResurgenceEffects.HAMMER_OPENING.getName(), Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.time", MODIFIER_FORMAT.format(ctx.getLevel(EquipmentEffects.OPENING).getLevel()))).formatted(Formatting.BLUE));
 		}

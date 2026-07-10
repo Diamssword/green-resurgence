@@ -10,7 +10,7 @@ public class AttackRangeEffectUpgrade implements IEquipmentEffect {
 
 	@Override
 	public void getAttributeModifiers(Multimap<EntityAttribute, EntityAttributeModifier> map, AdvEquipmentSlot slot, UpgradeActionContext ctx) {
-		if(slot == AdvEquipmentSlot.MAINHAND) {
+		if(ctx.isMainSlot() || slot == AdvEquipmentSlot.DISPLAY) {
 			var eff = ctx.getLevel(EquipmentEffects.ATTACK_RANGE);
 			if(eff.getLevel() != 0) {
 

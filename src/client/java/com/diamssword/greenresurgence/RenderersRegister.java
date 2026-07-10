@@ -17,6 +17,7 @@ import com.diamssword.greenresurgence.render.cosmetics.ModularArmorLayerRenderer
 import com.diamssword.greenresurgence.render.entities.BackpackEntityRenderer;
 import com.diamssword.greenresurgence.render.entities.BikeEntityRenderer;
 import com.diamssword.greenresurgence.render.entities.CaddieEntityRenderer;
+import com.diamssword.greenresurgence.render.entities.ThrownWeaponRenderer;
 import com.diamssword.greenresurgence.render.environment.EnvironementAreas;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
 import com.diamssword.greenresurgence.structure.MultiblockInstance;
@@ -78,6 +79,7 @@ public class RenderersRegister {
 
 	private static void initEntities() {
 		EntityRendererRegistry.register(MEntities.CHAIR, RenderersRegister::emptyEntityRender);
+		EntityRendererRegistry.register(MEntities.THROWN_WEAPON, ThrownWeaponRenderer::new);
 		EntityRendererRegistry.register(MEntities.BACKPACK, BackpackEntityRenderer::new);
 		EntityRendererRegistry.register(MEntities.CADDIE, CaddieEntityRenderer::new);
 		EntityRendererRegistry.register(MEntities.BIKE, BikeEntityRenderer::new);

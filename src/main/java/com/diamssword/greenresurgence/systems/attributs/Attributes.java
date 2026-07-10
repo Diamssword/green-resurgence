@@ -22,6 +22,7 @@ public class Attributes {
 	public static final EntityAttribute CRAFT_SPEED = register("craft_speed", new ClampedEntityAttribute("attribute.name.green_resurgence.craft_speed", 1D, 0.1D, 1024.0D).setTracked(true));
 	public static final EntityAttribute ALCOOL_RESISTANCE = register("alcool_resistance", new ClampedEntityAttribute("attribute.name.green_resurgence.alcool_resistance", 0D, -10D, 10.0D).setTracked(true));
 	public static final EntityAttribute PLAYER_KNOCKBACK = register("player_knockback", new ClampedEntityAttribute("attribute.name.green_resurgence.player_knockback", 0D, 0D, 100.0D).setTracked(true));
+	public static final EntityAttribute CONTAMINATION_REDUCTION = register("contamination_reduction", new ClampedEntityAttribute("attribute.name.green_resurgence.contamination_reduction", 0D, 0D, 100.0D).setTracked(true));
 
 	private static EntityAttribute register(String id, EntityAttribute attr) {
 		plAttributes.put(GreenResurgence.asRessource(id), attr);
@@ -37,10 +38,9 @@ public class Attributes {
 		return new EntityAttributeModifier(id, GreenResurgence.ID + ".role_modifier." + attribute.getTranslationKey(), value, operation);
 	}
 
-	public static EntityAttributeModifier modifier(EntityAttribute attribute, float value, EntityAttributeModifier.Operation operation) {
-		var r = AttributeModifiers.BaseIdMap.get(attribute);
-		if(r == null)
-			throw new NullPointerException();
+	public static EntityAttributeModifier modifier(EntityAttribute attribute, float value, EntityAttributeModifier.Operation operation, String uuid) {
+		var r = UUID.fromString(uuid);
+
 		return new EntityAttributeModifier(r, GreenResurgence.ID + ".role_modifier." + attribute.getTranslationKey(), value, operation);
 	}
 }

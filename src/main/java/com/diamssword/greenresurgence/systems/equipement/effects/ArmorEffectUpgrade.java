@@ -42,11 +42,11 @@ public class ArmorEffectUpgrade implements IEquipmentEffect {
 				if(eff.getLevel(ARMOR_TOUGHNESS) != 0)
 					map.put(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, new EntityAttributeModifier(uuid, "Armor Toughness modifier", eff.getLevel(ARMOR_TOUGHNESS), EntityAttributeModifier.Operation.ADDITION));
 			}
-		} else if(ctx.context == UpgradeActionContext.ItemContext.UPGRADE && slot == AdvEquipmentSlot.FEET) {
-			var uuid = MODIFIERS.get(slot);
+		} else if(ctx.context == UpgradeActionContext.ItemContext.UPGRADE && slot == AdvEquipmentSlot.DISPLAY) {
+			var uuid = MODIFIERS.get(AdvEquipmentSlot.FEET);
 			var eff = ctx.getLevel(EquipmentEffects.ARMOR);
 			if(eff.getLevel() != 0)
-				map.put(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(uuid, "Armor modifier", eff.getLevel() * getArmorPieceModifier(slot), EntityAttributeModifier.Operation.ADDITION));
+				map.put(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(uuid, "Armor modifier", eff.getLevel() * getArmorPieceModifier(AdvEquipmentSlot.FEET), EntityAttributeModifier.Operation.ADDITION));
 			if(eff.getLevel(ARMOR_TOUGHNESS) != 0)
 				map.put(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, new EntityAttributeModifier(uuid, "Armor Toughness modifier", eff.getLevel(ARMOR_TOUGHNESS), EntityAttributeModifier.Operation.ADDITION));
 		}
@@ -74,6 +74,7 @@ public class ArmorEffectUpgrade implements IEquipmentEffect {
 				makeTooltip(ctx, slot, tooltip);
 			}
 		} else if(ctx.context == UpgradeActionContext.ItemContext.UPGRADE) {
+
 			makeTooltip(ctx, slot, tooltip);
 		}
 	}

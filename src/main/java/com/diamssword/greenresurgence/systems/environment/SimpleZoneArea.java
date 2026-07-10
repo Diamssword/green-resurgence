@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.systems.environment;
 import com.diamssword.greenresurgence.systems.Components;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -41,8 +42,10 @@ public class SimpleZoneArea implements EffectArea {
 		playerInside.forEach(pl -> {
 			var cont = contaminationPerTick(pl.getPos(), world);
 			if(cont != 0) {
-				var dt = pl.getComponent(Components.PLAYER_DATA);
-				dt.healthManager.addContaminationMitigated(cont);
+				if(pl instanceof ServerPlayerEntity pl1 && pl1.interactionManager.getGameMode().isSurvivalLike()) {
+					var dt = pl.getComponent(Components.PLAYER_DATA);
+					dt.healthManager.addContaminationMitigated(cont);
+				}
 			}
 
 		});

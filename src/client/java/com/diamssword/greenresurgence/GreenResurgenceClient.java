@@ -46,11 +46,13 @@ public class GreenResurgenceClient implements ClientModInitializer {
 			pluginContext.addModels(new ModelIdentifier(GeckoToolEquipmentRenderer.BP_BG, "inventory"));
 		});
 		GreenResurgence.clientHelper = new ClientSideHelperImp();
+		CharactersApi.onReady(api -> {
+			api.overrideWardrobeGui(WardrobeGui::new);
+		});
 	}
 
 	@Environment(EnvType.CLIENT)
 	private static void postInit(MinecraftClient client) {
-		CharactersApi.instance.overrideWardrobeGui(WardrobeGui::new);
 	}
 
 }

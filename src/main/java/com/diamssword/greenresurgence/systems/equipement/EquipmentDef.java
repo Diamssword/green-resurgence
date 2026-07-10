@@ -17,12 +17,14 @@ public class EquipmentDef implements IEquipmentDef {
 	public final String[] slots;
 	public final String[] requiredSlots;
 	private final EquipmentBlueprintItem bp;
+	private final AdvEquipmentSlot mainSlot;
 	public final Item tool;
 	public Map<String, Float> damageChances = new HashMap<>();
 
-	public EquipmentDef(String type, String subType, BiFunction<String, String, Item> toolConstructor, String[] requiredSlots, String... extraSlots) {
+	public EquipmentDef(String type, String subType, AdvEquipmentSlot mainUseSlot, BiFunction<String, String, Item> toolConstructor, String[] requiredSlots, String... extraSlots) {
 		this.type = type;
 		this.subtype = subType;
+		this.mainSlot = mainUseSlot;
 		var ls = new ArrayList<>(Arrays.asList(requiredSlots));
 		ls.addAll(Arrays.asList(extraSlots));
 		this.slots = ls.toArray(new String[0]);
@@ -39,6 +41,11 @@ public class EquipmentDef implements IEquipmentDef {
 
 	public float getDamageChance(String part) {
 		return damageChances.getOrDefault(part, 0f);
+	}
+
+	@Override
+	public AdvEquipmentSlot getMainSlot() {
+		return mainSlot;
 	}
 
 	@Override

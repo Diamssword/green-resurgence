@@ -1,7 +1,6 @@
 package com.diamssword.greenresurgence.systems.character;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.items.helpers.IContaminationMitigator;
 import com.diamssword.greenresurgence.systems.attributs.AttributeModifiers;
 import com.diamssword.greenresurgence.systems.attributs.Attributes;
 import net.minecraft.entity.EquipmentSlot;
@@ -11,6 +10,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.GameRules;
 
 public class HealthManager {
@@ -80,20 +80,22 @@ public class HealthManager {
 		speedLogic();
 		if(refreshTicks > -1) {refreshTicks--;}
 		if(refreshTicks == 0 && !player.getWorld().isClient) {PlayerData.syncHUD(player);}
-		if(contaminationTickTimer > 200) {
-			if(contaminationAmount > 0) {
-				contaminationAmount = Math.min(getMaxContaminationAmount(), Math.max(0, contaminationAmount + passiveContaminationSpeed));
-				markDirty();
-			}
-		} else
-			contaminationTickTimer++;
+		if(player instanceof ServerPlayerEntity pl && pl.interactionManager.getGameMode().isSurvivalLike()) {
+			if(contaminationTickTimer > 200) {
+				if(contaminationAmount > 0) {
+					contaminationAmount = Math.min(getMaxContaminationAmount(), Math.max(0, contaminationAmount + passiveContaminationSpeed));
+					markDirty();
+				}
+			} else
+				contaminationTickTimer++;
+		}
 		if(!player.getWorld().isClient)
 			contaminationEffectManager.tick();
 	}
 
 	public void onRespawn(boolean wasAlive) {
 
-		player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(50);
+		player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(10);
 		player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).addPersistentModifier(new EntityAttributeModifier(AttributeModifiers.BASE_SPEED_ID, GreenResurgence.ID + ".base_speed_modifier", 0.2, EntityAttributeModifier.Operation.MULTIPLY_BASE));
 		if(!wasAlive) {
 			player.setHealth(player.getMaxHealth());
@@ -150,8 +152,9 @@ public class HealthManager {
 
 	public void addContaminationMitigated(double amount) {
 		var item = player.getEquippedStack(EquipmentSlot.HEAD);
-		if(amount > 0 && item.getItem() instanceof IContaminationMitigator rm)
-			addContaminationUnmitigated(rm.getContaminationAfterMitigation(item, amount));
+		var val = 1f - (player.getAttributeValue(Attributes.CONTAMINATION_REDUCTION) / 100f);
+		if(amount > 0)
+			addContaminationUnmitigated(amount * val);
 		else
 			addContaminationUnmitigated(amount);
 	}

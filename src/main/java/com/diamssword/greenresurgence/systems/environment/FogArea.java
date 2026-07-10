@@ -4,6 +4,7 @@ import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.utils.Utils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -51,12 +52,13 @@ public class FogArea implements EffectArea {
 	@Override
 	public void tick(List<PlayerEntity> playerInside, World world) {
 		playerInside.forEach(pl -> {
-			var cont = contaminationPerTick(pl.getPos(), world);
-			if(cont != 0) {
-				var dt = pl.getComponent(Components.PLAYER_DATA);
-				dt.healthManager.addContaminationMitigated(cont);
+			if(pl instanceof ServerPlayerEntity pl1 && pl1.interactionManager.getGameMode().isSurvivalLike()) {
+				var cont = contaminationPerTick(pl.getPos(), world);
+				if(cont != 0) {
+					var dt = pl.getComponent(Components.PLAYER_DATA);
+					dt.healthManager.addContaminationMitigated(cont);
+				}
 			}
-
 		});
 	}
 

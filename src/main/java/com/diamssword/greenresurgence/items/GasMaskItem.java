@@ -2,10 +2,15 @@ package com.diamssword.greenresurgence.items;
 
 import com.diamssword.greenresurgence.MItems;
 import com.diamssword.greenresurgence.items.helpers.DurabilityStorageHelper;
-import com.diamssword.greenresurgence.items.helpers.IContaminationMitigator;
+import com.diamssword.greenresurgence.systems.attributs.Attributes;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import net.fabricmc.fabric.api.item.v1.FabricItem;
 import net.minecraft.client.item.TooltipData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
@@ -17,13 +22,19 @@ import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public class GasMaskItem extends Item implements Equipment, IContaminationMitigator {
+public class GasMaskItem extends Item implements Equipment, FabricItem {
 
 	public final DurabilityStorageHelper tank = new DurabilityStorageHelper(2, MItems.AIR_FILTER);
+	private static final UUID uuid = UUID.fromString("6f96635f-d58c-4383-a06e-752821523c0b");
+	private Multimap<EntityAttribute, EntityAttributeModifier> map;
 
 	public GasMaskItem(Settings settings) {
 		super(settings);
+		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
+		builder.put(Attributes.CONTAMINATION_REDUCTION, new EntityAttributeModifier(uuid, "Contamination modifier", 30f, EntityAttributeModifier.Operation.ADDITION));
+		map = builder.build();
 	}
 
 	@Override
@@ -36,6 +47,11 @@ public class GasMaskItem extends Item implements Equipment, IContaminationMitiga
 		if(tank.onStackClicked(stack, slot, clickType, player))
 			return true;
 		return super.onStackClicked(stack, slot, clickType, player);
+	}
+
+	@Override
+	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
+		return slot == EquipmentSlot.HEAD && isFiltering(stack) ? map : ImmutableMultimap.of();
 	}
 
 	public boolean isFiltering(ItemStack stack) {
@@ -91,8 +107,4 @@ public class GasMaskItem extends Item implements Equipment, IContaminationMitiga
 		return 0x8f009da5;
 	}
 
-	@Override
-	public float getContaminationMultiplicator(ItemStack stack, double amount) {
-		return isFiltering(stack) ? 0.3f : 1f;
-	}
 }

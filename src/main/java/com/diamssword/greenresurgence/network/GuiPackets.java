@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.network;
 
+import com.diamssword.characters.api.ComponentManager;
 import com.diamssword.greenresurgence.blockEntities.IGuiPacketReceiver;
 import com.diamssword.greenresurgence.containers.IOptionalInventory;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
@@ -154,8 +155,10 @@ public class GuiPackets {
 						CustomPlayerInventory.openInventoryScreen(ctx.player());
 				}
 				case Crawl -> {
-					var dt = ctx.player().getComponent(Components.PLAYER_DATA);
-					dt.setForcedPose(dt.getPose() == EntityPose.SWIMMING ? EntityPose.STANDING : EntityPose.SWIMMING);
+					if(ComponentManager.getPlayerDatas(ctx.player()).getStats().getLevel("survivant") >= 10) {
+						var dt = ctx.player().getComponent(Components.PLAYER_DATA);
+						dt.setForcedPose(dt.getPose() == EntityPose.SWIMMING ? EntityPose.STANDING : EntityPose.SWIMMING);
+					}
 
 				}
 				case Klaxon -> {

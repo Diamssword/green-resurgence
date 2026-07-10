@@ -117,14 +117,16 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 				var slot = slots[i];
 				var x = i < 4 ? 0 : (i > 6 ? 2 : 1);
 				var y = 0;
-				if(i != 0) {
-					if(slot.endsWith("head"))
-						y = 1;
-					else if(slot.endsWith("binding"))
-						y = 2;
-					else
-						y = 3;
-				}
+				//if(i != 0) {
+				if(slot.equals("skin"))
+					x = y = 0;
+				else if(slot.endsWith("head"))
+					y = 1;
+				else if(slot.endsWith("binding"))
+					y = 2;
+				else
+					y = 3;
+				//}
 				InventoryComponent comp = new InventoryComponent("0_equipment_" + slot, 1, 1, "disabled");
 				comp.margins(Insets.of(1));
 

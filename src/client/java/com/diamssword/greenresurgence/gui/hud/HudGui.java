@@ -125,6 +125,7 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 			}
 		});
 		attachWithTicker(SingleSlotComponent.class, "offhandleft", h -> {
+			h.hidden(this.client.interactionManager.getCurrentGameMode() == GameMode.SPECTATOR);
 			var ind = client.player.getMainArm().getOpposite() != Arm.LEFT;
 			h.setIndicatorMode(ind);
 			var st = client.player.getOffHandStack();
@@ -134,6 +135,7 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 			h.setStacks(st);
 		});
 		attachWithTicker(SingleSlotComponent.class, "offhandright", h -> {
+			h.hidden(this.client.interactionManager.getCurrentGameMode() == GameMode.SPECTATOR);
 			var ind = client.player.getMainArm().getOpposite() != Arm.RIGHT;
 			h.setIndicatorMode(ind);
 			var st = client.player.getOffHandStack();

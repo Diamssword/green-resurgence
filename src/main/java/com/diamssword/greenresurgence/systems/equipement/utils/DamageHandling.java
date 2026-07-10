@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.systems.equipement.utils;
 
+import com.diamssword.greenresurgence.MEntities;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.character.PlayerData;
 import com.diamssword.greenresurgence.systems.equipement.AdvEquipmentSlot;
@@ -9,6 +10,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.dragon.EnderDragonPart;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,58 +42,58 @@ public class DamageHandling {
 				comp.lastCooldownProgress = h;
 				f *= 0.2F + h * h * 0.8F;
 				source.resetLastAttackedTicks();
-				if(f > 0.0F) {
-					float j = 0.0F;
+				if(f < 0)
+					f = 0;
+				float j = 0.0F;
+				if(target instanceof LivingEntity) {
+					j = ((LivingEntity) target).getHealth();
+
+				}
+
+				Vec3d vec3d = target.getVelocity();
+				var modifiedDmg = eq.onInteraction(source, AdvEquipmentSlot.MAINHAND, IEquipmentUpgrade.InteractType.PRE_ATTACK, new ExtraEntityHitResult(target, usedStack, f));
+				boolean bl6 = target.damage(source.getDamageSources().playerAttack(source), modifiedDmg);
+				if(bl6) {
+
+					if(target instanceof ServerPlayerEntity && target.velocityModified) {
+						((ServerPlayerEntity) target).networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(target));
+						target.velocityModified = false;
+						target.setVelocity(vec3d);
+					}
+
+
+					source.onAttacking(target);
 					if(target instanceof LivingEntity) {
-						j = ((LivingEntity) target).getHealth();
-
+						EnchantmentHelper.onUserDamaged((LivingEntity) target, source);
 					}
 
-					Vec3d vec3d = target.getVelocity();
-					var modifiedDmg = eq.onInteraction(source, AdvEquipmentSlot.MAINHAND, IEquipmentUpgrade.InteractType.PRE_ATTACK, new ExtraEntityHitResult(target, usedStack, f));
-					boolean bl6 = target.damage(source.getDamageSources().playerAttack(source), modifiedDmg);
-					if(bl6) {
-
-						if(target instanceof ServerPlayerEntity && target.velocityModified) {
-							((ServerPlayerEntity) target).networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(target));
-							target.velocityModified = false;
-							target.setVelocity(vec3d);
-						}
-
-
-						source.onAttacking(target);
-						if(target instanceof LivingEntity) {
-							EnchantmentHelper.onUserDamaged((LivingEntity) target, source);
-						}
-
-						EnchantmentHelper.onTargetDamaged(source, target);
-						Entity entity = target;
-						if(target instanceof EnderDragonPart) {
-							entity = ((EnderDragonPart) target).owner;
-						}
-
-						if(!source.getWorld().isClient && !usedStack.isEmpty() && entity instanceof LivingEntity) {
-							usedStack.postHit((LivingEntity) entity, source);
-							if(usedStack.isEmpty()) {
-								source.setStackInHand(usedHand, ItemStack.EMPTY);
-							}
-						}
-
-						if(target instanceof LivingEntity) {
-							float m = j - ((LivingEntity) target).getHealth();
-							source.increaseStat(Stats.DAMAGE_DEALT, Math.round(m * 10.0F));
-							if(source.getWorld() instanceof ServerWorld && m > 2.0F) {
-								int n = (int) (m * 0.5);
-								((ServerWorld) source.getWorld())
-										.spawnParticles(ParticleTypes.DAMAGE_INDICATOR, target.getX(), target.getBodyY(0.5), target.getZ(), n, 0.1, 0.0, 0.1, 0.2);
-							}
-						}
-
-						source.addExhaustion(0.1F);
-					} else {
-						source.getWorld().playSound(null, source.getX(), source.getY(), source.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE, source.getSoundCategory(), 1.0F, 1.0F);
-
+					EnchantmentHelper.onTargetDamaged(source, target);
+					Entity entity = target;
+					if(target instanceof EnderDragonPart) {
+						entity = ((EnderDragonPart) target).owner;
 					}
+
+					if(!source.getWorld().isClient && !usedStack.isEmpty() && entity instanceof LivingEntity) {
+						usedStack.postHit((LivingEntity) entity, source);
+						if(usedStack.isEmpty()) {
+							source.setStackInHand(usedHand, ItemStack.EMPTY);
+						}
+					}
+
+					if(target instanceof LivingEntity) {
+						float m = j - ((LivingEntity) target).getHealth();
+						source.increaseStat(Stats.DAMAGE_DEALT, Math.round(m * 10.0F));
+						if(source.getWorld() instanceof ServerWorld && m > 2.0F) {
+							int n = (int) (m * 0.5);
+							((ServerWorld) source.getWorld())
+									.spawnParticles(ParticleTypes.DAMAGE_INDICATOR, target.getX(), target.getBodyY(0.5), target.getZ(), n, 0.1, 0.0, 0.1, 0.2);
+						}
+					}
+
+					source.addExhaustion(0.1F);
+				} else {
+					source.getWorld().playSound(null, source.getX(), source.getY(), source.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE, source.getSoundCategory(), 1.0F, 1.0F);
+
 				}
 				if(usedHand == Hand.OFF_HAND) {
 					source.getAttributes().removeModifiers(usedStack.getAttributeModifiers(EquipmentSlot.MAINHAND));
@@ -104,6 +106,66 @@ public class DamageHandling {
 				if(!source.getWorld().isClient)
 					PlayerData.syncApparence(source);
 			}
+		}
+	}
+
+	public static void distantAttackWithTool(Entity source, LivingEntity attacker, Entity target, ItemStack usedStack, IEquipementItem equipment, Runnable onItemBreak) {
+		var eq = equipment.getEquipment(usedStack);
+		var attributs = equipment.getEquipment(usedStack).getAttributeModifiers(AdvEquipmentSlot.MAINHAND, attacker);
+		EntityAttributeInstance inst = new EntityAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE, (e) -> {});
+
+		var ls = attributs.get(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+		ls.forEach(inst::addTemporaryModifier);
+		float f = (float) inst.getValue();
+
+		if(f < 0)
+			f = 0;
+		float j = 0.0F;
+		if(target instanceof LivingEntity) {
+			j = ((LivingEntity) target).getHealth();
+
+		}
+
+		Vec3d vec3d = target.getVelocity();
+		var modifiedDmg = eq.onInteraction(attacker, AdvEquipmentSlot.MAINHAND, IEquipmentUpgrade.InteractType.PRE_ATTACK, new ExtraEntityHitResult(target, usedStack, f));
+		boolean bl6 = target.damage(source.getDamageSources().create(MEntities.THROWN_WEAPON_DAMAGE, source, attacker), modifiedDmg);
+		if(bl6) {
+
+			if(target instanceof ServerPlayerEntity && target.velocityModified) {
+				((ServerPlayerEntity) target).networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(target));
+				target.velocityModified = false;
+				target.setVelocity(vec3d);
+			}
+
+			if(target instanceof LivingEntity) {
+				EnchantmentHelper.onUserDamaged((LivingEntity) target, attacker);
+			}
+
+			EnchantmentHelper.onTargetDamaged(attacker, target);
+			Entity entity = target;
+			if(target instanceof EnderDragonPart) {
+				entity = ((EnderDragonPart) target).owner;
+			}
+
+			if(!attacker.getWorld().isClient && !usedStack.isEmpty() && entity instanceof LivingEntity && attacker instanceof PlayerEntity pl) {
+				usedStack.postHit((LivingEntity) entity, pl);
+				if(usedStack.isEmpty()) {
+					onItemBreak.run();
+				}
+			}
+
+			if(target instanceof LivingEntity && attacker instanceof PlayerEntity pl) {
+				float m = j - ((LivingEntity) target).getHealth();
+				pl.increaseStat(Stats.DAMAGE_DEALT, Math.round(m * 10.0F));
+				if(attacker.getWorld() instanceof ServerWorld && m > 2.0F) {
+					int n = (int) (m * 0.5);
+					((ServerWorld) attacker.getWorld())
+							.spawnParticles(ParticleTypes.DAMAGE_INDICATOR, target.getX(), target.getBodyY(0.5), target.getZ(), n, 0.1, 0.0, 0.1, 0.2);
+				}
+			}
+		} else {
+			source.getWorld().playSound(null, source.getX(), source.getY(), source.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE, source.getSoundCategory(), 1.0F, 1.0F);
+
 		}
 	}
 }

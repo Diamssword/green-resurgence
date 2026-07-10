@@ -6,7 +6,7 @@ public class UpgradeGroundActionContext extends UpgradeActionContext {
 	protected Entity source;
 
 	public UpgradeGroundActionContext(Entity source, ItemContext context) {
-		super(null, null, context);
+		super(null, null, context, false);
 		this.source = source;
 	}
 

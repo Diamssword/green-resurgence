@@ -16,6 +16,7 @@ import java.util.Optional;
 public class EquipmentSkins {
 
 	public static Map<String, Map<Item, ItemSkinModelDef>> skins = new HashMap<>();
+	public static Map<Item, String> defaults = new HashMap<>();
 
 	public static void init() {
 		forAll("bone_hammer", "hammer/medium,hammer/long");
@@ -65,6 +66,13 @@ public class EquipmentSkins {
 		forArmor("gas_mask", "radiation_suit", ArmorItem.Type.HELMET);
 		forArmor("wolf_raider");
 
+
+		setDefaultforAll("makeshift_blade", "blade/*");
+		setDefaultforAll("makeshift_hammer", "hammer/medium,hammer/long");
+		setDefaultforAll("wrench", "hammer/short");
+		setDefaultforAll("makeshift_spear", "spike/medium,spike/long");
+		setDefaultforAll("screwdriver_flat", "spike/short");
+
 	}
 
 	public static Optional<ItemSkinModelDef> get(String skin, Item item) {
@@ -75,6 +83,9 @@ public class EquipmentSkins {
 	}
 
 	public static Optional<String> getDefault(Item item) {
+		var de = defaults.get(item);
+		if(de != null)
+			return Optional.of(de);
 		for(String s : skins.keySet()) {
 			if(skins.get(s).containsKey(item))
 				return Optional.of(s);
@@ -105,6 +116,33 @@ public class EquipmentSkins {
 
 	private static void forAll(String id, String allowed, boolean isGecko) {
 		forAll(id, allowed, isGecko, null, 0);
+	}
+
+
+	private static void setDefaultforAll(String id, String allowed) {
+		for(String s : allowed.split(",")) {
+			var ps = s.split("/");
+			if(ps[0].equals("*")) {
+				Equipments.equipments.forEach((k, v) -> {
+					if(ps[1].equals("*")) {
+						v.forEach((k1, v1) -> {
+							defaults.put(v1.getEquipmentItem(), id);
+						});
+					} else if(v.containsKey(ps[1]))
+						defaults.put(v.get(ps[1]).getEquipmentItem(), id);
+				});
+			} else {
+				var eq = Equipments.equipments.get(ps[0]);
+				if(eq != null) {
+					if(ps[1].equals("*")) {
+						eq.forEach((k1, v1) -> {
+							defaults.put(v1.getEquipmentItem(), id);
+						});
+					} else if(eq.containsKey(ps[1]))
+						defaults.put(eq.get(ps[1]).getEquipmentItem(), id);
+				}
+			}
+		}
 	}
 
 	private static void forAll(String id, String allowed, boolean isGecko, @Nullable Identifier texture, int modeForTwoHanded) {

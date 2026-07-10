@@ -17,6 +17,7 @@ public class UpgradeActionContext {
 
 	protected LivingEntity target;
 	protected LivingEntity source;
+	protected boolean isMainSlot;
 	protected ItemStack weapon = ItemStack.EMPTY;
 	/**
 	 * Used mostly to pass and  modify attack damages
@@ -26,10 +27,15 @@ public class UpgradeActionContext {
 	public final ItemContext context;
 	protected Map<String, EffectLevel> levels = new HashMap<>();
 
-	public UpgradeActionContext(LivingEntity source, LivingEntity target, ItemContext context) {
+	public UpgradeActionContext(LivingEntity source, LivingEntity target, ItemContext context, boolean isMainSlot) {
 		this.source = source;
 		this.target = target;
 		this.context = context;
+		this.isMainSlot = isMainSlot;
+	}
+
+	public boolean isMainSlot() {
+		return this.isMainSlot;
 	}
 
 	public boolean isClient() {

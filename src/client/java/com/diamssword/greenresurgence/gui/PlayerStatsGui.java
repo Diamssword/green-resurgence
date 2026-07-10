@@ -35,7 +35,7 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 
 	@Override
 	public void tick() {
-		if (statsPanel != null && client.world.getTime() % 20 == 0)
+		if(statsPanel != null && client.world.getTime() % 20 == 0)
 			fillStats(statsPanel);
 	}
 
@@ -50,14 +50,14 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 		var np = root.childById(FlowLayout.class, "namePanel");
 
 		var chara = ComponentManager.getPlayerCharacter(MinecraftClient.getInstance().player).getCurrentCharacter();
-		if (chara != null) {
+		if(chara != null) {
 			np.child(Components.label(DrawUtils.whiteText(chara.stats.firstname + " " + chara.stats.lastname)).lineHeight(8));
 			np.child(Components.label(DrawUtils.whiteText(chara.stats.origine)).lineHeight(8));
 			np.child(Components.label(DrawUtils.whiteText(chara.stats.faction)).lineHeight(8));
 			np.child(Components.label(DrawUtils.whiteText(chara.stats.job)).lineHeight(8));
 		}
 		var pane = root.childById(FlowLayout.class, "listPanel");
-		for (var k : CharactersApi.stats().getRoles().keySet()) {
+		for(var k : CharactersApi.stats().getRoles().keySet()) {
 			var c = new ClickableLayoutComponent(Sizing.fill(98), Sizing.fixed(20), FlowLayout.Algorithm.HORIZONTAL);
 			c.surface(Surface.flat(DrawUtils.whithAlpha(DrawUtils.GRAY_GREEN, 0xFF))).padding(Insets.of(2)).margins(Insets.of(1));
 			c.verticalAlignment(VerticalAlignment.CENTER);
@@ -77,7 +77,7 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 			pane.child(c);
 		}
 		statsPanel = root.childById(FreeRowGridLayout.class, "statsPanel");
-		if (statsPanel != null)
+		if(statsPanel != null)
 			fillStats(statsPanel);
 	}
 
@@ -93,7 +93,7 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 		parent.child(paragraph(DrawUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.stats.desc." + roleId)));
 		addGlobalModInfos(parent, role, st.getLevel(roleId));
 		var cur = st.getLevel(roleId);
-		for (var i = 0; i < role.stages.length; i++) {
+		for(var i = 0; i < role.stages.length; i++) {
 			addPalierInfo(parent, role, i, role.stages[i], role.stages[i] <= cur);
 		}
 	}
@@ -113,10 +113,10 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 	private void addGlobalModInfos(FlowLayout parent, StatsRole role, int level) {
 		var mods = role.getGlobalModifiers();
 		DecimalFormat df = new DecimalFormat("0.#");
-		if (!mods.isEmpty()) {
+		if(!mods.isEmpty()) {
 			parent.child(Components.label(DrawUtils.textTranslated(GreenResurgence.ID + ".gui.stats.global_bonus", DrawUtils.ORANGE)).horizontalSizing(Sizing.fill(90)));
 			var text = DrawUtils.whiteText("");
-			for (var p : mods.entrySet()) {
+			for(var p : mods.entrySet()) {
 				var d = p.getValue().apply(level);
 				text = text.append(" - ").append(DrawUtils.whiteTextTranslated(p.getKey().getTranslationKey()));
 				text = text.append(": +" + df.format(d.getValue() * 100) + "%\n");
@@ -127,11 +127,11 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 
 	private void addPalierInfo(FlowLayout parent, StatsRole role, int palier, int level, boolean unlocked) {
 		var mods = role.getPalierInfos(palier);
-		if (mods != null) {
+		if(mods != null) {
 			parent.child(Components.label(DrawUtils.textTranslated(GreenResurgence.ID + ".gui.stats.palier.title", unlocked ? DrawUtils.ORANGE : DrawUtils.WHITE, palier + 1, level)).horizontalSizing(Sizing.fill(90)));
 			DecimalFormat df = new DecimalFormat("0.#");
 			var text = DrawUtils.whiteText("");
-			for (var p : mods.getModifiers().entrySet()) {
+			for(var p : mods.getModifiers().entrySet()) {
 				var d = p.getValue();
 				text = text.append(" - ").append(DrawUtils.whiteTextTranslated(p.getKey().getTranslationKey()));
 				text = text.append(": +" + df.format(d.getValue() * 100) + "%\n");
@@ -145,9 +145,9 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 		var player = client.player;
 		var pdata = player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_DATA);
 		parent.clear();
-		parent.child(statLabel("Vie  ", pdata.healthManager.getHealthAmount(), pdata.healthManager.getMaxHealthAmount()));
+		parent.child(statLabel("Vie  ", pdata.healthManager.getHealthAmount() * 5f, pdata.healthManager.getMaxHealthAmount() * 5f));
 		parent.child(statLabel("Infec ", 0f, 0f));
-		parent.child(statLabel("Shield", pdata.healthManager.getShieldAmount(), pdata.healthManager.getMaxShieldAmount()));
+		parent.child(statLabel("Shield", pdata.healthManager.getShieldAmount() * 5f, pdata.healthManager.getMaxShieldAmount() * 5f));
 		parent.child(Components.label(DrawUtils.whiteText("Faim   : Plein")).lineHeight(8));
 		parent.child(statLabel("Endu  ", pdata.healthManager.getEnergyAmount(), pdata.healthManager.getMaxEnergyAmount()));
 		parent.child(Components.label(DrawUtils.whiteText("Soif   : Plein")).lineHeight(8));

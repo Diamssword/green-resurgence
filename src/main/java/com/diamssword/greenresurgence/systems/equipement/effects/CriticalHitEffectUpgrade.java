@@ -36,7 +36,7 @@ public class CriticalHitEffectUpgrade implements IEquipmentEffect {
 			if(ctx.getLivingSource() instanceof PlayerEntity pl) {
 				cooldownProgress = pl.getComponent(Components.PLAYER_DATA).lastCooldownProgress;
 			}
-			if(cooldownProgress > 0.9f) { //only crit if weapon is 90% loaded CANT DO THAT
+			if(cooldownProgress > 0.9f) { //only crit if weapon is 90% loaded
 				var percent = ctx.getLevel(EquipmentEffects.CRITICAL_HIT).getLevel();
 				var damagePercent = ctx.getLevel(EquipmentEffects.CRITICAL_HIT).getLevel(DAMAGE_BONUS, 20);
 				if(percent > 0) {
@@ -70,7 +70,7 @@ public class CriticalHitEffectUpgrade implements IEquipmentEffect {
 
 	@Override
 	public void addTooltips(UpgradeActionContext ctx, AdvEquipmentSlot slot, List<Text> tooltip) {
-		if(slot == AdvEquipmentSlot.MAINHAND) {
+		if(slot == AdvEquipmentSlot.DISPLAY) {
 			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.percent", MODIFIER_FORMAT.format(ctx.getLevel(EquipmentEffects.CRITICAL_HIT).getLevel()), Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.critical.chance")).formatted(Formatting.BLUE));
 			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.percent.plus", MODIFIER_FORMAT.format(ctx.getLevel(EquipmentEffects.CRITICAL_HIT).getLevel(DAMAGE_BONUS, 20)), Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.critical.damage")).formatted(Formatting.BLUE));
 		}
