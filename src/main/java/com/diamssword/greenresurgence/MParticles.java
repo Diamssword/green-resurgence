@@ -14,6 +14,7 @@ import java.util.function.Function;
 public class MParticles {
 
 	public static final ParticleType<SporeParticleEffect> AIR_SPORE = register("air_spore", false, SporeParticleEffect.PARAMETERS_FACTORY, f -> SporeParticleEffect.CODEC);
+	public static final DefaultParticleType BLOOD = register("blood");
 
 	private static DefaultParticleType register(String name) {
 		return Registry.register(Registries.PARTICLE_TYPE, GreenResurgence.asRessource(name), FabricParticleTypes.simple());

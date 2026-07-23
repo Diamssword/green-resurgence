@@ -35,7 +35,6 @@ public class LangGenerator extends FabricLanguageProvider {
 	@Override
 	public void generateTranslations(TranslationBuilder translationBuilder) {
 		try {
-
 			for(GenericBlockSet set : GenericBlocks.sets) {
 				set.langGenerator(translationBuilder);
 			}
@@ -53,7 +52,15 @@ public class LangGenerator extends FabricLanguageProvider {
 					e.printStackTrace();
 				}
 			}
+			auto_name.forEach((k, v) -> {
 
+				try {
+					autoLocalize(translationBuilder, k, v);
+				} catch(Exception e) {
+					System.out.println("catch autoLocalize error");
+					e.printStackTrace();
+				}
+			});
 		} catch(Exception e) {
 			throw new RuntimeException("Failed to add existing language file!", e);
 		}
@@ -63,14 +70,14 @@ public class LangGenerator extends FabricLanguageProvider {
 		var i = name.lastIndexOf("/");
 		if(i > 0)
 			name = name.substring(i + 1);
-		builder.add("item." + id.getNamespace() + "." + id.getPath().replaceAll("/", "."), capitalizeString(name.replaceAll("_", " ")));
+		builder.add("item." + id.getNamespace() + "." + id.getPath().replace("/", "."), capitalizeString(name.replace("_", " ")));
 	}
 
 	public static String autoLocalizeString(String name) {
 		var i = name.lastIndexOf("/");
 		if(i > 0)
 			name = name.substring(i + 1);
-		return capitalizeString(name.replaceAll("_", " "));
+		return capitalizeString(name.replace("_", " "));
 	}
 
 	public static String capitalizeString(String string) {

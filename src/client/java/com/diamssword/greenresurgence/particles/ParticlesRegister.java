@@ -11,6 +11,7 @@ public class ParticlesRegister {
 
 	public static void init() {
 		ParticleFactoryRegistry.getInstance().register(MParticles.AIR_SPORE, SporeParticle.SporeBlossomAirFactory::new);
+		ParticleFactoryRegistry.getInstance().register(MParticles.BLOOD, BloodParticle.Factory::new);
 	/*	ClientTickEvents.END_WORLD_TICK.register(w -> {
 			if(w.getTime() % 500 == 0) {
 				AAALevel.addParticle(w, HERALD.clone().position(-20, 70, 123));

@@ -12,5 +12,9 @@ public interface SubPanel {
 
 	boolean isFullHeight();
 
-	void build(FlowLayout root, PlayerBasedGui<?> gui, boolean fullSize);
+	boolean canOpen(int availableSpace);
+
+	default void panelTick() {}
+
+	void build(FlowLayout root, PlayerBasedGui<?> gui, boolean fullSize, int maxWidth);
 }

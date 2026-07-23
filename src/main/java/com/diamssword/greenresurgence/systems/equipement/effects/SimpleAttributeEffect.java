@@ -13,7 +13,7 @@ import java.util.function.Function;
 
 public class SimpleAttributeEffect implements IEquipmentEffect {
 	private final String id;
-	private final EntityAttribute attribute;
+	public final EntityAttribute attribute;
 	private final UUID modifierID;
 	private final EntityAttributeModifier.Operation operation;
 	private final Function<Float, Float> levelBinder;

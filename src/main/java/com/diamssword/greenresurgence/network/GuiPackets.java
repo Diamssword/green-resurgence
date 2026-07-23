@@ -155,7 +155,7 @@ public class GuiPackets {
 						CustomPlayerInventory.openInventoryScreen(ctx.player());
 				}
 				case Crawl -> {
-					if(ComponentManager.getPlayerDatas(ctx.player()).getStats().getLevel("survivant") >= 10) {
+					if(ctx.player().isCreative() || ComponentManager.getPlayerDatas(ctx.player()).getStats().getLevel("survivant") >= 10) {
 						var dt = ctx.player().getComponent(Components.PLAYER_DATA);
 						dt.setForcedPose(dt.getPose() == EntityPose.SWIMMING ? EntityPose.STANDING : EntityPose.SWIMMING);
 					}

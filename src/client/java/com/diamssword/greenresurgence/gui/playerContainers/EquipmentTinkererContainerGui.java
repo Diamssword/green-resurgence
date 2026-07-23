@@ -7,12 +7,16 @@ import com.diamssword.greenresurgence.gui.components.InventoryComponent;
 import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinItem;
 import com.diamssword.greenresurgence.systems.equipement.*;
 import com.diamssword.greenresurgence.utils.Utils;
+import io.wispforest.owo.ui.component.LabelComponent;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.container.GridLayout;
+import io.wispforest.owo.ui.container.ScrollContainer;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
+import io.wispforest.owo.ui.core.Surface;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -21,19 +25,25 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+
 public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScreenHandler> {
 
 	public ItemStack stack;
+
 	private @Nullable BetterEntityComponent<ItemEntity> stackDp;
+	private LabelComponent tooltipDp;
 
 	public EquipmentTinkererContainerGui(EquipmentScreenHandler handler, PlayerInventory inv, Text title) {
 		super(handler, "survival/equipment_editor");
 		this.setSubScreenSize(50);
 	}
 
+
 	@Override
 	protected void handledScreenTick() {
 		super.handledScreenTick();
+
 		if(handler.isReady() && stackDp != null) {
 			var s = handler.getInventory("tool_slot").getInventory().getStack(0);
 			if(s.getItem() instanceof IEquipmentBlueprint bp) {
@@ -54,6 +64,20 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 
 			}
 			stackDp.entity().setStack(s);
+			if(tooltipDp != null) {
+				if(!s.isEmpty()) {
+					var ls = new ArrayList<Text>();
+					s.getItem().appendTooltip(s, client.world, ls, TooltipContext.BASIC);
+					var text = Text.empty();
+					ls.forEach(t -> {
+						text.append(t).append("\n");
+					});
+					tooltipDp.text(text);
+					((ScrollContainer) tooltipDp.parent()).surface(Surface.TOOLTIP);
+				} else
+					((ScrollContainer) tooltipDp.parent()).surface(Surface.BLANK);
+			}
+
 		}
 	}
 
@@ -62,6 +86,7 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 		super.build(rootComponent);
 		var panel = rootComponent.childById(FlowLayout.class, "upgrades_panel");
 		stackDp = rootComponent.childById(BetterEntityComponent.class, "stack_display");
+		tooltipDp = rootComponent.childById(LabelComponent.class, "tooltip");
 
 		var contL = Containers.verticalFlow(Sizing.content(), Sizing.content());
 		contL.margins(Insets.vertical(5));
@@ -109,15 +134,49 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 	}
 
 	private static GridLayout simpleGridSlotSetup(IEquipmentDef equipment, String[] slots) {
-		if(slots.length == 7 || slots.length == 8) {
+		if(equipment.getEquipmentType().equals("blade") && equipment.getEquipmentSubtype().equals("induction")) {
+			var grid = Containers.grid(Sizing.content(), Sizing.content(), 4, 3);
+			grid.padding(Insets.of(2));
+			int x, y = 0;
+			for(int i = 0; i < slots.length; i++) {
+				var slot = slots[i];
+				if(slot.equals("skin")) {
+					x = 1;
+					y = 2;
+				} else if(slot.startsWith("extra2"))
+					x = 2;
+				else if(slot.startsWith("extra"))
+					x = 1;
+				else
+					x = 0;
+				if(slot.contains("binding"))
+					y = 1;
+				else if(slot.contains("battery"))
+					y = 2;
+				else if(slot.contains("handle"))
+					y = 3;
+				else if(slot.contains("head"))
+					y = 0;
+				InventoryComponent comp = new InventoryComponent("0_equipment_" + slot, 1, 1, "disabled");
+				comp.margins(Insets.of(1));
+
+				var texture = slot;
+				if(slot.startsWith("extra"))
+					texture = "extra";
+				comp.setIcon(0, GreenResurgence.asRessource("textures/gui/slots/indicators/equipment_" + texture + ".png"));
+
+				grid.child(comp, y, x);
+			}
+			return grid;
+		} else if(slots.length == 7 || slots.length == 8) {
 			var b = slots.length == 7;
 			var grid = Containers.grid(Sizing.content(), Sizing.content(), 4, b ? 2 : 3);
 			grid.padding(Insets.of(2));
 			for(int i = 0; i < slots.length; i++) {
 				var slot = slots[i];
+
 				var x = i < 4 ? 0 : (i > 6 ? 2 : 1);
 				var y = 0;
-				//if(i != 0) {
 				if(slot.equals("skin"))
 					x = y = 0;
 				else if(slot.endsWith("head"))
@@ -126,15 +185,12 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 					y = 2;
 				else
 					y = 3;
-				//}
 				InventoryComponent comp = new InventoryComponent("0_equipment_" + slot, 1, 1, "disabled");
 				comp.margins(Insets.of(1));
 
 				var texture = slot;
 				if(slot.startsWith("extra"))
-					texture = "skin";
-				if(slot.equals(Equipments.P_HEAD))
-					texture = equipment.getEquipmentType();
+					texture = "extra";
 				comp.setIcon(0, GreenResurgence.asRessource("textures/gui/slots/indicators/equipment_" + texture + ".png"));
 
 				grid.child(comp, y, x);
@@ -151,9 +207,7 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 
 				var texture = slot;
 				if(slot.startsWith("extra"))
-					texture = "skin";
-				if(slot.equals(Equipments.P_HEAD))
-					texture = equipment.getEquipmentType();
+					texture = "extra";
 				comp.setIcon(0, GreenResurgence.asRessource("textures/gui/slots/indicators/equipment_" + texture + ".png"));
 
 				grid.child(comp, i, 0);

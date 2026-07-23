@@ -10,7 +10,6 @@ import com.diamssword.greenresurgence.items.helpers.BatteryStorageHelper;
 import com.diamssword.greenresurgence.items.helpers.DurabilityStorageHelper;
 import com.diamssword.greenresurgence.items.helpers.GasStorageHelper;
 import com.diamssword.greenresurgence.items.helpers.ItemStorageHelper;
-import com.diamssword.greenresurgence.items.weapons.GeckoActivated;
 import com.diamssword.greenresurgence.particles.ParticlesRegister;
 import com.diamssword.greenresurgence.render.blockEntityRenderer.*;
 import com.diamssword.greenresurgence.render.cosmetics.ModularArmorLayerRenderer;
@@ -47,7 +46,6 @@ public class RenderersRegister {
 				Equipments.getEquipment(Equipments.TYPE_ARMOR, ArmorItem.Type.HELMET.getName()).get().getEquipmentItem(), Equipments.getEquipment(Equipments.TYPE_ARMOR, ArmorItem.Type.CHESTPLATE.getName()).get().getEquipmentItem(), Equipments.getEquipment(Equipments.TYPE_ARMOR, ArmorItem.Type.LEGGINGS.getName()).get().getEquipmentItem(), Equipments.getEquipment(Equipments.TYPE_ARMOR, ArmorItem.Type.BOOTS.getName()).get().getEquipmentItem()
 		);
 		ModularArmorItem.ProviderFunction = ModularArmorRenderer::RendererProvider;
-		GeckoActivated.ProviderFunction = GeckoItemRenderer::RendererProvider;
 		StackBasedGeckoItem.ProviderFunction = GeckoToolEquipmentRenderer::RendererProvider;
 		EquipmentSkinItem.ProviderFunction = GeckoToolEquipmentRenderer::RendererProvider;
 		BackPackItem.ProviderFunction = BackpackArmorRenderer::RendererProvider;

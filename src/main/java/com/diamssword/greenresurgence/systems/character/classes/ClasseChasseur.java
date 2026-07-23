@@ -1,14 +1,18 @@
 package com.diamssword.greenresurgence.systems.character.classes;
 
 import com.diamssword.greenresurgence.systems.attributs.Attributes;
+import com.diamssword.greenresurgence.utils.TextUtils;
 import com.google.gson.JsonObject;
 import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.text.Text;
 
-public class ClasseChasseur extends com.diamssword.characters.api.stats.StatsRole {
+import java.util.List;
+
+public class ClasseChasseur extends com.diamssword.characters.api.stats.StatsRole implements IClasseAdditionalTooltips {
 
 	public ClasseChasseur(String id, JsonObject data) {
 		super(id, data);
@@ -27,9 +31,18 @@ public class ClasseChasseur extends com.diamssword.characters.api.stats.StatsRol
 	@Override
 	public void onLevelChange(PlayerEntity pl, int level) {
 		super.onLevelChange(pl, level);
-		if(level == 10)
+		if(level == 10) {
 			if(!pl.giveItemStack(new ItemStack(Items.BOW)))
 				pl.dropItem(Items.BOW);
+			if(!pl.giveItemStack(new ItemStack(Items.ARROW, 64)))
+				pl.dropItem(Items.ARROW, 64);
+		}
+	}
+
+	@Override
+	public void getTextForLevel(PlayerEntity player, int palier, List<Text> lines) {
+		if(palier == 0)
+			lines.add(TextUtils.whiteText("Get a bow"));
 	}
 
 	private void eventsRegister() {

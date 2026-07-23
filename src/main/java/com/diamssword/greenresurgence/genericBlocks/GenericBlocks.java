@@ -185,7 +185,7 @@ public class GenericBlocks {
 				.addSub(BlockType.PILLAR, ModelType.CARPET, HitBox.CARPET).notSolid().setTransparency(Transparency.CUTOUT).disableGen(true).addGroup("shower");
 		diams.create("pendantlight_rattan_light", "pendantlight_rattan_dark").addSub(BlockType.PILLAR).togglable().light(13).setTransparency(Transparency.CUTOUT).addGroup("lamps").disableGen(true);
 		diams.create("trash_can_round_green", "trash_can_round_iron", "dino_meat_mascot", "trash_can_fast_food_red", "trash_can_fast_food_green", "trash_can_fast_food_gray", "trash_can_fast_food_black", "trash_can_square_exterior_wood", "trash_can_square_exterior_green", "restaurant_display_light", "restaurant_display_dark").addSub(BlockType.PILLAR).setTransparency(Transparency.CUTOUT).disableGen(true);
-		diams.create(simpleList("luggage_", "", "antique_small_brown", "antique_small_white", "basket", "basket_stand", "picnic")).addSub(BlockType.PILLAR, ModelType.SLAB, HitBox.SLAB).setTransparency(Transparency.NOTFULL).disableGen(true);
+		diams.create(simpleList("luggage_", "", "antique_small_brown", "antique_small_white", "basket", "basket_stand", "picnic")).addSub(BlockType.PILLAR, ModelType.SLAB, HitBox.FIXED_SLAB).setTransparency(Transparency.NOTFULL).disableGen(true);
 		diams.create(append(simpleList("bathtub_", new String[]{"right_", "left_"}, new String[]{"empty", "water"}))).addSub(BlockType.PILLAR, ModelType.SLAB).setTransparency(Transparency.CUTOUT).seat(CHAIR_SLAB).disableGen(true);
 		//baricade
 		diams.create(simpleList("plank_barricade_", new String[]{"simple_", "heavy_", "diaguonal_", "cross_up_", "cross_down_"}, new String[]{"oak", "spruce"})).addSub(BlockType.OMNI_BLOCK, ModelType.CARPET, HitBox.CARPET).setTransparency(Transparency.NOTFULL).disableGen(true);

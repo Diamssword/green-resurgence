@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.systems.character;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.effects.BleedingStatutEffect;
 import com.diamssword.greenresurgence.systems.attributs.AttributeModifiers;
 import com.diamssword.greenresurgence.systems.attributs.Attributes;
 import net.minecraft.entity.EquipmentSlot;
@@ -82,8 +83,10 @@ public class HealthManager {
 		if(refreshTicks == 0 && !player.getWorld().isClient) {PlayerData.syncHUD(player);}
 		if(player instanceof ServerPlayerEntity pl && pl.interactionManager.getGameMode().isSurvivalLike()) {
 			if(contaminationTickTimer > 200) {
-				if(contaminationAmount > 0) {
-					contaminationAmount = Math.min(getMaxContaminationAmount(), Math.max(0, contaminationAmount + passiveContaminationSpeed));
+
+				var val = Math.min(getMaxContaminationAmount(), Math.max(0, contaminationAmount + passiveContaminationSpeed));
+				if(contaminationAmount != val) {
+					contaminationAmount = val;
 					markDirty();
 				}
 			} else
@@ -209,7 +212,7 @@ public class HealthManager {
 	}
 
 	public static boolean damageByPassShield(DamageSource source) {
-		return source.isOf(DamageTypes.CACTUS) || source.isOf(DamageTypes.FREEZE) ||
+		return source.isOf(BleedingStatutEffect.BLEEDING_DAMAGE) || source.isOf(DamageTypes.CACTUS) || source.isOf(DamageTypes.FREEZE) ||
 				source.isOf(DamageTypes.BAD_RESPAWN_POINT) || source.isOf(DamageTypes.DROWN) ||
 				source.isOf(DamageTypes.CRAMMING) || source.isOf(DamageTypes.DRAGON_BREATH) ||
 				source.isOf(DamageTypes.FALL) || source.isOf(DamageTypes.FLY_INTO_WALL) ||

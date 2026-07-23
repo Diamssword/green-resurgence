@@ -1,9 +1,9 @@
 package com.diamssword.greenresurgence.items.equipment.upgrades;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.items.equipment.EquipmentUpgradeItem;
 import com.diamssword.greenresurgence.items.helpers.HiddenStorageHelper;
 import com.diamssword.greenresurgence.systems.equipement.utils.IOnUpgradeBreak;
+import com.diamssword.greenresurgence.systems.equipement.utils.TooltipHelper;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.ClickType;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,6 +53,6 @@ public class EquipmentHidenSlotUpgrade extends EquipmentUpgradeItem implements I
 	@Override
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
 		super.appendTooltip(stack, world, tooltip, context);
-		tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.hidden_compartment", this.storage.maxItems));
+		tooltip.add(TooltipHelper.tooltipEffectWithExtra("hidden_compartment", GreenResurgence.clientHelper.isShiftPressed(), null, this.storage.maxItems).formatted(Formatting.AQUA));
 	}
 }

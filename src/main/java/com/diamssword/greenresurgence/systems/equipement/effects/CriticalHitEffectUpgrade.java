@@ -20,7 +20,7 @@ import java.util.Random;
 import static net.minecraft.item.ItemStack.MODIFIER_FORMAT;
 
 public class CriticalHitEffectUpgrade implements IEquipmentEffect {
-	private Random random = new Random();
+	private final Random random = new Random();
 
 	public static final String DAMAGE_BONUS = "damage";
 

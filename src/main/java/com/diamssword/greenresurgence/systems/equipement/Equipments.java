@@ -28,6 +28,8 @@ public class Equipments {
 	public static final String P_SKIN = "skin";
 	public static final String P_HEAD = "head";
 	public static final String P_BINDING = "binding";
+	public static final String P_HANDLE = "handle";
+
 	public static final String P_FRAME = "frame";
 	public static final String P_PLATING = "plating";
 	public static final String P_PADDING = "padding";
@@ -39,10 +41,10 @@ public class Equipments {
 	public static final String P_HANDLE_EXTRA_2 = "extra2_handle";
 	public static final String P_HEAD_EXTRA_2 = "extra2_head";
 
-	public static final String P_SPIKE = "spike";
 	public static final String P_BATTERY = "battery";
-	public static final String P_HANDLE = "handle";
-	public static final String P_EXTRA = "extra";
+	public static final String P_CHASSIS = "chassis";
+	public static final String P_MOTOR = "motor";
+	public static final String P_CHAIN = "chain";
 	public static final String[] REQUIRED_SLOTS = new String[]{P_HEAD, P_BINDING, P_HANDLE};
 	public static final String[] REQUIRED_SLOTS_ARMOR = new String[]{P_SKIN, P_FRAME, P_PADDING, P_PLATING};
 
@@ -50,6 +52,7 @@ public class Equipments {
 		register(TYPE_BLADE, "short", EquipmentValues.SMALL_BLADE_BASE, REQUIRED_SLOTS, ExtraSlots());
 		register(TYPE_BLADE, "medium", EquipmentValues.MEDIUM_BLADE_BASE, REQUIRED_SLOTS, ExtraSlots());
 		register(TYPE_BLADE, "long", EquipmentValues.LONG_BLADE_BASE, REQUIRED_SLOTS, ExtraSlots(P_HEAD_EXTRA_2));
+		register(TYPE_BLADE, "induction", EquipmentValues.INDUCTION_BLADE_BASE, new String[]{P_HEAD, P_BINDING, P_BATTERY, P_HANDLE}, ExtraSlots(P_BINDING_EXTRA_2));
 
 		register(TYPE_HAMMER, "short", EquipmentValues.SMALL_HAMMER_BASE, REQUIRED_SLOTS, ExtraSlots());
 		register(TYPE_HAMMER, "medium", EquipmentValues.MEDIUM_HAMMER_BASE, REQUIRED_SLOTS, ExtraSlots());
@@ -59,8 +62,7 @@ public class Equipments {
 		register(TYPE_SPIKE, "medium", EquipmentValues.MEDIUM_SPIKE_BASE, REQUIRED_SLOTS, ExtraSlots());
 		register(TYPE_SPIKE, "long", EquipmentValues.LONG_SPIKE_BASE, REQUIRED_SLOTS, ExtraSlots(P_HANDLE_EXTRA_2));
 
-		register(TYPE_ELECTRIC, "cutter", new HashMap<>(), new String[]{P_SKIN, P_BATTERY}, P_EXTRA);
-		register(TYPE_ELECTRIC, "hot", new HashMap<>(), new String[]{P_SKIN, P_BATTERY}, P_EXTRA);
+		register(TYPE_ELECTRIC, "cutter", EquipmentValues.CHAINSAW_BASE, new String[]{P_CHAIN, P_MOTOR, P_CHASSIS, P_BATTERY}, new String[]{P_SKIN});
 		registerArmor(TYPE_ARMOR, ArmorItem.Type.HELMET, new HashMap<>(), REQUIRED_SLOTS_ARMOR);
 		registerArmor(TYPE_ARMOR, ArmorItem.Type.CHESTPLATE, new HashMap<>(), REQUIRED_SLOTS_ARMOR);
 		registerArmor(TYPE_ARMOR, ArmorItem.Type.LEGGINGS, new HashMap<>(), REQUIRED_SLOTS_ARMOR);
@@ -121,11 +123,11 @@ public class Equipments {
 
 		if(subType.equals("long")) {
 			gen = (e, f) -> new EquipmentTwoHanded(e, f, bases);
-		} else if(type.equals("electric")) {
-			if(subType.equals("cutter"))
-				gen = (a, b) -> new EquipmentToolElectricTwoHanded(a, b, false);
-			else
-				gen = (a, b) -> new EquipmentToolElectric(a, b, true);
+		} else if(type.equals(TYPE_BLADE) && subType.equals("induction"))
+			gen = (a, b) -> new EquipmentToolElectric(a, b, bases, true);
+
+		else if(type.equals("electric")) {
+			gen = (a, b) -> new EquipmentToolElectricTwoHanded(a, b, bases, false);
 		}
 		var equ = new EquipmentDef(type, subType, AdvEquipmentSlot.MAINHAND, gen, requiredSlots, extraSlots);
 		if(type.equals(TYPE_BLADE))

@@ -11,9 +11,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class Lootables {
-	/*
-	Le temps de refresh d'un block en millisecondes (7J ici)
-	 */
 	public static LootablesReloader loader = new LootablesReloader();
 	public static final TagKey<Item> WRENCH = createTool("wrench");
 	public static final TagKey<Item> HAMMER = createTool("hammer");

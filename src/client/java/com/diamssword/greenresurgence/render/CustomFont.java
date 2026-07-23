@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.render;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.mixin.client.ClientAccessor;
 import com.diamssword.greenresurgence.mixin.client.FontManagerAccessor;
+import com.diamssword.greenresurgence.utils.TextUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
 import net.minecraft.client.font.TextRenderer;
@@ -17,9 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class CustomFont {
 
 	private static final MinecraftClient mc = MinecraftClient.getInstance();
-	public static final Identifier LILITA_ONE = new Identifier("lilita_one");
-	public static final Identifier LILITA_ONE_TITLE = new Identifier("lilita_one_title");
-	private static final List<Identifier> toLoad = List.of(LILITA_ONE, LILITA_ONE_TITLE);
+	private static final List<Identifier> toLoad = List.of(TextUtils.LILITA_ONE, TextUtils.LILITA_ONE_TITLE);
 	private static final Map<Identifier, TextRenderer> fonts = new HashMap<>();
 
 	private static Pair<TextRenderer, Boolean> getTextRenderer(Identifier identifier) {
@@ -27,7 +26,7 @@ public abstract class CustomFont {
 		AtomicBoolean d = new AtomicBoolean(false);
 		TextRenderer tr = new TextRenderer(id -> {
 			FontStorage storage = fma.getFontStorages().getOrDefault(identifier, fma.getFontStorages().getOrDefault(new Identifier("default"), fma.getMissingStorage()));
-			if (storage == fma.getFontStorages().get(new Identifier("default"))) {
+			if(storage == fma.getFontStorages().get(new Identifier("default"))) {
 				d.set(true);
 			}
 			return storage;
@@ -42,7 +41,7 @@ public abstract class CustomFont {
 	private static TextRenderer loadFont(Identifier id) {
 		Pair<TextRenderer, Boolean> textRendererAndDefault = getTextRenderer(id);
 		var renderer = textRendererAndDefault.getLeft();
-		if (textRendererAndDefault.getRight()) {
+		if(textRendererAndDefault.getRight()) {
 			GreenResurgence.LOGGER.error("Error initializing TTF renderer for " + id + ", defaulting to minecraft font");
 			return mc.textRenderer;
 		}
@@ -51,7 +50,7 @@ public abstract class CustomFont {
 
 	public static void initTextRenderer() {
 		fonts.clear();
-		for (var i : toLoad) {
+		for(var i : toLoad) {
 			fonts.put(i, loadFont(i));
 		}
 	}

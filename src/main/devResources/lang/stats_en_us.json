@@ -2,6 +2,7 @@
   "green_resurgence.gui.stats.global_bonus": "Global Bonus :",
   "green_resurgence.gui.stats.palier.title": "Threshold %d (Lvl %d) :",
   "green_resurgence.gui.stats.desc.brute": "La brute est là pour casser des trucs, que ce soit des gueules ou des meubles. Ce sont des montagnes de muscles qui peuvent utiliser leur force de multiples manières.",
+  "green_resurgence.gui.stats.global_bonus.per_level": " (%d%%/Lvl):",
   "attribute.name.green_resurgence.max_shield": "Max Shield",
   "attribute.name.green_resurgence.max_contamination": "Max Contamination",
   "attribute.name.green_resurgence.max_energy": "Max Energy",
@@ -9,5 +10,8 @@
   "attribute.name.green_resurgence.craft_speed": "Craft Speed",
   "attribute.name.green_resurgence.player_knockback": "Knockback Power",
   "attribute.name.green_resurgence.alcool_resistance": "Alcool Resistance",
-  "attribute.name.green_resurgence.contamination_reduction": "Contamination Reduction"
+  "attribute.name.green_resurgence.contamination_reduction": "Contamination Reduction",
+  "attribute.name.green_resurgence.fall_damage_reduction": "Fall Reduction",
+  "attribute.name.green_resurgence.threat_multiplier": "Threat Level"
+
 }

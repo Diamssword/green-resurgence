@@ -11,6 +11,8 @@ import com.diamssword.greenresurgence.gui.components.PlayerComponent;
 import com.diamssword.greenresurgence.gui.components.hud.BarComponent;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.StatsPackets;
+import com.diamssword.greenresurgence.systems.character.classes.IClasseAdditionalTooltips;
+import com.diamssword.greenresurgence.utils.TextUtils;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
@@ -24,6 +26,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 
@@ -51,10 +54,10 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 
 		var chara = ComponentManager.getPlayerCharacter(MinecraftClient.getInstance().player).getCurrentCharacter();
 		if(chara != null) {
-			np.child(Components.label(DrawUtils.whiteText(chara.stats.firstname + " " + chara.stats.lastname)).lineHeight(8));
-			np.child(Components.label(DrawUtils.whiteText(chara.stats.origine)).lineHeight(8));
-			np.child(Components.label(DrawUtils.whiteText(chara.stats.faction)).lineHeight(8));
-			np.child(Components.label(DrawUtils.whiteText(chara.stats.job)).lineHeight(8));
+			np.child(Components.label(TextUtils.whiteText(chara.stats.firstname + " " + chara.stats.lastname)).lineHeight(8));
+			np.child(Components.label(TextUtils.whiteText(chara.stats.origine)).lineHeight(8));
+			np.child(Components.label(TextUtils.whiteText(chara.stats.faction)).lineHeight(8));
+			np.child(Components.label(TextUtils.whiteText(chara.stats.job)).lineHeight(8));
 		}
 		var pane = root.childById(FlowLayout.class, "listPanel");
 		for(var k : CharactersApi.stats().getRoles().keySet()) {
@@ -64,7 +67,7 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 			var r = CharactersApi.stats().getRole(k);
 			var dtC = ComponentManager.getPlayerDatas(client.player);
 			c.onPress(v -> loadInfos(root.childById(FlowLayout.class, "infosPanel"), k, r.get()));
-			c.child(Components.label(DrawUtils.whiteTitle(r.get().name + "   Niv." + dtC.getStats().getLevel(k))).horizontalSizing(Sizing.fill(80)));
+			c.child(Components.label(TextUtils.whiteTitle(r.get().name + "   Niv." + dtC.getStats().getLevel(k))).horizontalSizing(Sizing.fill(80)));
 			var btr = ButtonComponent.Renderer.texture(GreenResurgence.asRessource("textures/gui/dice.png"), 0, 0, 20, 40);
 			var bt = io.wispforest.owo.ui.component.Components.button(Text.literal("\uD83C\uDFB2"), (r1) -> {
 				Channels.MAIN.clientHandle().send(new StatsPackets.RollStat(k));
@@ -72,7 +75,7 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 			});
 			bt.sizing(Sizing.fixed(16));
 			//bt.renderer(btr);
-			bt.tooltip(DrawUtils.whiteText("Lancer un dés"));
+			bt.tooltip(Text.literal("Lancer un dé"));
 			c.child(bt);
 			pane.child(c);
 		}
@@ -84,13 +87,14 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 	private void loadInfos(FlowLayout parent, String roleId, StatsRole role) {
 		var st = ComponentManager.getPlayerDatas(client.player).getStats();
 		parent.clearChildren();
-		parent.child(Components.label(DrawUtils.whiteTitle(role.name)));
+		parent.child(Components.label(TextUtils.whiteTitle(role.name)));
 		var bar = new BarComponent(GreenResurgence.asRessource("textures/gui/hud/stamina.png"), 0, 0, 256, 10, 256, 64, true);
 		bar.setFillPercent(CharactersApi.stats().percentOfXpForNext(client.player, roleId));
-		bar.tooltip(DrawUtils.whiteText(st.getXp(roleId) + "/" + CharactersApi.stats().getXpCostForLevel(st.getLevel(roleId) + 1) + " xp"));
+		bar.tooltip(TextUtils.whiteText(st.getXp(roleId) + "/" + CharactersApi.stats().getXpCostForLevel(st.getLevel(roleId) + 1) + " xp"));
 		bar.horizontalSizing(Sizing.fill(90));
+		parent.child(Components.label(TextUtils.whiteTitle("WIP")));
 		parent.child(bar);
-		parent.child(paragraph(DrawUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.stats.desc." + roleId)));
+		parent.child(paragraph(TextUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.stats.desc." + roleId)));
 		addGlobalModInfos(parent, role, st.getLevel(roleId));
 		var cur = st.getLevel(roleId);
 		for(var i = 0; i < role.stages.length; i++) {
@@ -114,12 +118,15 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 		var mods = role.getGlobalModifiers();
 		DecimalFormat df = new DecimalFormat("0.#");
 		if(!mods.isEmpty()) {
-			parent.child(Components.label(DrawUtils.textTranslated(GreenResurgence.ID + ".gui.stats.global_bonus", DrawUtils.ORANGE)).horizontalSizing(Sizing.fill(90)));
-			var text = DrawUtils.whiteText("");
+			parent.child(Components.label(TextUtils.textTranslated(GreenResurgence.ID + ".gui.stats.global_bonus", DrawUtils.ORANGE)).horizontalSizing(Sizing.fill(90)));
+			var text = TextUtils.whiteText("");
 			for(var p : mods.entrySet()) {
 				var d = p.getValue().apply(level);
-				text = text.append(" - ").append(DrawUtils.whiteTextTranslated(p.getKey().getTranslationKey()));
-				text = text.append(": +" + df.format(d.getValue() * 100) + "%\n");
+				text = text.append(TextUtils.whiteText(" - ")).append(TextUtils.whiteTextTranslated(p.getKey().getTranslationKey()));
+				text = text.append(TextUtils.whiteText(": +" + df.format(d.getValue() * 100) + "%"));
+				var d1 = p.getValue().apply(1);
+				text = text.append(TextUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.stats.global_bonus.per_level", df.format(d1.getValue() * 100)));
+				text = text.append("\n");
 			}
 			parent.child(paragraph(text));
 		}
@@ -127,17 +134,30 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 
 	private void addPalierInfo(FlowLayout parent, StatsRole role, int palier, int level, boolean unlocked) {
 		var mods = role.getPalierInfos(palier);
+		parent.child(Components.label(TextUtils.textTranslated(GreenResurgence.ID + ".gui.stats.palier.title", unlocked ? DrawUtils.ORANGE : DrawUtils.WHITE, palier + 1, level)).horizontalSizing(Sizing.fill(90)));
+		var text = TextUtils.whiteText("");
 		if(mods != null) {
-			parent.child(Components.label(DrawUtils.textTranslated(GreenResurgence.ID + ".gui.stats.palier.title", unlocked ? DrawUtils.ORANGE : DrawUtils.WHITE, palier + 1, level)).horizontalSizing(Sizing.fill(90)));
+
 			DecimalFormat df = new DecimalFormat("0.#");
-			var text = DrawUtils.whiteText("");
 			for(var p : mods.getModifiers().entrySet()) {
 				var d = p.getValue();
-				text = text.append(" - ").append(DrawUtils.whiteTextTranslated(p.getKey().getTranslationKey()));
-				text = text.append(": +" + df.format(d.getValue() * 100) + "%\n");
+				text = text.append(TextUtils.whiteText(" - ")).append(TextUtils.whiteTextTranslated(p.getKey().getTranslationKey()));
+				text = text.append(TextUtils.whiteText(": +" + df.format(d.getValue() * 100) + "%\n"));
 			}
-			parent.child(paragraph(text));
 		}
+		if(role instanceof IClasseAdditionalTooltips ctps) {
+			var ls = new ArrayList<Text>();
+			ctps.getTextForLevel(client.player, palier, ls);
+			if(!ls.isEmpty()) {
+				for(int i = 0; i < ls.size(); i++) {
+					text.append(TextUtils.whiteText(" - ").append(ls.get(i)));
+					if(i < ls.size() - 1)
+						text.append("\n");
+				}
+
+			}
+		}
+		parent.child(paragraph(text));
 	}
 
 	private void fillStats(FreeRowGridLayout parent) {
@@ -146,20 +166,20 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 		var pdata = player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_DATA);
 		parent.clear();
 		parent.child(statLabel("Vie  ", pdata.healthManager.getHealthAmount() * 5f, pdata.healthManager.getMaxHealthAmount() * 5f));
-		parent.child(statLabel("Infec ", 0f, 0f));
+		parent.child(statLabel("Infec ", pdata.healthManager.getContaminationAmount(), pdata.healthManager.getMaxContaminationAmount()));
 		parent.child(statLabel("Shield", pdata.healthManager.getShieldAmount() * 5f, pdata.healthManager.getMaxShieldAmount() * 5f));
-		parent.child(Components.label(DrawUtils.whiteText("Faim   : Plein")).lineHeight(8));
+		parent.child(Components.label(TextUtils.whiteText("Faim   : Plein")).lineHeight(8));
 		parent.child(statLabel("Endu  ", pdata.healthManager.getEnergyAmount(), pdata.healthManager.getMaxEnergyAmount()));
-		parent.child(Components.label(DrawUtils.whiteText("Soif   : Plein")).lineHeight(8));
+		parent.child(Components.label(TextUtils.whiteText("Soif   : Plein")).lineHeight(8));
 		parent.child(statLabel("Oxygen", player.getAir(), player.getMaxAir()));
-		parent.child(Components.label(DrawUtils.whiteText("Armure: " + player.getArmor())).lineHeight(8));
+		parent.child(Components.label(TextUtils.whiteText("Armure: " + player.getArmor())).lineHeight(8));
 
 
 	}
 
 	private LabelComponent statLabel(String text, double v1, double v2) {
 		DecimalFormat df = new DecimalFormat("0.#");
-		var c = Components.label(DrawUtils.whiteText(text + ": " + df.format(v1) + "/" + df.format(v2))).lineHeight(8);
+		var c = Components.label(TextUtils.whiteText(text + ": " + df.format(v1) + "/" + df.format(v2))).lineHeight(8);
 		c.margins(Insets.right(1));
 		return c;
 	}

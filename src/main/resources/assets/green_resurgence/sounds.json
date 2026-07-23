@@ -14,5 +14,20 @@
       "green_resurgence:bike_bell_1",
       "green_resurgence:bike_bell_2"
     ]
+  },
+    "item.button.click": {
+    "sounds": [
+      "green_resurgence:button_click"
+    ]
+  },
+   "item.chainsaw.idle": {
+    "sounds": [
+      "green_resurgence:chainsaw_idle"
+    ]
+  },
+     "item.chainsaw.cut": {
+    "sounds": [
+      "green_resurgence:chainsaw_cut"
+    ]
   }
 }

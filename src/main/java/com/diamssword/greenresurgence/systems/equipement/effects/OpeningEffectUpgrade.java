@@ -4,6 +4,7 @@ import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.effects.ResurgenceEffects;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.equipement.*;
+import com.diamssword.greenresurgence.systems.equipement.utils.TooltipHelper;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -30,7 +31,7 @@ public class OpeningEffectUpgrade implements IEquipmentEffect {
 			if(ctx.getLivingSource() instanceof PlayerEntity pl) {
 				cooldownProgress = pl.getComponent(Components.PLAYER_DATA).lastCooldownProgress;
 			}
-			if(cooldownProgress > 0.9f) { //only crit if weapon is 90% loaded CANT DO THAT
+			if(cooldownProgress > 0.9f) {
 				var lvl = ctx.getLevel(EquipmentEffects.OPENING).getLevel();
 				if(lvl > 0f) {
 					ctx.getTarget().addStatusEffect(new StatusEffectInstance(ResurgenceEffects.HAMMER_OPENING, (int) (lvl * 20), 0, false, false));
@@ -43,8 +44,11 @@ public class OpeningEffectUpgrade implements IEquipmentEffect {
 	@Override
 	public void addTooltips(UpgradeActionContext ctx, AdvEquipmentSlot slot, List<Text> tooltip) {
 		if(slot == AdvEquipmentSlot.MAINHAND || slot == AdvEquipmentSlot.DISPLAY) {
-			if(ctx.getLevel(EquipmentEffects.OPENING).getLevel() > 0f)
-				tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.effect", ResurgenceEffects.HAMMER_OPENING.getName(), Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.time", MODIFIER_FORMAT.format(ctx.getLevel(EquipmentEffects.OPENING).getLevel()))).formatted(Formatting.BLUE));
+			if(ctx.getLevel(EquipmentEffects.OPENING).getLevel() > 0f) {
+
+				tooltip.add(TooltipHelper.tooltipEffectWithExtra(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.effect", ResurgenceEffects.HAMMER_OPENING.getName(), Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.time", MODIFIER_FORMAT.format(ctx.getLevel(EquipmentEffects.OPENING).getLevel()))).formatted(Formatting.LIGHT_PURPLE),
+						Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.tooltip.extra.opening_effect"), ctx.needShowExtra()));
+			}
 		}
 
 	}

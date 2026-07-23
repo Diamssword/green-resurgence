@@ -1,8 +1,8 @@
 package com.diamssword.greenresurgence.systems.character;
 
 import com.diamssword.greenresurgence.events.PlayerTickEvent;
+import com.diamssword.greenresurgence.items.equipment.ICustomPoseWeapon;
 import com.diamssword.greenresurgence.items.helpers.ISimpleEnergyItemTiered;
-import com.diamssword.greenresurgence.items.weapons.ICustomPoseWeapon;
 import com.diamssword.greenresurgence.systems.Components;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 

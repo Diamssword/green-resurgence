@@ -1,17 +1,17 @@
 package com.diamssword.greenresurgence.systems.character.customPoses;
 
-import com.diamssword.greenresurgence.items.weapons.ICustomPoseWeapon;
+import com.diamssword.greenresurgence.items.equipment.ICustomPoseWeapon;
 import net.minecraft.entity.player.PlayerEntity;
 
-public class TwoHandWield implements IPlayerCustomPose{
+public class TwoHandWield implements IPlayerCustomPose {
 
-    public TwoHandWield(PlayerEntity player) {
+	public TwoHandWield(PlayerEntity player) {
 
-    }
+	}
 
 
-    @Override
-    public boolean shouldExitPose(PlayerEntity player) {
-        return !(player.getMainHandStack().getItem() instanceof ICustomPoseWeapon);
-    }
+	@Override
+	public boolean shouldExitPose(PlayerEntity player) {
+		return !(player.getMainHandStack().getItem() instanceof ICustomPoseWeapon);
+	}
 }

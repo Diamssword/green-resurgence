@@ -5,6 +5,7 @@ import com.diamssword.greenresurgence.entities.ThrownWeaponEntity;
 import com.diamssword.greenresurgence.items.StackBasedGeckoItem;
 import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentHidenSlotUpgrade;
 import com.diamssword.greenresurgence.systems.equipement.*;
+import com.diamssword.greenresurgence.systems.equipement.effects.ThrowableEffectUpgrade;
 import com.google.common.collect.Multimap;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.fabricmc.fabric.api.item.v1.FabricItem;
@@ -82,20 +83,22 @@ public class EquipmentTool extends StackBasedGeckoItem implements FabricItem, IE
 
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
-		if(getEffectLevel(stack, EquipmentEffects.LOYALTY) > 0)
+		if(getEffectLevel(stack, EquipmentEffects.THROWABLE) > 0)
 			return UseAction.SPEAR;
 		return super.getUseAction(stack);
 	}
 
 	@Override
 	public int getMaxUseTime(ItemStack stack) {
-		return getEffectLevel(stack, EquipmentEffects.LOYALTY) > 0 ? 72000 : super.getMaxUseTime(stack);
+		return getEffectLevel(stack, EquipmentEffects.THROWABLE) > 0 ? 72000 : super.getMaxUseTime(stack);
 	}
 
 	@Override
 	public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-		var loy = getEffectLevel(stack, EquipmentEffects.LOYALTY);
-		if(user instanceof PlayerEntity playerEntity && loy > 0) {
+		var effl = getEquipmentStack(stack).getEffects().get(EquipmentEffects.THROWABLE);
+
+		if(user instanceof PlayerEntity playerEntity && effl.getLevel() > 0) {
+			var loy = effl.getLevel(ThrowableEffectUpgrade.MAGNETISM, 0f);
 			int i = this.getMaxUseTime(stack) - remainingUseTicks;
 			if(i >= 10) {
 				int speedBoost = 1;
@@ -123,7 +126,7 @@ public class EquipmentTool extends StackBasedGeckoItem implements FabricItem, IE
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 
 		ItemStack itemStack = user.getStackInHand(hand);
-		if(getEffectLevel(itemStack, EquipmentEffects.LOYALTY) == 0)
+		if(getEffectLevel(itemStack, EquipmentEffects.THROWABLE) == 0)
 			return super.use(world, user, hand);
 		else {
 
@@ -136,17 +139,18 @@ public class EquipmentTool extends StackBasedGeckoItem implements FabricItem, IE
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
 		super.inventoryTick(stack, world, entity, slot, selected);
-		var eslot = AdvEquipmentSlot.UNKNOWN;
-		if(entity instanceof LivingEntity pl) {
-			if(pl.getMainHandStack() == stack)
-				eslot = AdvEquipmentSlot.MAINHAND;
-			else if(pl.getOffHandStack() == stack)
-				eslot = AdvEquipmentSlot.OFFHAND;
+		if(!world.isClient && entity.age % 10 == 0) {
+			var eslot = AdvEquipmentSlot.UNKNOWN;
+			if(entity instanceof LivingEntity pl) {
+				if(pl.getMainHandStack() == stack)
+					eslot = AdvEquipmentSlot.MAINHAND;
+				else if(pl.getOffHandStack() == stack)
+					eslot = AdvEquipmentSlot.OFFHAND;
 
+			}
+			if(eslot != AdvEquipmentSlot.UNKNOWN)
+				this.getEquipment(stack).onTick(entity, eslot);
 		}
-		//TODO enable if needed
-		//	this.getEquipment(stack).onTick(entity, eslot);
-
 	}
 
 	@Override
@@ -220,8 +224,8 @@ public class EquipmentTool extends StackBasedGeckoItem implements FabricItem, IE
 	}
 
 	@Override
-	public IUpgradableEquipment getEquipment(ItemStack stack) {
-		return new StackBasedEquipment(category, subCategory, stack, getBaseUpgrades());
+	public IUpgradableEquipment createEquipmentInstance(ItemStack stack) {
+		return new StackBasedEquipment(category, subCategory, stack, baseUpgrades);
 	}
 
 	public StackBasedEquipment getEquipmentStack(ItemStack stack) {

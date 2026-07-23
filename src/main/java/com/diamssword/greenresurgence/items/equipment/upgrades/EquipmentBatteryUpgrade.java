@@ -1,6 +1,5 @@
 package com.diamssword.greenresurgence.items.equipment.upgrades;
 
-import com.diamssword.greenresurgence.items.equipment.EquipmentUpgradeItem;
 import com.diamssword.greenresurgence.items.helpers.BatteryStorageHelper;
 import com.diamssword.greenresurgence.items.helpers.ISimpleBatteryHolder;
 import com.diamssword.greenresurgence.items.materials.BatteryTiers;

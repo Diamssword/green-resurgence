@@ -147,8 +147,9 @@ public class ModularArmorItem extends Item implements Equipment, FabricItem, Geo
 		return baseUpgrades;
 	}
 
+
 	@Override
-	public IUpgradableEquipment getEquipment(ItemStack stack) {
+	public IUpgradableEquipment createEquipmentInstance(ItemStack stack) {
 		return new StackBasedEquipment(category, subCategory, stack, getBaseUpgrades());
 	}
 

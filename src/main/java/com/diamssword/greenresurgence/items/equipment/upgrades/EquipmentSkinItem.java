@@ -2,7 +2,6 @@ package com.diamssword.greenresurgence.items.equipment.upgrades;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.MItems;
-import com.diamssword.greenresurgence.items.equipment.EquipmentUpgradeItem;
 import com.diamssword.greenresurgence.systems.equipement.EquipmentSkins;
 import com.diamssword.greenresurgence.systems.equipement.Equipments;
 import com.diamssword.greenresurgence.systems.equipement.IEquipmentDef;

@@ -29,6 +29,7 @@ public enum AdvEquipmentSlot {
 	SATCHEL_LEFT(Type.SATCHEL, 0, "satchel_left"),
 	SATCHEL_RIGHT(Type.SATCHEL, 1, "satchel_right"),
 	UNKNOWN(Type.UNKNOWN, 0, "unknown"),
+	ZONE(Type.HAND, 0, "zone"),
 	DISPLAY(Type.UNKNOWN, 0, "display");
 
 

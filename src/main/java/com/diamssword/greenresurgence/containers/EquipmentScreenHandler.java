@@ -157,7 +157,12 @@ public class EquipmentScreenHandler extends MultiInvScreenHandler {
 
 		@Override
 		public boolean canInsert(ItemStack stack) {
-			return stack.getItem() instanceof IEquipmentBlueprint || stack.getItem() instanceof IEquipementItem;
+			if(stack.getItem() instanceof IEquipmentBlueprint bp) {
+				return !bp.getEquipmentType().equals(Equipments.TYPE_ARMOR);
+			} else if(stack.getItem() instanceof IEquipementItem bp) {
+				return !bp.getEquipment(stack).getEquipmentType().equals(Equipments.TYPE_ARMOR);
+			}
+			return false;
 		}
 
 		public int getMaxItemCount() {

@@ -9,6 +9,7 @@
     "ClientPlayerAccessor",
     "ClientPlayerMixin",
     "ClientWorldMixin",
+    "DrawContextMixin",
     "FontManagerAccessor",
     "InGameHudMixin",
     "LivingRendererAccessor",

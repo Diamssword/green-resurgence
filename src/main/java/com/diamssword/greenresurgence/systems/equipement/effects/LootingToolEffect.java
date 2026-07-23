@@ -1,10 +1,10 @@
 package com.diamssword.greenresurgence.systems.equipement.effects;
 
-import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.systems.equipement.AdvEquipmentSlot;
 import com.diamssword.greenresurgence.systems.equipement.IEquipmentEffect;
 import com.diamssword.greenresurgence.systems.equipement.IEquipmentUpgrade;
 import com.diamssword.greenresurgence.systems.equipement.UpgradeActionContext;
+import com.diamssword.greenresurgence.systems.equipement.utils.TooltipHelper;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -34,8 +34,8 @@ public record LootingToolEffect(TagKey<Item> tool, String nameKey) implements IE
 
 	@Override
 	public void addTooltips(UpgradeActionContext ctx, AdvEquipmentSlot slot, List<Text> tooltip) {
-		if(slot == AdvEquipmentSlot.MAINHAND) {
-			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.tool." + nameKey).formatted(Formatting.BLUE));
+		if(slot == AdvEquipmentSlot.MAINHAND || slot == AdvEquipmentSlot.DISPLAY) {
+			tooltip.add(TooltipHelper.tooltipEffectWithExtra("tool." + nameKey, ctx.needShowExtra(), null).formatted(Formatting.LIGHT_PURPLE));
 		}
 	}
 }

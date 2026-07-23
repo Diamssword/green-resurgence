@@ -110,10 +110,10 @@ dependencies {
 
     include modApi("teamreborn:energy:${energyapi_version}")
 
-    //modLocalRuntime "maven.modrinth:character-sheet:${character_version}-fabric"
+    modLocalRuntime "maven.modrinth:character-sheet:${character_version}-fabric"
 
     api name: "character_sheet-api-${character_version}-transformProductionFabric"
-    modLocalRuntime name: "character_sheet-fabric-${character_version}"
+    //modLocalRuntime name: "character_sheet-fabric-${character_version}"
     modLocalRuntime "dev.architectury:architectury-fabric:$project.architectury_api_version"
 
     include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.7-beta.1")))

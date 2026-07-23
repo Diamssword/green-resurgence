@@ -140,24 +140,30 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
 		// Check whether this screen was already initialized
 		if(this.uiAdapter != null) {
 			// If it was, only resize the adapter instead of recreating it - this preserves UI state
-			this.uiAdapter.moveAndResize(0, 0, this.width, this.height);
 			// Re-add it as a child to circumvent vanilla clearing them
 			this.addDrawableChild(this.uiAdapter);
 			if(this.uiAdapter.rootComponent instanceof BaseParentComponent r && this.handler.isReady())
 				findInvComps(r);
+			this.uiAdapter.moveAndResize(0, 0, this.width, this.height);
+			this.onBuilt(this.uiAdapter.rootComponent);
 		} else {
 			try {
 				this.uiAdapter = this.createAdapter();
 				this.build(this.uiAdapter.rootComponent);
-				this.uiAdapter.inflateAndMount();
 				if(this.uiAdapter.rootComponent instanceof BaseParentComponent r && this.handler.isReady())
 					findInvComps(r);
+				this.uiAdapter.inflateAndMount();
+				this.onBuilt(this.uiAdapter.rootComponent);
 			} catch(Exception error) {
 				Owo.LOGGER.warn("Could not initialize owo screen", error);
 				UIErrorToast.report(error);
 				this.invalid = true;
 			}
 		}
+
+	}
+
+	protected void onBuilt(R rootComponent) {
 
 	}
 

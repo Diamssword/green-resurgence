@@ -9,7 +9,6 @@ import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -126,7 +125,7 @@ public class MBlocks implements BlockRegistryContainer {
 	@ModelGen
 	@NoDrop
 	public static final ArmorTinkererBlock ARMOR_TINKERER = new ArmorTinkererBlock(AbstractBlock.Settings.create().nonOpaque().strength(1, 100).suffocates(Blocks::never));
-	@ModelGen
+
 	public static final EquipmentTinkererBlock EQUIPMENT_TINKERER = new EquipmentTinkererBlock(AbstractBlock.Settings.create().nonOpaque().strength(1, 100).suffocates(Blocks::never));
 	@ModelGen
 	public static final CrumbelingBlock CRUMBELING_BLOCK = new CrumbelingBlock(AbstractBlock.Settings.create().nonOpaque().dropsNothing().strength(99999, 99999).suffocates(Blocks::never));
@@ -143,6 +142,7 @@ public class MBlocks implements BlockRegistryContainer {
 
 	@Override
 	public void postProcessField(String namespace, Block value, String identifier, Field field) {
+		boolean isDatagen = GreenResurgence.clientHelper.isDatagen();
 		if(value instanceof ModBlockEntity<?> be) {
 			MBlockEntities.addToRegister(be);
 		}
@@ -153,11 +153,11 @@ public class MBlocks implements BlockRegistryContainer {
 			i = new BlockItem(value, new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(1));
 		else
 			i = new BlockItem(value, new OwoItemSettings().group(MItems.GROUP));
-		if(field.isAnnotationPresent(ModelGen.class)) {
+		if(isDatagen && field.isAnnotationPresent(ModelGen.class)) {
 			ModelGenerator.blockItems.put(new Identifier(namespace, identifier), i);
 		}
 		Registry.register(Registries.ITEM, new Identifier(namespace, identifier), i);
-		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
+		if(isDatagen) {
 			if(!field.isAnnotationPresent(NoDrop.class))
 				BlockLootGenerator.blocks.add(value);
 		}

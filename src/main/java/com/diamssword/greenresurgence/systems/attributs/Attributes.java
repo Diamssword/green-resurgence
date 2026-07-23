@@ -23,6 +23,8 @@ public class Attributes {
 	public static final EntityAttribute ALCOOL_RESISTANCE = register("alcool_resistance", new ClampedEntityAttribute("attribute.name.green_resurgence.alcool_resistance", 0D, -10D, 10.0D).setTracked(true));
 	public static final EntityAttribute PLAYER_KNOCKBACK = register("player_knockback", new ClampedEntityAttribute("attribute.name.green_resurgence.player_knockback", 0D, 0D, 100.0D).setTracked(true));
 	public static final EntityAttribute CONTAMINATION_REDUCTION = register("contamination_reduction", new ClampedEntityAttribute("attribute.name.green_resurgence.contamination_reduction", 0D, 0D, 100.0D).setTracked(true));
+	public static final EntityAttribute FALL_DAMAGE_REDUCTION = register("fall_damage_reduction", new ClampedEntityAttribute("attribute.name.green_resurgence.fall_damage_reduction", 0D, 0D, 100.0D).setTracked(true));
+	public static final EntityAttribute THREAT_MULTIPLIER = register("threat_multiplier", new ClampedEntityAttribute("attribute.name.green_resurgence.threat_multiplier", 0D, -10000D, 10000.0D).setTracked(true));
 
 	private static EntityAttribute register(String id, EntityAttribute attr) {
 		plAttributes.put(GreenResurgence.asRessource(id), attr);

@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence.render.CustomPoseRender;
 
-import com.diamssword.greenresurgence.items.weapons.ICustomPoseWeapon;
+import com.diamssword.greenresurgence.items.equipment.ICustomPoseWeapon;
 import com.diamssword.greenresurgence.systems.character.customPoses.IPlayerCustomPose;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;

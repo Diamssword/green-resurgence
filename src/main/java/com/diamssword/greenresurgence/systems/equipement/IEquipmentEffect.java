@@ -22,6 +22,10 @@ public interface IEquipmentEffect {
 
 	void onInteraction(UpgradeActionContext ctx, AdvEquipmentSlot slot, IEquipmentUpgrade.InteractType interaction);
 
+	default boolean needTicking() {
+		return false;
+	}
+
 	default List<TagKey<Item>> getTags(UpgradeActionContext ctx) {
 		return List.of();
 	}
@@ -37,6 +41,7 @@ public interface IEquipmentEffect {
 				double e;
 				PlayerEntity player = GreenResurgence.clientHelper.getPlayer();
 				var bl = false;
+
 				if(player != null && ctx.context != UpgradeActionContext.ItemContext.UPGRADE) {
 					if(entry.getKey() == EntityAttributes.GENERIC_ATTACK_DAMAGE) {
 						d += player.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
@@ -48,6 +53,7 @@ public interface IEquipmentEffect {
 					if(bl)
 						tooltip.add(Text.translatable("attribute.modifier.equals." + entityAttributeModifier.getOperation().getId(), MODIFIER_FORMAT.format(d), Text.translatable((entry.getKey()).getTranslationKey())).formatted(d < 0 ? Formatting.RED : Formatting.DARK_GREEN));
 				}
+
 				if(!bl) {
 					if(entityAttributeModifier.getOperation() == EntityAttributeModifier.Operation.MULTIPLY_BASE
 							|| entityAttributeModifier.getOperation() == EntityAttributeModifier.Operation.MULTIPLY_TOTAL) {
@@ -57,6 +63,7 @@ public interface IEquipmentEffect {
 					} else {
 						e = d;
 					}
+
 					if(d > 0.0) {
 						tooltip.add(
 								Text.translatable(

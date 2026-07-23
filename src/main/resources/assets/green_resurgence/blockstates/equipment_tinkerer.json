@@ -1,18 +1,18 @@
 {
   "variants": {
     "facing=east": {
-      "model": "green_resurgence:block/equipment_tinkerer",
+      "model": "green_resurgence:block/conquest/smithing_table",
       "y": 90
     },
     "facing=north": {
-      "model": "green_resurgence:block/equipment_tinkerer"
+      "model": "green_resurgence:block/conquest/smithing_table"
     },
     "facing=south": {
-      "model": "green_resurgence:block/equipment_tinkerer",
+      "model": "green_resurgence:block/conquest/smithing_table",
       "y": 180
     },
     "facing=west": {
-      "model": "green_resurgence:block/equipment_tinkerer",
+      "model": "green_resurgence:block/conquest/smithing_table",
       "y": 270
     }
   }

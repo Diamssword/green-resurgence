@@ -11,6 +11,7 @@ import com.diamssword.greenresurgence.gui.components.SubScreenLayout;
 import com.diamssword.greenresurgence.gui.playerContainers.PlayerBasedGui;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.StatsPackets;
+import com.diamssword.greenresurgence.utils.TextUtils;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.container.Containers;
@@ -34,10 +35,16 @@ public class CharacterStatsPanel extends SimpleSubPanel {
 	}
 
 	@Override
-	public void build(FlowLayout root, PlayerBasedGui<?> gui, boolean fullSize) {
+	public boolean canOpen(int availableSpace) {
+
+		return availableSpace >= 120;
+	}
+
+	@Override
+	public void build(FlowLayout root, PlayerBasedGui<?> gui, boolean fullSize, int maxWidth) {
 		var scroll = root.childById(ScrollContainer.class, "scroll1");
 		var p1 = root.childById(FlowLayout.class, "flow1");
-		if (root.parent() instanceof SubScreenLayout sl) {
+		if(root.parent() instanceof SubScreenLayout sl) {
 			sl.size.observe(v -> expand(scroll, v, root, p1.verticalSizing().get().value));
 			expand(scroll, sl.size.get(), root, p1.verticalSizing().get().value);
 		}
@@ -50,19 +57,19 @@ public class CharacterStatsPanel extends SimpleSubPanel {
 		dt.getAppearence().clonePlayerAppearance(MinecraftClient.getInstance().player);
 		var np = root.childById(FlowLayout.class, "namePanel");
 		var chara = ComponentManager.getPlayerCharacter(MinecraftClient.getInstance().player).getCurrentCharacter();
-		if (chara != null) {
-			np.child(Components.label(DrawUtils.whiteText(chara.stats.firstname + " " + chara.stats.lastname)));
-			np.child(Components.label(DrawUtils.whiteText(chara.stats.origine)));
-			np.child(Components.label(DrawUtils.whiteText(chara.stats.faction)));
-			np.child(Components.label(DrawUtils.whiteText(chara.stats.job)));
+		if(chara != null) {
+			np.child(Components.label(TextUtils.whiteText(chara.stats.firstname + " " + chara.stats.lastname)));
+			np.child(Components.label(TextUtils.whiteText(chara.stats.origine)));
+			np.child(Components.label(TextUtils.whiteText(chara.stats.faction)));
+			np.child(Components.label(TextUtils.whiteText(chara.stats.job)));
 		}
 		var pane = root.childById(FreeRowGridLayout.class, "listPanel");
-		for (var k : CharactersApi.stats().getRoles().keySet()) {
+		for(var k : CharactersApi.stats().getRoles().keySet()) {
 			var c = Containers.horizontalFlow(Sizing.fill(49), Sizing.fixed(20));
 			c.surface(Surface.flat(DrawUtils.whithAlpha(DrawUtils.GRAY_GREEN, 0xFF))).padding(Insets.of(2)).margins(Insets.of(1));
 			c.verticalAlignment(VerticalAlignment.CENTER);
 			var r = CharactersApi.stats().getRole(k);
-			c.child(Components.label(DrawUtils.whiteText(r.get().name)).horizontalSizing(Sizing.fill(50)));
+			c.child(Components.label(TextUtils.whiteText(r.get().name)).horizontalSizing(Sizing.fill(50)));
 			var btr = ButtonComponent.Renderer.texture(GreenResurgence.asRessource("textures/gui/dice.png"), 0, 0, 20, 40);
 			var bt = io.wispforest.owo.ui.component.Components.button(Text.literal("\uD83C\uDFB2"), (r1) -> {
 				Channels.MAIN.clientHandle().send(new StatsPackets.RollStat(k));
@@ -70,7 +77,7 @@ public class CharacterStatsPanel extends SimpleSubPanel {
 			});
 			bt.sizing(Sizing.fixed(16));
 			//bt.renderer(btr);
-			bt.tooltip(DrawUtils.whiteText("Lancer un dés"));
+			bt.tooltip(TextUtils.whiteText("Lancer un dés"));
 			c.child(bt);
 			pane.child(c);
 		}

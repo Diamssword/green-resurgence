@@ -16,8 +16,9 @@
     }
   ],
   "result": {
-    "name": "green_resurgence:tools/bone_dagger",
+    "name": "green_resurgence:equipments/blade_short",
     "type": "item",
+    "nbt": "{skin: \"bone_blade\", HideFlags: 2, upgrades: {head: {id: \"green_resurgence:equipments/bone_head\", Count: 1b, tag: {Damage: 0}}, skin: {id: \"green_resurgence:equipments/skin_modifier\", Count: 1b, tag: {skin: \"bone_blade\", Damage: 0}}, binding: {id: \"green_resurgence:equipments/pray_binding\", Count: 1b, tag: {Damage: 0}}, handle: {id: \"green_resurgence:equipments/bone_handle\", Count: 1b, tag: {Damage: 0}}}}",
     "count": 1
   },
   "type": "simple"

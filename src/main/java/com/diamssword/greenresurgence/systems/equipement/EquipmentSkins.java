@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.systems.equipement;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.items.weapons.ICustomPoseWeapon;
+import com.diamssword.greenresurgence.items.equipment.ICustomPoseWeapon;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
@@ -34,12 +34,12 @@ public class EquipmentSkins {
 		forAll("makeshift_hammer", "hammer/medium,hammer/long");
 		forAll("makeshift_knuckles", "hammer/short");
 		forAll("wrench", "hammer/medium,hammer/short");
-		forAll("bone_blade", "blade/*");
+		forAll("bone_blade", "blade/short,blade/medium,blade/long");
 		forAll("bone_matchet", "blade/short,blade/medium");
 		forAll("bone_katana", "blade/long");
 		forAll("combat_knife", "blade/short");
 		forAll("kukri", "blade/medium");
-		forAll("makeshift_blade", "blade/*");
+		forAll("makeshift_blade", "blade/short,blade/medium,blade/long");
 		forAll("makeshift_matchet", "blade/short,blade/medium");
 		forAll("makeshift_katana", "blade/long");
 		forAll("bone_spear", "spike/medium,spike/long");
@@ -48,7 +48,7 @@ public class EquipmentSkins {
 		forAll("screwdriver_cross", "spike/short");
 		forAll("chainsaw", "electric/cutter", true);
 		forAll("weedwacker", "electric/cutter", true);
-		forAll("flame_sword", "electric/hot", true);
+		forAll("flame_sword", "blade/induction", true);
 
 		forArmor("makeshift_light");
 		forArmor("makeshift_medium");
@@ -67,7 +67,7 @@ public class EquipmentSkins {
 		forArmor("wolf_raider");
 
 
-		setDefaultforAll("makeshift_blade", "blade/*");
+		setDefaultforAll("makeshift_blade", "blade/short,blade/medium,blade/long");
 		setDefaultforAll("makeshift_hammer", "hammer/medium,hammer/long");
 		setDefaultforAll("wrench", "hammer/short");
 		setDefaultforAll("makeshift_spear", "spike/medium,spike/long");

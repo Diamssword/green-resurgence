@@ -1,6 +1,5 @@
 package com.diamssword.greenresurgence.items.equipment;
 
-import com.diamssword.greenresurgence.items.weapons.ICustomPoseWeapon;
 import com.diamssword.greenresurgence.systems.character.PosesManager;
 import com.diamssword.greenresurgence.systems.equipement.EffectLevel;
 import com.diamssword.greenresurgence.systems.equipement.EquipmentSkins;

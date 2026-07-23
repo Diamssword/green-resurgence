@@ -4,6 +4,8 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "EntityMixin",
+    "ItemStackMixin",
+    "LivingEntityMixin",
     "PacketByteBufMixin",
     "PlayerEntityMixin",
     "PlayerInventoryMixin",

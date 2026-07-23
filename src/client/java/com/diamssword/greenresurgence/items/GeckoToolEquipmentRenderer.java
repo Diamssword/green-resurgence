@@ -5,8 +5,7 @@ import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentSkinItem
 import com.diamssword.greenresurgence.systems.equipement.EquipmentSkins;
 import com.diamssword.greenresurgence.systems.equipement.IEquipementItem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
@@ -27,6 +26,7 @@ import software.bernie.geckolib.GeckoLibException;
 import software.bernie.geckolib.animatable.client.RenderProvider;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.cache.texture.AutoGlowingTexture;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.Animation;
 import software.bernie.geckolib.model.DefaultedGeoModel;
@@ -34,6 +34,8 @@ import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public final class GeckoToolEquipmentRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer<T> {
@@ -43,7 +45,26 @@ public final class GeckoToolEquipmentRenderer<T extends Item & GeoAnimatable> ex
 	public GeckoToolEquipmentRenderer(boolean emissive) {
 		super(new ItemGeoModel<>(GreenResurgence.asRessource("default")));
 		if(emissive)
-			addRenderLayer(new AutoGlowingGeoLayer<>(this));
+			addRenderLayer(new AutoGlowingGeoLayer<>(this) { //GECKO RenderLayer for glowing layers is utterly broken. This one work. Only god might know why. Not me tho.
+				@Override
+				protected RenderLayer getRenderType(T animatable) {
+					Identifier path = AutoGlowingTexture.appendToPath(getTextureResource(animatable), "_glowmask");
+					return RenderLayer.of("eyes",
+							VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
+							VertexFormat.DrawMode.QUADS,
+							256,
+							false,
+							true,
+							RenderLayer.MultiPhaseParameters.builder()
+									.program(RenderLayer.EYES_PROGRAM)
+									.texture(new RenderPhase.Texture(path, false, false))
+									.transparency(RenderLayer.TRANSLUCENT_TRANSPARENCY)
+									.writeMaskState(RenderLayer.COLOR_MASK)
+									.build(false)
+					);
+				}
+			});
+
 	}
 
 	public static RenderProvider RendererProvider(boolean emissive) {
@@ -83,6 +104,12 @@ public final class GeckoToolEquipmentRenderer<T extends Item & GeoAnimatable> ex
 				bk
 		);
 		poseStack.pop();
+
+	}
+
+	@Override
+	public void actuallyRender(MatrixStack poseStack, T animatable, BakedGeoModel model, RenderLayer renderType, VertexConsumerProvider bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
 
 	}
 
@@ -139,10 +166,10 @@ public final class GeckoToolEquipmentRenderer<T extends Item & GeoAnimatable> ex
 	private Item bpArmorItem;
 	private boolean isBP = false;
 	private boolean isArmor = false;
+	private static Map<EquipmentSkins.ItemSkinModelDef, DefaultedGeoModel<?>> maps = new HashMap<>();
 
 	@Override
 	public GeoModel<T> getGeoModel() {
-
 		if(model != null)
 			return model;
 		return super.getGeoModel();
@@ -158,13 +185,21 @@ public final class GeckoToolEquipmentRenderer<T extends Item & GeoAnimatable> ex
 		isArmor = false;
 	}
 
+	@Override
+	public void reRender(BakedGeoModel model, MatrixStack poseStack, VertexConsumerProvider bufferSource, T animatable, RenderLayer renderType, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		super.reRender(model, poseStack, bufferSource, animatable, renderType, buffer, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+	}
+
 	private void renderSkin(MatrixStack poseStack, EquipmentSkins.ItemSkinModelDef model, ItemStack stack, ModelTransformationMode transformType, VertexConsumerProvider bufferSource, int packedLight, int packedOverlay, float scale) {
 		if(model.isGecko) {
-
-			if(model.isArmor)
-				this.model = new ModularArmorRenderer.ModularArmorGeoModel<>(model.model);
-			else
-				this.model = new ItemGeoModel<>(model.model);
+			this.model = (DefaultedGeoModel<T>) maps.get(model);
+			if(this.model == null) {
+				if(model.isArmor)
+					this.model = new ModularArmorRenderer.ModularArmorGeoModel<>(model.model);
+				else
+					this.model = new ItemGeoModel<>(model.model);
+				maps.put(model, this.model);
+			}
 			if(model.texture != null)
 				this.model.withAltTexture(model.texture);
 			MinecraftClient client = MinecraftClient.getInstance();
@@ -181,7 +216,8 @@ public final class GeckoToolEquipmentRenderer<T extends Item & GeoAnimatable> ex
 	@Override
 	public void preRender(MatrixStack poseStack, T animatable, BakedGeoModel model, VertexConsumerProvider bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
-
+		if(isReRender)
+			return;
 		if(vanillaBaked != null) {
 			var l = false;
 			if(MinecraftClient.getInstance().player != null)

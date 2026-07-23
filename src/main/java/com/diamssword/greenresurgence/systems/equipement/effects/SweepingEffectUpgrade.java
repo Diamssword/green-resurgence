@@ -1,8 +1,8 @@
 package com.diamssword.greenresurgence.systems.equipement.effects;
 
-import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.equipement.*;
+import com.diamssword.greenresurgence.systems.equipement.utils.TooltipHelper;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -83,9 +83,10 @@ public class SweepingEffectUpgrade implements IEquipmentEffect {
 	@Override
 	public void addTooltips(UpgradeActionContext ctx, AdvEquipmentSlot slot, List<Text> tooltip) {
 		if(slot == AdvEquipmentSlot.MAINHAND || slot == AdvEquipmentSlot.DISPLAY) {
-			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.sweeping.targets", MODIFIER_FORMAT.format(ctx.getLevel(EquipmentEffects.SWEEPING).getLevel())).formatted(Formatting.BLUE));
-			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.sweeping.range", MODIFIER_FORMAT.format(ctx.getLevel(EquipmentEffects.SWEEPING).getLevel(RADIUS_BONUS, 1))).formatted(Formatting.BLUE));
-			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.percent.plus", MODIFIER_FORMAT.format(ctx.getLevel(EquipmentEffects.SWEEPING).getLevel(DAMAGE_BONUS, 20)), Text.translatable("equipment." + GreenResurgence.ID + ".upgrade.sweeping.damage")).formatted(Formatting.BLUE));
+			var lev = ctx.getLevel(EquipmentEffects.SWEEPING);
+			tooltip.add(TooltipHelper.tooltipEffectWithExtra("sweeping.targets", ctx.needShowExtra(), MODIFIER_FORMAT.format(lev.getLevel()), MODIFIER_FORMAT.format(lev.getLevel())).formatted(Formatting.BLUE));
+			tooltip.add(TooltipHelper.tooltipEffectWithExtra("sweeping.range", ctx.needShowExtra(), MODIFIER_FORMAT.format(lev.getLevel(RADIUS_BONUS)), MODIFIER_FORMAT.format(lev.getLevel(RADIUS_BONUS))).formatted(Formatting.BLUE));
+			tooltip.add(TooltipHelper.tooltipEffectWithExtra("sweeping.damage", ctx.needShowExtra(), MODIFIER_FORMAT.format(lev.getLevel(DAMAGE_BONUS)), MODIFIER_FORMAT.format(lev.getLevel(DAMAGE_BONUS))).formatted(Formatting.BLUE));
 		}
 
 	}

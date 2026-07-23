@@ -27,6 +27,7 @@ public class Materials {
 	public static MaterialSet leather;
 	public static MaterialSet fabric;
 	public static MaterialSet medicine;
+	public static MaterialSet plants;
 
 	public static void init() {
 		//WOOD
@@ -35,17 +36,20 @@ public class Materials {
 				.add(1, "furniture", "Bois de Mobilier", "Du bois récupéré sur un meuble")
 				.add(2, "bark", "Écorce d'Égide", "L'écorce d'un arbre d'Égide")
 				.add(3, "egide", "Bois d'Égide", "Un morceau de bois brute, tombé d'un arbre d'Égide");
+		//Alloy
+		plants = MaterialSet.createSet("plant")
+				.add(1, "fiber", "Fibres végétales", "De longues tiges pliables");
 		//PAPER
 		paper = MaterialSet.createSet("paper")//.setTierLabel(1,"Récupération").setTierLabel(2,"Écorce d’égide").setTierLabel(3,"Bois d’égide")
-				.add(1, "newspaper", "Journeaux déchirés", "De vieux journeaux abimés")
+				.add(1, "newspaper", "Journaux déchirés", "De vieux journeaux abimés")
 				.add(1, "poster", "Affiche déchirée", "Une affiche en lambeaux")
 				.add(1, "toilet", "Papier toilette", "Une raretée depuis la dernière pandémie")
-				.add(1, "money", "Viuex billets", "Sans grande valeur")
+				.add(1, "money", "Vieux billets", "Sans grande valeur")
 				.add(2, "cardboard", "Carton", "Du carton, tout simplement")
 				.add(3, "paper", "Papier", "Du papier en bon état");
 		//Metal
 		metal = MaterialSet.createSet("metal")
-				.add(1, "scrap", "Féraille Rouillé", "Divers morceaux de fer rouillés")
+				.add(1, "scrap", "Férraille Rouillé", "Divers morceaux de fer rouillés")
 				.add(1, "can", "Canette vide", "Une vielle canette en métal")
 				.add(1, "can_1", "Canette vide", "Une vielle canette en métal")
 				.add(1, "coin", "Pièces de monnaie", "Quelques centimes à peine")
@@ -53,7 +57,7 @@ public class Materials {
 				.add(2, "ironingot", "Lingot de Fer", "Un lingot de faire brut")
 				.add(2, "copperwire", "Fil de Cuivre", "Un fil de cuivre en bon état")
 				.add(2, "copperplate", "Plaque de Cuivre", "Une plaque de cuivre brillante")
-				.add(2, "lead", "Plombs", "Récuperé d'anciens équipements de pêches ou de chasse")
+				.add(2, "lead", "Plombs", "Récupéré d'anciens équipements de pêches ou de chasse")
 				.add(2, "lead1", "Morceaux de plomb", "D'anciens contrepoids en plomb")
 				.add(3, "lithium", "Lithium", "De la poudre de lithium pure")
 				.add(3, "graphite", "Graphite", "Une barre de graphite")
@@ -66,8 +70,8 @@ public class Materials {
 				.add(3, "brass", "Morceaux de Laitons", "Divers morceaux de laitons")
 				.add(3, "bronze", "Lingot de Bronze", "Un lingot de Bronze")
 				.add(3, "magnets", "Aimants", "Des aimants de cuisine")
-				.add(3, "ferro", "Barre Ferromagnetique", "Une barre aimantée")
-				.add(4, "steel", "Lingot d'Acier", "Un alliage de qualitée")
+				.add(3, "ferro", "Barre Ferromagnétique", "Une barre aimantée")
+				.add(4, "steel", "Lingot d'Acier", "Un alliage de qualité")
 				.add(4, "electrum", "Lingot d'Electrum", "Un conducteur exceptionnel")
 				.add(4, "aluminium", "Plaque d'Aluminium", "Leger et Résistant")
 				.add(5, "unobtanium", "Unobtanium", "/gamemode creative");
@@ -90,6 +94,7 @@ public class Materials {
 		building = MaterialSet.createSet("build")
 				.add(1, "stone", "Pierre", "Primitif mais résistant")
 				.add(1, "brick", "Brique", "Une brique.")
+				.add(1, "clay", "Argile", "Je ne mettrai pas ça sur mon visage...")
 				.add(1, "parpaing", "Parpaing", "Par monts et parpaings!")
 				.add(1, "sand", "Sable", "Du sable fin")
 				.add(2, "ceramic", "Céramique", "Autrefois un beau vase")
@@ -105,21 +110,21 @@ public class Materials {
 				.add(2, "screw", "Vis", "De la visserie en tout genre")
 				.add(2, "nuts", "Boulon", "Un boulon.")
 				.add(4, "epoxy", "Résine Epoxy", "Une résine puissante")
-				.add(4, "glue1", "Colle Professionelle", "Maintenant 2 fois plus collant!")
+				.add(4, "glue1", "Colle Professionnelle", "Maintenant 2 fois plus collant!")
 				.add(4, "rivet", "Rivets en acier", "C'est du solide");
 
 		//Components
 		components = MaterialSet.createSet("component")
 				.add(3, "board", "Carte Mère Abimée", "Plus de gaming sur cette carte...")
-				.add(3, "socket", "Carte d'Extension", "Une petite carte éléctronique")
+				.add(3, "socket", "Carte d'Extension", "Une petite carte électronique")
 				.add(3, "diode", "Diodes Anciennes", "De vielles diodes peu puissantes")
-				.add(3, "case", "Boitier Electrique", "Un boitier plein de petits composants")
+				.add(3, "case", "Boitier Électrique", "Un boitier plein de petits composants")
 				.add(4, "diode1", "Diode Moderne", "Une diode standard")
 				.add(4, "board1", "Carte Mère Neuve", "(Presque) Neuve!")
-				.add(4, "lens", "Lentille Graveuse", "Laser de categorie 2. Ne pas regarde directement!")
-				.add(5, "diode2", "Diodes Crystalines", "De minuscules diodes High-Tech!")
+				.add(4, "lens", "Lentille Graveuse", "Laser de catégorie 2. Ne pas regarde directement!")
+				.add(5, "diode2", "Diodes Crystallines", "De minuscules diodes High-Tech!")
 				.add(5, "board2", "Carte Mère High Tech", "On dirait que ça pulse même éteint...")
-				.add(5, "socket1", "Carte d'Extension Supraconductrice", "Les leds bleu rajoutent un charme");
+				.add(5, "socket1", "Carte d'Extension supraconductrice", "Les leds bleu rajoutent un charme");
 
 		//Cables
 		cables = MaterialSet.createSet("cables")
@@ -127,13 +132,13 @@ public class Materials {
 				.add(1, "house", "Cable Électrique", "Un cable d'alimentation standard")
 				.add(3, "high", "Cable Haut Voltage", "Un cable pour les hautes tensions")
 				.add(3, "underground", "Cable souterrain", "Un cable haute tension spécialisé et robuste")
-				.add(4, "supra", "Supraconducteur", "Un cable miltaire sans aucunes pertes!");
+				.add(4, "supra", "supraconducteur", "Un cable militaire sans aucunes pertes!");
 
 		//Energy
 		energy = MaterialSet.createSet("energy")
 				.add(1, "battery", "Pile", "Une pile à usage unique", true, (a, b, c, d) -> new BatteryItem(a.maxCount(16), b, c, d, BatteryTiers.BATTERY, 1f))
-				.add(3, "cell", "Batterie", "Une batterie rechargable", true, (a, b, c, d) -> new BatteryItem(a.maxCount(8), b, c, d, BatteryTiers.LIPO, 1f))
-				.add(5, "cell1", "Batterie Haute Capacitée", "Une batterie rechargable de haute capacitée", true, (a, b, c, d) -> new BatteryItem(a.maxCount(4), b, c, d, BatteryTiers.HIGH_TECH, 1f));
+				.add(3, "cell", "Batterie", "Une batterie rechargeable", true, (a, b, c, d) -> new BatteryItem(a.maxCount(8), b, c, d, BatteryTiers.LIPO, 1f))
+				.add(5, "cell1", "Batterie Haute Capacité", "Une batterie rechargeable de haute capacité", true, (a, b, c, d) -> new BatteryItem(a.maxCount(4), b, c, d, BatteryTiers.HIGH_TECH, 1f));
 		//Chemical
 		chemical = MaterialSet.createSet("chemical")
 				.add(1, "vinegar", "Vinaigre", "Bon pour la plomberie et en salade")
@@ -143,7 +148,7 @@ public class Materials {
 				.add(3, "alcool", "Alcool à Bruler", "Pique un peu la gorge...")
 				.add(3, "water", "Eau Déminéralisée", "Peu rafraichissant")
 				.add(3, "acid", "Acide", "De l'acide peut puissant")
-				.add(4, "acid1", "Acide Sulfurique", "Un acide extrémement corrosif")
+				.add(4, "acid1", "Acide sulfurique", "Un acide extrêmement corrosif")
 				.add(4, "solvant", "Solvant", "Un solvant industriel")
 				.add(4, "amonia", "Ammoniac", "")
 				.add(4, "acetone", "Acétone", "");
@@ -178,7 +183,7 @@ public class Materials {
 				.add(2, "dog", "Os de chien", "Le meilleur ami de l'homme...")
 				.add(2, "medium", "Os moyen", "Un os inconnu...")
 				.add(3, "big", "Gros Os", "L'os d'une grosse créature")
-				.add(3, "ivory", "Ivoir", "De l'ivoir ");
+				.add(3, "ivory", "Ivoire", "De l'ivoire ");
 		//Bones
 		medicine = MaterialSet.createSet("medicine")
 				.add(1, "plant", "Plantes médicinales", "Un bon remède de grand-mère", false, makeFoodEffect(StatusEffects.INSTANT_HEALTH, 1, 0))

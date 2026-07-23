@@ -2,9 +2,7 @@ package com.diamssword.greenresurgence.datagen;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.Shields;
-import com.diamssword.greenresurgence.Weapons;
 import com.diamssword.greenresurgence.items.materials.MaterialSet;
-import com.diamssword.greenresurgence.systems.lootables.Lootables;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.item.Item;
@@ -27,8 +25,8 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup arg) {
-		getOrCreateTagBuilder(Lootables.HAMMER).add(Weapons.SLEDGEHAMMER);
-		getOrCreateTagBuilder(Lootables.WRENCH).add(Weapons.WRENCH);
+		//getOrCreateTagBuilder(Lootables.HAMMER).add(Weapons.SLEDGEHAMMER);
+		//getOrCreateTagBuilder(Lootables.WRENCH).add(Weapons.WRENCH);
 		MaterialSet.sets.forEach((m, s) -> {
 			s.getItems().forEach(i -> {
 				getOrCreateTagBuilder(TagKey.of(RegistryKeys.ITEM, GreenResurgence.asRessource("materials/" + s.material + "/" + i.tier))).add(i);

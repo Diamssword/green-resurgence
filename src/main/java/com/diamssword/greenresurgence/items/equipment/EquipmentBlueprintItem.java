@@ -7,6 +7,7 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,7 +43,8 @@ public class EquipmentBlueprintItem extends Item implements IEquipmentBlueprint 
 
 		var lvls = equipment.getBaseUpgrades();
 		var ctx = new UpgradeActionContext(null, null, UpgradeActionContext.ItemContext.BLUEPRINT, false).setLevels(lvls);
-
+		if(GreenResurgence.clientHelper.isShiftPressed())
+			ctx.setShowExtra();
 		//for(AdvEquipmentSlot value : AdvEquipmentSlot.values()) {
 		List<Text> subList = new ArrayList<>();
 		lvls.forEach((k, v) -> {
@@ -54,10 +56,12 @@ public class EquipmentBlueprintItem extends Item implements IEquipmentBlueprint 
 		});
 		if(!subList.isEmpty()) {
 			TooltipHelper.appendUpgradeHeader(this, AdvEquipmentSlot.DISPLAY, ctx.context, tooltip);
-			tooltip.addAll(subList);
+			tooltip.addAll(TooltipHelper.formatUpgradesList(subList));
 		}
 		//}
-
+		if(!GreenResurgence.clientHelper.isShiftPressed()) {
+			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.press_shift").formatted(Formatting.GRAY, Formatting.ITALIC));
+		}
 
 	}
 

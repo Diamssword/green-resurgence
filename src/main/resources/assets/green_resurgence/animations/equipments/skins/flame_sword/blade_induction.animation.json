@@ -1,0 +1,31 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"powered": {
+			"animation_length": 1,
+			"bones": {
+				"blade_on": {
+					"scale": {
+							"vector": [1, 1, 1]
+					}
+				},
+				"blade_off": {
+					"scale": {
+						"vector": [0, 0, 0]
+					}
+				}
+			}
+		},
+		"idle": {
+			"animation_length": 1,
+			"bones": {
+				"blade_on": {
+					"scale": {
+						"vector": [0, 0, 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

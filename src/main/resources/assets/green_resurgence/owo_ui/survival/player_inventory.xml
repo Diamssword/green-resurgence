@@ -3,7 +3,7 @@
     <components>
         <flow-layout direction="horizontal">
             <children>
-                <flow-layout direction="horizontal">
+                <flow-layout direction="horizontal" id="leftMenu">
                     <children>
                         <flow-layout direction="vertical" id="subPanelButtons">
                             <children>
@@ -39,32 +39,45 @@
                         <horizontal method="fill">30</horizontal>
                     </sizing>
                 </flow-layout>
-
-                <flow-layout direction="horizontal" id="flow1"> <!---->
+                <grid-layout rows="4" columns="2" id="maingrid">
                     <children>
-                        <flow-layout direction="vertical">
+                        <flow-layout row="0" column="1" direction="horizontal">
                             <children>
-
-                                <inventory name="disabled" id="armor" width="1" height="4"/>
-                                <inventory name="disabled" id="offhand" width="1" height="1"/>
-                                <inventory name="disabled" id="bags" width="1" height="3"/>
+                                <freerowgrid columns="5" id="bonusLayout">
+                                    <children/>
+                                </freerowgrid>
+                            </children>
+                            <sizing><horizontal method="fixed">120</horizontal></sizing>
+                            <horizontal-alignment>left</horizontal-alignment>
+                        </flow-layout>
+                         <flow-layout row="3" column="1" direction="horizontal">
+                            <children>
+                                <freerowgrid columns="5" id="malusLayout">
+                                    <children/>
+                                </freerowgrid>
+                            </children>
+                            <sizing><horizontal method="fixed">120</horizontal></sizing>
+                            <horizontal-alignment>left</horizontal-alignment>
+                        </flow-layout>
+                        <flow-layout row="1" column="0" direction="horizontal">
+                            <children>
+                                <flow-layout direction="horizontal" id="extraSlotsLayout">
+                                    <children>
+                                        <inventory name="disabled" id="bags" width="1" height="3" texture="red.png"/>
+                                    </children>
+                                </flow-layout>
+                                <inventory name="disabled" id="armor" width="1" height="4" texture="lila.png"/>
                             </children>
                             <surface>
                                 <gpanel/>
                             </surface>
                             <padding>
-                                <all>5</all>
+                                <all>4</all>
                             </padding>
-                            <margins>
-                                <right>5</right>
-                            </margins>
+                            <margins><left>5</left></margins>
+                            <horizontal-alignment>right</horizontal-alignment>
                         </flow-layout>
-                        <flow-layout direction="vertical" id="'flow2">
-                            <children>
-                                <freerowgrid columns="5" id="bonusLayout">
-                                    <children/>
-                                </freerowgrid>
-                                <flow-layout direction="vertical" id="'flow3">
+                        <flow-layout row="1" column="1" direction="vertical" id="'flow3">
                                     <children>
                                         <inventory id="backpack" name="disabled" width="1" height="1"
                                                    texture="blue.png">
@@ -78,45 +91,65 @@
                                                 <inventory id="satchelLeft" name="disabled" width="1" height="3"
                                                            texture="orange.png">
                                                 </inventory>
-                                                <inventory id="player" name="disabled" width="3" height="3">
-
-                                                </inventory>
+                                                <inventory id="player" name="disabled" width="3" height="3"
+                                                           texture="light_green.png"/>
                                                 <inventory id="satchelRight" name="disabled" width="1" height="3"
                                                            texture="orange.png"/>
                                             </children>
                                             <gap>5</gap>
-                                            <margins>
-                                                <bottom>5</bottom>
-                                            </margins>
                                         </flow-layout>
-                                        <inventory id="hotbar" width="9" height="1"/>
                                     </children>
                                     <surface>
                                         <gpanel/>
                                     </surface>
                                     <padding>
-                                        <all>5</all>
+                                        <all>4</all>
+                                    </padding>
+                                    <margins>
+                                        <bottom>5</bottom>
+                                        <horizontal>5</horizontal>
+                                    </margins>
+                                    <horizontal-alignment>center</horizontal-alignment>
+                                    <vertical-alignment>center</vertical-alignment>
+                        </flow-layout>
+                        <flow-layout row="2" column="0" direction="horizontal" id="flowOffhand">
+                            <children>
+                                <flow-layout direction="vertical">
+                                    <children>
+                                        <inventory name="disabled" id="offhand" width="1" height="1"
+                                                   texture="yellow.png"/>
+                                    </children>
+                                    <surface>
+                                        <gpanel/>
+                                    </surface>
+                                    <padding>
+                                        <all>4</all>
                                     </padding>
                                     <horizontal-alignment>center</horizontal-alignment>
                                     <vertical-alignment>center</vertical-alignment>
                                 </flow-layout>
-                                <freerowgrid columns="5" id="malusLayout">
-                                    <children></children>
-                                </freerowgrid>
                             </children>
+                            <horizontal-alignment>right</horizontal-alignment>
                         </flow-layout>
-
+                        <flow-layout row="2" column="1" direction="horizontal">
+                            <children>
+                                <inventory id="hotbar" width="9" height="1" texture="cyan.png"/>
+                            </children>
+                            <surface>
+                                <gpanel/>
+                            </surface>
+                            <margins><horizontal>5</horizontal></margins>
+                            <padding>
+                                <all>4</all>
+                            </padding>
+                            <horizontal-alignment>center</horizontal-alignment>
+                            <vertical-alignment>center</vertical-alignment>
+                        </flow-layout>
                     </children>
                     <horizontal-alignment>center</horizontal-alignment>
                     <vertical-alignment>center</vertical-alignment>
-
-                    <margins>
-                        <all>5</all>
-                    </margins>
-                    <!---->
-
-                </flow-layout>
-                <subscreen id="subcontainer" source="survival/player_craft">
+                </grid-layout>
+                <subscreen id="subcontainer" source="survival/player_stats">
                     <sizing>
                         <vertical method="fill">100</vertical>
                         <horizontal method="fill">50</horizontal>

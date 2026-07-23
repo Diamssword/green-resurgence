@@ -18,6 +18,8 @@ public class UpgradeActionContext {
 	protected LivingEntity target;
 	protected LivingEntity source;
 	protected boolean isMainSlot;
+	protected boolean showExtra = false;
+	protected boolean isPowered = false;
 	protected ItemStack weapon = ItemStack.EMPTY;
 	/**
 	 * Used mostly to pass and  modify attack damages
@@ -36,6 +38,24 @@ public class UpgradeActionContext {
 
 	public boolean isMainSlot() {
 		return this.isMainSlot;
+	}
+
+	public boolean needShowExtra() {
+		return this.showExtra;
+	}
+
+	public UpgradeActionContext setShowExtra() {
+		this.showExtra = true;
+		return this;
+	}
+
+	public boolean isPowered() {
+		return isPowered;
+	}
+
+	public UpgradeActionContext setPowered(boolean powered) {
+		this.isPowered = powered;
+		return this;
 	}
 
 	public boolean isClient() {

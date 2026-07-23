@@ -55,8 +55,8 @@ public class ArmorEffectUpgrade implements IEquipmentEffect {
 
 	public float getArmorPieceModifier(AdvEquipmentSlot slot) {
 		return switch(slot) {
-			case FEET, HEAD -> 1f;
-			case LEGS -> 2f;
+			case FEET, LEGS -> 1f;
+			case HEAD -> 2f;
 			case CHEST -> 3;
 			default -> 0f;
 		};

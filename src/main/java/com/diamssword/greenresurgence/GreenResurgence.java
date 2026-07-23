@@ -58,7 +58,6 @@ public class GreenResurgence implements ModInitializer {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(Recipes.loader);
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(ArmorLoader.loader);
 		FieldRegistrationHandler.register(MItems.class, ID, false);
-		registerSubCat(Weapons.class, ID, "tools/", false);
 		registerSubCat(Shields.class, ID, "tools/shields/", false);
 		registerSubCat(EquipmentItems.class, ID, "equipments/", false);
 		FieldRegistrationHandler.register(MBlocks.class, ID, false);

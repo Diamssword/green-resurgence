@@ -1,9 +1,10 @@
 package com.diamssword.greenresurgence.systems.equipement;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.items.equipment.EquipmentUpgradeItem;
+import com.diamssword.greenresurgence.items.equipment.upgrades.EquipmentUpgradeItem;
 import com.diamssword.greenresurgence.systems.equipement.utils.ExtraEntityHitResult;
 import com.diamssword.greenresurgence.systems.equipement.utils.IOnUpgradeBreak;
+import com.diamssword.greenresurgence.systems.equipement.utils.StackEquipmentHolder;
 import com.diamssword.greenresurgence.systems.equipement.utils.TooltipHelper;
 import com.diamssword.greenresurgence.utils.Utils;
 import com.google.common.collect.ArrayListMultimap;
@@ -42,6 +43,7 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 	private final Map<IEquipmentEffect, EffectLevel> combinedEffects = new HashMap<>();
 	private final Map<String, EffectLevel> combinedEffectsString = new HashMap<>();
 	private boolean isComputed = false;
+	private boolean needTicking = false;
 
 	public StackBasedEquipment(String category, String subcategory, ItemStack stack) {
 		this.category = category;
@@ -168,6 +170,7 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 			brokens.putString(k, Registries.ITEM.getId(v).toString());
 		});
 		nbt.put("broken", brokens);
+		((StackEquipmentHolder) (Object) stack).green_resurgence$invalidateEquipment();
 	}
 
 	@Override
@@ -186,13 +189,17 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 		return skin;
 	}
 
+	protected UpgradeActionContext createContext(@Nullable LivingEntity player, @Nullable LivingEntity target, UpgradeActionContext.ItemContext context, AdvEquipmentSlot slot) {
+		return new UpgradeActionContext(player, target, context, slot == equipment.getMainSlot()).setLevels(combinedEffectsString);
+	}
+
 	@Override
 	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(AdvEquipmentSlot slot, @Nullable LivingEntity player) {
 		if(!isComputed)
 			computeEffects();
 
 		Multimap<EntityAttribute, EntityAttributeModifier> map = ArrayListMultimap.create();
-		var ctx = new UpgradeActionContext(player, null, UpgradeActionContext.ItemContext.TOOL, slot == equipment.getMainSlot()).setLevels(combinedEffectsString);
+		var ctx = createContext(player, null, UpgradeActionContext.ItemContext.TOOL, slot);
 		ctx.setWeapon(stack);
 		combinedEffects.forEach((k, v) -> {
 			k.getAttributeModifiers(map, slot, ctx);
@@ -210,15 +217,20 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 		combinedEffectsString.clear();
 		content.keySet().forEach(v -> {
 			var eq = getAsEquipment(v);
-			eq.ifPresent(equipmentUpgradeItem -> equipmentUpgradeItem.getEffectsLevels().forEach((k1, v1) -> {
-				EquipmentEffects.get(k1).ifPresent(a -> {
+			eq.ifPresent(equipmentUpgradeItem ->
+			{
+				equipmentUpgradeItem.getEffects().forEach((k1, v1) -> {
+					if(v1.needTicking())
+						needTicking = true;
+				});
+				equipmentUpgradeItem.getEffectsLevels().forEach((k1, v1) -> EquipmentEffects.get(k1).ifPresent(a -> {
 					if(!combinedEffects.containsKey(a))
 						combinedEffects.put(a, v1.copy());
 					else
 						combinedEffects.get(a).add(v1.copy());
 					combinedEffectsString.put(k1, combinedEffects.get(a));
-				});
-			}));
+				}));
+			});
 		});
 		baseUpgrades.forEach((k, v) -> {
 			EquipmentEffects.get(k).ifPresent(a -> {
@@ -251,7 +263,7 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 			computeEffects();
 		if(context instanceof EntityHitResult res && res.getEntity() instanceof LivingEntity li) {
 
-			var ctx = new UpgradeActionContext(wearer, li, UpgradeActionContext.ItemContext.TOOL, slot == equipment.getMainSlot()).setLevels(combinedEffectsString);
+			var ctx = createContext(wearer, li, UpgradeActionContext.ItemContext.TOOL, slot);
 			if(res instanceof ExtraEntityHitResult ex) {
 				ctx.setWeapon(ex.weapon).setContextValue(ex.damage).setReturnValue(ex.damage);
 			}
@@ -291,9 +303,10 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 	public void appendTooltip(List<Text> tooltip) {
 		if(!isComputed)
 			computeEffects();
-		var ctx = new UpgradeActionContext(null, null, UpgradeActionContext.ItemContext.TOOL, false).setLevels(combinedEffectsString);
+		var ctx = createContext(null, null, UpgradeActionContext.ItemContext.TOOL, AdvEquipmentSlot.DISPLAY);
+		if(GreenResurgence.clientHelper.isShiftPressed())
+			ctx.setShowExtra();
 		ctx.setWeapon(stack);
-		//for(AdvEquipmentSlot value : AdvEquipmentSlot.values()) {
 		List<Text> subList = new ArrayList<>();
 		combinedEffectsString.forEach((k, v) -> {
 			var eff = EquipmentEffects.get(k);
@@ -305,7 +318,6 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 			TooltipHelper.appendUpgradeHeader(stack.getItem(), AdvEquipmentSlot.DISPLAY, ctx.context, tooltip);
 			tooltip.addAll(subList);
 		}
-		//	}
 		if(!GreenResurgence.clientHelper.isShiftPressed()) {
 			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.press_shift").formatted(Formatting.GRAY, Formatting.ITALIC));
 		} else {
@@ -319,20 +331,21 @@ public class StackBasedEquipment implements IUpgradableEquipment {
 		}
 	}
 
-	//TODO this is probably the least optimized call right now, might want to rework it if we don't need all the computed levels infos
 	@Override
 	public void onTick(Entity parent, AdvEquipmentSlot slot) {
 		if(!isComputed)
 			computeEffects();
-		UpgradeActionContext ctx;
-		if(parent instanceof PlayerEntity pl) {
-			ctx = new UpgradeActionContext(pl, null, UpgradeActionContext.ItemContext.TOOL, slot == equipment.getMainSlot()).setLevels(combinedEffectsString);
-		} else {
-			ctx = new UpgradeGroundActionContext(parent, UpgradeActionContext.ItemContext.TOOL).setLevels(combinedEffectsString);
+		if(needTicking) {
+			UpgradeActionContext ctx;
+			if(parent instanceof PlayerEntity pl) {
+				ctx = createContext(pl, null, UpgradeActionContext.ItemContext.TOOL, slot);
+			} else {
+				ctx = new UpgradeGroundActionContext(parent, UpgradeActionContext.ItemContext.TOOL).setLevels(combinedEffectsString);
+			}
+			combinedEffects.forEach((k, v) -> {
+				k.onInteraction(ctx, slot, IEquipmentUpgrade.InteractType.TICK);
+			});
 		}
-		combinedEffects.forEach((k, v) -> {
-			k.onInteraction(ctx, slot, IEquipmentUpgrade.InteractType.TICK);
-		});
 	}
 
 	public Pair<Integer, Integer> getDurabilityAndMax() {
