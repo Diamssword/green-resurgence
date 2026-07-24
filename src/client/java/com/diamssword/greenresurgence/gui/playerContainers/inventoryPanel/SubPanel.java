@@ -10,11 +10,20 @@ public interface SubPanel {
 
 	String guiIcon();
 
-	boolean isFullHeight();
+	default int minHeight() {
+		return 100;
+	}
 
-	boolean canOpen(int availableSpace);
+	default int minWidth() {
+		return 120;
+	}
+
+	default int desiredWidth() {
+		return 180;
+	}
+
 
 	default void panelTick() {}
 
-	void build(FlowLayout root, PlayerBasedGui<?> gui, boolean fullSize, int maxWidth);
+	void build(FlowLayout root, PlayerBasedGui<?> gui, int width, int height);
 }

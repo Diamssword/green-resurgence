@@ -35,13 +35,12 @@ public class CharacterStatsPanel extends SimpleSubPanel {
 	}
 
 	@Override
-	public boolean canOpen(int availableSpace) {
-
-		return availableSpace >= 120;
+	public int desiredWidth() {
+		return 125;
 	}
 
 	@Override
-	public void build(FlowLayout root, PlayerBasedGui<?> gui, boolean fullSize, int maxWidth) {
+	public void build(FlowLayout root, PlayerBasedGui<?> gui, int width, int height) {
 		var scroll = root.childById(ScrollContainer.class, "scroll1");
 		var p1 = root.childById(FlowLayout.class, "flow1");
 		if(root.parent() instanceof SubScreenLayout sl) {

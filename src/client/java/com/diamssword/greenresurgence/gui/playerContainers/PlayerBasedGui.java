@@ -22,6 +22,8 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2i;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,13 +33,14 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 	public final boolean showLeftMenu;
 	private FreeRowGridLayout gridBonus;
 	private FreeRowGridLayout gridMalus;
-	private int leftPaneMaxSizing = 0;
-	private int leftPaneAvailableSpace = 0;
+	private Vector2i leftPaneSpace;
 	private final Map<StatusEffect, EffectComponent> activeBonus = new HashMap<>();
 	private final Map<StatusEffect, EffectComponent> activeMalus = new HashMap<>();
+	private final Map<SubPanel, RButtonComponent> buttonsMap = new HashMap<>();
 	public static List<SubPanel> subpanels = new ArrayList<>();
 	protected boolean openSubPanelOnLoad = false;
-	protected int subScreenSize = 30;
+	private boolean needResize = false;
+	protected int subScreenSize = 0;
 
 	static {
 		subpanels.add(new PlayerCraftPanel());
@@ -60,6 +63,7 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 
 	public void setSubScreenSize(int percent) {
 		this.subScreenSize = percent;
+		this.needResize = true;
 	}
 
 
@@ -69,15 +73,10 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 		var leftMenu = rootComponent.childById(FlowLayout.class, "leftMenu");
 		if(sub != null) {
 			sub.setLayout(subscreen);
-			sub.horizontalSizing(Sizing.fill(subScreenSize));
 			rootComponent.onChildMutated(sub);
 		}
 		if(!showLeftMenu && leftMenu != null) {
 			leftMenu.clearChildren();
-		}
-		var bl = rootComponent.childById(FlowLayout.class, "blank_space");
-		if(bl != null) {
-			bl.horizontalSizing(Sizing.fill(30 - (subScreenSize - 30)));
 		}
 		gridBonus = rootComponent.childById(FreeRowGridLayout.class, "bonusLayout");
 		gridMalus = rootComponent.childById(FreeRowGridLayout.class, "malusLayout");
@@ -89,9 +88,12 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 				var d = new RButtonComponent(Text.literal(""), (z) -> {
 					pickPanel(v, subPan);
 				});
+				if(v == subPanelTop || v == subPanelBot)
+					d.setActivated(true);
 				d.tooltip(Text.literal(v.guiName()).append(Text.literal("\n [Maj + Clique] pour afficher en scinder").formatted(Formatting.GRAY, Formatting.ITALIC)));
 				d.icon(v.guiIcon());
 				d.horizontalSizing(Sizing.fill(100));
+				buttonsMap.put(v, d);
 				subBtPanel.child(d);
 			});
 		}
@@ -99,29 +101,43 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 
 	@Override
 	protected void onBuilt(FlowLayout rootComponent) {
-		var subPan = rootComponent.childById(FlowLayout.class, "layoutSubPanels");
-		if(subPan != null) {
-			this.leftPaneMaxSizing = subPan.width();
-		}
+		needResize = true;
 	}
 
-	protected void resizeLeftPanel(FlowLayout rootComponent) {
-		var sub = rootComponent.childById(SubScreenLayout.class, "subcontainer");
+	@Override
+	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+		if(needResize) {
+			updateLayout(uiAdapter.rootComponent);
+			needResize = false;
+		}
+		super.render(context, mouseX, mouseY, delta);
+	}
+
+	private void updateLayout(FlowLayout rootComponent) {
+		var leftM = rootComponent.childById(FlowLayout.class, "leftMenu");
 		var subPan = rootComponent.childById(FlowLayout.class, "layoutSubPanels");
-		var blank = rootComponent.childById(FlowLayout.class, "blank_space");
-		var grid = rootComponent.childById(GridLayout.class, "maingrid");
-		if(subPan != null) {
-			var space = rootComponent.width() - (sub.width() + grid.width());
-			if(space - 20 < leftPaneMaxSizing && space - 20 != subPan.width()) {
-				leftPaneAvailableSpace = Math.min(leftPaneMaxSizing, space - 20);
-				subPan.horizontalSizing(Sizing.fixed(leftPaneAvailableSpace));
-				blank.horizontalSizing(Sizing.fixed(Math.min(leftPaneMaxSizing, space)));
-				recreatePanels(subPan);
-			} else if(leftPaneAvailableSpace == 0) {
-				leftPaneAvailableSpace = leftPaneMaxSizing;
-				recreatePanels(subPan);
+		var inventory = rootComponent.childById(GridLayout.class, "maingrid");
+		var subScr = rootComponent.childById(SubScreenLayout.class, "subcontainer");
+		if(showLeftMenu) {
+			if(inventory != null) {
+				if(subScr != null) {
+					var s = rootComponent.width() - (inventory.x() + inventory.width());
+					if(subScreenSize > 0) {
+						int m = (int) (rootComponent.width() * (subScreenSize * 0.01f));
+						if(inventory.positioning().get().type == Positioning.Type.ABSOLUTE || m > s) {
+							s = m;
+							inventory.positioning(Positioning.absolute(rootComponent.width() - s - inventory.width(), (rootComponent.height() / 2) - (inventory.height() / 2)));
+						}
+					}
+					subScr.horizontalSizing(Sizing.fixed(s));
+				}
+				if(leftM != null)
+					leftPaneSpace = new Vector2i(inventory.x() - 25, leftM.height());
+				if(subPan != null)
+					recreatePanels(subPan);
 			}
 		}
+		drawStatusEffect();
 	}
 
 	public void closePanel(boolean bottom, FlowLayout parent) {
@@ -137,25 +153,45 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 	private void recreatePanels(FlowLayout parent) {
 		parent.clearChildren();
 		if(subPanelTop != null) {
-			var hasBot = subPanelBot != null && subPanelBot.canOpen(leftPaneAvailableSpace);
-			if(!showPanel(parent, subPanelTop, !hasBot, false)) {
-				if(hasBot)
-					showPanel(parent, subPanelBot, true, false);
-			} else if(hasBot)
-				showPanel(parent, subPanelBot, false, true);
-		}
+			var w = leftPaneSpace.x;
+			var h = leftPaneSpace.y;
+			var hasBot = subPanelBot != null && subPanelBot.minWidth() <= w && subPanelBot.minHeight() <= h / 2;
+			if(subPanelTop.minWidth() <= w) {
+				if(hasBot && subPanelTop.minHeight() > h / 2)
+					hasBot = false;
+				else if(hasBot)
+					h /= 2;
+
+				if(subPanelTop.desiredWidth() < w)
+					w = subPanelTop.desiredWidth();
+				if(hasBot && subPanelBot.desiredWidth() > w)
+					w = subPanelBot.desiredWidth();
+				if(subPanelTop.minHeight() <= h) {
+					showPanel(parent, subPanelTop, false, w, h);
+				}
+				if(hasBot) {
+					showPanel(parent, subPanelBot, true, w, h);
+				}
+				updatePanelButtonState(subPanelTop.minHeight() <= h ? subPanelTop : null, hasBot ? subPanelBot : null);
+			} else if(hasBot) {
+				if(subPanelBot.desiredWidth() < w)
+					w = subPanelBot.desiredWidth();
+				showPanel(parent, subPanelBot, false, w, h);
+				updatePanelButtonState(null, subPanelBot);
+			} else
+				updatePanelButtonState(null, null);
+		} else
+			updatePanelButtonState(null, null);
 	}
 
-	private boolean showPanel(FlowLayout parent, SubPanel panel, boolean full, boolean bottom) {
-		if(!panel.canOpen(leftPaneAvailableSpace))
-			return false;
-		var r1 = new SubScreenLayout(Sizing.fill(100), Sizing.fill(full && !bottom ? 100 : 50), FlowLayout.Algorithm.VERTICAL, panel.guiLocation());
+	private void showPanel(FlowLayout parent, SubPanel panel, boolean bottom, int width, int height) {
+
+		var r1 = new SubScreenLayout(Sizing.fixed(width), Sizing.fixed(height), FlowLayout.Algorithm.VERTICAL, panel.guiLocation());
 		parent.child(r1);
 		var b = Components.button(Text.literal("x"), (u) -> closePanel(bottom, parent));
-		b.positioning(Positioning.across(94, bottom ? 50 : 0)).sizing(Sizing.fixed(10)).zIndex(100);
+		b.positioning(Positioning.absolute(width - 10, bottom ? height : 0)).sizing(Sizing.fixed(10)).zIndex(100);
 		parent.child(b);
-		panel.build(r1.getRoot(), this, full, leftPaneAvailableSpace);
-		return true;
+		panel.build(r1.getRoot(), this, width, height);
 	}
 
 	public void pickPanel(SubPanel panel, FlowLayout parent) {
@@ -176,16 +212,26 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 
 	}
 
-	@Override
-	protected void handledScreenTick() {
-		super.handledScreenTick();
-		resizeLeftPanel(uiAdapter.rootComponent);
+	private void updatePanelButtonState(@Nullable SubPanel p1, @Nullable SubPanel p2) {
+		buttonsMap.forEach((k, v) -> {
+			v.setActivated(k == p1 || k == p2);
+		});
+	}
+
+	private void drawStatusEffect() {
 		if(gridBonus != null && gridMalus != null) {
 			Collection<StatusEffectInstance> collection = this.client.player.getStatusEffects();
 			drawEffects(collection.stream().filter(v -> v.getEffectType().isBeneficial()).collect(Collectors.toList()), gridBonus, activeBonus);
 			drawEffects(collection.stream().filter(v -> !v.getEffectType().isBeneficial()).collect(Collectors.toList()), gridMalus, activeMalus);
-
 		}
+	}
+
+	@Override
+	protected void handledScreenTick() {
+
+		super.handledScreenTick();
+		//resizeLeftPanel(uiAdapter.rootComponent);
+		drawStatusEffect();
 		if(subPanelTop != null)
 			subPanelTop.panelTick();
 		if(subPanelBot != null)

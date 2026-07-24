@@ -26,8 +26,4 @@ public abstract class SimpleSubPanel implements SubPanel {
 		return icon;
 	}
 
-	@Override
-	public boolean isFullHeight() {
-		return false;
-	}
 }

@@ -38,13 +38,13 @@ public class PlayerCraftPanel extends SimpleSubPanel {
 	}
 
 	@Override
-	public boolean canOpen(int availableSpace) {
-
-		return availableSpace >= 120;
+	public int desiredWidth() {
+		return 125;
 	}
 
+
 	@Override
-	public void build(FlowLayout rootComponent, PlayerBasedGui<?> gui, boolean fullSize, int maxWidth) {
+	public void build(FlowLayout rootComponent, PlayerBasedGui<?> gui, int width, int height) {
 
 		var scroll = rootComponent.childById(ScrollContainer.class, "craftlist_body");
 		scroll.verticalSizing(Sizing.fixed(rootComponent.height() - 23));

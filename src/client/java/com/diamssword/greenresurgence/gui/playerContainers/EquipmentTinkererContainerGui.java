@@ -30,6 +30,7 @@ import java.util.ArrayList;
 public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScreenHandler> {
 
 	public ItemStack stack;
+	private GridLayout gridLayout;
 
 	private @Nullable BetterEntityComponent<ItemEntity> stackDp;
 	private LabelComponent tooltipDp;
@@ -73,9 +74,13 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 						text.append(t).append("\n");
 					});
 					tooltipDp.text(text);
-					((ScrollContainer) tooltipDp.parent()).surface(Surface.TOOLTIP);
+					var main = gridLayout.parent().parent();
+					var l = gridLayout.x() + gridLayout.width();
+					var m = main.x() + main.width();
+					tooltipDp.horizontalSizing(Sizing.fixed((m - l) - 25));
+					((ScrollContainer<?>) tooltipDp.parent()).surface(Surface.TOOLTIP);
 				} else
-					((ScrollContainer) tooltipDp.parent()).surface(Surface.BLANK);
+					((ScrollContainer<?>) tooltipDp.parent()).surface(Surface.BLANK);
 			}
 
 		}
@@ -93,10 +98,10 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 		contL.gap(10);
 		this.handler.onEquipmentReady(v -> {
 			if(v[0] != null) {
-				var g = simpleGridSlotSetup(handler.getEquipments()[0], v[0].getSlots());
+				gridLayout = simpleGridSlotSetup(handler.getEquipments()[0], v[0].getSlots());
 				panel.child(contL);
-				if(g != null)
-					panel.child(g);
+				if(gridLayout != null)
+					panel.child(gridLayout);
 				findInvComps(rootComponent);
 			}
 		});

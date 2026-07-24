@@ -32,7 +32,6 @@
                               </label>
                             <padding><all>5</all></padding>
                             <sizing>
-                                <horizontal method="fixed">125</horizontal>
                                 <vertical method="fill">100</vertical>
                             </sizing>
                             <surface>

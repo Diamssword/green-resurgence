@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.systems.equipement.utils;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.items.equipment.EquipmentTwoHanded;
+import com.diamssword.greenresurgence.items.equipment.ICustomPoseWeapon;
 import com.diamssword.greenresurgence.systems.equipement.AdvEquipmentSlot;
 import com.diamssword.greenresurgence.systems.equipement.UpgradeActionContext;
 import net.minecraft.item.Item;
@@ -22,7 +22,7 @@ public class TooltipHelper {
 			tooltip.add(ScreenTexts.EMPTY);
 			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.title.upgrade").formatted(Formatting.GRAY));
 		} else if(slot == AdvEquipmentSlot.MAINHAND || slot == AdvEquipmentSlot.DISPLAY) {
-			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.equipment_type." + (item instanceof EquipmentTwoHanded ? "two_hand" : "dual_wield")).formatted(Formatting.GRAY));
+			tooltip.add(Text.translatable("equipment." + GreenResurgence.ID + ".tooltip.equipment_type." + (item instanceof ICustomPoseWeapon cw && cw.shouldRemoveOffHand() ? "two_hand" : "dual_wield")).formatted(Formatting.GRAY));
 			tooltip.add(ScreenTexts.EMPTY);
 		}
 		if(context == UpgradeActionContext.ItemContext.BLUEPRINT) {
