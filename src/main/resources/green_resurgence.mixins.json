@@ -11,6 +11,8 @@
     "PlayerInventoryMixin",
     "PlayerPlaceBlockMixin",
     "PlayerScreenHandlerMixin",
+    "ScreenHandlerMixin",
+    "ServerPlayerMixin",
     "SinglePoolElementMixin"
   ],
   "injectors": {

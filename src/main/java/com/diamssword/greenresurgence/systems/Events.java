@@ -81,6 +81,5 @@ public class Events {
 		});
 		UseBlockCallback.EVENT.register(LootableLogic::onRightClick);
 		PlayerEvents.init();
-
 	}
 }

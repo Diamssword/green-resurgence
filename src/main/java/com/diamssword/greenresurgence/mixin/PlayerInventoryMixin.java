@@ -26,12 +26,9 @@ import java.util.function.Predicate;
 
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryMixin {
-
-
 	@Shadow
 	@Final
 	public PlayerEntity player;
-
 	@Shadow
 	@Final
 	public DefaultedList<ItemStack> armor;
@@ -40,9 +37,6 @@ public abstract class PlayerInventoryMixin {
 	@Shadow
 	@Final
 	public DefaultedList<ItemStack> main;
-
-	@Shadow
-	public abstract void updateItems();
 
 	@Inject(at = @At("HEAD"), method = "getSwappableHotbarSlot", cancellable = true)
 	private void getSwappableHotbarSlot(CallbackInfoReturnable<Integer> cir) {
@@ -107,9 +101,10 @@ public abstract class PlayerInventoryMixin {
 
 	@Inject(at = @At("HEAD"), method = "remove", cancellable = true)
 	public void remove(Predicate<ItemStack> shouldRemove, int maxCount, Inventory craftingInventory, CallbackInfoReturnable<Integer> cir) {
-
-		var pinv = player.getComponent(Components.PLAYER_INVENTORY);
-		cir.setReturnValue(pinv.getInventory().remove(shouldRemove, maxCount));
+		if(!player.isCreative()) {
+			var pinv = player.getComponent(Components.PLAYER_INVENTORY);
+			cir.setReturnValue(pinv.getInventory().remove(shouldRemove, maxCount));
+		}
 
 	}
 
@@ -134,4 +129,6 @@ public abstract class PlayerInventoryMixin {
 			}
 		}
 	}
+
+
 }

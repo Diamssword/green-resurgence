@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence.gui.playerContainers;
 
-import com.diamssword.greenresurgence.containers.player.VanillaPlayerInvMokup;
+import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
 import com.diamssword.greenresurgence.utils.TextUtils;
 import io.wispforest.owo.ui.component.Components;
@@ -14,11 +14,11 @@ import net.minecraft.text.Text;
 
 import java.text.DecimalFormat;
 
-public class PlayerInventoryGui extends PlayerBasedGui<VanillaPlayerInvMokup> {
+public class PlayerInventoryGui extends PlayerBasedGui<CustomPlayerInventory.VanillaPlayerInvMokup> {
 
 	private FreeRowGridLayout statsPanel;
 
-	public PlayerInventoryGui(VanillaPlayerInvMokup handler, PlayerInventory inv, Text title) {
+	public PlayerInventoryGui(CustomPlayerInventory.VanillaPlayerInvMokup handler, PlayerInventory inv, Text title) {
 		super(handler, "survival/player_stats", true);
 		openSubPanelOnLoad = true;
 

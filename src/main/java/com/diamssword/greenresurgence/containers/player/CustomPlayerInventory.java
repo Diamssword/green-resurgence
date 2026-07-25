@@ -2,6 +2,8 @@ package com.diamssword.greenresurgence.containers.player;
 
 import com.diamssword.characters.api.ICharacterStored;
 import com.diamssword.characters.api.http.ApiCharacterValues;
+import com.diamssword.greenresurgence.containers.Containers;
+import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import com.diamssword.greenresurgence.containers.OffsetInventory;
 import com.diamssword.greenresurgence.containers.SlotedSimpleInventory;
 import com.diamssword.greenresurgence.containers.grids.IGridContainer;
@@ -25,6 +27,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
 import org.jetbrains.annotations.Nullable;
@@ -434,5 +437,23 @@ public class CustomPlayerInventory implements ICharacterStored {
 		player.openHandledScreen(screen);
 	}
 
+	public static class VanillaPlayerInvMokup extends MultiInvScreenHandler {
+		public VanillaPlayerInvMokup(int syncId, PlayerInventory playerInventory) {
+			super(syncId, playerInventory);
+		}
 
+		public VanillaPlayerInvMokup(int syncId, PlayerEntity player, IGridContainer... inventories) {
+			super(syncId, player, inventories);
+		}
+
+		public VanillaPlayerInvMokup(int syncId, PlayerEntity player, boolean empty) {
+			super(syncId, player, empty);
+
+		}
+
+		@Override
+		public ScreenHandlerType<? extends MultiInvScreenHandler> type() {
+			return Containers.PLAYER;
+		}
+	}
 }

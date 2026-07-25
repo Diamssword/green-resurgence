@@ -3,7 +3,7 @@ package com.diamssword.greenresurgence.containers;
 import com.diamssword.greenresurgence.blockEntities.ArmorTinkererBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.blocks.*;
-import com.diamssword.greenresurgence.containers.player.VanillaPlayerInvMokup;
+import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.items.BlockVariantItem;
 import com.diamssword.greenresurgence.items.CustomSpawnEgg;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionTerrainStorage;
@@ -30,7 +30,7 @@ public class Containers implements ContainerRegistryContainer {
 	public static final ScreenHandlerType<FactionTerrainStorage.ScreenHandler> FAC_STORAGE = build(FactionTerrainStorage.ScreenHandler::new);
 	public static final ScreenHandlerType<BaseStorageBlock.ScreenHandler> FAC_CHEST = build(BaseStorageBlock.ScreenHandler::new);
 	public static final ScreenHandlerType<GenericContainer> GENERIC_CONTAINER = build(GenericContainer::new);
-	public static final ScreenHandlerType<VanillaPlayerInvMokup> PLAYER = build(VanillaPlayerInvMokup::new);
+	public static final ScreenHandlerType<CustomPlayerInventory.VanillaPlayerInvMokup> PLAYER = build(CustomPlayerInventory.VanillaPlayerInvMokup::new);
 	public static final ScreenHandlerType<EquipmentScreenHandler> EQUIPMENT_TINKERER = build(EquipmentScreenHandler::new);
 
 	private static <T extends ScreenHandler> ScreenHandlerType<T> build(ScreenHandlerType.Factory<T> factory) {
