@@ -50,17 +50,21 @@ public interface SimpleGasItem {
 	/**
 	 * Directly set the gas stored in the stack. Count is ignored.
 	 * It's up to callers to ensure that the new amount is >= 0 and <= capacity.
+	 * return true if operation could be completed
 	 */
-	default void setStoredGas(ItemStack stack, long newAmount) {
+	default boolean setStoredGas(ItemStack stack, long newAmount) {
 		setStoredGasUnchecked(stack, getStoredGasType(stack), newAmount);
+		return true;
 	}
 
 	/**
 	 * Directly set the gas stored in the stack. Count is ignored.
 	 * It's up to callers to ensure that the new amount is >= 0 and <= capacity.
+	 * return true if operation could be completed
 	 */
-	default void setStoredGas(ItemStack stack, Identifier gas, long newAmount) {
+	default boolean setStoredGas(ItemStack stack, Identifier gas, long newAmount) {
 		setStoredGasUnchecked(stack, gas, newAmount);
+		return true;
 	}
 
 	/**

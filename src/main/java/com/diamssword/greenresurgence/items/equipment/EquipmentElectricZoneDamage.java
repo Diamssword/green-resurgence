@@ -1,9 +1,10 @@
-package com.diamssword.greenresurgence.systems.equipement;
+package com.diamssword.greenresurgence.items.equipment;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.MParticles;
 import com.diamssword.greenresurgence.MSounds;
-import com.diamssword.greenresurgence.items.equipment.EquipmentToolElectric;
+import com.diamssword.greenresurgence.systems.equipement.EffectLevel;
+import com.diamssword.greenresurgence.systems.equipement.EquipmentEffects;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.Entity;
@@ -133,6 +134,10 @@ public class EquipmentElectricZoneDamage extends EquipmentToolElectric {
 		return (int) (50 / (val / 100f));
 	}
 
+	public void performActionOnArea(ItemStack stack, LivingEntity user, Box selectionBox) {
+
+	}
+
 	public float makeHurtBox(ItemStack stack, LivingEntity user) {
 		float used = 0;
 		Vec3d eyePos = user.getEyePos();
@@ -146,7 +151,9 @@ public class EquipmentElectricZoneDamage extends EquipmentToolElectric {
 		} else
 			canSee = true;
 		if(canSee) {
-			List<Entity> entities = user.getWorld().getOtherEntities(user, createSelectionBox(center, user, stack), Entity::isAlive);
+			var box = createSelectionBox(center, user, stack);
+			performActionOnArea(stack, user, box);
+			List<Entity> entities = user.getWorld().getOtherEntities(user, box, Entity::isAlive);
 
 			for(Entity entity : entities) {
 				if(!user.getWorld().isClient) {

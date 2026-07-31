@@ -14,6 +14,7 @@
   "text.config.resurgence.option.clientOptions.__": "I'm useless :D",
   "text.config.resurgence.category.clientOptions.renders": "Render",
   "text.config.resurgence.option.clientOptions.renders.wireAnchorMaxRenderDistance": "Wire Render Max Anchor Distance",
+  "text.config.resurgence.option.serverOptions.enableAdvancedStructurePreview": "Enable Advanced Structure Preview",
   "text.config.resurgence.category.serverOptions": "Server Settings",
   "text.config.resurgence.option.serverOptions.__": "I'm useless :D",
   "text.config.resurgence.category.serverOptions.cooldowns": "Cooldowns (In Seconds)",

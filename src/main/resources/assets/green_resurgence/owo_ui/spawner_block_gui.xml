@@ -24,6 +24,23 @@
                                     </children>
                                     <vertical-alignment>center</vertical-alignment>
                                 </flow-layout>
+                                 <flow-layout direction="horizontal">
+                                    <children>
+                                        <text-box id="in_check_radius">
+                                            <sizing>
+                                                <horizontal method="fixed">30</horizontal>
+                                            </sizing>
+                                        </text-box>
+                                        <label>
+                                            <text>Entity Check Range</text>
+                                            <vertical-text-alignment>center</vertical-text-alignment>
+                                            <margins>
+                                                <left>2</left>
+                                            </margins>
+                                        </label>
+                                    </children>
+                                    <vertical-alignment>center</vertical-alignment>
+                                </flow-layout>
                                 <flow-layout direction="horizontal">
                                     <children>
                                         <text-box id="in_player_range">

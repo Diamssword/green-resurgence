@@ -21,6 +21,7 @@ import com.diamssword.greenresurgence.systems.equipement.Equipments;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
 import com.diamssword.greenresurgence.utils.ClientSideHelper;
+import com.diamssword.greenresurgence.utils.CreateCompat;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.wispforest.owo.registration.annotations.RegistryNamespace;
 import io.wispforest.owo.registration.reflect.AutoRegistryContainer;
@@ -31,6 +32,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.registry.Registry;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.server.command.CommandManager;
@@ -103,7 +105,10 @@ public class GreenResurgence implements ModInitializer {
 	 * Called only once
 	 */
 	public static void onPostInit() {
-
+		clientHelper.clearCaches();
+		if(FabricLoader.getInstance().isModLoaded("create")) {
+			CreateCompat.init();
+		}
 	}
 
 	public void registerCommand(String name, Consumer<LiteralArgumentBuilder<ServerCommandSource>> builder) {

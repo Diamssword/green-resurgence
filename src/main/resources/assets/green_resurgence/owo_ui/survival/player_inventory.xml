@@ -62,7 +62,7 @@
                             <padding>
                                 <all>4</all>
                             </padding>
-                            <margins><left>5</left></margins>
+                            <margins><left>5</left><bottom>5</bottom></margins>
                             <horizontal-alignment>right</horizontal-alignment>
                         </flow-layout>
                         <flow-layout row="1" column="1" direction="vertical" id="'flow3">

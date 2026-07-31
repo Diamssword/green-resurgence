@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.items.equipment;
 
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.MGas;
 import com.diamssword.greenresurgence.datagen.LangGenerator;
 import com.diamssword.greenresurgence.datagen.ModelGenerator;
 import com.diamssword.greenresurgence.items.equipment.upgrades.*;
@@ -225,6 +226,8 @@ public class EquipmentItems implements ItemRegistryContainer {
 	public static final Item CHAINSAW_LONG_CHASSIS = new EquipmentUpgradeItem("electric/cutter", Equipments.P_CHASSIS, 1800, 4).setEffect(MapEffectMaker.create(EquipmentEffects.ATTACK_RANGE, 1));
 	@Tier(tier = "1")
 	public static final Item CHAINSAW_MOTOR = new EquipmentUpgradeItem("electric/cutter", Equipments.P_MOTOR, 1800, 4).setEffect(MapEffectMaker.create(EquipmentEffects.ELECTRIC_WARMUP_SPEED, 50));
+	@Tier(tier = "1")
+	public static final Item GAS_HOLDER = new EquipmentGasSlotUpgrade("electric/flame", 1, MGas.NATURAL_GAS.id(), MGas.PROPANE.id(), MGas.LPG.id());
 
 	@Override
 	public void postProcessField(String namespace, Item value, String identifier, Field field) {

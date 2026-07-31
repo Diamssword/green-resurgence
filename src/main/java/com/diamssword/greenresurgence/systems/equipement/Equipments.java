@@ -2,10 +2,7 @@ package com.diamssword.greenresurgence.systems.equipement;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.items.ModularArmorItem;
-import com.diamssword.greenresurgence.items.equipment.EquipmentSecondHandNew;
-import com.diamssword.greenresurgence.items.equipment.EquipmentToolElectric;
-import com.diamssword.greenresurgence.items.equipment.EquipmentToolElectricTwoHanded;
-import com.diamssword.greenresurgence.items.equipment.EquipmentTwoHanded;
+import com.diamssword.greenresurgence.items.equipment.*;
 import com.diamssword.greenresurgence.systems.equipement.utils.EquipmentEnergyStorage;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
@@ -42,6 +39,7 @@ public class Equipments {
 	public static final String P_HEAD_EXTRA_2 = "extra2_head";
 
 	public static final String P_BATTERY = "battery";
+	public static final String P_GAS = "gas_socket";
 	public static final String P_CHASSIS = "chassis";
 	public static final String P_MOTOR = "motor";
 	public static final String P_CHAIN = "chain";
@@ -63,6 +61,7 @@ public class Equipments {
 		register(TYPE_SPIKE, "long", EquipmentValues.LONG_SPIKE_BASE, REQUIRED_SLOTS, ExtraSlots(P_HANDLE_EXTRA_2));
 
 		register(TYPE_ELECTRIC, "cutter", EquipmentValues.CHAINSAW_BASE, new String[]{P_CHAIN, P_MOTOR, P_CHASSIS, P_BATTERY}, new String[]{P_SKIN});
+		register(TYPE_ELECTRIC, "flame", EquipmentValues.CHAINSAW_BASE, new String[]{P_CHAIN, P_MOTOR, P_CHASSIS, P_GAS}, new String[]{P_SKIN});
 		registerArmor(TYPE_ARMOR, ArmorItem.Type.HELMET, new HashMap<>(), REQUIRED_SLOTS_ARMOR);
 		registerArmor(TYPE_ARMOR, ArmorItem.Type.CHESTPLATE, new HashMap<>(), REQUIRED_SLOTS_ARMOR);
 		registerArmor(TYPE_ARMOR, ArmorItem.Type.LEGGINGS, new HashMap<>(), REQUIRED_SLOTS_ARMOR);
@@ -119,7 +118,7 @@ public class Equipments {
 	public static void register(String type, String subType, Map<String, EffectLevel> bases, String[] requiredSlots, String... extraSlots) {
 		bases.put(EquipmentEffects.BASE_DAMAGE_MOD, new EffectLevel(1f));
 		equipments.putIfAbsent(type, new HashMap<>());
-		BiFunction<String, String, Item> gen = (e, f) -> new EquipmentSecondHandNew(e, f, bases);
+		BiFunction<String, String, Item> gen = (e, f) -> new EquipmentSecondHand(e, f, bases);
 
 		if(subType.equals("long")) {
 			gen = (e, f) -> new EquipmentTwoHanded(e, f, bases);
@@ -127,15 +126,17 @@ public class Equipments {
 			gen = (a, b) -> new EquipmentToolElectric(a, b, bases, true);
 
 		else if(type.equals("electric")) {
-			gen = (a, b) -> new EquipmentToolElectricTwoHanded(a, b, bases, false);
+			if(subType.equals("flame"))
+				gen = (a, b) -> new EquipmentFlameThrower(a, b, bases, false);
+			else
+				gen = (a, b) -> new EquipmentChainsaw(a, b, bases, false);
 		}
 		var equ = new EquipmentDef(type, subType, AdvEquipmentSlot.MAINHAND, gen, requiredSlots, extraSlots);
-		if(type.equals(TYPE_BLADE))
-			equ.setDamageChance(P_HEAD, 2f);
-		else if(type.equals(TYPE_HAMMER))
-			equ.setDamageChance(P_BINDING, 2f);
-		else if(type.equals(TYPE_SPIKE))
-			equ.setDamageChance(P_HANDLE, 2f);
+		switch(type) {
+			case TYPE_BLADE -> equ.setDamageChance(P_HEAD, 2f);
+			case TYPE_HAMMER -> equ.setDamageChance(P_BINDING, 2f);
+			case TYPE_SPIKE -> equ.setDamageChance(P_HANDLE, 2f);
+		}
 		equipments.get(type).put(subType, equ);
 	}
 }

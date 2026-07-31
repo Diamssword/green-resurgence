@@ -81,6 +81,7 @@ public class RenderersRegister {
 		EntityRendererRegistry.register(MEntities.BACKPACK, BackpackEntityRenderer::new);
 		EntityRendererRegistry.register(MEntities.CADDIE, CaddieEntityRenderer::new);
 		EntityRendererRegistry.register(MEntities.BIKE, BikeEntityRenderer::new);
+		EntityRendererRegistry.register(MEntities.FLAME_PUDDLE, RenderersRegister::emptyEntityRender);
 
 	}
 

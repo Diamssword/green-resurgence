@@ -25,4 +25,8 @@ public class ClientSideHelper {
 			isDatagen = GreenResurgence.ID.equals(System.getProperty("fabric-api.datagen.modid"));
 		return isDatagen;
 	}
+
+	public void clearCaches() {
+
+	}
 }

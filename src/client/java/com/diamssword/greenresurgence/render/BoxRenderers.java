@@ -5,10 +5,10 @@ import com.diamssword.greenresurgence.items.helpers.IStructureProvider;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.render.environment.EnvironementAreas;
 import com.diamssword.greenresurgence.structure.StructureInfos;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.WorldRenderer;
@@ -29,8 +29,8 @@ public class BoxRenderers {
 	}
 
 	public static void drawAdventureOutline(BlockPos pos, net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext ctx, float r, float g, float b) {
+
 		BlockState st = ctx.world().getBlockState(pos);
-		VertexConsumerProvider.Immediate store = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
 		MatrixStack matrix = ctx.matrixStack();
 		matrix.push();
 		VoxelShape shape = st.getOutlineShape(ctx.world(), pos, ShapeContext.of(ctx.gameRenderer().getClient().player));
@@ -41,39 +41,36 @@ public class BoxRenderers {
 			Box box = shape.getBoundingBox().expand(0.005);
 			long ticks = MinecraftClient.getInstance().world.getTime();
 			float tot = (float) (Math.sin(2 * Math.PI * ticks / 40) * (0.7f - -0f) / 2 + (0.7f + -0f) / 2); // Math.min(0.5f,(ticks % 20) / 20f);
-			WorldRenderer.drawBox(matrix, store.getBuffer(RenderLayer.LINES), box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, r, g, b, 0.3f + tot);
+			WorldRenderer.drawBox(matrix, ctx.consumers().getBuffer(RenderLayer.LINES), box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, r, g, b, 0.3f + tot);
+
 		}
 		matrix.pop();
 	}
 
-	public static void drawStructureBox(MatrixStack matrix, Vec3d pos, Vec3d size, float r, float g, float b, float a) {
-		MinecraftClient mc = MinecraftClient.getInstance();
-		VertexConsumerProvider.Immediate store = mc.getBufferBuilders().getEntityVertexConsumers();
+	public static void drawStructureBox(WorldRenderContext ctx, VertexConsumerProvider.Immediate consumers, Vec3d pos, Vec3d size, float r, float g, float b, float a) {
+
+		var matrix = ctx.matrixStack();
 		matrix.push();
-		Camera camera = mc.gameRenderer.getCamera();
-		if(camera.isReady()) {
+		var cam = ctx.camera().getPos();
+		matrix.translate(pos.x - cam.x, pos.y - cam.y, pos.z - cam.z);
 
-			Box box = new Box(pos.x, pos.y, pos.z, pos.x + size.x, pos.y + size.y, pos.z + size.z).expand(0.005);
-			box = box.offset(camera.getPos().negate());
-			WorldRenderer.drawBox(matrix, store.getBuffer(RenderLayer.LINES), box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ, r, g, b, a);
-
-			matrix.pop();
-		}
+		WorldRenderer.drawBox(matrix, consumers.getBuffer(RenderLayer.LINES), 0, 0, 0, size.x, size.y, size.z, r, g, b, a);
+		matrix.pop();
 	}
 
-	public static void drawStructureItemOverlay(MatrixStack matrix) {
+	public static void drawStructureItemOverlay(WorldRenderContext ctx, VertexConsumerProvider.Immediate consumers) {
 		MinecraftClient mc = MinecraftClient.getInstance();
 		ItemStack st = mc.player.getMainHandStack();
 		if(st != null && st.getItem() instanceof IStructureProvider provider) {
-			drawStructureOverlay(matrix, provider, st);
+			drawStructureOverlay(ctx, consumers, provider, st);
 		}
 		ItemStack st1 = mc.player.getStackInHand(Hand.OFF_HAND);
 		if(st1 != null && st1.getItem() instanceof IStructureProvider provider) {
-			drawStructureOverlay(matrix, provider, st1);
+			drawStructureOverlay(ctx, consumers, provider, st1);
 		}
 	}
 
-	public static void drawStructureOverlay(MatrixStack matrix, IStructureProvider provider, ItemStack st) {
+	public static void drawStructureOverlay(WorldRenderContext ctx, VertexConsumerProvider.Immediate consumers, IStructureProvider provider, ItemStack st) {
 		MinecraftClient mc = MinecraftClient.getInstance();
 		Direction d = provider.getDirection(st, mc.world);
 		Identifier name = provider.getStructureName(st, mc.world);
@@ -84,7 +81,8 @@ public class BoxRenderers {
 			StructureInfos.StructureInfo inf = StructureInfos.getInfos(name, d, jigsaw);
 			BlockPos pos1 = pos;
 			int i, j, k;
-
+			if(!inf.blocks().isEmpty())
+				BlueprintRenderer.renderBlocks(ctx, pos, inf.blocks());
 			if(jigsaw == IStructureProvider.StructureType.jigsaw) {
 				i = j = k = 1;
 				switch(d) {
@@ -119,12 +117,12 @@ public class BoxRenderers {
 				}
 			}
 
-			drawStructureBox(matrix, new Vec3d(pos.getX(), pos.getY(), pos.getZ()), new Vec3d(1, 1, 1), 0.5f, 1f, 1, 1);
-			drawStructureBox(matrix, new Vec3d(pos1.getX(), pos1.getY(), pos1.getZ()), new Vec3d(inf.size().getX() + i, inf.size().getY() + j, inf.size().getZ() + k), 1, 0.5f, 1, 1);
+			drawStructureBox(ctx, consumers, new Vec3d(pos.getX(), pos.getY(), pos.getZ()), new Vec3d(1, 1, 1), 0.5f, 1f, 1, 1);
+			drawStructureBox(ctx, consumers, new Vec3d(pos1.getX(), pos1.getY(), pos1.getZ()), new Vec3d(inf.size().getX() + i, inf.size().getY() + j, inf.size().getZ() + k), 1, 0.5f, 1, 1);
 		}
 	}
 
-	public static void drawBaseOverlays(MatrixStack matrix) {
+	public static void drawBaseOverlays(WorldRenderContext ctx, VertexConsumerProvider.Immediate consumers) {
 		MinecraftClient mc = MinecraftClient.getInstance();
 
 		if(mc.world != null) {
@@ -140,25 +138,25 @@ public class BoxRenderers {
 					float red = Math.min(Math.max(c1 % 255f, 0f), 255f);
 					float green = Math.min(Math.max(c2 % 255f, 0f), 255f);
 					float blue = Math.min(Math.max(c3 % 255f, 0f), 255f);
-					DebugRenderer.drawBox(matrix, store, new BlockPos(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()), new BlockPos(b.getRight().getMaxX() + 1, b.getRight().getMaxY() + 1, b.getRight().getMaxZ() + 1), red, green, blue, 0.2f);
+					DebugRenderer.drawBox(ctx.matrixStack(), store, new BlockPos(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()), new BlockPos(b.getRight().getMaxX() + 1, b.getRight().getMaxY() + 1, b.getRight().getMaxZ() + 1), red, green, blue, 0.2f);
 					BlockPos p1 = b.getRight().getCenter();
-					DebugRenderer.drawString(matrix, store1, "Camp: " + b.getLeft(), p1.getX(), p1.getY(), p1.getZ(), 0xffffff, 0.1f, true, 0, true);
-					DebugRenderer.drawString(matrix, store1, b.getMiddle().toString(), p1.getX(), p1.getY() - 1, p1.getZ(), 0xffffff, 0.1f, true, 0, true);
-					drawStructureBox(matrix, new Vec3d(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()), Vec3d.of(b.getRight().getDimensions().add(1, 1, 1)), red, green, blue, 1);
+					DebugRenderer.drawString(ctx.matrixStack(), store1, "Camp: " + b.getLeft(), p1.getX(), p1.getY(), p1.getZ(), 0xffffff, 0.1f, true, 0, true);
+					DebugRenderer.drawString(ctx.matrixStack(), store1, b.getMiddle().toString(), p1.getX(), p1.getY() - 1, p1.getZ(), 0xffffff, 0.1f, true, 0, true);
+					drawStructureBox(ctx, consumers, new Vec3d(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()), Vec3d.of(b.getRight().getDimensions().add(1, 1, 1)), red, green, blue, 1);
 				});
 			} else if(ClaimAntennaGui.viewBounds && mc.player != null) {
 				CurrentZonePacket.OwnFactionBounds.forEach(b -> {
 					VertexConsumerProvider.Immediate store = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
 					VertexConsumerProvider.Immediate store1 = MinecraftClient.getInstance().getBufferBuilders().getEffectVertexConsumers();
 
-					drawStructureBox(matrix, new Vec3d(b.getMinX(), mc.player.getBlockY(), b.getMinZ()), new Vec3d(b.getDimensions().getX() + 1, 0, b.getDimensions().getY() + 1), 1f, 0.8f, 0.8f, 0.8f);
-					drawStructureBox(matrix, new Vec3d(b.getMinX(), b.getMinY(), b.getMinZ()), Vec3d.of(b.getDimensions().add(1, 1, 1)), 1f, 1f, 1f, 1);
+					drawStructureBox(ctx, consumers, new Vec3d(b.getMinX(), mc.player.getBlockY(), b.getMinZ()), new Vec3d(b.getDimensions().getX() + 1, 0, b.getDimensions().getY() + 1), 1f, 0.8f, 0.8f, 0.8f);
+					drawStructureBox(ctx, consumers, new Vec3d(b.getMinX(), b.getMinY(), b.getMinZ()), Vec3d.of(b.getDimensions().add(1, 1, 1)), 1f, 1f, 1f, 1);
 				});
 			}
 		}
 	}
 
-	public static void drawEnvironmentOverlays(MatrixStack matrix) {
+	public static void drawEnvironmentOverlays(WorldRenderContext ctx, VertexConsumerProvider.Immediate consumers) {
 		MinecraftClient mc = MinecraftClient.getInstance();
 
 		if(mc.world != null && mc.getEntityRenderDispatcher().shouldRenderHitboxes()) {
@@ -174,8 +172,8 @@ public class BoxRenderers {
 				float green = Math.min(Math.max(c2 % 255f, 0f), 255f);
 				float blue = Math.min(Math.max(c3 % 255f, 0f), 255f);
 				Vec3d p1 = b.getBox().getCenter();
-				DebugRenderer.drawString(matrix, store1, "EnvArea:  " + b.getType(), p1.getX(), p1.getY(), p1.getZ(), 0xffffff, 0.1f, true, 0, true);
-				drawStructureBox(matrix, new Vec3d(b.getBox().minX, b.getBox().minY, b.getBox().minZ), new Vec3d(b.getBox().getXLength(), b.getBox().getYLength(), b.getBox().getZLength()).add(1, 1, 1), red, green, blue, 1);
+				DebugRenderer.drawString(ctx.matrixStack(), store1, "EnvArea:  " + b.getType(), p1.getX(), p1.getY(), p1.getZ(), 0xffffff, 0.1f, true, 0, true);
+				drawStructureBox(ctx, consumers, new Vec3d(b.getBox().minX, b.getBox().minY, b.getBox().minZ), new Vec3d(b.getBox().getXLength(), b.getBox().getYLength(), b.getBox().getZLength()).add(1, 1, 1), red, green, blue, 1);
 			});
 		}
 

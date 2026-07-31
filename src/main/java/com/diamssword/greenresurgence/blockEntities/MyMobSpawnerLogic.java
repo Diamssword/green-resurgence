@@ -30,6 +30,7 @@ public abstract class MyMobSpawnerLogic {
 	private long lastSpawn = -1;
 	private int spawnCount = 4;
 	private int maxNearbyEntities = 6;
+	private int nearbyEntitiesRadius = 16;
 	private int requiredPlayerRange = 16;
 	private int spawnRange = 4;
 	private int spawnHeight = 1;
@@ -93,6 +94,14 @@ public abstract class MyMobSpawnerLogic {
 
 	public void setMaxNearbyEntities(int maxNearbyEntities) {
 		this.maxNearbyEntities = maxNearbyEntities;
+	}
+
+	public int getNearbyEntitiesRadius() {
+		return nearbyEntitiesRadius;
+	}
+
+	public void setNearbyEntitiesRadius(int nearbyEntitiesRadius) {
+		this.nearbyEntitiesRadius = nearbyEntitiesRadius;
 	}
 
 	public boolean isFloorCheck() {
@@ -192,7 +201,7 @@ public abstract class MyMobSpawnerLogic {
 							return;
 						}
 
-						int k = world.getNonSpectatingEntities(entity.getClass(), new Box(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(this.spawnRange, this.spawnHeight, this.spawnRange)).size();
+						int k = world.getNonSpectatingEntities(entity.getClass(), new Box(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(this.nearbyEntitiesRadius, this.nearbyEntitiesRadius, this.nearbyEntitiesRadius)).size();
 						if(k >= this.maxNearbyEntities) {
 							continue;
 						}
@@ -249,7 +258,9 @@ public abstract class MyMobSpawnerLogic {
 			this.maxNearbyEntities = nbt.getInt("MaxNearbyEntities");
 			this.requiredPlayerRange = nbt.getInt("RequiredPlayerRange");
 		}
-
+		if(nbt.contains("NearbyEntitiesRadius", NbtElement.NUMBER_TYPE)) {
+			this.nearbyEntitiesRadius = nbt.getInt("NearbyEntitiesRadius");
+		}
 		if(nbt.contains("SpawnRange", NbtElement.NUMBER_TYPE)) {
 			this.spawnRange = nbt.getInt("SpawnRange");
 		}
@@ -267,6 +278,7 @@ public abstract class MyMobSpawnerLogic {
 		nbt.putInt("RequiredPlayerRange", this.requiredPlayerRange);
 		nbt.putInt("SpawnRange", this.spawnRange);
 		nbt.putInt("SpawnHeight", this.spawnHeight);
+		nbt.putInt("NearbyEntitiesRadius", this.nearbyEntitiesRadius);
 		nbt.putBoolean("FloorCheck", this.floorCheck);
 
 		//nbt.put("SpawnPotentials", (NbtElement) MobSpawnerEntry.DATA_POOL_CODEC.encodeStart(NbtOps.INSTANCE, this.spawnPotentials).result().orElseThrow());

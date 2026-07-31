@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.render;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.blockEntities.ConnectorBlockEntity;
 import com.diamssword.greenresurgence.blocks.IDisplayOffset;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
@@ -24,7 +25,7 @@ public class WireRenderer {
 	private static final float baseSag = 1.2f;
 	private static final float distanceSag = 0.01f;
 
-	public static void render(net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext ctx) {
+	public static void render(WorldRenderContext ctx, VertexConsumerProvider.Immediate consumers) {
 		PlayerEntity p = ctx.gameRenderer().getClient().player;
 		ConnectorBlockEntity.clientCables.forEach((k) -> {
 			if(k.getRight().isWithinDistance(p.getPos(), GreenResurgence.CONFIG.clientOptions.renders.wireAnchorMaxRenderDistance()) || k.getLeft().isWithinDistance(p.getPos(), GreenResurgence.CONFIG.clientOptions.renders.wireAnchorMaxRenderDistance())) {
@@ -44,7 +45,7 @@ public class WireRenderer {
 				}
 				if(k.getLeft().getZ() == k.getRight().getZ() && k.getLeft().getX() == k.getRight().getX())
 					off1 = off1.add(0.01, 0, 0);
-				WireRenderer.renderWireInWorld(ctx.world(), ctx.camera().getPos(), k.getLeft().toCenterPos().add(off1), k.getRight().toCenterPos().add(off2), ctx.matrixStack(), ctx.consumers());
+				WireRenderer.renderWireInWorld(ctx.world(), ctx.camera().getPos(), k.getLeft().toCenterPos().add(off1), k.getRight().toCenterPos().add(off2), ctx.matrixStack(), consumers);
 				//renderLeashFrom(ctx, k.getLeft().toCenterPos().add(off1), k.getRight().toCenterPos().add(off2), scale);
 			}
 		});

@@ -16,6 +16,7 @@ public class ConfigModel {
 		public int __ = 0;
 		@Nest
 		public Cooldowns cooldowns = new Cooldowns();
+		public boolean enableAdvancedStructurePreview = true;
 	}
 
 	public static class Client {

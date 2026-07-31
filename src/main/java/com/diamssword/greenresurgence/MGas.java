@@ -10,6 +10,9 @@ public class MGas {
 	private static Map<Identifier, GasInfos> registry = new ConcurrentHashMap<>();
 	public static final GasInfos EMPTY = register(new Identifier("empty"), 0);
 	public static final GasInfos OXYGEN = register(GreenResurgence.asRessource("oxygen"), 0x8f009da5);
+	public static final GasInfos NATURAL_GAS = register(GreenResurgence.asRessource("natural_gas"), 0xcf86bf0b);
+	public static final GasInfos LPG = register(GreenResurgence.asRessource("lpg"), 0xafdbe041);
+	public static final GasInfos PROPANE = register(GreenResurgence.asRessource("propane"), 0xef64665f);
 
 	public static void init() {
 

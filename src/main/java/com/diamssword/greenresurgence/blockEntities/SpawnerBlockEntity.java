@@ -69,6 +69,7 @@ public class SpawnerBlockEntity extends BlockEntity implements IGuiPacketReceive
 			return;
 		switch(msg.key()) {
 			case "max_entity" -> this.logic.setMaxNearbyEntities(msg.asInt());
+			case "check_radius" -> this.logic.setNearbyEntitiesRadius(msg.asInt());
 			case "player_range" -> this.logic.setRequiredPlayerRange(msg.asInt());
 			case "spawncount" -> this.logic.setSpawnCount(msg.asInt());
 			case "cooldown" -> this.logic.setCooldown(msg.asInt() * 1000);

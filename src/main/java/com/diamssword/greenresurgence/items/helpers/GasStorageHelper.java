@@ -112,20 +112,24 @@ public class GasStorageHelper extends ItemStorageHelper {
 		var inv = this.getAsInventory(stack);
 		var tot = getStoredGasAmount(stack);
 		var btc = this.maxItems - getEmptySlots(inv);
+		var rest = 0L;
 		if(btc == 0)
 			return false;
 		var res = tot - amount;
 		if(res < 0)
 			return false;
-		var splited = res / btc;
+		var splited = amount / btc;
 		for(int i = 0; i < inv.size(); i++) {
 			var st = inv.getStack(i);
 			if(st.getItem() instanceof SimpleGasItem it) {
-				it.setStoredGas(st, splited);
+				if(!it.tryUseGas(st, splited + rest)) {
+					rest += splited;
+				} else
+					rest = 0;
 			}
 		}
 		inv.markDirty();
-		return true;
+		return rest <= 0;
 	}
 
 

@@ -1,8 +1,10 @@
 package com.diamssword.greenresurgence.structure;
 
+import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.items.helpers.IStructureProvider;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.StructureSizePacket;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -16,16 +18,22 @@ public class StructureInfos {
 	public final static Identifier PLACER_ENTRY = new Identifier("build:placer_entry");
 	private static Map<Identifier, Map<Direction, StructureInfo>> clientCache = new HashMap<>();
 
+	public static void clearCache() {
+		GreenResurgence.LOGGER.info("Clearing the client StructureInfos Cache.");
+		clientCache.clear();
+	}
 
 	public static StructureInfo getInfos(Identifier structure, Direction dir, IStructureProvider.StructureType type) {
 		if(clientCache.containsKey(structure)) {
 			StructureInfo inf = clientCache.get(structure).get(dir);
+
 			if(inf != null)
 				return inf;
 		}
-		Map<Direction, StructureInfo> m = new HashMap<>();
+		Map<Direction, StructureInfo> m = clientCache.getOrDefault(structure, new HashMap<>());
+
 		Channels.MAIN.clientHandle().send(new StructureSizePacket.StructureRequest(structure, dir, type));
-		m.put(dir, new StructureInfo(BlockPos.ORIGIN, new Vec3i(0, 0, 0)));
+		m.put(dir, new StructureInfo(BlockPos.ORIGIN, new Vec3i(0, 0, 0), new HashMap<>()));
 		clientCache.put(structure, m);
 		return getInfos(structure, dir, type);
 	}
@@ -33,7 +41,7 @@ public class StructureInfos {
 	public static void setStructureInfos(StructureSizePacket.StructureResponse packet) {
 		if(!clientCache.containsKey(packet.name()))
 			clientCache.put(packet.name(), new HashMap<>());
-		clientCache.get(packet.name()).put(packet.dir(), new StructureInfo(packet.offset(), packet.size()));
+		clientCache.get(packet.name()).put(packet.dir(), new StructureInfo(packet.offset(), packet.size(), packet.blocks()));
 	}
 
 	public static int[] getOffsetSide(Direction facing, boolean centered) {
@@ -72,7 +80,7 @@ public class StructureInfos {
 		return BlockRotation.NONE;
 	}
 
-	public static record StructureInfo(BlockPos offset, Vec3i size) {}
+	public static record StructureInfo(BlockPos offset, Vec3i size, Map<BlockPos, BlockState> blocks) {}
 
 	;
 

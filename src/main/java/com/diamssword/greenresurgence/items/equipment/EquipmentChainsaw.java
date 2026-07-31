@@ -3,7 +3,6 @@ package com.diamssword.greenresurgence.items.equipment;
 import com.diamssword.greenresurgence.MSounds;
 import com.diamssword.greenresurgence.systems.character.PosesManager;
 import com.diamssword.greenresurgence.systems.equipement.EffectLevel;
-import com.diamssword.greenresurgence.systems.equipement.EquipmentElectricZoneDamage;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -19,11 +18,11 @@ import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Map;
 
-public class EquipmentToolElectricTwoHanded extends EquipmentElectricZoneDamage implements ICustomPoseWeapon {
+public class EquipmentChainsaw extends EquipmentElectricZoneDamage implements ICustomPoseWeapon {
 	public static final RawAnimation SLASH_FP_ANIM = RawAnimation.begin().thenLoop("slash_fp");
 	public static final RawAnimation LOAD_ANIM = RawAnimation.begin().thenPlayAndHold("load");
 
-	public EquipmentToolElectricTwoHanded(String category, String subCategory, Map<String, EffectLevel> baseEffects, boolean emissive) {
+	public EquipmentChainsaw(String category, String subCategory, Map<String, EffectLevel> baseEffects, boolean emissive) {
 		super(category, subCategory, baseEffects, emissive);
 	}
 
@@ -75,9 +74,6 @@ public class EquipmentToolElectricTwoHanded extends EquipmentElectricZoneDamage 
 				state.getController().setAnimation(IDLE_ANIM);
 
 			return PlayState.CONTINUE;
-		}).setSoundKeyframeHandler(event -> {
-
-			//event.getKeyframeData().getSound()
 		});
 		var cont1 = new AnimationController<>(this, "slash", 1, state -> {
 

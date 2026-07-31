@@ -65,7 +65,7 @@ public class EquipmentTinkererContainerGui extends PlayerBasedGui<EquipmentScree
 
 			}
 			stackDp.entity().setStack(s);
-			if(tooltipDp != null) {
+			if(tooltipDp != null && gridLayout != null) {
 				if(!s.isEmpty()) {
 					var ls = new ArrayList<Text>();
 					s.getItem().appendTooltip(s, client.world, ls, TooltipContext.BASIC);

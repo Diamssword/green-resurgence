@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence;
 
+import com.diamssword.greenresurgence.structure.StructureInfos;
 import com.diamssword.greenresurgence.utils.ClientSideHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -19,5 +20,10 @@ public class ClientSideHelperImp extends ClientSideHelper {
 	@Override
 	public PlayerEntity getPlayer() {
 		return MinecraftClient.getInstance().player;
+	}
+
+	@Override
+	public void clearCaches() {
+		StructureInfos.clearCache();
 	}
 }

@@ -28,6 +28,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -66,11 +67,13 @@ public class ClientEvents {
 				((ConnectorBlockEntity) te).unloadClientCables();
 			}
 		});
-		WorldRenderEvents.LAST.register((ctx) -> {
-			drawStructureItemOverlay(ctx.matrixStack());
-			drawBaseOverlays(ctx.matrixStack());
-			drawEnvironmentOverlays(ctx.matrixStack());
-			WireRenderer.render(ctx);
+		WorldRenderEvents.AFTER_ENTITIES.register((ctx) -> {
+			VertexConsumerProvider.Immediate consumers = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
+			drawStructureItemOverlay(ctx, consumers);
+			drawBaseOverlays(ctx, consumers);
+			drawEnvironmentOverlays(ctx, consumers);
+			WireRenderer.render(ctx, consumers);
+			consumers.draw();
 		});
 
 		AttackBlockCallback.EVENT.register(ClientEvents::attackBlock);

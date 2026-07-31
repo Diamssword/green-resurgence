@@ -47,6 +47,7 @@ public class SpawnerBlockGui extends MultiInvHandledScreen<SpawnerBlock.ScreenHa
 	private void onReady() {
 
 		this.bindNumber("max_entity", tile.getLogic().getMaxNearbyEntities(), 200);
+		this.bindNumber("check_radius", tile.getLogic().getNearbyEntitiesRadius(), 512);
 		this.bindNumber("player_range", tile.getLogic().getRequiredPlayerRange(), 512);
 		this.bindNumber("spawncount", tile.getLogic().getSpawnCount(), 100);
 		this.bindNumber("cooldown", tile.getLogic().getCooldown() / 1000, 99999);

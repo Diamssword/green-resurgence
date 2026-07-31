@@ -12,6 +12,7 @@ import com.diamssword.greenresurgence.systems.lootables.LootablesReloader;
 import io.wispforest.owo.network.OwoNetChannel;
 import io.wispforest.owo.network.serialization.PacketBufSerializer;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
@@ -39,6 +40,7 @@ public class Channels {
 		PacketBufSerializer.register(SimpleRecipe.class, SimpleRecipe::serializer, SimpleRecipe::unserializer);
 		PacketBufSerializer.register(FactionMember.class, FactionMember::serializer, FactionMember::unserializer);
 		PacketBufSerializer.register(FactionPerm.class, FactionPerm::serializer, FactionPerm::unserializer);
+		PacketBufSerializer.register(BlockState.class, StructureSizePacket::serializer, StructureSizePacket::unserializer);
 		AdventureInteract.init();
 		StructureSizePacket.init();
 		CurrentZonePacket.init();
