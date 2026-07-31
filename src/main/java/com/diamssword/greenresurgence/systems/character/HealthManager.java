@@ -202,6 +202,15 @@ public class HealthManager {
 		this.shieldAmount = Math.min(shieldAmount + amount, getMaxShieldAmount());
 	}
 
+	public void consumeEnergy(float amount) {
+		if(this.energyAmount > 0 && !energyBurnout) {
+			energyAmount = Math.max(energyAmount - amount, 0);
+			markDirty();
+		} else {
+			this.energyBurnout = true;
+		}
+	}
+
 	public void writeNbt(NbtCompound nbt) {
 		nbt.putInt("shieldTickTimer", this.shieldTickTimer);
 		nbt.putDouble("shieldAmount", this.shieldAmount);

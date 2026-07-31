@@ -3,7 +3,7 @@
 <components>
 <flow-layout direction="vertical">
     <children>
-        <flow-layout direction="vertical" >
+        <flow-layout direction="vertical" id="storage_parent">
             <children>
                 <inventorysearch id="storage" name="fac_storage" width="9" height="6"/>
             </children>
@@ -12,10 +12,11 @@
             <surface>
                 <panel/>
             </surface>
+            <sizing><horizontal method="fill">90</horizontal></sizing>
             <horizontal-alignment>center</horizontal-alignment>
         </flow-layout>
     </children>
-    <sizing><horizontal method="fill">30</horizontal></sizing>
+    <sizing><horizontal method="fill">100</horizontal></sizing>
     <horizontal-alignment>left</horizontal-alignment>
     <vertical-alignment>center</vertical-alignment>
 </flow-layout>

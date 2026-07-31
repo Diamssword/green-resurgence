@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.systems;
 
 import com.diamssword.greenresurgence.entities.BackpackEntity;
+import com.diamssword.greenresurgence.events.PlayerJumpEvent;
 import com.diamssword.greenresurgence.events.PlayerTickEvent;
 import com.diamssword.greenresurgence.items.helpers.AbstractBackpackItem;
 import com.diamssword.greenresurgence.network.Channels;
@@ -81,5 +82,8 @@ public class Events {
 		});
 		UseBlockCallback.EVENT.register(LootableLogic::onRightClick);
 		PlayerEvents.init();
+		PlayerJumpEvent.onJump.register((p) -> {
+			p.getComponent(Components.PLAYER_DATA).healthManager.consumeEnergy(10f);
+		});
 	}
 }

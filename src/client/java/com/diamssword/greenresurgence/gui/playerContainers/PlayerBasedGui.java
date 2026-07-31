@@ -113,7 +113,7 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 		super.render(context, mouseX, mouseY, delta);
 	}
 
-	private void updateLayout(FlowLayout rootComponent) {
+	protected void updateLayout(FlowLayout rootComponent) {
 		var leftM = rootComponent.childById(FlowLayout.class, "leftMenu");
 		var subPan = rootComponent.childById(FlowLayout.class, "layoutSubPanels");
 		var inventory = rootComponent.childById(GridLayout.class, "maingrid");

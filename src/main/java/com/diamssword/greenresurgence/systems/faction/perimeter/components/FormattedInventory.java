@@ -26,11 +26,11 @@ public class FormattedInventory implements Inventory {
 
 	void refresh() {
 		items.clear();
-		for (int i = 0; i < parent.size(); i++) {
+		for(int i = 0; i < parent.size(); i++) {
 			var d = parent.getStack(i);
-			if (!d.isEmpty()) {
+			if(!d.isEmpty()) {
 				var d3 = items.stream().filter(v -> ItemStack.canCombine(v, d)).findAny();
-				if (d3.isPresent()) {
+				if(d3.isPresent()) {
 					d3.get().setCount(d3.get().getCount() + d.getCount());
 
 				} else
@@ -38,13 +38,13 @@ public class FormattedInventory implements Inventory {
 			}
 		}
 		items.sort(Comparator.comparingInt(ItemStack::getCount).reversed());
-		if (items.isEmpty())
+		if(items.isEmpty())
 			items.add(ItemStack.EMPTY);
 		this.markDirty();
 	}
 
 	public void addListener(InventoryChangedListener listener) {
-		if (this.listeners == null) {
+		if(this.listeners == null) {
 			this.listeners = Lists.newArrayList();
 		}
 
@@ -52,7 +52,7 @@ public class FormattedInventory implements Inventory {
 	}
 
 	public void removeListener(InventoryChangedListener listener) {
-		if (this.listeners != null) {
+		if(this.listeners != null) {
 			this.listeners.remove(listener);
 		}
 
@@ -74,8 +74,8 @@ public class FormattedInventory implements Inventory {
 	}
 
 	private int findStackInParent(ItemStack stack) {
-		for (int i = 0; i < parent.size(); i++) {
-			if (ItemStack.canCombine(parent.getStack(i), stack))
+		for(int i = 0; i < parent.size(); i++) {
+			if(ItemStack.canCombine(parent.getStack(i), stack))
 				return i;
 		}
 		return -1;
@@ -86,7 +86,7 @@ public class FormattedInventory implements Inventory {
 		var stack = getDisplayInSlot(slot);
 		var s1 = findStackInParent(stack);
 		var re = parent.removeStack(s1, amount);
-		if (re.getCount() < amount) {
+		if(re.getCount() < amount) {
 			s1 = findStackInParent(stack);
 			var re1 = parent.removeStack(s1, amount - re.getCount());
 			re.setCount(re.getCount() + re1.getCount());
@@ -101,12 +101,12 @@ public class FormattedInventory implements Inventory {
 	}
 
 	public boolean canInsert(ItemStack stack) {
-		for (int i = 0; i < parent.size(); i++) {
+		for(int i = 0; i < parent.size(); i++) {
 			var st1 = parent.getStack(i);
-			if (st1.isEmpty())
+			if(st1.isEmpty())
 				return true;
-			if (ItemStack.canCombine(st1, stack))
-				if (st1.getCount() < st1.getMaxCount())
+			if(ItemStack.canCombine(st1, stack))
+				if(st1.getCount() < st1.getMaxCount())
 					//  if(st1.getCount()+stack.getCount()<=st1.getMaxCount())
 					return true;
 		}
@@ -119,25 +119,25 @@ public class FormattedInventory implements Inventory {
 	 */
 	public int inserStack(ItemStack stack) {
 		var ret = stack.getCount();
-		for (int i = 0; i < parent.size(); i++) {
+		for(int i = 0; i < parent.size(); i++) {
 			var st1 = parent.getStack(i);
-			if (ItemStack.canCombine(st1, stack)) {
+			if(ItemStack.canCombine(st1, stack)) {
 				var ins = Math.min(st1.getMaxCount() - st1.getCount(), stack.getCount());
-				if (ins > 0) {
-					if (ret < ins)
+				if(ins > 0) {
+					if(ret < ins)
 						ins = ret;
 					ret -= ins;
 					st1.increment(ins);
-					if (ret == 0) {
+					if(ret == 0) {
 						refresh();
 						return 0;
 					}
 				}
 			}
 		}
-		for (int i = 0; i < parent.size(); i++) {
+		for(int i = 0; i < parent.size(); i++) {
 			var st1 = parent.getStack(i);
-			if (st1.isEmpty()) {
+			if(st1.isEmpty()) {
 				var s1 = stack.copy();
 				s1.setCount(ret);
 				parent.setStack(i, s1);
@@ -154,35 +154,35 @@ public class FormattedInventory implements Inventory {
 	}
 
 	public ItemStack getDisplayInSlot(int slot) {
-		if (slot >= items.size())
+		if(slot >= items.size())
 			return ItemStack.EMPTY;
 		return items.get(slot);
 	}
 
 	@Override
 	public void setStack(int slot, ItemStack stack) {
-		if (stack.isEmpty()) {
+		if(stack.isEmpty()) {
 			var s1 = findStackInParent(getDisplayInSlot(slot));
-			if (s1 > -1) {
+			if(s1 > -1) {
 				parent.setStack(s1, stack);
 				refresh();
 			}
 			return;
 		}
-		for (int i = 0; i < parent.size(); i++) {
+		for(int i = 0; i < parent.size(); i++) {
 			var i1 = parent.getStack(i);
-			if (ItemStack.canCombine(i1, stack)) {
+			if(ItemStack.canCombine(i1, stack)) {
 				var ins = Math.min(i1.getMaxCount() - i1.getCount(), stack.getCount());
 				stack.decrement(ins);
 				i1.increment(ins);
-				if (stack.isEmpty())
+				if(stack.isEmpty())
 					break;
 			}
 
 		}
-		if (!stack.isEmpty())
-			for (int i = 0; i < parent.size(); i++) {
-				if (parent.getStack(i).isEmpty()) {
+		if(!stack.isEmpty())
+			for(int i = 0; i < parent.size(); i++) {
+				if(parent.getStack(i).isEmpty()) {
 					parent.setStack(i, stack);
 					break;
 				}
@@ -193,8 +193,8 @@ public class FormattedInventory implements Inventory {
 	@Override
 	public void markDirty() {
 		this.parent.markDirty();
-		if (this.listeners != null) {
-			for (InventoryChangedListener inventoryChangedListener : this.listeners) {
+		if(this.listeners != null) {
+			for(InventoryChangedListener inventoryChangedListener : this.listeners) {
 				inventoryChangedListener.onInventoryChanged(this);
 			}
 		}
@@ -229,7 +229,7 @@ public class FormattedInventory implements Inventory {
 
 		@Override
 		public void setStackNoCallbacks(ItemStack stack) {
-			if (inv.items.size() <= this.getIndex())
+			if(inv.items.size() <= this.getIndex())
 				inv.items.add(stack);
 			else
 				inv.items.set(this.getIndex(), stack);
@@ -268,7 +268,7 @@ public class FormattedInventory implements Inventory {
 		public ItemStack insertStack(ItemStack stack, int count) {
 			var stack1 = stack.copy();
 			stack1.setCount(count);
-			if (!stack.isEmpty() && this.canInsert(stack)) {
+			if(!stack.isEmpty() && this.canInsert(stack)) {
 				var r = inv.inserStack(stack1);
 				stack.setCount(stack.getCount() - (count - r));
 			}
@@ -276,17 +276,17 @@ public class FormattedInventory implements Inventory {
 		}
 
 		public Optional<ItemStack> tryTakeStackRange(int min, int max, PlayerEntity player) {
-			if (!this.canTakeItems(player)) {
+			if(!this.canTakeItems(player)) {
 				return Optional.empty();
-			} else if (!this.canTakePartial(player) && max < this.getStack().getCount()) {
+			} else if(!this.canTakePartial(player) && max < this.getStack().getCount()) {
 				return Optional.empty();
 			} else {
 				min = Math.min(min, Math.min(getStack().getMaxCount(), max));
 				ItemStack itemStack = this.takeStack(min);
-				if (itemStack.isEmpty()) {
+				if(itemStack.isEmpty()) {
 					return Optional.empty();
 				} else {
-					if (this.getStack().isEmpty()) {
+					if(this.getStack().isEmpty()) {
 						this.setStack(ItemStack.EMPTY);
 					}
 

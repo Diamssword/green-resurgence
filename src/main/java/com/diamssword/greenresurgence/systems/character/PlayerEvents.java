@@ -22,6 +22,7 @@ public class PlayerEvents {
 						if(pose != null && !pose.equals(comp.getCustomPoseID())) {comp.setCustomPose(pose);}
 					}
 				}
+
 			}
 
 		});

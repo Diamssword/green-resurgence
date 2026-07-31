@@ -38,17 +38,17 @@ public class FactionStorageScreen extends PlayerBasedGui<FactionTerrainStorage.S
 	@Override
 	protected void findInvComps(BaseParentComponent root) {
 		root.children().forEach(c -> {
-			if (c instanceof InventoryComponent par) {
+			if(c instanceof InventoryComponent par) {
 				invsComps.put(par.inventoryId, par);
 				var inv = this.handler.getInventory(par.inventoryId);
-				if (inv != null)
+				if(inv != null)
 					par.setSize(inv.getWidth(), inv.getHeight());
 				else
 					par.hidden(true);
-			} else if (c instanceof InventorySearchableComponent par) {
+			} else if(c instanceof InventorySearchableComponent par) {
 				storage = par;
 				var inv = this.handler.getInventory(par.inventoryId);
-				if (inv != null) {
+				if(inv != null) {
 					par.setSize(6, 6);
 					par.setInventory(this.handler.getSlotForInventory(par.inventoryId));
 					this.handler.onSlotAdded(() -> {
@@ -56,29 +56,45 @@ public class FactionStorageScreen extends PlayerBasedGui<FactionTerrainStorage.S
 					});
 
 				}
-			} else if (c instanceof BaseParentComponent c1)
+			} else if(c instanceof BaseParentComponent c1)
 				findInvComps(c1);
 		});
 	}
 
-	protected void drawSlotList(List<Slot> slots, String id, DrawContext context, int mouseX, int mouseY) {
-		for (Slot slot : slots) {
+	@Override
+	protected void updateLayout(FlowLayout rootComponent) {
+		super.updateLayout(rootComponent);
+		var lay = rootComponent.childById(FlowLayout.class, "storage_parent");
+		if(lay != null) {
+			var row = (lay.width() / 20) - 2;
+			storage.setSize(row, 6);
+		}
+	}
 
-			if (slot.isEnabled()) {
+	@Override
+	protected void onBuilt(FlowLayout rootComponent) {
+		super.onBuilt(rootComponent);
+
+	}
+
+	protected void drawSlotList(List<Slot> slots, String id, DrawContext context, int mouseX, int mouseY) {
+		for(Slot slot : slots) {
+
+			if(slot.isEnabled()) {
 
 				this.drawSlot(context, slot, id);
 			}
-			if (!this.isPointOverSlot(slot, mouseX, mouseY) || !slot.isEnabled()) continue;
+			if(!this.isPointOverSlot(slot, mouseX, mouseY) || !slot.isEnabled()) continue;
 			this.focusedSlot = slot;
 			var pos = getSlotPosition(slot, id);
-			if (!this.focusedSlot.canBeHighlighted()) continue;
+			if(!this.focusedSlot.canBeHighlighted()) continue;
 			MultiInvHandledScreen.drawSlotHighlight(context, pos.getFirst(), pos.getSecond(), 0);
 		}
 	}
 
 	@Override
 	protected void drawSlots(DrawContext context, int mouseX, int mouseY, float delta) {
-		for (String id : invsComps.keySet()) {
+		for(String id : invsComps.keySet()) {
 			drawSlotList(this.handler.getSlotForInventory(id), id, context, mouseX, mouseY);
 		}
 		drawSlotList(storage.getDisplayedSlots(), "storage", context, mouseX, mouseY);
@@ -92,8 +108,8 @@ public class FactionStorageScreen extends PlayerBasedGui<FactionTerrainStorage.S
 
 	@Override
 	protected boolean isClickOutsideBounds(double mouseX, double mouseY, int left, int top, int button) {
-		if (storage != null) {
-			if (storage.isInBoundingBox(mouseX, mouseY))
+		if(storage != null) {
+			if(storage.isInBoundingBox(mouseX, mouseY))
 				return false;
 		}
 		return super.isClickOutsideBounds(mouseX, mouseY, left, top, button);
@@ -101,10 +117,10 @@ public class FactionStorageScreen extends PlayerBasedGui<FactionTerrainStorage.S
 
 	@Override
 	protected Slot getSlotAt(double x, double y) {
-		if (storage != null) {
+		if(storage != null) {
 
-			for (Slot slot : storage.getDisplayedSlots()) {
-				if (this.isPointOverSlot(slot, x, y)) {
+			for(Slot slot : storage.getDisplayedSlots()) {
+				if(this.isPointOverSlot(slot, x, y)) {
 					return slot;
 				}
 
@@ -112,9 +128,9 @@ public class FactionStorageScreen extends PlayerBasedGui<FactionTerrainStorage.S
 			}
 
 		}
-		for (int i = 0; i < this.handler.slots.size(); ++i) {
+		for(int i = 0; i < this.handler.slots.size(); ++i) {
 			Slot slot = this.handler.slots.get(i);
-			if (!this.isPointOverSlot(slot, x, y) || !slot.isEnabled()) continue;
+			if(!this.isPointOverSlot(slot, x, y) || !slot.isEnabled()) continue;
 			return slot;
 		}
 
@@ -124,11 +140,11 @@ public class FactionStorageScreen extends PlayerBasedGui<FactionTerrainStorage.S
 	@Override
 	protected void onMouseClick(Slot slot, int slotId, int button, SlotActionType actionType) {
 
-		if (slot != null) {
+		if(slot != null) {
 			slotId = slot.id;
 		}
-		if (slot instanceof InventorySearchableComponent.FalseSlot) {
-			if (this.handler.getCursorStack().isEmpty())
+		if(slot instanceof InventorySearchableComponent.FalseSlot) {
+			if(this.handler.getCursorStack().isEmpty())
 				return;
 			slotId = this.handler.getSlotForInventory("storage").get(0).id;
 		}
@@ -138,7 +154,7 @@ public class FactionStorageScreen extends PlayerBasedGui<FactionTerrainStorage.S
 	@Override
 	protected boolean isPointOverSlot(Slot slot, double pointX, double pointY) {
 		String id = this.handler.getInventoryForSlot(slot);
-		if (id == null)
+		if(id == null)
 			id = "storage";
 		var pos = getSlotPosition(slot, id);
 		return this.isPointWithinBounds(pos.getFirst(), pos.getSecond(), 16, 16, pointX, pointY);
@@ -147,10 +163,10 @@ public class FactionStorageScreen extends PlayerBasedGui<FactionTerrainStorage.S
 
 	@Override
 	public Pair<Integer, Integer> getSlotPosition(Slot s, String inventory) {
-		if ("storage".equals(inventory) && storage != null) {
+		if("storage".equals(inventory) && storage != null) {
 			List<Slot> slots = storage.getDisplayedSlots();
 			var i = slots.indexOf(s);
-			if (i >= 0)
+			if(i >= 0)
 				return new Pair<>(((i % storage.getSlotsSize().getLeft()) * 18) + storage.x() - this.x, ((i / storage.getSlotsSize().getLeft()) * 18) + storage.y() - this.y + 20);
 			return new Pair<>(0, 0);
 		} else
@@ -177,18 +193,18 @@ public class FactionStorageScreen extends PlayerBasedGui<FactionTerrainStorage.S
 		boolean bl2 = slot == this.touchDragSlotStart && !this.touchDragStack.isEmpty() && !this.touchIsRightClickDrag;
 		ItemStack itemStack2 = this.handler.getCursorStack();
 		String string = null;
-		if (slot == this.touchDragSlotStart && !this.touchDragStack.isEmpty() && this.touchIsRightClickDrag && !itemStack.isEmpty()) {
+		if(slot == this.touchDragSlotStart && !this.touchDragStack.isEmpty() && this.touchIsRightClickDrag && !itemStack.isEmpty()) {
 			itemStack = itemStack.copyWithCount(itemStack.getCount() / 2);
-		} else if (this.cursorDragging && this.cursorDragSlots.contains(slot) && !itemStack2.isEmpty()) {
-			if (this.cursorDragSlots.size() == 1) {
+		} else if(this.cursorDragging && this.cursorDragSlots.contains(slot) && !itemStack2.isEmpty()) {
+			if(this.cursorDragSlots.size() == 1) {
 				return;
 			}
-			if (ScreenHandler.canInsertItemIntoSlot(slot, itemStack2, true) && this.handler.canInsertIntoSlot(slot)) {
+			if(ScreenHandler.canInsertItemIntoSlot(slot, itemStack2, true) && this.handler.canInsertIntoSlot(slot)) {
 				bl = true;
 				int k = Math.min(itemStack2.getMaxCount(), slot.getMaxItemCount(itemStack2));
 				int l = slot.getStack().isEmpty() ? 0 : slot.getStack().getCount();
 				int m = ScreenHandler.calculateStackSize(this.cursorDragSlots, this.heldButtonType, itemStack2) + l;
-				if (m > k) {
+				if(m > k) {
 					m = k;
 					string = Formatting.YELLOW.toString() + k;
 				}
@@ -200,28 +216,28 @@ public class FactionStorageScreen extends PlayerBasedGui<FactionTerrainStorage.S
 		}
 		context.getMatrices().push();
 		context.getMatrices().translate(0.0f, 0.0f, 100.0f);
-		if (itemStack.isEmpty() && slot.isEnabled() && (pair = slot.getBackgroundSprite()) != null) {
+		if(itemStack.isEmpty() && slot.isEnabled() && (pair = slot.getBackgroundSprite()) != null) {
 			Sprite sprite = this.client.getSpriteAtlas((Identifier) pair.getFirst()).apply((Identifier) pair.getSecond());
 			context.drawSprite(pos.getFirst(), pos.getSecond(), 0, 16, 16, sprite);
 			bl2 = true;
 		}
-		if (!bl2) {
-			if (bl) {
+		if(!bl2) {
+			if(bl) {
 				context.fill(pos.getFirst(), pos.getSecond(), pos.getFirst() + 16, pos.getSecond() + 16, -2130706433);
 			}
 			context.drawItem(itemStack, pos.getFirst(), pos.getSecond(), pos.getFirst() + pos.getSecond() * this.backgroundWidth);
-			if (string != null)
+			if(string != null)
 				context.drawItemInSlot(this.textRenderer, itemStack, pos.getFirst(), pos.getSecond(), string);
-			else if (!itemStack.isEmpty() && itemStack.getCount() > 1)
+			else if(!itemStack.isEmpty() && itemStack.getCount() > 1)
 				RessourceGuiHelper.drawRessourceExtra(context, UniversalResource.fromItemOpti(itemStack), pos.getFirst(), pos.getSecond(), 0, 16777215);
 		}
 		context.getMatrices().pop();
 	}
 
 	public void drawItemInSlot(DrawContext ctx, ItemStack stack, int x, int y, @Nullable String countOverride) {
-		if (!stack.isEmpty()) {
+		if(!stack.isEmpty()) {
 			ctx.getMatrices().push();
-			if (stack.getCount() != 1 || countOverride != null) {
+			if(stack.getCount() != 1 || countOverride != null) {
 				String string = countOverride == null ? RessourceGuiHelper.getCountDisplay(stack.getCount(), false) : countOverride;
 				ctx.getMatrices().translate(0.0F, 0.0F, 200.0F);
 				ctx.drawText(textRenderer, string, x + 19 - 2 - textRenderer.getWidth(string), y + 6 + 3, 16777215, true);
@@ -229,7 +245,7 @@ public class FactionStorageScreen extends PlayerBasedGui<FactionTerrainStorage.S
 
 			int k;
 			int l;
-			if (stack.isItemBarVisible()) {
+			if(stack.isItemBarVisible()) {
 				int i = stack.getItemBarStep();
 				int j = stack.getItemBarColor();
 				k = x + 2;
@@ -240,7 +256,7 @@ public class FactionStorageScreen extends PlayerBasedGui<FactionTerrainStorage.S
 
 			ClientPlayerEntity clientPlayerEntity = this.client.player;
 			float f = clientPlayerEntity == null ? 0.0F : clientPlayerEntity.getItemCooldownManager().getCooldownProgress(stack.getItem(), this.client.getTickDelta());
-			if (f > 0.0F) {
+			if(f > 0.0F) {
 				k = y + MathHelper.floor(16.0F * (1.0F - f));
 				l = k + MathHelper.ceil(16.0F * f);
 				ctx.fill(RenderLayer.getGuiOverlay(), x, k, x + 16, l, Integer.MAX_VALUE);
