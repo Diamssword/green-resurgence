@@ -12,6 +12,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -30,6 +31,7 @@ public class FactionGuild {
 	private Map<FactionMember, String> members = new HashMap<>();
 	private final Map<FactionMember, FactionPerm> allies = new HashMap<>();
 	private final List<FactionZone> terrains = new ArrayList<>();
+	private final List<DeprecatingFactionZone> deprecatedTerrains = new ArrayList<>();
 
 	public UUID getId() {
 		return id;
@@ -229,7 +231,8 @@ public class FactionGuild {
 				if(!this.isIn(p.getBlockPos())) {
 					inBase.remove(p);
 					BaseEventCallBack.LEAVE.invoker().enterOrLeave(p, this);
-				}
+				} else
+					BaseEventCallBack.PLAYER_TICK.invoker().tick(p, this);
 
 			} else {
 				if(this.isIn(p.getBlockPos())) {
@@ -239,6 +242,11 @@ public class FactionGuild {
 			}
 		});
 		inBase = new ArrayList<>(inBase.stream().filter(v -> !v.isDead()).toList());
+		var it = deprecatedTerrains.iterator();
+		while(it.hasNext()) {
+			if(it.next().tick(world))
+				it.remove();
+		}
 	}
 
 	public String getStartingRole() {
@@ -254,6 +262,11 @@ public class FactionGuild {
 			ls.forEach(c -> {
 				FactionZone b = new FactionZone(res, (NbtCompound) c);
 				res.terrains.add(b);
+			});
+			NbtList lsDe = tag.getList("deprecatingTerrains", NbtList.COMPOUND_TYPE);
+			lsDe.forEach(c -> {
+				DeprecatingFactionZone b = new DeprecatingFactionZone(res, (NbtCompound) c);
+				res.deprecatedTerrains.add(b);
 			});
 			res.owner = new FactionMember(tag.getCompound("owner"));
 			var lsRoles = tag.getList("roles", NbtElement.COMPOUND_TYPE);
@@ -305,6 +318,13 @@ public class FactionGuild {
 			zones.add(tg);
 		});
 		tag.put("terrains", zones);
+		NbtList depZones = new NbtList();
+		this.deprecatedTerrains.forEach(b -> {
+			var tg = new NbtCompound();
+			b.writeNbt(tg);
+			depZones.add(tg);
+		});
+		tag.put("deprecatingTerrains", depZones);
 		var t1 = new NbtCompound();
 		storage.toNBT(t1);
 		tag.put("storage", t1);
@@ -375,16 +395,38 @@ public class FactionGuild {
 		return false;
 	}
 
+	public boolean deprecateTerrain(BlockPos p, WorldAccess world) {
+		var t = getTerrainAt(p);
+		return t.map(v -> {
+			removeZone(v, world);
+			deprecatedTerrains.add(new DeprecatingFactionZone(v));
+			return true;
+		}).orElse(false);
+	}
+
+	private void removeZone(FactionZone zone, WorldAccess world) {
+		this.terrains.remove(zone);
+		this.getOwner().asPlayer(world).ifPresent(p1 -> {
+			if(!p1.getWorld().isClient) {
+				CurrentZonePacket.sendDebugZone(p1.getWorld(), p1);
+				CurrentZonePacket.sendCreativeDebugZone(p1.getWorld(), null);
+			}
+		});
+		if(world instanceof ServerWorld sw) {
+			sw.getPlayers().forEach(p -> {
+				if(zone.isIn(p.getBlockPos())) {
+					inBase.remove(p);
+					BaseEventCallBack.LEAVE.invoker().enterOrLeave(p, this);
+				}
+			});
+		}
+
+	}
+
 	public boolean removeTerrainAt(BlockPos p, World world) {
 		var t = getTerrainAt(p);
 		return t.map(v -> {
-			this.terrains.remove(t.get());
-			this.getOwner().asPlayer(world).ifPresent(p1 -> {
-				if(!p1.getWorld().isClient) {
-					CurrentZonePacket.sendDebugZone(p1.getWorld(), p1);
-					CurrentZonePacket.sendCreativeDebugZone(p1.getWorld(), null);
-				}
-			});
+			removeZone(v, world);
 			return true;
 		}).orElse(false);
 

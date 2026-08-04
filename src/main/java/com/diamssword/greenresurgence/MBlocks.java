@@ -135,6 +135,9 @@ public class MBlocks implements BlockRegistryContainer {
 	public static final CameleonBlock CAMO_FLOOR = new CameleonBlock(false);
 	@ModelGen
 	public static final SpawnerBlock SPAWNER = new SpawnerBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque());
+	@NoItemGroup
+	@NoDrop
+	public static final DeployableMachineBlock DEPLOYABLE_MACHINE_BLOCK = new DeployableMachineBlock(AbstractBlock.Settings.create().nonOpaque().dropsNothing().strength(99999, 99999).suffocates(Blocks::never));
 
 	@Override
 	public void afterFieldProcessing() {
@@ -146,7 +149,10 @@ public class MBlocks implements BlockRegistryContainer {
 		if(value instanceof ModBlockEntity<?> be) {
 			MBlockEntities.addToRegister(be);
 		}
-		// preserve normal traversal behaviour
+		if(isDatagen) {
+			if(!field.isAnnotationPresent(NoDrop.class))
+				BlockLootGenerator.blocks.add(value);
+		}
 		if(field.isAnnotationPresent(NoItemGroup.class)) return;
 		Item i;
 		if(field.isAnnotationPresent(DiamsGroup.class))
@@ -157,10 +163,7 @@ public class MBlocks implements BlockRegistryContainer {
 			ModelGenerator.blockItems.put(new Identifier(namespace, identifier), i);
 		}
 		Registry.register(Registries.ITEM, new Identifier(namespace, identifier), i);
-		if(isDatagen) {
-			if(!field.isAnnotationPresent(NoDrop.class))
-				BlockLootGenerator.blocks.add(value);
-		}
+
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

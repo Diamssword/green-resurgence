@@ -4,6 +4,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -19,19 +20,19 @@ public class FactionMember {
 	private FactionGuild guild;
 
 	public World getWorld() {
-		if (player != null)
+		if(player != null)
 			return player.getWorld();
-		else if (guild != null)
+		else if(guild != null)
 			return guild.getOwner().getWorld();
 		return null;
 	}
 
-	public Optional<PlayerEntity> asPlayer(@Nullable World w) {
-		if (isGuild)
+	public Optional<PlayerEntity> asPlayer(@Nullable WorldAccess w) {
+		if(isGuild)
 			return Optional.empty();
-		if (player != null)
+		if(player != null)
 			return Optional.of(player);
-		if (w == null)
+		if(w == null)
 			return Optional.empty();
 		return Optional.ofNullable(w.getPlayerByUuid(id));
 	}
@@ -77,8 +78,8 @@ public class FactionMember {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
 		FactionMember that = (FactionMember) o;
 		return isGuild == that.isGuild && Objects.equals(id, that.id);
 	}

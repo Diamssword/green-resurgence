@@ -59,7 +59,8 @@
       "green_resurgence:base_list",
       "green_resurgence:player_data",
       "green_resurgence:player_inventory",
-      "green_resurgence:environment_areas"
+      "green_resurgence:environment_areas",
+      "green_resurgence:chunk_snapshot"
     ]
   }
 }

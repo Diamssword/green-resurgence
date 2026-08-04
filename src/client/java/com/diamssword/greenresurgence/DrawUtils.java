@@ -53,6 +53,32 @@ public class DrawUtils {
 		}
 	}
 
+	public static int colorDarken(int color, float factor) {
+		factor = Math.max(0f, Math.min(1f, 1 - factor)); // 0 = black, 1 = unchanged
+
+		int a = (color >>> 24) & 0xFF;
+		int r = (int) (((color >>> 16) & 0xFF) * factor);
+		int g = (int) (((color >>> 8) & 0xFF) * factor);
+		int b = (int) ((color & 0xFF) * factor);
+
+		return (a << 24) | (r << 16) | (g << 8) | b;
+	}
+
+	public static int colorLighten(int color, float factor) {
+		factor = Math.max(0f, Math.min(1f, factor)); // 0 = unchanged, 1 = white
+
+		int a = (color >>> 24) & 0xFF;
+		int r = (color >>> 16) & 0xFF;
+		int g = (color >>> 8) & 0xFF;
+		int b = color & 0xFF;
+
+		r += (int) ((255 - r) * factor);
+		g += (int) ((255 - g) * factor);
+		b += (int) ((255 - b) * factor);
+
+		return (a << 24) | (r << 16) | (g << 8) | b;
+	}
+
 	public static int GREEN = 0x3F5427;
 	public static int GRAY_GREEN = 0x384239;
 	public static int ORANGE = 0xbb7d25;

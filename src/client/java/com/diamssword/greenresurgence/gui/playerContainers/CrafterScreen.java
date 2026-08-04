@@ -6,10 +6,12 @@ import com.diamssword.greenresurgence.gui.components.RecipDisplayComponent;
 import com.diamssword.greenresurgence.network.CraftPackets;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
 import io.wispforest.owo.ui.component.ButtonComponent;
+import io.wispforest.owo.ui.component.TextBoxComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 public class CrafterScreen extends PlayerBasedGui<CrafterBlock.ScreenHandler> {
 	public CrafterScreen(CrafterBlock.ScreenHandler handler, PlayerInventory inv, Text title) {
@@ -22,10 +24,15 @@ public class CrafterScreen extends PlayerBasedGui<CrafterBlock.ScreenHandler> {
 		super.build(rootComponent);
 		var ls = rootComponent.childById(ButtonInventoryComponent.class, "list");
 		var disp = rootComponent.childById(RecipDisplayComponent.class, "display");
+		var searchB = rootComponent.childById(TextBoxComponent.class, "craftlist_search");
+		if(searchB != null && ls != null) {
+			searchB.setPlaceholder(Text.literal("Search").formatted(Formatting.GRAY));
+			ls.bindSearchField(searchB);
+		}
 		rootComponent.childById(ButtonComponent.class, "craft").onPress(v -> {
 			var r = disp.getRecipe();
-			if (r != null) {
-				if (disp.getStatus() == null || disp.getStatus().canCraft)
+			if(r != null) {
+				if(disp.getStatus() == null || disp.getStatus().canCraft)
 					CraftPackets.sendCraftRequest(r, this.handler.getPos());
 			}
 		});
@@ -37,7 +44,7 @@ public class CrafterScreen extends PlayerBasedGui<CrafterBlock.ScreenHandler> {
 		this.handler.onReady(un -> {
 			Recipes.get(ls.collectionID).ifPresent(v -> {
 				var ls1 = v.getRecipes(this.client.player);
-				if (!ls1.isEmpty()) {
+				if(!ls1.isEmpty()) {
 					var r = ls1.get(0);
 					disp.setRecipe(r);
 					CraftPackets.requestStatus(r, this.handler.getPos(), disp::setCraftingStatus);

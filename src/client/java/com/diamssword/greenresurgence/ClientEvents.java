@@ -124,7 +124,7 @@ public class ClientEvents {
 					if(CurrentZonePacket.currentZone != null) {
 						for(FactionZone box : CurrentZonePacket.currentZone.zones) {
 							if(box.getBounds().contains(hitB.getBlockPos())) {
-								return BaseInteractions.shouldOverlayBlock(state.getBlock());
+								return BaseInteractions.shouldOverlayBlock(MinecraftClient.getInstance().world, hitB.getBlockPos(), state);
 							}
 						}
 					}
@@ -185,7 +185,7 @@ public class ClientEvents {
 		if(mode.equals(GameMode.SURVIVAL)) {
 			if(CurrentZonePacket.currentZone != null) {
 				for(FactionZone box : CurrentZonePacket.currentZone.zones) {
-					if(box.getBounds().contains(ctx.getBlockPos()) && BaseInteractions.allowedBlocks.contains(state.getBlock()))
+					if(box.getBounds().contains(ctx.getBlockPos()) && BaseInteractions.canBreak(ctx.getWorld(), ctx.getBlockPos(), state))
 						return ActionResult.PASS;
 				}
 			}

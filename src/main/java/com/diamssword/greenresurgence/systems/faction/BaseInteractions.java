@@ -8,6 +8,7 @@ import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.faction.perimeter.FactionList;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.*;
+import com.diamssword.greenresurgence.systems.faction.worldSnapshot.ChunkSnapshot;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -51,19 +52,30 @@ public class BaseInteractions {
 
 		BaseEventCallBack.ENTER.register(BaseInteractions::onEnter);
 		BaseEventCallBack.LEAVE.register(BaseInteractions::onLeave);
+		BaseEventCallBack.PLAYER_TICK.register(BaseInteractions::onTickInZone);
 		PlaceBlockCallback.EVENT.register(BaseInteractions::placeBlock);
 	}
 
+	private static void onTickInZone(ServerPlayerEntity serverPlayerEntity, FactionGuild factionGuild) {
+		var dt = serverPlayerEntity.getComponent(Components.PLAYER_DATA);
+		dt.healthManager.addContaminationMitigated(-0.1f);
+	}
+
+	public static boolean canBreak(World world, BlockPos pos, BlockState state) {
+		return !state.isFullCube(world, pos) || allowedBlocks.contains(state.getBlock());
+	}
+
 	private static ActionResult placeBlock(ItemPlacementContext ctx, BlockState state) {
-		if (ctx.getPlayer() != null && ctx.getPlayer() instanceof ServerPlayerEntity pl) {
-			if (pl.interactionManager.getGameMode().equals(GameMode.SURVIVAL)) {
+		if(ctx.getPlayer() != null && ctx.getPlayer() instanceof ServerPlayerEntity pl) {
+			if(pl.interactionManager.getGameMode().equals(GameMode.SURVIVAL)) {
 				FactionList list = ctx.getWorld().getComponent(Components.BASE_LIST);
-				if (list.isAllowedAt(ctx.getBlockPos(), new FactionMember(pl), Perms.PLACE)) {
-					if (allowedBlocks.contains(state.getBlock())) {
+				if(list.isAllowedAt(ctx.getBlockPos(), new FactionMember(pl), Perms.PLACE)) {
+					if(canBreak(ctx.getWorld(), ctx.getBlockPos(), state)) {
+						ChunkSnapshot.getSnapshotFor(ctx.getWorld(), ctx.getBlockPos()).putBlockIfAbsent(ctx.getBlockPos(), ctx.getWorld().getBlockState(ctx.getBlockPos()));
 						var sp = SpecialPlacement.REGISTRY.get(state.getBlock());
-						if (sp != null) {
+						if(sp != null) {
 							var terr = list.getTerrainAt(ctx.getBlockPos());
-							if (terr.isPresent())
+							if(terr.isPresent())
 								return sp.onPlacement(ctx.getPlayer(), terr.get(), ctx.getBlockPos()) ? ActionResult.PASS : ActionResult.FAIL;
 						}
 						return ActionResult.PASS;
@@ -84,35 +96,39 @@ public class BaseInteractions {
 
 	public static void onEnter(ServerPlayerEntity player, FactionGuild base) {
 		player.sendMessage(Text.literal("Vous entrez dans " + base.getName()), true);
-		if (base.needSurvival(new FactionMember(player))) {
-			if (player.interactionManager.getGameMode().equals(GameMode.ADVENTURE))
+		if(base.needSurvival(new FactionMember(player))) {
+			if(player.interactionManager.getGameMode().equals(GameMode.ADVENTURE))
 				player.changeGameMode(GameMode.SURVIVAL);
 			Channels.MAIN.serverHandle(player).send(CurrentZonePacket.from(base, player));
 		}
 	}
 
-	public static boolean shouldOverlayBlock(Block b) {
-		return allowedBlocks.contains(b);
+	public static boolean shouldOverlayBlock(World world, BlockPos pos, BlockState state) {
+		return canBreak(world, pos, state);
 	}
 
 	public static void onLeave(ServerPlayerEntity player, FactionGuild base) {
 		player.sendMessage(Text.literal("Vous sortez de " + base.getName()), true);
-		if (player.interactionManager.getGameMode().equals(GameMode.SURVIVAL))
+		if(player.interactionManager.getGameMode().equals(GameMode.SURVIVAL))
 			player.changeGameMode(GameMode.ADVENTURE);
 	}
 
 	public static ActionResult destroyBlock(PlayerEntity player, World w, Hand hand, BlockPos pos, Direction dir) {
-		if (player instanceof ServerPlayerEntity pl) {
-			if (pl.interactionManager.getGameMode().equals(GameMode.SURVIVAL)) {
+		var m = System.currentTimeMillis();
+		if(player instanceof ServerPlayerEntity pl) {
+			if(pl.interactionManager.getGameMode().equals(GameMode.SURVIVAL)) {
 
 				FactionList list = w.getComponent(Components.BASE_LIST);
-				if (list.isAllowedAt(pos, new FactionMember(pl), Perms.BREAK)) {
-					var st = w.getBlockState(pos).getBlock();
-					if (allowedBlocks.contains(st)) {
-						var sp = SpecialPlacement.REGISTRY.get(st);
-						if (sp != null) {
+				if(list.isAllowedAt(pos, new FactionMember(pl), Perms.BREAK)) {
+					var st = w.getBlockState(pos);
+					if(canBreak(w, pos, st)) {
+						//TODO retrieving chunk can take up to 800ms sometime, might want to consider trying to implement snapshot directly on FactionZone.
+						var g = ChunkSnapshot.getSnapshotFor(w, pos);
+						g.putBlockIfAbsent(pos, st);
+						var sp = SpecialPlacement.REGISTRY.get(st.getBlock());
+						if(sp != null) {
 							var terr = list.getTerrainAt(pos);
-							if (terr.isPresent())
+							if(terr.isPresent())
 								return sp.onBreak(player, terr.get(), pos) ? ActionResult.PASS : ActionResult.FAIL;
 						}
 						return ActionResult.PASS;
@@ -120,10 +136,10 @@ public class BaseInteractions {
 				}
 				return ActionResult.FAIL;
 			}
-		} else if (w.isClient && !player.isCreative()) {
-			if (CurrentZonePacket.currentZone != null)
-				for (FactionZone box : CurrentZonePacket.currentZone.zones) {
-					if (box.getBounds().contains(pos) && allowedBlocks.contains(w.getBlockState(pos).getBlock()))
+		} else if(w.isClient && !player.isCreative()) {
+			if(CurrentZonePacket.currentZone != null)
+				for(FactionZone box : CurrentZonePacket.currentZone.zones) {
+					if(box.getBounds().contains(pos) && canBreak(w, pos, w.getBlockState(pos)))
 						return ActionResult.PASS;
 				}
 			return ActionResult.FAIL;
@@ -133,7 +149,7 @@ public class BaseInteractions {
 
 	public static boolean canUseItem(PlayerEntity player, Hand hand) {
 		var st = player.getStackInHand(hand).getItem();
-		if (st instanceof BlockItem be) {
+		if(st instanceof BlockItem be) {
 			return allowedBlocks.contains(be.getBlock());
 		} else
 			return allowedItems.contains(st);

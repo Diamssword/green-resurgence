@@ -11,6 +11,9 @@
                         <button id="unclaim">
                             <text>Abandonner la zone</text>
                         </button>
+                          <button id="upgrade">
+                            <text>Upgrader la zone</text>
+                        </button>
                         <label>
                             <text>Taille de la zone</text>
                         </label>

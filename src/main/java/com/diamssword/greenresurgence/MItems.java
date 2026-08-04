@@ -31,7 +31,7 @@ public class MItems implements ItemRegistryContainer {
 	public static final Item WIRE_SPOOL = new CableItem(withDiamsTab());
 	public static final UniversalPlacerItem UNIVERSAL_PLACER = new UniversalPlacerItem(new Item.Settings().maxCount(1));
 	public static final Item REMOVABLE_LADDER = new DeployableLadder(new OwoItemSettings().group(GROUP));
-	public static final Item CLAIM_PLACER = new ClaimBlockPlacerItem(new OwoItemSettings().group(GROUP));
+	public static final ClaimBlockPlacerItem CLAIM_PLACER = new ClaimBlockPlacerItem(new OwoItemSettings().group(GROUP));
 
 
 	/*public static final Item MODULAR_HEAD = new ModularArmorItem(ArmorMaterials.CHAIN, ArmorItem.Type.HELMET, new OwoItemSettings().group(GROUP));

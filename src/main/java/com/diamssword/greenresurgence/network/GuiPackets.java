@@ -112,7 +112,7 @@ public class GuiPackets {
 		});
 		Channels.MAIN.registerServerbound(GuiTileValue.class, (msg, ctx) -> {
 			BlockEntity te = ctx.player().getWorld().getBlockEntity(msg.pos);
-			if(te != null && ctx.player().isCreative()) {
+			if(te != null) {
 				if(te instanceof IGuiPacketReceiver ib)
 					ib.receiveGuiPacket(ctx.player(), msg);
 			}

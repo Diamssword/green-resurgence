@@ -40,19 +40,19 @@ public class ButtonInventoryComponent extends BaseComponent {
 	private String lastResearch = "";
 	protected boolean blend = false;
 	private float time = 0;
-	private int sizingHeight;
 
 	protected ButtonInventoryComponent(Sizing size, Identifier collectionID, RecipeCollection collection) {
 		this.collectionID = collectionID;
 		this.collection = collection;
 		items = this.collection.getRecipes(MinecraftClient.getInstance().player);
-		this.sizing(size);
+		this.horizontalSizing(size);
+		this.verticalSizing(Sizing.content());
 
 	}
 
 	public void bindSearchField(TextBoxComponent field) {
 		field.onChanged().subscribe(t -> {
-			if (!t.trim().equals(lastResearch)) {
+			if(!t.trim().equals(lastResearch)) {
 				lastResearch = t.toLowerCase().trim();
 				refreshSearch();
 			}
@@ -68,7 +68,7 @@ public class ButtonInventoryComponent extends BaseComponent {
 
 	public void setSize() {
 		this.applySizing();
-		if (this.parent != null)
+		if(this.parent != null)
 			this.parent.onChildMutated(this);
 	}
 
@@ -82,11 +82,11 @@ public class ButtonInventoryComponent extends BaseComponent {
 
 	public void refreshSearch() {
 		PlayerEntity pl = MinecraftClient.getInstance().player;
-		if (this.lastResearch.isBlank())
+		if(this.lastResearch.isBlank())
 			this.items = this.collection.getRecipes(pl);
 		else
 			this.items = new ArrayList<>(this.collection.getRecipes(pl).stream().filter(v -> v.result(pl).getName().getString().toLowerCase().trim().contains(lastResearch)).toList());
-		if (sorter != null)
+		if(sorter != null)
 			this.items.sort(sorter);
 		setSize();
 	}
@@ -98,16 +98,10 @@ public class ButtonInventoryComponent extends BaseComponent {
 
 	@Override
 	protected int determineVerticalContentSize(Sizing sizing) {
-		return this.sizingHeight;
-	}
-
-	@Override
-	public void applySizing() {
-		super.applySizing();
+		System.out.println(width);
 		this.columns = Math.max(1, width / slotSize);
-		this.sizingHeight = (int) (Math.ceil(this.items.size() / (float) columns) * slotSize);
-		super.applySizing();
 
+		return (int) (Math.ceil(this.items.size() / (float) columns) * slotSize);
 	}
 
 	@Override
@@ -116,7 +110,7 @@ public class ButtonInventoryComponent extends BaseComponent {
 		int y = (int) mouseY / slotSize;
 
 		var d = x + (y * columns);
-		if (x < columns && d < items.size()) {
+		if(x < columns && d < items.size()) {
 			UISounds.playButtonSound();
 			onPicked.sink().onPicked(items.get(d), this.collection, this.collectionID);
 			return false;
@@ -130,11 +124,11 @@ public class ButtonInventoryComponent extends BaseComponent {
 
 	@Override
 	public void draw(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
-		if (!Screen.hasControlDown()) {
+		if(!Screen.hasControlDown()) {
 			this.time += delta;
 		}
 		RenderSystem.enableDepthTest();
-		if (this.blend) {
+		if(this.blend) {
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
 		}
@@ -144,23 +138,23 @@ public class ButtonInventoryComponent extends BaseComponent {
 		int i = 0;
 		int j = 0;
 		hovered = null;
-		for (SimpleRecipe item : items) {
+		for(SimpleRecipe item : items) {
 			UniversalResource it = item.result(MinecraftClient.getInstance().player);
 			var w1 = (i * slotSize);
 			var h1 = (j * slotSize);
-			if (mouseX >= this.x + w1 && mouseX <= this.x + w1 + slotSize - 1 && mouseY >= this.y + h1 && mouseY <= this.y + h1 + slotSize - 1) {
+			if(mouseX >= this.x + w1 && mouseX <= this.x + w1 + slotSize - 1 && mouseY >= this.y + h1 && mouseY <= this.y + h1 + slotSize - 1) {
 				hovered = it;
 				context.drawTexture(SLOT_TEXTURE, w1, h1, 0, 0, slotSize, slotSize, 32, 32);
 			}
 			drawResource(it, context, w1 + 1, h1 + 1);
 			i++;
-			if (i >= this.columns) {
+			if(i >= this.columns) {
 				j++;
 				i = 0;
 			}
 		}
 
-		if (this.blend) {
+		if(this.blend) {
 			RenderSystem.disableBlend();
 		}
 
@@ -169,6 +163,7 @@ public class ButtonInventoryComponent extends BaseComponent {
 
 	protected void drawResource(UniversalResource resource, OwoUIDrawContext context, int x, int y) {
 		RessourceGuiHelper.drawRessource(context, resource, x, y, time);
+		//RessourceGuiHelper.drawRessourceExtra(context, resource, x, y, time, 16777215);
 	}
 
 	public void drawTooltip(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
@@ -195,7 +190,7 @@ public class ButtonInventoryComponent extends BaseComponent {
 		static EventStream<RecipePicked> newPickStream() {
 			return new EventStream<>(subscribers -> (SimpleRecipe picked, RecipeCollection collection, Identifier collectionID) -> {
 				var anyTriggered = false;
-				for (var subscriber : subscribers) {
+				for(var subscriber : subscribers) {
 					anyTriggered |= subscriber.onPicked(picked, collection, collectionID);
 				}
 				return anyTriggered;

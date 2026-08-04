@@ -49,6 +49,39 @@ public class CustomPlayerInventory implements ICharacterStored {
 
 	private int lastHotbarSize = 0;
 
+	public List<Pair<Inventory, Integer>> findAllItemsOf(ItemStack stack) {
+		List<Pair<Inventory, Integer>> ls = new ArrayList<>();
+		getAllInventories().forEach(i -> {
+			for(int j = 0; j < i.size(); j++) {
+				var st = i.getStack(j);
+				if(ItemStack.canCombine(st, stack)) {
+					ls.add(new Pair<>(i, j));
+				}
+			}
+		});
+		return ls;
+	}
+
+	public boolean consumeItems(ItemStack stack) {
+		var left = stack.getCount();
+		var remL = new ArrayList<Pair<Inventory, Integer>>();
+		var ls = findAllItemsOf(stack);
+		for(var r : ls) {
+			var st = r.getLeft().getStack(r.getRight());
+			if(st.getCount() < left) {
+				left -= st.getCount();
+				remL.add(r);
+			} else {
+				remL.forEach(v -> {
+					v.getLeft().removeStack(v.getRight());
+				});
+				r.getLeft().removeStack(r.getRight(), left);
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public List<IGridContainer> getNonVanillaContainers() {
 		List<IGridContainer> res = new ArrayList<>();
 

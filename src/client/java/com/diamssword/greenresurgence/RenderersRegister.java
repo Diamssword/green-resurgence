@@ -120,6 +120,7 @@ public class RenderersRegister {
 		BlockEntityRendererFactories.register(MBlocks.ARMOR_TINKERER.getEntityType(), ArmorTinkererBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(MBlocks.CRUMBELING_BLOCK.getEntityType(), CrumbelingBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(MBlocks.SPAWNER.getEntityType(), SpawnerBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(MBlocks.DEPLOYABLE_MACHINE_BLOCK.getEntityType(), DeployableBlockEntityRenderer::new);
 	}
 
 

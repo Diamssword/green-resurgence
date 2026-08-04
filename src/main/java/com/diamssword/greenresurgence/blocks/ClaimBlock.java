@@ -4,10 +4,7 @@ import com.diamssword.greenresurgence.blockEntities.ClaimBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.ModBlockEntity;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.GuiPackets;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
@@ -28,7 +25,7 @@ public class ClaimBlock extends ModBlockEntity<ClaimBlockEntity> {
 	public static final VoxelShape SMALL = Block.createCuboidShape(2, 0, 2, 14, 16, 14);
 
 	public ClaimBlock(Settings settings) {
-		super(settings);
+		super(settings.strength(-1.0f, 3600000.0f).dropsNothing().allowsSpawning(Blocks::never));
 	}
 
 	@Deprecated
@@ -89,4 +86,15 @@ public class ClaimBlock extends ModBlockEntity<ClaimBlockEntity> {
 		}
 		return ActionResult.PASS;
 	}
+
+	@Override
+	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		super.onBreak(world, pos, state, player);
+		var be = this.getBlockEntity(pos, world);
+		var fac = be.getFaction();
+		if(fac != null) {
+			fac.deprecateTerrain(pos, world);
+		}
+	}
+
 }

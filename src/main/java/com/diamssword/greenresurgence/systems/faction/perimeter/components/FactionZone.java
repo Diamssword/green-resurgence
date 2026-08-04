@@ -10,6 +10,12 @@ public class FactionZone {
 	private final BlockBox bounds;
 	private final boolean isMainZone = false;
 
+	public FactionZone(FactionGuild owner, BlockBox bounds) {
+		this.bounds = bounds;
+		this.owner = owner;
+
+	}
+
 	public FactionZone(FactionGuild owner, BlockPos pos, int size) {
 		this.bounds = new BlockBox(pos).expand(size);
 		this.owner = owner;
