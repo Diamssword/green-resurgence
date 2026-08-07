@@ -1,4 +1,4 @@
-package com.diamssword.greenresurgence.render.CustomPoseRender;
+package com.diamssword.greenresurgence.render.customPose;
 
 import com.diamssword.greenresurgence.items.equipment.ICustomPoseWeapon;
 import com.diamssword.greenresurgence.systems.character.customPoses.IPlayerCustomPose;

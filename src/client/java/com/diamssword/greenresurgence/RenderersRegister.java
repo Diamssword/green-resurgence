@@ -13,10 +13,8 @@ import com.diamssword.greenresurgence.items.helpers.ItemStorageHelper;
 import com.diamssword.greenresurgence.particles.ParticlesRegister;
 import com.diamssword.greenresurgence.render.blockEntityRenderer.*;
 import com.diamssword.greenresurgence.render.cosmetics.ModularArmorLayerRenderer;
-import com.diamssword.greenresurgence.render.entities.BackpackEntityRenderer;
-import com.diamssword.greenresurgence.render.entities.BikeEntityRenderer;
-import com.diamssword.greenresurgence.render.entities.CaddieEntityRenderer;
-import com.diamssword.greenresurgence.render.entities.ThrownWeaponRenderer;
+import com.diamssword.greenresurgence.render.deployables.DeployableRenders;
+import com.diamssword.greenresurgence.render.entities.*;
 import com.diamssword.greenresurgence.render.environment.EnvironementAreas;
 import com.diamssword.greenresurgence.structure.ItemPlacers;
 import com.diamssword.greenresurgence.structure.MultiblockInstance;
@@ -82,7 +80,9 @@ public class RenderersRegister {
 		EntityRendererRegistry.register(MEntities.CADDIE, CaddieEntityRenderer::new);
 		EntityRendererRegistry.register(MEntities.BIKE, BikeEntityRenderer::new);
 		EntityRendererRegistry.register(MEntities.FLAME_PUDDLE, RenderersRegister::emptyEntityRender);
-
+		EntityRendererRegistry.register(MEntities.DEPLOYABLE_SUB_BOX, RenderersRegister::emptyEntityRender);
+		EntityRendererRegistry.register(MEntities.DEPLOYABLE, DeployableEntityRenderer::new);
+		DeployableRenders.init();
 	}
 
 	private static void blocksRenderers() {

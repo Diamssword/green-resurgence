@@ -4,6 +4,7 @@ import com.diamssword.greenresurgence.entities.BikeEntity;
 import com.diamssword.greenresurgence.entities.TwoPassengerVehicle;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.items.*;
+import com.diamssword.greenresurgence.systems.deployable.DeployableRegistry;
 import io.wispforest.owo.itemgroup.Icon;
 import io.wispforest.owo.itemgroup.OwoItemGroup;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
@@ -50,6 +51,7 @@ public class MItems implements ItemRegistryContainer {
 	public static final StackableDamagableItem AIR_FILTER = new StackableDamagableItem(new OwoItemSettings().group(GROUP).tab(1).maxCount(8), 2000);
 	public static final GasMaskItem GAS_MASK = new GasMaskItem(new OwoItemSettings().group(GROUP).tab(1).maxCount(1));
 	public static final GasTankItem SMALL_GAS_TANK = new GasTankItem(new OwoItemSettings().group(GROUP).tab(1).maxCount(1), 10000);
+	public static final DeployablePlacer CAMPFIRE = new DeployablePlacer(new OwoItemSettings().group(GROUP).tab(0).maxCount(1), DeployableRegistry.CAMPFIRE);
 
 	@Override
 	public void afterFieldProcessing() {

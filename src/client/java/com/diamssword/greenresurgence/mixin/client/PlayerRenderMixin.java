@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.mixin.client;
 
-import com.diamssword.greenresurgence.render.CustomPoseRender.CustomPoseRenderManager;
 import com.diamssword.greenresurgence.render.cosmetics.BackpackLayerRenderer;
+import com.diamssword.greenresurgence.render.customPose.CustomPoseRenderManager;
 import com.diamssword.greenresurgence.systems.Components;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -26,9 +26,9 @@ public abstract class PlayerRenderMixin extends LivingEntityRenderer<AbstractCli
 	@Inject(at = @At("HEAD"), method = "getPositionOffset(Lnet/minecraft/client/network/AbstractClientPlayerEntity;F)Lnet/minecraft/util/math/Vec3d;", cancellable = true)
 	public void getPositionOffset(AbstractClientPlayerEntity abstractClientPlayerEntity, float f, CallbackInfoReturnable<Vec3d> cir) {
 		var comp = abstractClientPlayerEntity.getComponent(Components.PLAYER_DATA);
-		if (comp.getCustomPoseID() != null) {
+		if(comp.getCustomPoseID() != null) {
 			var rend = CustomPoseRenderManager.get(comp.getCustomPoseID());
-			if (rend != null) {
+			if(rend != null) {
 				cir.setReturnValue(rend.Offset(abstractClientPlayerEntity, comp.getCustomPose()));
 			}
 
@@ -39,9 +39,9 @@ public abstract class PlayerRenderMixin extends LivingEntityRenderer<AbstractCli
 	@Inject(at = @At("TAIL"), method = "setupTransforms(Lnet/minecraft/client/network/AbstractClientPlayerEntity;Lnet/minecraft/client/util/math/MatrixStack;FFF)V")
 	public void setupTransforms(AbstractClientPlayerEntity abstractClientPlayerEntity, MatrixStack matrixStack, float f, float g, float h, CallbackInfo ci) {
 		var comp = abstractClientPlayerEntity.getComponent(Components.PLAYER_DATA);
-		if (comp.getCustomPoseID() != null) {
+		if(comp.getCustomPoseID() != null) {
 			var rend = CustomPoseRenderManager.get(comp.getCustomPoseID());
-			if (rend != null) {
+			if(rend != null) {
 
 				rend.transforms(abstractClientPlayerEntity, matrixStack, this.model, comp.getCustomPose());
 			}
@@ -52,9 +52,9 @@ public abstract class PlayerRenderMixin extends LivingEntityRenderer<AbstractCli
 	@Inject(at = @At("TAIL"), method = "setModelPose")
 	public void setModelPose(AbstractClientPlayerEntity player, CallbackInfo ci) {
 		var comp = player.getComponent(Components.PLAYER_DATA);
-		if (comp.getCustomPoseID() != null) {
+		if(comp.getCustomPoseID() != null) {
 			var rend = CustomPoseRenderManager.get(comp.getCustomPoseID());
-			if (rend != null) {
+			if(rend != null) {
 				PlayerEntityModel<AbstractClientPlayerEntity> playerEntityModel = this.getModel();
 				rend.angles(player, playerEntityModel, comp.getCustomPose());
 			}

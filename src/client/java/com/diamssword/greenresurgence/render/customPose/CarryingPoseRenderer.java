@@ -1,4 +1,4 @@
-package com.diamssword.greenresurgence.render.CustomPoseRender;
+package com.diamssword.greenresurgence.render.customPose;
 
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.character.customPoses.IPlayerCustomPose;
@@ -14,7 +14,7 @@ public class CarryingPoseRenderer implements ICustomPoseRenderer {
 	@Override
 	public void transforms(AbstractClientPlayerEntity abstractClientPlayerEntity, MatrixStack matrixStack, PlayerEntityModel model, IPlayerCustomPose pose) {
 		var et = abstractClientPlayerEntity.getComponent(Components.PLAYER_DATA).getCarriedEntity();
-		if (et.isPresent()) {
+		if(et.isPresent()) {
 			renderEntity(et.get(), matrixStack, abstractClientPlayerEntity.getHeight(), 180);
 		}
 
@@ -23,7 +23,7 @@ public class CarryingPoseRenderer implements ICustomPoseRenderer {
 	private void renderEntity(Entity et, MatrixStack matrixStack, float yoffset, float yangle) {
 		var mc = MinecraftClient.getInstance();
 		var render = mc.getEntityRenderDispatcher().getRenderer(et);
-		if (render != null) {
+		if(render != null) {
 			matrixStack.push();
 			var vertex = mc.getBufferBuilders().getEntityVertexConsumers();
 
@@ -38,7 +38,7 @@ public class CarryingPoseRenderer implements ICustomPoseRenderer {
 	@Override
 	public void firstPersonRender(AbstractClientPlayerEntity abstractClientPlayerEntity, MatrixStack matrixStack, IPlayerCustomPose pose) {
 		var et = abstractClientPlayerEntity.getComponent(Components.PLAYER_DATA).getCarriedEntity();
-		if (et.isPresent()) {
+		if(et.isPresent()) {
 			var mc = MinecraftClient.getInstance();
 			renderEntity(et.get(), matrixStack, 0.5f, mc.player.lastRenderYaw);
 		}
