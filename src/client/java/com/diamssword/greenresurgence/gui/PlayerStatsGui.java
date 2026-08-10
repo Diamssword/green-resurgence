@@ -14,7 +14,6 @@ import com.diamssword.greenresurgence.network.StatsPackets;
 import com.diamssword.greenresurgence.systems.character.classes.IClasseAdditionalTooltips;
 import com.diamssword.greenresurgence.utils.TextUtils;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
-import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.LabelComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
@@ -68,13 +67,11 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 			var dtC = ComponentManager.getPlayerDatas(client.player);
 			c.onPress(v -> loadInfos(root.childById(FlowLayout.class, "infosPanel"), k, r.get()));
 			c.child(Components.label(TextUtils.whiteTitle(r.get().name + "   Niv." + dtC.getStats().getLevel(k))).horizontalSizing(Sizing.fill(80)));
-			var btr = ButtonComponent.Renderer.texture(GreenResurgence.asRessource("textures/gui/dice.png"), 0, 0, 20, 40);
 			var bt = io.wispforest.owo.ui.component.Components.button(Text.literal("\uD83C\uDFB2"), (r1) -> {
 				Channels.MAIN.clientHandle().send(new StatsPackets.RollStat(k));
 				close();
 			});
 			bt.sizing(Sizing.fixed(16));
-			//bt.renderer(btr);
 			bt.tooltip(Text.translatable("gui." + GreenResurgence.ID + ".playerstats.dice"));
 			c.child(bt);
 			pane.child(c);

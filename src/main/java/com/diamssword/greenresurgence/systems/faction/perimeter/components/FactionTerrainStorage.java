@@ -79,7 +79,7 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
 
 	@Override
 	public Text getDisplayName() {
-		return Text.literal("Base");
+		return Text.translatable("gui.green_resurgence.faction_storage");
 	}
 
 	@Nullable

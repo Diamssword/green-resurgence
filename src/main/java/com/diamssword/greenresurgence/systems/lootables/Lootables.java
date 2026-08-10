@@ -34,7 +34,7 @@ public class Lootables {
 						if(req)
 							return true;
 						else {
-							player.sendMessage(Text.literal("Vous n'avez pas l'expertise pour récuperer ça."), true);
+							player.sendMessage(Text.translatable("message.green_resurgence.loot.error.experience"), true);
 							return false;
 						}
 					}

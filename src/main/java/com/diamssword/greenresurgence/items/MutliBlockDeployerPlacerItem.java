@@ -79,7 +79,7 @@ public abstract class MutliBlockDeployerPlacerItem extends Item {
 				context.getStack().decrement(1);
 				return ActionResult.CONSUME;
 			} else
-				context.getPlayer().sendMessage(Text.literal("Espace insuffisant"));
+				context.getPlayer().sendMessage(Text.translatable("tooltip.green_resurgence.multiblock_deployer.no_space"));
 		}
 
 		return ActionResult.FAIL;

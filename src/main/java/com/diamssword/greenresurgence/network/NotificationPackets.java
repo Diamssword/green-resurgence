@@ -33,11 +33,11 @@ public class NotificationPackets {
 	}
 
 	public static void sendMessage(PlayerEntity entity, Text message) {
-		sendToast(entity, new NotificationPacket(BASE_TIME, Text.literal("Nouveau Vêtement"), message, Size.Normal, Renderer.Item, "stone", null));
+		sendToast(entity, new NotificationPacket(BASE_TIME, Text.translatable("gui.green_resurgence.notification.cloth.new"), message, Size.Normal, Renderer.Item, "stone", null));
 	}
 
 	public static void sendCloth(PlayerEntity entity, Cloth cloth) {
-		sendToast(entity, new NotificationPacket(BASE_TIME, Text.literal("Nouveau Vêtement"), Text.literal(cloth.name()), Size.Normal, Renderer.Cloth, cloth.id().toString(), null));
+		sendToast(entity, new NotificationPacket(BASE_TIME, Text.translatable("gui.green_resurgence.notification.cloth.new"), Text.literal(cloth.name()), Size.Normal, Renderer.Cloth, cloth.id().toString(), null));
 	}
 
 

@@ -95,7 +95,7 @@ public class BaseInteractions {
 	}
 
 	public static void onEnter(ServerPlayerEntity player, FactionGuild base) {
-		player.sendMessage(Text.literal("Vous entrez dans " + base.getName()), true);
+		player.sendMessage(Text.translatable("message.green_resurgence.guild.zone.enter", base.getName()), true);
 		if(base.needSurvival(new FactionMember(player))) {
 			if(player.interactionManager.getGameMode().equals(GameMode.ADVENTURE))
 				player.changeGameMode(GameMode.SURVIVAL);
@@ -108,7 +108,7 @@ public class BaseInteractions {
 	}
 
 	public static void onLeave(ServerPlayerEntity player, FactionGuild base) {
-		player.sendMessage(Text.literal("Vous sortez de " + base.getName()), true);
+		player.sendMessage(Text.translatable("message.green_resurgence.guild.zone.leave", base.getName()), true);
 		if(player.interactionManager.getGameMode().equals(GameMode.SURVIVAL))
 			player.changeGameMode(GameMode.ADVENTURE);
 	}

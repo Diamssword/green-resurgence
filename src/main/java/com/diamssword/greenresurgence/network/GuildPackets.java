@@ -47,11 +47,11 @@ public class GuildPackets {
 			Record packet = null;
 			var guilds = ctx.player().getWorld().getComponent(Components.BASE_LIST);
 			var guild = guilds.get(msg.guild);
-			if (guild.isPresent()) {
+			if(guild.isPresent()) {
 				var m = new FactionMember(ctx.player());
 				var isOp = ctx.player().hasPermissionLevel(2);
-				if (isOp || guild.get().getMembers().contains(m)) {
-					packet = switch (msg.gui) {
+				if(isOp || guild.get().getMembers().contains(m)) {
+					packet = switch(msg.gui) {
 						case "main" -> new OpenFactionGui(msg.guild, guild.get().getName());
 						case "friends" -> new OpenFriendsGui(msg.guild, guild.get().getMembersAndRoles(), guild.get().getRolesAndPriorities(),
 								isOp || guild.get().isAllowed(m, Perms.INVITE), isOp || guild.get().isAllowed(m, Perms.EDIT_ROLE));
@@ -59,7 +59,7 @@ public class GuildPackets {
 						case "roles" -> new OpenRolesGui(msg.guild, guild.get().getRolesAndPriorities());
 						default -> null;
 					};
-					if (packet != null)
+					if(packet != null)
 						Channels.MAIN.serverHandle(ctx.player()).send(packet);
 				}
 
@@ -72,37 +72,37 @@ public class GuildPackets {
 		Channels.MAIN.registerClientboundDeferred(OpenRolesGui.class);
 		Channels.MAIN.registerServerbound(InviteMember.class, (msg, ctx) -> {
 			var guild = ctx.player().getWorld().getComponent(Components.BASE_LIST).getForPlayer(ctx.player().getUuid(), false);
-			if (guild.isPresent()) {
-				if (guild.get().getPermsOf(new FactionMember(ctx.player())).isAllowed(Perms.INVITE)) {
-					if (guild.get().addMember(msg.member, guild.get().getStartingRole(), ctx.player().getWorld()))
+			if(guild.isPresent()) {
+				if(guild.get().getPermsOf(new FactionMember(ctx.player())).isAllowed(Perms.INVITE)) {
+					if(guild.get().addMember(msg.member, guild.get().getStartingRole(), ctx.player().getWorld()))
 						Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnValue("addMember", msg.member.getName()));
 					else
-						Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("addMember", Text.literal(msg.member.getName() + " ne peut pas être invité")));
+						Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("addMember", Text.translatable("message.green_resurgence.guild.packet.invite.error", msg.member.getName())));
 
 				} else
-					Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("addMember", Text.literal("Vous n'avez pas la permission 'INVITE'")));
+					Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("addMember", Text.translatable("message.green_resurgence.guild.packet.invite.error.permission")));
 			} else
-				Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("addMember", Text.literal("No Guild")));
+				Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("addMember", Text.translatable("message.green_resurgence.guild.packet.invite.error.no_guild")));
 		});
 		Channels.MAIN.registerServerbound(ChangeRole.class, (msg, ctx) -> {
 			var g1 = ctx.player().getWorld().getComponent(Components.BASE_LIST).getForPlayer(ctx.player().getUuid(), false);
-			if (g1.isPresent()) {
+			if(g1.isPresent()) {
 				var guild = g1.get();
 				var m = new FactionMember(ctx.player());
-				if (guild.isAllowed(m, Perms.EDIT_ROLE)) {
+				if(guild.isAllowed(m, Perms.EDIT_ROLE)) {
 					var role1 = guild.getRoleFor(m);
 					var i = 0;
-					if (guild.getOwner().equals(m))
+					if(guild.getOwner().equals(m))
 						i = Integer.MAX_VALUE;
-					else if (role1 != null)
+					else if(role1 != null)
 						i = guild.getPriorityOfRole(role1);
 					var role2 = guild.getRoleFor(msg.member);
 					var i1 = 0;
-					if (guild.getOwner().equals(msg.member))
+					if(guild.getOwner().equals(msg.member))
 						i1 = Integer.MAX_VALUE;
-					else if (role2 != null)
+					else if(role2 != null)
 						i1 = guild.getPriorityOfRole(role2);
-					if (i1 < i)
+					if(i1 < i)
 						guild.changeRole(msg.member, msg.newRole, ctx.player().getWorld());
 
 				}
@@ -114,51 +114,51 @@ public class GuildPackets {
 			var guilds = ctx.player().getWorld().getComponent(Components.BASE_LIST);
 			var g = guilds.getForPlayer(ctx.player().getUuid(), false);
 			var r = currentRoleEdit.get(ctx.player());
-			if (g.isPresent()) {
-				if (r != null) {
+			if(g.isPresent()) {
+				if(r != null) {
 					var role = g.get().getRole(r);
 					var m = new FactionMember(ctx.player());
-					if (role != null && g.get().isAllowed(m, Perms.EDIT_ROLE)) {
+					if(role != null && g.get().isAllowed(m, Perms.EDIT_ROLE)) {
 						var a = g.get().getPriorityOfRole(r);
 						var b = g.get().getPriorityOfRole(g.get().getRoleFor(m));
-						if (g.get().getOwner().equals(m))
+						if(g.get().getOwner().equals(m))
 							b = Integer.MAX_VALUE;
-						if (a < b) {
+						if(a < b) {
 							currentRoleEdit.remove(ctx.player());
-							if (g.get().replacePerm(r, msg.role))
+							if(g.get().replacePerm(r, msg.role))
 								Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnValue("editRole", msg.role.getName()));
 							else
-								Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("editRole", Text.literal("Conflicting name with another role")));
+								Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("editRole", Text.translatable("message.green_resurgence.guild.packet.role.edit.error.name")));
 						}
 
 					}
 				} else {
-					if (g.get().addRole(msg.role))
+					if(g.get().addRole(msg.role))
 						Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnValue("addRole", msg.role.getName()));
 					else
-						Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("editRole", Text.literal("Conflicting name with another role")));
+						Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("editRole", Text.translatable("message.green_resurgence.guild.packet.role.edit.error.name")));
 				}
 
 			} else
-				Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("editRole", Text.literal("No Guild")));
+				Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("editRole", Text.translatable("message.green_resurgence.guild.packet.invite.error.no_guild")));
 		});
 		Channels.MAIN.registerServerbound(PermEditRequest.class, (msg, ctx) -> {
 			var guilds = ctx.player().getWorld().getComponent(Components.BASE_LIST);
 			var g = guilds.getForPlayer(ctx.player().getUuid(), false);
-			if (g.isPresent()) {
+			if(g.isPresent()) {
 				currentRoleEdit.remove(ctx.player());
 				var m = new FactionMember(ctx.player());
-				if (msg.role.isEmpty() && g.get().isAllowed(m, Perms.EDIT_ROLE)) {
+				if(msg.role.isEmpty() && g.get().isAllowed(m, Perms.EDIT_ROLE)) {
 					var p = new FactionPerm("Nouveau Role");
 					Channels.MAIN.serverHandle(ctx.player()).send(new PermEdit(g.get().getId(), p));
 				}
 				var role = g.get().getRole(msg.role);
-				if (role != null && g.get().isAllowed(m, Perms.EDIT_ROLE)) {
+				if(role != null && g.get().isAllowed(m, Perms.EDIT_ROLE)) {
 					var a = g.get().getPriorityOfRole(msg.role);
 					var b = g.get().getPriorityOfRole(g.get().getRoleFor(m));
-					if (g.get().getOwner().equals(m))
+					if(g.get().getOwner().equals(m))
 						b = Integer.MAX_VALUE;
-					if (a < b) {
+					if(a < b) {
 						currentRoleEdit.put(ctx.player(), msg.role);
 						Channels.MAIN.serverHandle(ctx.player()).send(new PermEdit(g.get().getId(), role));
 					}

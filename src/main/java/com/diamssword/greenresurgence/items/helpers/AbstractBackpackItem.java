@@ -32,7 +32,7 @@ public abstract class AbstractBackpackItem extends Item {
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
 		var inv = getInventory(stack);
 		if(!inv.isEmpty()) {
-			tooltip.add(Text.literal("Contient :").formatted(Formatting.LIGHT_PURPLE));
+			tooltip.add(Text.translatable("gui.green_resurgence.generic.content").formatted(Formatting.LIGHT_PURPLE));
 			for(int i = 0; i < 4; i++) {
 				var st = inv.getStack(i);
 				if(!st.isEmpty())
@@ -41,7 +41,7 @@ public abstract class AbstractBackpackItem extends Item {
 			tooltip.add(Text.literal("..."));
 
 		} else
-			tooltip.add(Text.literal("Vide").formatted(Formatting.LIGHT_PURPLE));
+			tooltip.add(Text.translatable("gui.green_resurgence.generic.empty").formatted(Formatting.LIGHT_PURPLE));
 	}
 
 	public abstract int inventoryWidth(ItemStack stack);

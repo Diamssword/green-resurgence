@@ -47,10 +47,10 @@ public class ClaimBlockPlacerItem extends MutliBlockDeployerPlacerItem {
 			} else if(currg.get().getTerrainAt(at).isEmpty())
 				return true;
 			else
-				player.sendMessage(Text.literal("Cette zone est déja protégée par un de vos générateur"));
+				player.sendMessage(Text.translatable("tooltip.green_resurgence.claim_placer.already_protected"));
 
 		} else
-			player.sendMessage(Text.literal("Un autre générateur interfére avec cette zone"));
+			player.sendMessage(Text.translatable("tooltip.green_resurgence.claim_placer.interference"));
 		return false;
 	}
 
