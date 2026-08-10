@@ -75,7 +75,7 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 			});
 			bt.sizing(Sizing.fixed(16));
 			//bt.renderer(btr);
-			bt.tooltip(Text.literal("Lancer un dé"));
+			bt.tooltip(Text.translatable("gui." + GreenResurgence.ID + ".playerstats.dice"));
 			c.child(bt);
 			pane.child(c);
 		}

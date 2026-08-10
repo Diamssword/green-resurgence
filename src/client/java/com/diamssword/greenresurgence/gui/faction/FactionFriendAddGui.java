@@ -60,7 +60,7 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 		var search = rootComponent.childById(TextBoxComponent.class, "search");
 		rootComponent.childById(ButtonComponent.class, "back").onPress(v -> Channels.MAIN.clientHandle().send(new GuildPackets.RequestGui("friends", id)));
 		menu = rootComponent.childById(FlowLayout.class, "contextMenu");
-		search.setPlaceholder(Text.literal("Recherche"));
+		search.setPlaceholder(Text.translatable("gui." + GreenResurgence.ID + ".generic.search"));
 		list = rootComponent.childById(FlowLayout.class, "list");
 		search.onChanged().subscribe(v -> refreshSearch(v, list));
 		refreshSearch(search.getText(), list);
@@ -87,7 +87,7 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 		if(member.getName().length() > 15)
 			t.horizontalSizing(Sizing.fill(100));
 		menu.child(t);
-		menu.child(Components.button(Text.literal("Inviter"), (v) -> {
+		menu.child(Components.button(Text.translatable("gui.green_resurgence.friend_gui.invite"), (v) -> {
 			Channels.MAIN.clientHandle().send(new GuildPackets.InviteMember(member));
 		}));
 	}
@@ -163,7 +163,7 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 
 		if(topic.equals("addMember")) {
 			menu.clearChildren();
-			menu.child(Components.label(Text.literal(value + " à été ajouté!")));
+			menu.child(Components.label(Text.translatable("gui.green_resurgence.friend_gui.added_confirm", value)));
 		}
 	}
 

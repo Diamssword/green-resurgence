@@ -124,7 +124,7 @@ public class GenericBlocks {
 		diams.create("gray_glazed_terracotta").addSub(BlockType.ROTATABLE_SLAB, ModelType.SLAB, HitBox.FIXED_SLAB, SubBlock.SLAB).disableGen(false);
 		diams.add("road_barrier", Transparency.NOTFULL, BlockType.PILLAR).disableGen(false);
 		diams.create("carton_gros", "concrete_block", "safe_open", "safe_close").addSub(BlockType.PILLAR).disableGen(true);
-
+		diams.create("tinted_glass").addSub(BlockType.SIMPLE).setTransparency(Transparency.TRANSPARENT);
 		//lamps
 		diams.create("lamp_marine_big_plastic", "lamp_marine_big_metal", "lamp_marine_big_gold", "lamp_marine_big_copper", "lamp_marine_big_black", "lamp_marine_plastic", "lamp_marine_metal", "lamp_marine_gold", "lamp_marine_copper", "lamp_marine_black", "lamp_ceiling_light_copper")
 				.addSub(BlockType.OMNI_BLOCK, ModelType.CARPET, HitBox.CARPET).togglable().light(12).setTransparency(Transparency.CUTOUT).addGroup("lamps").disableGen(true);

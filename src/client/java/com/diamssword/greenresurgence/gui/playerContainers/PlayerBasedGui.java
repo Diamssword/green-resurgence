@@ -90,7 +90,7 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 				});
 				if(v == subPanelTop || v == subPanelBot)
 					d.setActivated(true);
-				d.tooltip(Text.literal(v.guiName()).append(Text.literal("\n [Maj + Clique] pour afficher en scinder").formatted(Formatting.GRAY, Formatting.ITALIC)));
+				d.tooltip(Text.literal(v.guiName()).append(Text.translatable("gui.green_resurgence.survival_inventory.left_panel.button.tooltip").formatted(Formatting.GRAY, Formatting.ITALIC)));
 				d.icon(v.guiIcon());
 				d.horizontalSizing(Sizing.fill(100));
 				buttonsMap.put(v, d);

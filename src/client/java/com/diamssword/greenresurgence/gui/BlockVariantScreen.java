@@ -27,8 +27,8 @@ public class BlockVariantScreen extends MultiInvHandledScreen<BlockVariantItem.C
 
 	public BlockVariantScreen(BlockVariantItem.Container handler, PlayerInventory inv, Text title) {
 		super(handler, FlowLayout.class, BaseUIModelScreen.DataSource.asset(GreenResurgence.asRessource("block_variant")));
-		for (ItemStack handItem : MinecraftClient.getInstance().player.getHandItems()) {
-			if (handItem.getItem() instanceof BlockVariantItem it) {
+		for(ItemStack handItem : MinecraftClient.getInstance().player.getHandItems()) {
+			if(handItem.getItem() instanceof BlockVariantItem it) {
 				this.parent = it;
 				break;
 			}
@@ -38,10 +38,10 @@ public class BlockVariantScreen extends MultiInvHandledScreen<BlockVariantItem.C
 
 	@Override
 	protected void build(FlowLayout rootComponent) {
-		if (this.parent != null) {
+		if(this.parent != null) {
 			ButtonInventoryComponent comp = rootComponent.childById(ButtonInventoryComponent.class, "main");
 			var search = rootComponent.childById(TextBoxComponent.class, "search");
-			search.setPlaceholder(Text.literal("Recherche"));
+			search.setPlaceholder(Text.translatable("gui." + GreenResurgence.ID + ".generic.search"));
 			this.setFocused(search);
 			comp.bindSearchField(search);
 			comp.focusGained().subscribe(v -> {
@@ -67,12 +67,12 @@ public class BlockVariantScreen extends MultiInvHandledScreen<BlockVariantItem.C
 			String[] wordsB = o2.getId().getPath().split("_");
 
 			int maxLength = Math.max(wordsA.length, wordsB.length);
-			for (int i = 0; i < maxLength; i++) {
+			for(int i = 0; i < maxLength; i++) {
 				String wordA = i < wordsA.length ? wordsA[i] : "";
 				String wordB = i < wordsB.length ? wordsB[i] : "";
 
 				int cmp = wordA.compareTo(wordB);
-				if (cmp != 0) return cmp;
+				if(cmp != 0) return cmp;
 			}
 			return 0;
 		};
@@ -80,16 +80,16 @@ public class BlockVariantScreen extends MultiInvHandledScreen<BlockVariantItem.C
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (keyCode == 69) //desactive le 'e' qui ferme le gui
+		if(keyCode == 69) //desactive le 'e' qui ferme le gui
 			return false;
 		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
 	private boolean onPick(SimpleRecipe re) {
 		var st = re.result(client.player);
-		if ((InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_SHIFT) || InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_RIGHT_SHIFT))) {
+		if((InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_SHIFT) || InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_RIGHT_SHIFT))) {
 			int i = this.handler.getPlayerInventory().getEmptySlot();
-			if (i > -1) {
+			if(i > -1) {
 				this.handler.getPlayerInventory().setStack(i, st.asItem().copyWithCount(64));
 				this.client.interactionManager.clickCreativeStack(st.asItem().copyWithCount(64), i);
 			}
@@ -103,20 +103,20 @@ public class BlockVariantScreen extends MultiInvHandledScreen<BlockVariantItem.C
 
 	@Override
 	protected void onMouseClick(Slot slot, int slotId, int button, SlotActionType actionType) {
-		if (slot != null) {
+		if(slot != null) {
 			slotId = slot.id;
 		}
-		if (slotId > -1 && !this.handler.getCursorStack().isEmpty()) {
+		if(slotId > -1 && !this.handler.getCursorStack().isEmpty()) {
 			var d = this.handler.getCursorStack();
 			this.handler.setCursorStack(slot.getStack());
 			this.client.interactionManager.clickCreativeStack(d, slotId + 9);
 
-		} else if (slotId > -1) {
+		} else if(slotId > -1) {
 			var d = slot.getStack();
 			slot.setStack(this.handler.getCursorStack());
 			this.handler.setCursorStack(d);
 
-		} else if (!onWindow) {
+		} else if(!onWindow) {
 			super.onMouseClick(slot, slotId, button, actionType);
 		}
 		onWindow = false;

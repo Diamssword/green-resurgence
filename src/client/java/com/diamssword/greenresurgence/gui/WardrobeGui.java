@@ -129,7 +129,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 		dt.getAppearence().clonePlayerAppearance(MinecraftClient.getInstance().player);
 		loadCloths(wardLay, playerComp, "");
 		search.onChanged().subscribe(v -> loadCloths(wardLay, playerComp, v.toLowerCase()));
-		search.setPlaceholder(Text.literal("Recherche"));
+		search.setPlaceholder(Text.translatable("gui." + GreenResurgence.ID + ".generic.search"));
 		//this.setFocused(search);
 		wardLay.focusGained().subscribe(v -> {
 			this.setFocused(search);

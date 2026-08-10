@@ -26,7 +26,7 @@ public class CrafterScreen extends PlayerBasedGui<CrafterBlock.ScreenHandler> {
 		var disp = rootComponent.childById(RecipDisplayComponent.class, "display");
 		var searchB = rootComponent.childById(TextBoxComponent.class, "craftlist_search");
 		if(searchB != null && ls != null) {
-			searchB.setPlaceholder(Text.literal("Search").formatted(Formatting.GRAY));
+			searchB.setPlaceholder(Text.translatable("gui.green_resurgence.generic.search").formatted(Formatting.GRAY));
 			ls.bindSearchField(searchB);
 		}
 		rootComponent.childById(ButtonComponent.class, "craft").onPress(v -> {

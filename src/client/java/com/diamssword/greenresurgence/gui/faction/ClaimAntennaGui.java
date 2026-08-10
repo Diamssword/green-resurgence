@@ -42,15 +42,15 @@ public class ClaimAntennaGui extends BaseUIModelScreen<FlowLayout> {
 	protected void build(FlowLayout rootComponent) {
 		var seeZone = rootComponent.childById(ButtonComponent.class, "seeZone");
 		if(!viewBounds)
-			seeZone.setMessage(Text.literal("Voir les bordures"));
+			seeZone.setMessage(Text.translatable("gui.green_resurgence.claim_antenna.show_border"));
 		seeZone.onPress((b) -> {
 			if(!viewBounds) {
 				viewBounds = true;
-				seeZone.setMessage(Text.literal("Cacher les bordures"));
+				seeZone.setMessage(Text.translatable("gui.green_resurgence.claim_antenna.hide_border"));
 				seeZone.parent().onChildMutated(seeZone);
 			} else {
 				viewBounds = false;
-				seeZone.setMessage(Text.literal("Voir les bordures"));
+				seeZone.setMessage(Text.translatable("gui.green_resurgence.claim_antenna.show_border"));
 				seeZone.parent().onChildMutated(seeZone);
 			}
 

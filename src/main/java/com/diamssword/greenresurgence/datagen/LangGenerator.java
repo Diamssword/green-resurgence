@@ -112,6 +112,7 @@ public class LangGenerator extends FabricLanguageProvider {
 			links.forEach((k, v) -> {
 				try {
 					translationBuilder.add(v);
+					translationBuilder.add(k);
 				} catch(IOException e) {
 					e.printStackTrace();
 				}

@@ -55,7 +55,7 @@ public class FactionFriendsGui extends BaseUIModelScreen<FlowLayout> {
 		else
 			addBt.remove();
 		menu = rootComponent.childById(FlowLayout.class, "menu");
-		search.setPlaceholder(Text.literal("Recherche"));
+		search.setPlaceholder(Text.translatable("gui." + GreenResurgence.ID + ".generic.search"));
 		var c = rootComponent.childById(FlowLayout.class, "list");
 		search.onChanged().subscribe(v -> {
 			List<FactionMember> list = members.keySet().stream().toList();
@@ -85,7 +85,7 @@ public class FactionFriendsGui extends BaseUIModelScreen<FlowLayout> {
 			t.horizontalSizing(Sizing.fill(100));
 		menu.child(t);
 		menu.allowOverflow(true);
-		menu.child(cutLongText(members.get(member), 20, (v) -> roleMenu(menu, v, member)).tooltip(Text.literal("Role")));
+		menu.child(cutLongText(members.get(member), 20, (v) -> roleMenu(menu, v, member)).tooltip(Text.translatable("gui.green_resurgence.friend_gui.role")));
 	}
 
 	public void roleMenu(FlowLayout menu, ButtonComponent bt, FactionMember member) {
@@ -93,7 +93,7 @@ public class FactionFriendsGui extends BaseUIModelScreen<FlowLayout> {
 		var scroll = Containers.verticalScroll(Sizing.fill(100), Sizing.fill(50), flow);
 		var txt = bt.getMessage();
 		flow.surface(Surface.DARK_PANEL).padding(Insets.of(2));
-		bt.setMessage(Text.literal("[Annuler]"));
+		bt.setMessage(Text.translatable("gui.green_resurgence.generic.cancel"));
 		bt.onPress((b) -> {
 			scroll.remove();
 			bt.setMessage(txt);
