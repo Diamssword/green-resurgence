@@ -18,14 +18,13 @@ public abstract class PlayerModelMixin {
 	public void setAngles(LivingEntity livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
 		if(livingEntity instanceof AbstractClientPlayerEntity player) {
 			var comp = player.getComponent(Components.PLAYER_DATA);
-			if(comp.getCustomPoseID() != null) {
-				var rend = CustomPoseRenderManager.get(comp.getCustomPoseID());
+			PlayerEntityModel<AbstractClientPlayerEntity> playerEntityModel = (PlayerEntityModel<AbstractClientPlayerEntity>) (Object) this;
+			comp.getCustomPosesMap().forEach((k, v) -> {
+				var rend = CustomPoseRenderManager.get(k, v);
 				if(rend != null) {
-					PlayerEntityModel<AbstractClientPlayerEntity> playerEntityModel = (PlayerEntityModel<AbstractClientPlayerEntity>) (Object) this;
-					rend.angles(player, playerEntityModel, comp.getCustomPose());
+					rend.angles(player, playerEntityModel, v);
 				}
-
-			}
+			});
 		}
 	}
 

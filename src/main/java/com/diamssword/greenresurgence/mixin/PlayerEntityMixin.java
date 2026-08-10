@@ -33,6 +33,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @Mixin(PlayerEntity.class)
@@ -181,12 +182,14 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	public void getDimensions(EntityPose pose, CallbackInfoReturnable<EntityDimensions> cir) {
 
 		var comp = this.getComponent(Components.PLAYER_DATA);
-		var custpo = comp.getCustomPose();
-		if(custpo != null) {
-			var p = POSE_DIMENSIONS.get(pose);
-			var p1 = custpo.changeHitBox(comp.player, p);
-			if(p1 != p)
+		var poses = new ArrayList<>(comp.getCustomPoses());
+		var p = POSE_DIMENSIONS.get(pose);
+		for(int i = poses.size() - 1; i >= 0; i--) {
+			var p1 = poses.get(i).changeHitBox(p);
+			if(p1 != p) {
 				cir.setReturnValue(p1);
+				break;
+			}
 		}
 	}
 

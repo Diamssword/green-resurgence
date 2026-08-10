@@ -26,40 +26,40 @@ public abstract class PlayerRenderMixin extends LivingEntityRenderer<AbstractCli
 	@Inject(at = @At("HEAD"), method = "getPositionOffset(Lnet/minecraft/client/network/AbstractClientPlayerEntity;F)Lnet/minecraft/util/math/Vec3d;", cancellable = true)
 	public void getPositionOffset(AbstractClientPlayerEntity abstractClientPlayerEntity, float f, CallbackInfoReturnable<Vec3d> cir) {
 		var comp = abstractClientPlayerEntity.getComponent(Components.PLAYER_DATA);
-		if(comp.getCustomPoseID() != null) {
-			var rend = CustomPoseRenderManager.get(comp.getCustomPoseID());
+		comp.getCustomPosesMap().forEach((k, v) -> {
+			var rend = CustomPoseRenderManager.get(k, v);
 			if(rend != null) {
-				cir.setReturnValue(rend.Offset(abstractClientPlayerEntity, comp.getCustomPose()));
+				var off = rend.Offset(abstractClientPlayerEntity, v);
+				if(off.length() != 0)
+					cir.setReturnValue(off);
 			}
+		});
 
-		}
 
 	}
 
 	@Inject(at = @At("TAIL"), method = "setupTransforms(Lnet/minecraft/client/network/AbstractClientPlayerEntity;Lnet/minecraft/client/util/math/MatrixStack;FFF)V")
 	public void setupTransforms(AbstractClientPlayerEntity abstractClientPlayerEntity, MatrixStack matrixStack, float f, float g, float h, CallbackInfo ci) {
 		var comp = abstractClientPlayerEntity.getComponent(Components.PLAYER_DATA);
-		if(comp.getCustomPoseID() != null) {
-			var rend = CustomPoseRenderManager.get(comp.getCustomPoseID());
+		comp.getCustomPosesMap().forEach((k, v) -> {
+			var rend = CustomPoseRenderManager.get(k, v);
 			if(rend != null) {
-
-				rend.transforms(abstractClientPlayerEntity, matrixStack, this.model, comp.getCustomPose());
+				rend.transforms(abstractClientPlayerEntity, matrixStack, this.model, v);
 			}
-
-		}
+		});
 	}
 
 	@Inject(at = @At("TAIL"), method = "setModelPose")
 	public void setModelPose(AbstractClientPlayerEntity player, CallbackInfo ci) {
 		var comp = player.getComponent(Components.PLAYER_DATA);
-		if(comp.getCustomPoseID() != null) {
-			var rend = CustomPoseRenderManager.get(comp.getCustomPoseID());
+		PlayerEntityModel<AbstractClientPlayerEntity> playerEntityModel = this.getModel();
+		comp.getCustomPosesMap().forEach((k, v) -> {
+			var rend = CustomPoseRenderManager.get(k, v);
 			if(rend != null) {
-				PlayerEntityModel<AbstractClientPlayerEntity> playerEntityModel = this.getModel();
-				rend.angles(player, playerEntityModel, comp.getCustomPose());
+				rend.beforeRender(player, playerEntityModel, v);
 			}
+		});
 
-		}
 	}
 
 	@Inject(at = @At("TAIL"), method = "<init>")

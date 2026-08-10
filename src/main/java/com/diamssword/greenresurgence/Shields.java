@@ -6,7 +6,6 @@ import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.registration.reflect.ItemRegistryContainer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ShieldItem;
-import net.minecraft.util.Identifier;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -36,6 +35,6 @@ public class Shields implements ItemRegistryContainer {
 	public void postProcessField(String namespace, Item value, String identifier, Field field) {
 		specialRenderRegister.add(value);
 		if(GreenResurgence.clientHelper.isDatagen())
-			LangGenerator.auto_name.put(new Identifier(namespace, "tools/shields/" + identifier), identifier);
+			LangGenerator.addAutoName("equipment_auto", "item." + namespace + ".equipments.shields." + identifier, identifier);
 	}
 }

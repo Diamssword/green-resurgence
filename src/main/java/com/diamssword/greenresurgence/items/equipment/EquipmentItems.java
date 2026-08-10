@@ -232,7 +232,7 @@ public class EquipmentItems implements ItemRegistryContainer {
 	@Override
 	public void postProcessField(String namespace, Item value, String identifier, Field field) {
 		if(GreenResurgence.clientHelper.isDatagen()) {
-			LangGenerator.auto_name.put(new Identifier(namespace, "equipments/" + identifier), identifier);
+			LangGenerator.addAutoName("equipment_auto", "item." + namespace + ".equipments." + identifier, identifier);
 			if(field.isAnnotationPresent(Tier.class)) {
 				var name = "head_t";
 				if(identifier.endsWith("extra"))

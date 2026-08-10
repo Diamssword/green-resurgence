@@ -98,7 +98,6 @@ public class ButtonInventoryComponent extends BaseComponent {
 
 	@Override
 	protected int determineVerticalContentSize(Sizing sizing) {
-		System.out.println(width);
 		this.columns = Math.max(1, width / slotSize);
 
 		return (int) (Math.ceil(this.items.size() / (float) columns) * slotSize);

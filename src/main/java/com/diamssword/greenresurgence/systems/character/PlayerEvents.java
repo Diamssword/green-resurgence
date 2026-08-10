@@ -13,13 +13,15 @@ public class PlayerEvents {
 			if(!end) {
 				var comp = pl.getComponent(Components.PLAYER_DATA);
 				if(!pl.getWorld().isClient) {
-					if(pl.getMainHandStack().getItem() instanceof ICustomPoseWeapon wep) {
+					var stack = pl.getMainHandStack();
+					if(stack.getItem() instanceof ICustomPoseWeapon wep) {
 						if(wep.shouldRemoveOffHand() && !pl.getOffHandStack().isEmpty() && !(pl.getOffHandStack().getItem() instanceof ISimpleEnergyItemTiered)) {
 							var st = pl.getOffHandStack().copyAndEmpty();
 							if(!pl.giveItemStack(st)) {pl.dropStack(st);}
 						}
-						var pose = wep.customPoseId(pl.getMainHandStack());
-						if(pose != null && !pose.equals(comp.getCustomPoseID())) {comp.setCustomPose(pose);}
+						var pose = wep.customPoseId(stack);
+						if(pose != null)
+							comp.addCustomPose(pose);
 					}
 				}
 

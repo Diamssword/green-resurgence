@@ -231,11 +231,12 @@ public class GenericBlockSet {
 
 	public void langGenerator(FabricLanguageProvider.TranslationBuilder builder) {
 		for(GeneratedBlockInstance b : generatedBlocks) {
-			builder.add(b.block, LangGenerator.autoLocalizeString(b.name));
+			LangGenerator.addAutoName("build_blocks", b.block.getTranslationKey(), b.name);
+			//builder.add(b.block, LangGenerator.autoLocalizeString(b.name));
 		}
 		itemGroups.forEach((k, v) -> {
 			var f = generatedBlocks.stream().filter(v1 -> k.equals(v1.props.itemGroup)).findFirst();
-			f.ifPresent(generatedBlockInstance -> builder.add("item." + GreenResurgence.ID + "." + this.subdomain + "_" + k, "[" + LangGenerator.autoLocalizeString(generatedBlockInstance.props.itemGroup) + "]"));
+			f.ifPresent(generatedBlockInstance -> LangGenerator.addAutoName("build_blocks", "item." + GreenResurgence.ID + "." + this.subdomain + "_" + k, "[" + generatedBlockInstance.props.itemGroup + "]"));
 		});
 	}
 

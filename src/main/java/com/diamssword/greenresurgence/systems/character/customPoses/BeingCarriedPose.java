@@ -5,12 +5,14 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class BeingCarriedPose implements IPlayerCustomPose {
 
-	public BeingCarriedPose(PlayerEntity player) {
+	private final PlayerEntity player;
 
+	public BeingCarriedPose(PlayerEntity player) {
+		this.player = player;
 	}
 
 	@Override
-	public void tick(PlayerEntity player) {
+	public void tick() {
 
 		var vh = player.getVehicle();
 		if(vh instanceof PlayerEntity pl1) {
@@ -24,14 +26,14 @@ public class BeingCarriedPose implements IPlayerCustomPose {
 	}
 
 	@Override
-	public EntityDimensions changeHitBox(PlayerEntity player, EntityDimensions baseDimension) {
+	public EntityDimensions changeHitBox(EntityDimensions baseDimension) {
 
 		return EntityDimensions.fixed(0.1f, 0.1f);
 	}
 
 
 	@Override
-	public boolean shouldExitPose(PlayerEntity player) {
+	public boolean shouldExitPose() {
 
 		return player.getVehicle() == null;
 	}
@@ -39,5 +41,10 @@ public class BeingCarriedPose implements IPlayerCustomPose {
 	@Override
 	public int priority() {
 		return 10000;
+	}
+
+	@Override
+	public PoseType getPoseType() {
+		return PoseType.BODY;
 	}
 }

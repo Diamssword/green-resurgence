@@ -54,7 +54,6 @@ public class DeployableEntity extends Entity {
 	public EntityDimensions getDimensions(EntityPose pose) {
 		if(deployable != null) {
 			var box = deployable.getMainBox();
-			System.out.println(box);
 			return EntityDimensions.fixed((float) box.getXLength(), (float) box.getYLength());
 
 		}

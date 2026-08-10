@@ -4,12 +4,14 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class PushingCartPose implements IPlayerCustomPose {
 
-	public PushingCartPose(PlayerEntity player) {
+	private PlayerEntity player;
 
+	public PushingCartPose(PlayerEntity player) {
+		this.player = player;
 	}
 
 	@Override
-	public boolean shouldExitPose(PlayerEntity player) {
+	public boolean shouldExitPose() {
 
 		return player.getVehicle() == null;
 	}
@@ -17,5 +19,10 @@ public class PushingCartPose implements IPlayerCustomPose {
 	@Override
 	public int priority() {
 		return 1001;
+	}
+
+	@Override
+	public PoseType getPoseType() {
+		return PoseType.BODY;
 	}
 }

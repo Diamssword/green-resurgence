@@ -168,8 +168,7 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 				var ent = this.getControllingPassenger();
 				if(ent instanceof PlayerEntity pl) {
 					var comp = pl.getComponent(Components.PLAYER_DATA);
-					if(!PosesManager.RIDING_BIKE.equals(comp.getCustomPoseID()))
-						comp.setCustomPose(PosesManager.RIDING_BIKE);
+					comp.addCustomPose(PosesManager.RIDING_BIKE);
 				}
 			}
 		}

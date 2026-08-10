@@ -36,6 +36,11 @@ public class CarryingPoseRenderer implements ICustomPoseRenderer {
 	}
 
 	@Override
+	public void beforeRender(AbstractClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, IPlayerCustomPose pose) {
+		
+	}
+
+	@Override
 	public void firstPersonRender(AbstractClientPlayerEntity abstractClientPlayerEntity, MatrixStack matrixStack, IPlayerCustomPose pose) {
 		var et = abstractClientPlayerEntity.getComponent(Components.PLAYER_DATA).getCarriedEntity();
 		if(et.isPresent()) {

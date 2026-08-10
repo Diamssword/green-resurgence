@@ -12,7 +12,11 @@ public interface ICustomPoseRenderer {
 
 	public void angles(AbstractClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, IPlayerCustomPose pose);
 
+	public void beforeRender(AbstractClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, IPlayerCustomPose pose);
+
 	public void firstPersonRender(AbstractClientPlayerEntity abstractClientPlayerEntity, MatrixStack matrixStack, IPlayerCustomPose pose);
 
-	public Vec3d Offset(AbstractClientPlayerEntity player, IPlayerCustomPose pose);
+	public default Vec3d Offset(AbstractClientPlayerEntity player, IPlayerCustomPose pose) {
+		return Vec3d.ZERO;
+	}
 }

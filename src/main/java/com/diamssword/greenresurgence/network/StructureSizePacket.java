@@ -60,7 +60,6 @@ public class StructureSizePacket {
 						}
 					}
 					if(rep == null) {
-						System.out.println("gen");
 						rep = loadJigSaw((ServerWorld) ctx.player().getWorld(), ctx.player().getBlockPos(), msg.dir, msg.name);
 						var m1 = cache.computeIfAbsent(msg.name, (v) -> new HashMap<>());
 						m1.put(msg.dir, rep);

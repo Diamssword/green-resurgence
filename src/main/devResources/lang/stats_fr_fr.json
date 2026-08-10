@@ -1,13 +1,19 @@
 {
+
+  "green_resurgence.gui.stats.global_bonus.per_level": " (%d%%/Niv):",
+  "attribute.name.green_resurgence.fall_damage_reduction": "Reduction de chute",
+  "attribute.name.green_resurgence.threat_multiplier": "Niveau de danger",
   "green_resurgence.gui.stats.global_bonus": "Bonus Généraux :",
   "green_resurgence.gui.stats.palier.title": "Palier %d (Niv %d) :",
   "green_resurgence.gui.stats.desc.brute": "La brute est là pour casser des trucs, que ce soit des gueules ou des meubles. Ce sont des montagnes de muscles qui peuvent utiliser leur force de multiples manières.",
   "attribute.name.green_resurgence.max_shield": "Bouclier Max",
   "attribute.name.green_resurgence.max_contamination": "Contamination Max",
   "attribute.name.green_resurgence.max_energy": "Endurance Max",
-  "attribute.name.green_resurgence.energy_rate": "Récupération Endurance",
-  "attribute.name.green_resurgence.craft_speed": "Vitesse de Craft",
+  "attribute.name.green_resurgence.energy_rate": "Récupération d'Endurance",
+  "attribute.name.green_resurgence.craft_speed": "Vitesse de Fabrication",
   "attribute.name.green_resurgence.player_knockback": "Puissance de Recul",
   "attribute.name.green_resurgence.alcool_resistance": "Résistance à l'Alcool",
-  "attribute.name.green_resurgence.contamination_reduction": "Réduction de Contamination"
+  "attribute.name.green_resurgence.contamination_reduction": "Réduction de Contamination",
+  "attribute.name.generic.reach-entity-attributes.attack_range": "Portée d'attaque",
+  "attribute.name.generic.reach-entity-attributes.reach": "Portée"
 }

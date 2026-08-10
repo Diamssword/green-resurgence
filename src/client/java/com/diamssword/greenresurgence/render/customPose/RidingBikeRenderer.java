@@ -15,6 +15,11 @@ public class RidingBikeRenderer implements ICustomPoseRenderer {
 	}
 
 	@Override
+	public void beforeRender(AbstractClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, IPlayerCustomPose pose) {
+		
+	}
+
+	@Override
 	public void firstPersonRender(AbstractClientPlayerEntity abstractClientPlayerEntity, MatrixStack matrixStack, IPlayerCustomPose pose) {
 
 	}

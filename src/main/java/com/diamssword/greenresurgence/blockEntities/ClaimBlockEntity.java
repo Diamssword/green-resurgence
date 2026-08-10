@@ -66,10 +66,9 @@ public class ClaimBlockEntity extends BlockEntity implements IGuiPacketReceiver 
 						if(Components.PLAYER_INVENTORY.get(player).getInventory().consumeItems(new ItemStack(Items.DIAMOND, 1))) {
 							String mid = level == 0 ? DeployingMachines.GENERATOR_T1 : DeployingMachines.GENERATOR_T2;
 							var placer = DeployingMachines.instantiate(mid, pos, getCachedState().get(ClaimBlock.FACING));
-							System.out.println("from:" + mid);
+
 							placer.ifPresent(p -> {
 								p.setDeconstructing(true);
-								System.out.println("to:" + (level == 0 ? DeployingMachines.GENERATOR_T2 : DeployingMachines.GENERATOR_T3));
 								var placer1 = DeployingMachines.instantiate(level == 0 ? DeployingMachines.GENERATOR_T2 : DeployingMachines.GENERATOR_T3, pos, getCachedState().get(ClaimBlock.FACING));
 								placer1.ifPresent(p1 -> {
 									p1.getExtraDatas().putUuid("faction", this.factionID);

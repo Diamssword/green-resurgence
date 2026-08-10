@@ -43,5 +43,19 @@
   "green_resurgence.container.loot": "Loot",
   "green_resurgence.container.storage": "Storage Crate",
   "green_resurgence.container.fac_storage": "Storage",
-  "green_resurgence.container.shelfblock": "Shelve Storage"
+  "green_resurgence.container.shelfblock": "Shelve Storage",
+  "green_resurgence.emotes.wave_emote": "Wave",
+  "green_resurgence.emotes.double_wave_emote": "Double Wave",
+  "green_resurgence.emotes.facepalm_emote": "Facepalm",
+  "green_resurgence.emotes.cry_emote": "Cry",
+  "green_resurgence.emotes.sit_emote": "Sit",
+  "green_resurgence.emotes.lay_emote": "Lay",
+  "green_resurgence.gui.survival_inventory.health": "Health     ",
+  "green_resurgence.gui.survival_inventory.infection": "Infection",
+  "green_resurgence.gui.survival_inventory.shield": "Shield     ",
+  "green_resurgence.gui.survival_inventory.hunger": "Hunger     : Full",
+  "green_resurgence.gui.survival_inventory.stamina": "Stamina",
+  "green_resurgence.gui.survival_inventory.thirst": "Thirst        : Full",
+  "green_resurgence.gui.survival_inventory.oxygen": "Oxygen ",
+  "green_resurgence.gui.survival_inventory.armor": "Shield       "
 }

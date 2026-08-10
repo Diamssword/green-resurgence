@@ -73,13 +73,13 @@ public class ClasseBrute extends com.diamssword.characters.api.stats.StatsRole {
 						pl1.startRiding(pl, true);
 						Channels.MAIN.serverHandle(pl).send(new PosesPackets.LiftOtherPlayer(pl1.getUuid(), false));
 						Channels.MAIN.serverHandle(pl1).send(new PosesPackets.LiftOtherPlayer(pl.getUuid(), true));
-						pl1.getComponent(Components.PLAYER_DATA).setCustomPose("carried");
+						pl1.getComponent(Components.PLAYER_DATA).addCustomPose(PosesManager.CARRIED);
 						return ActionResult.SUCCESS;
 					} else if(ent.getWidth() < 1f && ent instanceof LivingEntity li) {
 						if(li.getGroup() == EntityGroup.DEFAULT || li.getGroup() == EntityGroup.AQUATIC) {
 							var c = pl.getComponent(Components.PLAYER_DATA);
 							c.setCarriedEntity(ent);
-							c.setCustomPose(PosesManager.CARRYINGENTITY);
+							c.addCustomPose(PosesManager.CARRYINGENTITY);
 							return ActionResult.SUCCESS;
 						}
 					}

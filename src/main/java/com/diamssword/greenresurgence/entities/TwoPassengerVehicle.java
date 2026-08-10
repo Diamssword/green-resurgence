@@ -217,13 +217,12 @@ public class TwoPassengerVehicle extends Entity implements GeoEntity {
 				var ent = this.getPassengerList().get(d);
 				if(ent instanceof PlayerEntity pl) {
 					var comp = pl.getComponent(Components.PLAYER_DATA);
-					if(!PosesManager.PUSHINGCART.equals(comp.getCustomPoseID()))
-						comp.setCustomPose(PosesManager.PUSHINGCART);
+
+					comp.addCustomPose(PosesManager.PUSHINGCART);
 				}
 			} else if(this.getFirstPassenger() instanceof PlayerEntity pl) {
 				var comp = pl.getComponent(Components.PLAYER_DATA);
-				if(PosesManager.PUSHINGCART.equals(comp.getCustomPoseID()))
-					comp.setCustomPose(null);
+				comp.removeCustomPose(PosesManager.PUSHINGCART);
 			}
 		}
 		if(!this.getWorld().isClient && this.ticksUnderwater >= 60.0F) {

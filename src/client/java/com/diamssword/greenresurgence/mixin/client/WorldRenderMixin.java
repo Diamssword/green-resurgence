@@ -26,12 +26,12 @@ public abstract class WorldRenderMixin {
 
 		if(world == null || player == null) return;
 		var comp = client.player.getComponent(Components.PLAYER_DATA);
-		if(comp.getCustomPoseID() != null) {
-			var rend = CustomPoseRenderManager.get(comp.getCustomPoseID());
+		comp.getCustomPosesMap().forEach((k, v) -> {
+			var rend = CustomPoseRenderManager.get(k, v);
 			if(rend != null) {
-				rend.firstPersonRender(client.player, matrices, comp.getCustomPose());
+				rend.firstPersonRender(client.player, matrices, v);
 			}
+		});
 
-		}
 	}
 }
