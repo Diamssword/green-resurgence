@@ -21,7 +21,7 @@
                                 <flow-layout direction="horizontal">
                                     <children>
                                         <button id="openGui">
-                                            <text>Ouvrir</text>
+                                            <text translate="true">gui.green_resurgence.generic.open</text>
                                         </button>
                                     </children>
                                 </flow-layout>

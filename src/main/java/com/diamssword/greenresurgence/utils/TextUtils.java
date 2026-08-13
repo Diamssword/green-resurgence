@@ -7,6 +7,8 @@ import net.minecraft.util.Identifier;
 public class TextUtils {
 	public static final Identifier LILITA_ONE = new Identifier("lilita_one");
 	public static final Identifier LILITA_ONE_TITLE = new Identifier("lilita_one_title");
+	public static final Identifier MC_LITTLE = new Identifier("mc_little");
+	public static float MC_LITTLE_SCALE = 0.45f;
 
 	public static int GREEN = 0x3F5427;
 	public static int GRAY_GREEN = 0x384239;
@@ -18,18 +20,18 @@ public class TextUtils {
 	}
 
 	public static MutableText whiteText(String text) {
-		return Text.literal(text).styled(s -> s.withColor(WHITE).withFont(LILITA_ONE));
+		return Text.literal(text).styled(s -> s.withColor(WHITE).withFont(MC_LITTLE));
 	}
 
 	public static MutableText whiteTextTranslated(String text, Object... args) {
-		return Text.translatable(text, args).styled(s -> s.withColor(WHITE).withFont(LILITA_ONE));
+		return Text.translatable(text, args).styled(s -> s.withColor(WHITE).withFont(MC_LITTLE));
 	}
 
 	public static MutableText textTranslated(String text, int color, Object... args) {
-		return Text.translatable(text, args).styled(s -> s.withColor(color).withFont(LILITA_ONE));
+		return Text.translatable(text, args).styled(s -> s.withColor(color).withFont(MC_LITTLE));
 	}
 
 	public static MutableText whiteTitle(String text) {
-		return Text.literal(text).styled(s -> s.withColor(WHITE).withFont(LILITA_ONE_TITLE));
+		return Text.literal(text).styled(s -> s.withColor(WHITE));//.withFont(LILITA_ONE_TITLE));
 	}
 }

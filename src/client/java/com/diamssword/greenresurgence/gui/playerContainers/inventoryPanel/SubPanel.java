@@ -2,11 +2,12 @@ package com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel;
 
 import com.diamssword.greenresurgence.gui.playerContainers.PlayerBasedGui;
 import io.wispforest.owo.ui.container.FlowLayout;
+import net.minecraft.text.MutableText;
 
 public interface SubPanel {
 	String guiLocation();
 
-	String guiName();
+	MutableText guiName();
 
 	String guiIcon();
 

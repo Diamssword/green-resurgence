@@ -7,7 +7,7 @@
             <children>
                 <flow-layout direction="vertical">
                     <children>
-                         <freerowgrid columns="2" id="statsPanel">
+                         <flow-layout direction="horizontal" id="statsPanel">
                             <children/>
                             <gap>2</gap>
                             <padding><all>2</all></padding>
@@ -16,7 +16,7 @@
                                 <flat>#bb7d25</flat>
                             </surface>
                             <sizing><horizontal method="fill">100</horizontal></sizing>
-                        </freerowgrid>
+                        </flow-layout>
                     </children>
                       <surface><gpanel/></surface>
                 </flow-layout>

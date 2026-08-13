@@ -3,16 +3,13 @@
     <components>
         <flow-layout direction="horizontal">
             <children>
-                <flow-layout direction="vertical">
+                <flow-layout direction="vertical" id="mainLay">
                     <children>
                         <button id="seeZone">
-                            <text>Cacher les bordures</text>
+                            <text translate="true">gui.green_resurgence.claim_antenna.hide_border</text>
                         </button>
                         <button id="unclaim">
-                            <text>Abandonner la zone</text>
-                        </button>
-                          <button id="upgrade">
-                            <text>Upgrader la zone</text>
+                            <text translate="true">gui.green_resurgence.claim_antenna.remove</text>
                         </button>
                         <label>
                             <text>Taille de la zone</text>

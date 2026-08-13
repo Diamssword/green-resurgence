@@ -10,7 +10,7 @@
                             <margins>
                                 <top>4</top>
                             </margins>
-                            <text>Tenues</text>
+                            <text translate="true">gui.green_resurgence.wardrobe.outfits</text>
                             <sizing>
                                 <horizontal method="fill">90</horizontal>
                             </sizing>
@@ -156,7 +156,7 @@
                         <flow-layout direction="horizontal">
                             <children>
                                 <label id="title_right">
-                                    <text>Vetements</text>
+                                    <text translate="true">gui.green_resurgence.wardrobe.cloths</text>
                                     <sizing>
                                         <horizontal method="fill">75</horizontal>
                                     </sizing>

@@ -6,19 +6,12 @@
                 <flow-layout direction="vertical">
                     <children>
                         <button id="members">
-                            <text>Membres</text>
+                            <text translate="true">gui.green_resurgence.faction.main.members</text>
                         </button>
                         <button id="roles">
-                            <text>Roles</text>
+                            <text translate="true">gui.green_resurgence.faction.main.roles</text>
                         </button>
-                        <label>
-                            <text>Taille de la zone</text>
-                        </label>
-                        <discrete-slider id="size" min="4" max="32">
-                            <sizing>
-                                <horizontal method="fill">90</horizontal>
-                            </sizing>
-                        </discrete-slider>
+
                     </children>
                     <padding>
                         <all>5</all>

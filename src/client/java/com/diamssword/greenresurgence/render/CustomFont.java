@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class CustomFont {
 
 	private static final MinecraftClient mc = MinecraftClient.getInstance();
-	private static final List<Identifier> toLoad = List.of(TextUtils.LILITA_ONE, TextUtils.LILITA_ONE_TITLE);
+	private static final List<Identifier> toLoad = List.of(TextUtils.LILITA_ONE, TextUtils.LILITA_ONE_TITLE, TextUtils.MC_LITTLE);
 	private static final Map<Identifier, TextRenderer> fonts = new HashMap<>();
 
 	private static Pair<TextRenderer, Boolean> getTextRenderer(Identifier identifier) {

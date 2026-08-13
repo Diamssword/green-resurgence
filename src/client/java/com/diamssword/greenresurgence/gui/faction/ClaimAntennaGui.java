@@ -6,7 +6,7 @@ import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.GuiPackets;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
-import io.wispforest.owo.ui.component.DiscreteSliderComponent;
+import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.container.FlowLayout;
 import net.minecraft.text.Text;
 
@@ -27,16 +27,6 @@ public class ClaimAntennaGui extends BaseUIModelScreen<FlowLayout> {
 		return false;
 	}
 
-	@Override
-	public void tick() {
-		super.tick();
-		if(blockEntity.getLevel() == 2) {
-			var ch = this.uiAdapter.rootComponent.childById(ButtonComponent.class, "upgrade");
-			if(ch != null)
-				ch.remove();
-		}
-
-	}
 
 	@Override
 	protected void build(FlowLayout rootComponent) {
@@ -60,16 +50,15 @@ public class ClaimAntennaGui extends BaseUIModelScreen<FlowLayout> {
 			Channels.MAIN.clientHandle().send(new GuiPackets.GuiTileValue(blockEntity.getPos(), "remove", true));
 			this.close();
 		});
-		var up = rootComponent.childById(ButtonComponent.class, "upgrade");
-		if(blockEntity.getLevel() == 2) {
-			up.remove();
-		} else
-			up.onPress(c -> {
+
+
+		if(blockEntity.getLevel() < 2) {
+			var up = Components.button(Text.translatable("gui.green_resurgence.claim_antenna.upgrade"), c -> {
 				Channels.MAIN.clientHandle().send(new GuiPackets.GuiTileValue(blockEntity.getPos(), "upgrade", true));
 				this.close();
 			});
-		var sizeS = rootComponent.childById(DiscreteSliderComponent.class, "size");
-
+			rootComponent.childById(FlowLayout.class, "mainLay").child(up);
+		}
 
 	}
 }

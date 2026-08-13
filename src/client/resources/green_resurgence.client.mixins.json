@@ -16,6 +16,8 @@
     "OwOSurfaceMixin",
     "PlayerModelMixin",
     "PlayerRenderMixin",
+    "TextRendererDrawerMixin",
+    "TextHandlerMixin",
     "UserAttackBlockMixin",
     "WorldRenderMixin"
   ],

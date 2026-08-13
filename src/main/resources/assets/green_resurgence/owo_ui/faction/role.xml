@@ -9,7 +9,7 @@
                                 <flow-layout direction="vertical">
                                     <children>
                                         <label>
-                                            <text>Edition de :</text>
+                                            <text translate="true">gui.green_resurgence.faction.role.edit</text>
                                             <margins><bottom>2</bottom></margins>
                                         </label>
                                         <text-box id="name">
@@ -43,11 +43,11 @@
                                             <horizontal-alignment>center</horizontal-alignment>
                                             <children>
                                                 <button id="back">
-                                                    <text>Retour</text>
+                                                    <text translate="true">gui.green_resurgence.generic.back</text>
                                                     <sizing><horizontal method="fill">48</horizontal></sizing>
                                                 </button>
                                                 <button id="confirm">
-                                                    <text>Confirmer</text>
+                                                    <text translate="true">gui.green_resurgence.generic.confirm</text>
                                                     <sizing><horizontal method="fill">48</horizontal></sizing>
                                                 </button>
                                             </children>

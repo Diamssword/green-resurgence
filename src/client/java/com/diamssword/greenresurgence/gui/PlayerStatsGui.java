@@ -87,7 +87,7 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 		parent.child(Components.label(TextUtils.whiteTitle(role.name)));
 		var bar = new BarComponent(GreenResurgence.asRessource("textures/gui/hud/stamina.png"), 0, 0, 256, 10, 256, 64, true);
 		bar.setFillPercent(CharactersApi.stats().percentOfXpForNext(client.player, roleId));
-		bar.tooltip(TextUtils.whiteText(st.getXp(roleId) + "/" + CharactersApi.stats().getXpCostForLevel(st.getLevel(roleId) + 1) + " xp"));
+		bar.tooltip(Text.translatable(st.getXp(roleId) + "/" + CharactersApi.stats().getXpCostForLevel(st.getLevel(roleId) + 1) + " xp"));
 		bar.horizontalSizing(Sizing.fill(90));
 		parent.child(Components.label(TextUtils.whiteTitle("WIP")));
 		parent.child(bar);

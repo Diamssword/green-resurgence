@@ -1,5 +1,9 @@
 package com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel;
 
+import com.diamssword.greenresurgence.GreenResurgence;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 public abstract class SimpleSubPanel implements SubPanel {
 	private final String name;
 	private final String icon;
@@ -17,8 +21,8 @@ public abstract class SimpleSubPanel implements SubPanel {
 	}
 
 	@Override
-	public String guiName() {
-		return name;
+	public MutableText guiName() {
+		return Text.translatable(GreenResurgence.ID + ".gui.survival_inventory.panels.name." + name);
 	}
 
 	@Override

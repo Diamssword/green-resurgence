@@ -13,7 +13,8 @@
                                             <children>
                                                 <button id="back">
                                                     <text>&lt;</text>
-                                                    <tooltip-text>Retour</tooltip-text>
+                                                    <tooltip-text
+                                                            translate="true">gui.green_resurgence.generic.back</tooltip-text>
                                                 </button>
                                                 <text-box id="search">
                                                     <sizing>
@@ -63,9 +64,7 @@
                                 <flow-layout direction="vertical" id="contextMenu">
                                     <children>
                                         <label>
-                                            <text>Cherchez un joueur en ligne dans la liste.
-Une faction en tapant #.
-Ou un joueur hors ligne avec son pseudo complet.
+                                            <text translate="true">
                                             </text>
                                             <sizing>
                                                 <horizontal method="fixed">100</horizontal>

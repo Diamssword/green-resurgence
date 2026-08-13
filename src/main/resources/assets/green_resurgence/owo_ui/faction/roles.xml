@@ -9,7 +9,7 @@
                             <children>
                                 <button id="back">
                                     <text>&lt; </text>
-                                    <tooltip-text>Retour</tooltip-text>
+                                    <tooltip-text translate="true">gui.green_resurgence.generic.back</tooltip-text>
                                     <sizing>
                                         <horizontal method="fixed">20</horizontal>
                                         <vertical method="fixed">20</vertical></sizing>
@@ -18,7 +18,8 @@
                                         method="fill">80</vertical></sizing></flow-layout>
                                 <button id="add">
                                     <text>+</text>
-                                    <tooltip-text>Créer un rôle</tooltip-text>
+                                    <tooltip-text
+                                            translate="true">gui.green_resurgence.faction.roles.create</tooltip-text>
                                     <sizing>
                                         <horizontal method="fixed">20</horizontal>
                                         <vertical method="fixed">20</vertical>

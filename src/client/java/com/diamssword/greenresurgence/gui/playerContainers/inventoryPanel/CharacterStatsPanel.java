@@ -19,14 +19,13 @@ import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.container.ScrollContainer;
 import io.wispforest.owo.ui.core.*;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 
 public class CharacterStatsPanel extends SimpleSubPanel {
 
 
 	public CharacterStatsPanel() {
-		super("Personnage", "gui/subpanel/stats_icon", "survival/subpanel/stats");
+		super("character", "gui/subpanel/stats_icon", "survival/subpanel/stats");
 	}
 
 	private void expand(ScrollContainer<FlowLayout> scroll, Size v, FlowLayout root, int topH) {
@@ -49,7 +48,6 @@ public class CharacterStatsPanel extends SimpleSubPanel {
 		}
 		var playerComp = root.childById(PlayerComponent.class, "playerSkin");
 		var player = playerComp.entity();
-		var cp = new NbtCompound();
 		var dt = ComponentManager.getPlayerDatas(player);
 		var dt1 = player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_INVENTORY);
 		dt1.setBackpackStack(MinecraftClient.getInstance().player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_INVENTORY).getBackpackStack());
@@ -68,16 +66,16 @@ public class CharacterStatsPanel extends SimpleSubPanel {
 			c.surface(Surface.flat(DrawUtils.whithAlpha(DrawUtils.GRAY_GREEN, 0xFF))).padding(Insets.of(2)).margins(Insets.of(1));
 			c.verticalAlignment(VerticalAlignment.CENTER);
 			var r = CharactersApi.stats().getRole(k);
-			c.child(Components.label(TextUtils.whiteText(r.get().name)).horizontalSizing(Sizing.fill(50)));
 			var btr = ButtonComponent.Renderer.texture(GreenResurgence.asRessource("textures/gui/dice.png"), 0, 0, 20, 40);
 			var bt = io.wispforest.owo.ui.component.Components.button(Text.literal("\uD83C\uDFB2"), (r1) -> {
 				Channels.MAIN.clientHandle().send(new StatsPackets.RollStat(k));
 				gui.close();
 			});
-			bt.sizing(Sizing.fixed(16));
+			bt.sizing(Sizing.fixed(16)).margins(Insets.right(2));
 			//bt.renderer(btr);
-			bt.tooltip(TextUtils.whiteText("Lancer un dés"));
+			bt.tooltip(Text.translatable("gui.green_resurgence.playerstats.dice"));
 			c.child(bt);
+			c.child(Components.label(TextUtils.whiteText(r.get().name)));
 			pane.child(c);
 		}
 		root.childById(ButtonComponent.class, "openGui").onPress(p -> {

@@ -29,7 +29,7 @@ public class PlayerCraftPanel extends SimpleSubPanel {
 	private ClickableLayoutComponent last;
 
 	public PlayerCraftPanel() {
-		super("Craft", "gui/subpanel/craft_icon", "survival/subpanel/craft");
+		super("craft", "gui/subpanel/craft_icon", "survival/subpanel/craft");
 	}
 
 	private void expand(ScrollContainer<FlowLayout> scroll, Size v, FlowLayout root, int topH) {
