@@ -71,8 +71,8 @@ public class EquipmentEffects {
 		register(ABSORPTION, SimpleAttributeEffect.addition(THREAT_MODIFIER, Attributes.THREAT_MULTIPLIER, EquipmentValues.THREAT_MODIFIER_ID));
 		register(FLAME, new FireEffectUpgrade(FLAME));
 		register(POWERED_FLAME, new PoweredUpgradeWrapper(new FireEffectUpgrade(POWERED_FLAME)));
-		register(ELECTRIC_EFFICIENCY, new SimpleDisplayEffect(ELECTRIC_EFFICIENCY));
-		register(ELECTRIC_WARMUP_SPEED, new SimpleDisplayEffect(ELECTRIC_WARMUP_SPEED));
+		register(ELECTRIC_EFFICIENCY, new SimpleDisplayEffect(ELECTRIC_EFFICIENCY, true));
+		register(ELECTRIC_WARMUP_SPEED, new SimpleDisplayEffect(ELECTRIC_WARMUP_SPEED, true));
 
 		register(ARMOR, new ArmorEffectUpgrade());
 	}

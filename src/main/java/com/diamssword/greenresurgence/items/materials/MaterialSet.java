@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.items.materials;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.MItems;
+import com.diamssword.greenresurgence.datagen.LangGenerator;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.data.client.*;
@@ -77,26 +78,32 @@ public class MaterialSet {
 		return this;
 	}
 
-	public MaterialSet add(int tier, String id, String name, String desc) {
-		return add(tier, id, name, desc, false);
+	public MaterialSet add(int tier, String id) {
+		return add(tier, id, false);
 	}
 
-	public MaterialSet add(int tier, String id, String name, String desc, boolean is3D) {
-		return add(tier, id, name, desc, is3D, MaterialItem::new);
+	public MaterialSet add(int tier, String id, boolean is3D) {
+		return add(tier, id, is3D, MaterialItem::new);
 	}
 
-	public MaterialSet add(int tier, String id, String name, String desc, boolean is3D, OwoItemSettings settings) {
-		return this.add(tier, id, name, desc, is3D, (a, b, c, d) -> new MaterialItem(settings.group(a.group()).tab(a.tab()), b, c, d));
+	public MaterialSet add(int tier, String id, boolean is3D, OwoItemSettings settings) {
+		return this.add(tier, id, is3D, (a, b, c, d) -> new MaterialItem(settings.group(a.group()).tab(a.tab()), b, c, d));
 	}
 
-	public MaterialSet add(int tier, String id, String name, String desc, boolean is3D, MaterialItemFactory itemFactory) {
+	public MaterialSet add(int tier, String id, boolean is3D, MaterialItemFactory itemFactory) {
 		Identifier idd = GreenResurgence.asRessource("material_" + material + "_" + id);
 		var it = itemFactory.create(new OwoItemSettings().group(MItems.GROUP).tab(3), tier, id, material);
-		translates.put(idd, new Pair<>(name, desc));
+
 		items.put(idd, it);
 		if(is3D)
 			this.is3D.add(it);
 		Registry.register(Registries.ITEM, idd, it);
+
+		if(GreenResurgence.clientHelper.isDatagen()) {
+			LangGenerator.addAutoName("material", "desc." + idd.getNamespace() + "." + idd.getPath(), "[WIP]");
+			LangGenerator.addAutoName("material", it.getTranslationKey(), "[WIP] " + id);
+			//	translates.put(idd, new Pair<>(name, desc));
+		}
 		return this;
 	}
 

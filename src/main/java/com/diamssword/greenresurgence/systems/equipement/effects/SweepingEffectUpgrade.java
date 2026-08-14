@@ -84,9 +84,9 @@ public class SweepingEffectUpgrade implements IEquipmentEffect {
 	public void addTooltips(UpgradeActionContext ctx, AdvEquipmentSlot slot, List<Text> tooltip) {
 		if(slot == AdvEquipmentSlot.MAINHAND || slot == AdvEquipmentSlot.DISPLAY) {
 			var lev = ctx.getLevel(EquipmentEffects.SWEEPING);
-			tooltip.add(TooltipHelper.tooltipEffectWithExtra("sweeping.targets", ctx.needShowExtra(), MODIFIER_FORMAT.format(lev.getLevel()), MODIFIER_FORMAT.format(lev.getLevel())).formatted(Formatting.BLUE));
-			tooltip.add(TooltipHelper.tooltipEffectWithExtra("sweeping.range", ctx.needShowExtra(), MODIFIER_FORMAT.format(lev.getLevel(RADIUS_BONUS)), MODIFIER_FORMAT.format(lev.getLevel(RADIUS_BONUS))).formatted(Formatting.BLUE));
-			tooltip.add(TooltipHelper.tooltipEffectWithExtra("sweeping.damage", ctx.needShowExtra(), MODIFIER_FORMAT.format(lev.getLevel(DAMAGE_BONUS)), MODIFIER_FORMAT.format(lev.getLevel(DAMAGE_BONUS))).formatted(Formatting.BLUE));
+			tooltip.add(TooltipHelper.plusIfUpgrade(TooltipHelper.tooltipEffectWithExtra("sweeping.targets", ctx.needShowExtra(), MODIFIER_FORMAT.format(lev.getLevel()), MODIFIER_FORMAT.format(lev.getLevel())), ctx.context).formatted(Formatting.BLUE));
+			tooltip.add(TooltipHelper.plusIfUpgrade(TooltipHelper.tooltipEffectWithExtra("sweeping.range", ctx.needShowExtra(), MODIFIER_FORMAT.format(lev.getLevel(RADIUS_BONUS)), MODIFIER_FORMAT.format(lev.getLevel(RADIUS_BONUS))), ctx.context).formatted(Formatting.BLUE));
+			tooltip.add(TooltipHelper.plusIfUpgrade(TooltipHelper.tooltipEffectWithExtra("sweeping.damage", ctx.needShowExtra(), MODIFIER_FORMAT.format(lev.getLevel(DAMAGE_BONUS)), MODIFIER_FORMAT.format(lev.getLevel(DAMAGE_BONUS))), ctx.context).formatted(Formatting.BLUE));
 		}
 
 	}

@@ -46,6 +46,12 @@ public class TooltipHelper {
 		return txt;
 	}
 
+	public static MutableText plusIfUpgrade(MutableText text, UpgradeActionContext.ItemContext ctx) {
+		if(ctx == UpgradeActionContext.ItemContext.UPGRADE)
+			return Text.literal("+").append(text);
+		return text;
+	}
+
 	public static MutableText tooltipEffectWithExtra(MutableText text, Text extra, boolean needExtra) {
 		if(needExtra)
 			text = text.append(Text.literal(": ").append(extra));

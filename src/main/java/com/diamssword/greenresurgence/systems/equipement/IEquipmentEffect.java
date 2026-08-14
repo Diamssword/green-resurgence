@@ -45,6 +45,7 @@ public interface IEquipmentEffect {
 				if(player != null && ctx.context != UpgradeActionContext.ItemContext.UPGRADE) {
 					if(entry.getKey() == EntityAttributes.GENERIC_ATTACK_DAMAGE) {
 						d += player.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+						d *= 5;
 						bl = true;
 					} else if(entry.getKey() == EntityAttributes.GENERIC_ATTACK_SPEED) {
 						d += player.getAttributeBaseValue(EntityAttributes.GENERIC_ATTACK_SPEED);

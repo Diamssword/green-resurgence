@@ -35,6 +35,6 @@ public class Shields implements ItemRegistryContainer {
 	public void postProcessField(String namespace, Item value, String identifier, Field field) {
 		specialRenderRegister.add(value);
 		if(GreenResurgence.clientHelper.isDatagen())
-			LangGenerator.addAutoName("equipment_auto", "item." + namespace + ".equipments.shields." + identifier, identifier);
+			LangGenerator.addAutoName("equipment_auto", "item." + namespace + ".tools.shields." + identifier, identifier);
 	}
 }
