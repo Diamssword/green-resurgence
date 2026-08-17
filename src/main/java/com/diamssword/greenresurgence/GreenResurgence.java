@@ -68,7 +68,7 @@ public class GreenResurgence implements ModInitializer {
 		FieldRegistrationHandler.register(Containers.class, ID, false);
 		FieldRegistrationHandler.register(MEntities.class, ID, false);
 		FieldRegistrationHandler.register(ResurgenceEffects.class, ID, false);
-		MEntities.addAtributs();
+		MEntities.addAttributes();
 		ItemPlacers.init();
 		StructureProcessor.init();
 		MSounds.init();

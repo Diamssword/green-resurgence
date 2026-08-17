@@ -64,15 +64,24 @@ public class OmniBlock extends Block implements IChairable, Waterloggable {
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		if (state.get(WATERLOGGED)) {
+		if(state.get(WATERLOGGED)) {
 			return Fluids.WATER.getStill(false);
 		}
 		return super.getFluidState(state);
 	}
 
 	@Override
+	public boolean isSideInvisible(BlockState state, BlockState stateFrom, Direction direction) {
+		if(transparency == GenericBlockSet.Transparency.TRANSPARENT || transparency == GenericBlockSet.Transparency.CUTOUT)
+			if(stateFrom.isOf(this)) {
+				return true;
+			}
+		return super.isSideInvisible(state, stateFrom, direction);
+	}
+
+	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-		if (state.get(WATERLOGGED)) {
+		if(state.get(WATERLOGGED)) {
 			world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 		return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
@@ -102,7 +111,7 @@ public class OmniBlock extends Block implements IChairable, Waterloggable {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		if (noHitbox)
+		if(noHitbox)
 			return VoxelShapes.empty();
 		return super.getCollisionShape(state, world, pos, context);
 	}
@@ -113,19 +122,19 @@ public class OmniBlock extends Block implements IChairable, Waterloggable {
 	}
 
 	public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
-		if (transparency == GenericBlockSet.Transparency.UNDEFINED || transparency == GenericBlockSet.Transparency.OPAQUE)
+		if(transparency == GenericBlockSet.Transparency.UNDEFINED || transparency == GenericBlockSet.Transparency.OPAQUE)
 			return super.getAmbientOcclusionLightLevel(state, world, pos);
 		return 1.0F;
 	}
 
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (damage > 0)
+		if(damage > 0)
 			entity.damage(world.getDamageSources().cactus(), damage);
 	}
 
 	@Deprecated
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!world.isClient && canUse()) {
+		if(!world.isClient && canUse()) {
 			this.sit(player, pos);
 			return ActionResult.SUCCESS;
 		} else

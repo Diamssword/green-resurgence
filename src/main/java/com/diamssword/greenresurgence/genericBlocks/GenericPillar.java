@@ -52,10 +52,19 @@ public class GenericPillar extends GlazedTerracottaBlock implements IChairable, 
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		if (state.get(WATERLOGGED)) {
+		if(state.get(WATERLOGGED)) {
 			return Fluids.WATER.getStill(false);
 		}
 		return super.getFluidState(state);
+	}
+
+	@Override
+	public boolean isSideInvisible(BlockState state, BlockState stateFrom, Direction direction) {
+		if(transparency == GenericBlockSet.Transparency.TRANSPARENT || transparency == GenericBlockSet.Transparency.CUTOUT)
+			if(stateFrom.isOf(this)) {
+				return true;
+			}
+		return super.isSideInvisible(state, stateFrom, direction);
 	}
 
 	@Override
@@ -65,7 +74,7 @@ public class GenericPillar extends GlazedTerracottaBlock implements IChairable, 
 
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-		if (state.get(WATERLOGGED)) {
+		if(state.get(WATERLOGGED)) {
 			world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 		return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
@@ -73,7 +82,7 @@ public class GenericPillar extends GlazedTerracottaBlock implements IChairable, 
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		if (noHitbox)
+		if(noHitbox)
 			return VoxelShapes.empty();
 		return super.getCollisionShape(state, world, pos, context);
 	}
@@ -84,13 +93,13 @@ public class GenericPillar extends GlazedTerracottaBlock implements IChairable, 
 	}
 
 	public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
-		if (transparency == GenericBlockSet.Transparency.UNDEFINED || transparency == GenericBlockSet.Transparency.OPAQUE)
+		if(transparency == GenericBlockSet.Transparency.UNDEFINED || transparency == GenericBlockSet.Transparency.OPAQUE)
 			return super.getAmbientOcclusionLightLevel(state, world, pos);
 		return 1.0F;
 	}
 
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (damage > 0)
+		if(damage > 0)
 			entity.damage(world.getDamageSources().cactus(), damage);
 	}
 
@@ -101,7 +110,7 @@ public class GenericPillar extends GlazedTerracottaBlock implements IChairable, 
 
 	@Deprecated
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!world.isClient && canUse()) {
+		if(!world.isClient && canUse()) {
 			this.sit(player, pos);
 			return ActionResult.SUCCESS;
 		}
@@ -114,7 +123,7 @@ public class GenericPillar extends GlazedTerracottaBlock implements IChairable, 
 	}
 
 	public static Box rotateBox(Direction dir, Box base) {
-		switch (dir) {
+		switch(dir) {
 			case DOWN -> {
 				return base;
 			}
@@ -138,7 +147,7 @@ public class GenericPillar extends GlazedTerracottaBlock implements IChairable, 
 	}
 
 	public static Box rotateBoxHorizontal(Direction dir, Box base) {
-		switch (dir) {
+		switch(dir) {
 			case NORTH -> {
 				return new Box(base.minX, base.minY, base.minZ, base.maxX, base.maxY, base.maxZ);
 			}
@@ -159,24 +168,24 @@ public class GenericPillar extends GlazedTerracottaBlock implements IChairable, 
 
 		VoxelShape n = null;
 
-		for (Box b : base.getBoundingBoxes()) {
+		for(Box b : base.getBoundingBoxes()) {
 			var b1 = VoxelShapes.cuboid(horizontalOnly ? rotateBoxHorizontal(dir, b) : rotateBox(dir, b));
-			if (n == null)
+			if(n == null)
 				n = b1;
 			else
 				n = VoxelShapes.union(n, b1);
 		}
-		if (n != null)
+		if(n != null)
 			n = n.simplify();
 		return n;
 	}
 
 	public static VoxelShape[] CompileRotatedVoxels(VoxelShape base, boolean inverted, boolean needed, boolean horizontalOnly) {
 		var res = new VoxelShape[6];
-		for (Direction dir : Direction.values()) {
-			if (!needed)
+		for(Direction dir : Direction.values()) {
+			if(!needed)
 				res[dir.getId()] = base;
-			else if (inverted)
+			else if(inverted)
 				res[dir.getId()] = rotateVoxel(dir.getOpposite(), base, horizontalOnly);
 			else
 				res[dir.getId()] = rotateVoxel(dir, base, horizontalOnly);

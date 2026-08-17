@@ -98,7 +98,7 @@ public class ClothBagItem extends Item implements IGuiStackPacketReceiver {
 			}
 			if(layers.isEmpty())
 				layers = CharactersApi.clothing().getClothLayers();
-			return CharactersApi.clothing().getClothsIn(levels, collections, layers.toArray(new LayerDef[0]));
+			return CharactersApi.clothing().getClothsIn(collections, levels, layers.toArray(new LayerDef[0]));
 
 		}
 		return List.of();

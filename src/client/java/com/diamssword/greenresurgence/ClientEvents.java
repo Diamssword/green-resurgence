@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence;
 
 import com.diamssword.greenresurgence.blockEntities.ConnectorBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
+import com.diamssword.greenresurgence.entities.NPCEntity;
 import com.diamssword.greenresurgence.entities.TwoPassengerVehicle;
 import com.diamssword.greenresurgence.event.AttackBlockCallback;
 import com.diamssword.greenresurgence.events.PlaceBlockCallback;
@@ -15,6 +16,7 @@ import com.diamssword.greenresurgence.particles.FogRenderer;
 import com.diamssword.greenresurgence.render.AdventureBlockHighlight;
 import com.diamssword.greenresurgence.render.BoxRenderers;
 import com.diamssword.greenresurgence.render.WireRenderer;
+import com.diamssword.greenresurgence.render.entities.NPCEntityRenderer;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionZone;
 import com.diamssword.greenresurgence.systems.lootables.IAdvancedLootableBlock;
@@ -49,7 +51,12 @@ public class ClientEvents {
 	public static void initialize() {
 
 		ClientPlayConnectionEvents.INIT.register((a, b) -> GreenResurgence.onPostInit());
-
+		ClientPlayConnectionEvents.JOIN.register((a, b, c) -> {
+			if(c.world != null) {
+				NPCEntityRenderer rend = (NPCEntityRenderer) c.getEntityRenderDispatcher().getRenderer(new NPCEntity(MEntities.NPC, c.world));
+				rend.initClothLayers();
+			}
+		});
 		ClientTickEvents.START_CLIENT_TICK.register(mc -> {
 
 			if(mc.player != null && !mc.player.isCreative() && !mc.player.isSpectator() && !(mc.currentScreen instanceof PlayerInventoryGui) && mc.options.inventoryKey.wasPressed()) {

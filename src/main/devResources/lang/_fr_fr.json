@@ -1,4 +1,10 @@
 {
+  "category.green_resurgence": "Resurgence",
+  "key.green_resurgence.base_inv": "Ouvrir Inventaire De La Base",
+  "key.green_resurgence.crawl": "Ramper",
+  "key.green_resurgence.faction": "Menu de Faction",
+  "key.green_resurgence.vehicle_light": "Activer Lumière Véhicule",
+  "key.green_resurgence.vehicle_sound": "Activer Klaxon Véhicule",
   "death.attack.thrown_weapon": "%1$s a été empalé par %2$s",
   "death.attack.thrown_weapon.player": "%1$s a été empalé par %2$s",
   "death.attack.cutting": "%1$s a été tranché par %2$s",

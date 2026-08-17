@@ -1,4 +1,10 @@
 {
+  "category.green_resurgence": "Resurgence",
+  "key.green_resurgence.base_inv": "Open Base Storage",
+  "key.green_resurgence.crawl": "Crawl",
+  "key.green_resurgence.faction": "Faction Menu",
+  "key.green_resurgence.vehicle_light": "Toggle Vehicle Light",
+  "key.green_resurgence.vehicle_sound": "Vehicle Horn",
   "death.attack.thrown_weapon": "%1$s was impaled by %2$s",
   "death.attack.thrown_weapon.player": "%1$s was impaled by %2$s",
   "death.attack.cutting": "%1$s was sliced by %2$s",

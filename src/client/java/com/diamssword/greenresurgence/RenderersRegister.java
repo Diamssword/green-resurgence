@@ -82,6 +82,7 @@ public class RenderersRegister {
 		EntityRendererRegistry.register(MEntities.FLAME_PUDDLE, RenderersRegister::emptyEntityRender);
 		EntityRendererRegistry.register(MEntities.DEPLOYABLE_SUB_BOX, RenderersRegister::emptyEntityRender);
 		EntityRendererRegistry.register(MEntities.DEPLOYABLE, DeployableEntityRenderer::new);
+		EntityRendererRegistry.register(MEntities.NPC, NPCEntityRenderer::new);
 		DeployableRenders.init();
 	}
 
