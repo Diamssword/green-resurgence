@@ -88,6 +88,20 @@ public class OmniBlock extends Block implements IChairable, Waterloggable {
 	}
 
 	@Override
+	public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
+		if(transparency == GenericBlockSet.Transparency.CUTOUT || transparency == GenericBlockSet.Transparency.TRANSPARENT)
+			return true;
+		return super.isTransparent(state, world, pos);
+	}
+
+	@Override
+	public VoxelShape getCameraCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		if(transparency == GenericBlockSet.Transparency.CUTOUT || transparency == GenericBlockSet.Transparency.TRANSPARENT)
+			return VoxelShapes.empty();
+		return super.getCameraCollisionShape(state, world, pos, context);
+	}
+
+	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(TYPE, WATERLOGGED);
 	}

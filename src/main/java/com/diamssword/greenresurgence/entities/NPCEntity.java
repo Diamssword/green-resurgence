@@ -11,31 +11,51 @@ import com.diamssword.characters.api.skin.BodyLayerCategory;
 import com.diamssword.characters.api.skin.BodyLayerImageGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import java.util.*;
 
-public class NPCEntity extends LivingEntity implements IPlayerAppearanceProvider {
+public class NPCEntity extends PathAwareEntity implements IPlayerAppearanceProvider {
 
 	private static final TrackedData<NbtCompound> CLOTH = DataTracker.registerData(NPCEntity.class, TrackedDataHandlerRegistry.NBT_COMPOUND);
 	private static final TrackedData<NbtCompound> APPEARANCE = DataTracker.registerData(NPCEntity.class, TrackedDataHandlerRegistry.NBT_COMPOUND);
 	private Map<LayerDef, ClothData> cloths = new HashMap<>();
 
-	public NPCEntity(EntityType<? extends LivingEntity> entityType, World world) {
+	public NPCEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
 		super(entityType, world);
 		generateSkin();
 		generateCloths();
+		calculateDimensions();
+	}
+
+	@Override
+	public float getScaleFactor() {
+		return ApiSkinValues.HeightMToMCScale(1, this.getSkinDatas().size);
+	}
+
+	@Override
+	protected void initGoals() {
+		this.goalSelector.add(0, new SwimGoal(this));
+		this.goalSelector.add(1, new EscapeDangerGoal(this, 1.25));
+		this.goalSelector.add(4, new TemptGoal(this, 1.2, Ingredient.ofItems(Items.CARROT_ON_A_STICK), false));
+		this.goalSelector.add(6, new WanderAroundFarGoal(this, 1.0));
+		this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
+		this.goalSelector.add(8, new LookAroundGoal(this));
 	}
 
 	@Override
@@ -108,6 +128,7 @@ public class NPCEntity extends LivingEntity implements IPlayerAppearanceProvider
 			this.cloths = clothsFromNBT(nbt.getCompound("cloths"));
 			this.syncCloths();
 		}
+		calculateDimensions();
 
 	}
 
@@ -121,7 +142,7 @@ public class NPCEntity extends LivingEntity implements IPlayerAppearanceProvider
 				.add(EntityAttributes.GENERIC_MAX_HEALTH, 10.0)
 				.add(EntityAttributes.GENERIC_FLYING_SPEED, 0.1F)
 				.add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 0.2F)
-				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.1F)
+				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.23F)
 				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5)
 				.add(EntityAttributes.GENERIC_FOLLOW_RANGE, 32);
 	}
@@ -137,17 +158,43 @@ public class NPCEntity extends LivingEntity implements IPlayerAppearanceProvider
 	public void generateSkin() {
 		var val = new ApiSkinValues();
 		var ls = new ArrayList<SkinLayerValue>();
-		CharactersApi.bodyParts().getBodyLayers().keySet().forEach(s -> ls.add(createRandomFor(s)));
-		val.layers = ls.toArray(new SkinLayerValue[0]);
-		val.size = 145 + this.random.nextInt(45);
-		val.slim = this.random.nextFloat() > 0.5f;
+		var lays = CharactersApi.bodyParts().getBodyLayers().values()
+				.stream()
+				.sorted((a, b) -> (int) ((a.size() * 100000) - (int) (b.size() * 100000))).toList();
+		lays.forEach((v) -> {
+			if(!v.external()) {
+				if(!v.clearable() || random.nextFloat() > 0.5f) {
 
+					var r = createRandomFor(v.id());
+					if(v.splited()) {
+						r.side = "left";
+						var r1 = new SkinLayerValue();
+						r1.side = "right";
+						r1.id = r.id;
+						r1.category = r.category;
+						r1.layer = r.layer;
+						r1.parent = r.parent;
+						ls.add(r1);
+					} else if(v.multi() && random.nextFloat() > 0.3f) {
+						var c = random.nextInt(2);
+						for(int i = 0; i < c; i++) {
+							ls.add(createRandomFor(v.id()));
+						}
+					}
+					ls.add(r);
+				}
+			}
+
+		});
+		val.layers = ls.toArray(new SkinLayerValue[0]);
+		val.size = 35 + this.random.nextInt(55);
+		val.slim = this.random.nextFloat() > 0.5f;
 		setSkinData(val.toNBT());
 	}
 
 	public void generateCloths() {
 		CharactersApi.clothing().getClothLayers().forEach(l -> {
-			if(l.isForced() || this.random.nextFloat() > 0.33f) {
+			if((!l.id.equals("glasses") || random.nextFloat() > 0.8f) && (!l.id.equals("hat") || random.nextFloat() > 0.7f) && (l.isForced() || this.random.nextFloat() > 0.33f)) {
 				var ls = CharactersApi.clothing().getClothsIn(CharacterClothingApi.ALL_COLLECTIONS, l);
 				if(!ls.isEmpty()) {
 					cloths.put(l, new ClothData(ls.get(random.nextInt(ls.size())).id(), false, -1));
@@ -179,6 +226,11 @@ public class NPCEntity extends LivingEntity implements IPlayerAppearanceProvider
 	}
 
 	@Override
+	public boolean isPersistent() {
+		return true;
+	}
+
+	@Override
 	public ApiSkinValues getSkinDatas() {
 		var app = this.dataTracker.get(APPEARANCE);
 		if(!app.isEmpty()) {
@@ -199,6 +251,9 @@ public class NPCEntity extends LivingEntity implements IPlayerAppearanceProvider
 			if(this.getWorld().isClient) {
 				this.cloths = clothsFromNBT(this.dataTracker.get(CLOTH));
 			}
-		}
+		} else if(APPEARANCE.equals(data))
+			if(this.getWorld().isClient) {
+				calculateDimensions();
+			}
 	}
 }

@@ -94,17 +94,30 @@ public class GenericBlock extends Block implements IChairable, Waterloggable {
 		return hitbox.shape;
 	}
 
-	public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
-		if(transparency == GenericBlockSet.Transparency.UNDEFINED || transparency == GenericBlockSet.Transparency.OPAQUE)
-			return super.getAmbientOcclusionLightLevel(state, world, pos);
-		else if(transparency == GenericBlockSet.Transparency.TRANSPARENT || transparency == GenericBlockSet.Transparency.CUTOUT)
-			return 0f;
-		return 1.0F;
-	}
 
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if(damage > 0)
 			entity.damage(world.getDamageSources().cactus(), damage);
+	}
+
+	public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
+		if(transparency == GenericBlockSet.Transparency.UNDEFINED || transparency == GenericBlockSet.Transparency.OPAQUE)
+			return super.getAmbientOcclusionLightLevel(state, world, pos);
+		return 1.0F;
+	}
+
+	@Override
+	public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
+		if(transparency == GenericBlockSet.Transparency.CUTOUT || transparency == GenericBlockSet.Transparency.TRANSPARENT)
+			return true;
+		return super.isTransparent(state, world, pos);
+	}
+
+	@Override
+	public VoxelShape getCameraCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		if(transparency == GenericBlockSet.Transparency.CUTOUT || transparency == GenericBlockSet.Transparency.TRANSPARENT)
+			return VoxelShapes.empty();
+		return super.getCameraCollisionShape(state, world, pos, context);
 	}
 
 	@Deprecated

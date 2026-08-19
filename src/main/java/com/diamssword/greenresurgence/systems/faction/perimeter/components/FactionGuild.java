@@ -129,7 +129,7 @@ public class FactionGuild {
 		return false;
 	}
 
-	public void addZone(BlockPos center, int size, @Nullable World world) {
+	public void addTerrain(BlockPos center, int size, @Nullable World world) {
 		terrains.add(new FactionZone(this, center, size));
 		this.getOwner().asPlayer(world).ifPresent(p -> {
 			if(!p.getWorld().isClient) {
@@ -395,25 +395,46 @@ public class FactionGuild {
 		return false;
 	}
 
+	public void deprecateTerrain(FactionZone zone, WorldAccess world) {
+
+		removeTerrain(zone, world);
+		deprecatedTerrains.add(new DeprecatingFactionZone(zone));
+	}
+
+	public List<FactionZone> getTerrainsAt(BlockPos pos) {
+		List<FactionZone> r = new ArrayList<>();
+		terrains.forEach(f -> {
+			if(f.getBounds().contains(pos))
+				r.add(f);
+		});
+		return r;
+	}
+
 	public boolean deprecateTerrain(BlockPos p, WorldAccess world) {
 		var t = getTerrainAt(p);
 		return t.map(v -> {
-			removeZone(v, world);
+			removeTerrain(v, world);
 			deprecatedTerrains.add(new DeprecatingFactionZone(v));
 			return true;
 		}).orElse(false);
 	}
 
-	private void removeZone(FactionZone zone, WorldAccess world) {
+	public void removeTerrain(FactionZone zone, WorldAccess world) {
 		this.terrains.remove(zone);
 		this.getOwner().asPlayer(world).ifPresent(p1 -> {
 			if(!p1.getWorld().isClient) {
 				CurrentZonePacket.sendDebugZone(p1.getWorld(), p1);
-				CurrentZonePacket.sendCreativeDebugZone(p1.getWorld(), null);
 			}
 		});
+		if(!world.isClient())
+			this.getMembers().forEach(m -> {
+				m.asPlayer(world).ifPresent(p1 -> {
+					CurrentZonePacket.sendDebugZone(p1.getWorld(), p1);
+				});
+			});
 		if(world instanceof ServerWorld sw) {
 			sw.getPlayers().forEach(p -> {
+				CurrentZonePacket.sendCreativeDebugZone(p.getWorld(), null);
 				if(zone.isIn(p.getBlockPos())) {
 					inBase.remove(p);
 					BaseEventCallBack.LEAVE.invoker().enterOrLeave(p, this);
@@ -426,7 +447,7 @@ public class FactionGuild {
 	public boolean removeTerrainAt(BlockPos p, World world) {
 		var t = getTerrainAt(p);
 		return t.map(v -> {
-			removeZone(v, world);
+			removeTerrain(v, world);
 			return true;
 		}).orElse(false);
 

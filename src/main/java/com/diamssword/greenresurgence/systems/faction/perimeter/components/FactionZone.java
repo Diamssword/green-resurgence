@@ -40,6 +40,12 @@ public class FactionZone {
 		return bounds;
 	}
 
+	public boolean fullyContainsBox(BlockBox other) {
+		var b = getBounds();
+		return b.getMinX() <= other.getMinX() && b.getMinY() <= other.getMinY() && b.getMinZ() <= other.getMinZ() &&
+				b.getMaxX() >= other.getMaxX() && b.getMaxY() >= other.getMaxY() && b.getMaxZ() >= other.getMaxZ();
+	}
+
 	public int[] boundsToArray() {
 		return new int[]{bounds.getMinX(), bounds.getMinY(), bounds.getMinZ(), bounds.getMaxX(), bounds.getMaxY(), bounds.getMaxZ()};
 	}

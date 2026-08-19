@@ -44,6 +44,20 @@ public class GenericPillar extends GlazedTerracottaBlock implements IChairable, 
 	}
 
 	@Override
+	public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
+		if(transparency == GenericBlockSet.Transparency.CUTOUT || transparency == GenericBlockSet.Transparency.TRANSPARENT)
+			return true;
+		return super.isTransparent(state, world, pos);
+	}
+
+	@Override
+	public VoxelShape getCameraCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		if(transparency == GenericBlockSet.Transparency.CUTOUT || transparency == GenericBlockSet.Transparency.TRANSPARENT)
+			return VoxelShapes.empty();
+		return super.getCameraCollisionShape(state, world, pos, context);
+	}
+
+	@Override
 	@Nullable
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());

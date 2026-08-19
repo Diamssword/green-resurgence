@@ -8,21 +8,13 @@
                         <button id="seeZone">
                             <text translate="true">gui.green_resurgence.claim_antenna.hide_border</text>
                         </button>
-                        <button id="unclaim">
-                            <text translate="true">gui.green_resurgence.claim_antenna.remove</text>
-                        </button>
-                        <label>
-                            <text>Taille de la zone</text>
-                        </label>
-                        <discrete-slider id="size" min="4" max="32">
-                            <sizing>
-                                <horizontal method="fill">90</horizontal>
-                            </sizing>
-                        </discrete-slider>
+
                     </children>
                     <padding>
                         <all>5</all>
                     </padding>
+                    <gap>2</gap>
+                    <horizontal-alignment>center</horizontal-alignment>
                     <sizing>
                         <vertical method="content">1</vertical>
                         <horizontal method="fixed">170</horizontal>

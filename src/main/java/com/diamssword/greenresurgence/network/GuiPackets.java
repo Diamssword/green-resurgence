@@ -36,7 +36,7 @@ public class GuiPackets {
 		ClothBagEditGui
 	}
 
-	public record GuiPacket(GUI gui, @Nullable BlockPos pos) {
+	public record GuiPacket(GUI gui, @Nullable BlockPos pos, int... extras) {
 	}
 
 	public record ReturnValue(String topic, String value) {

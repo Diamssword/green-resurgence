@@ -25,7 +25,7 @@ public class MEntities implements EntityRegistryContainer {
 	public static final EntityType<FlamePuddleEntity> FLAME_PUDDLE = FabricEntityTypeBuilder.create(SpawnGroup.MISC, (EntityType.EntityFactory<FlamePuddleEntity>) FlamePuddleEntity::new).fireImmune().trackedUpdateRate(20).trackRangeChunks(2).build();
 	public static final EntityType<Entity> DEPLOYABLE_SUB_BOX = FabricEntityTypeBuilder.create(SpawnGroup.MISC, DeployableSubEntity::new).disableSaving().build();
 	public static final EntityType<DeployableEntity> DEPLOYABLE = FabricEntityTypeBuilder.create(SpawnGroup.MISC, (EntityType.EntityFactory<DeployableEntity>) DeployableEntity::new).build();
-	public static final EntityType<NPCEntity> NPC = FabricEntityTypeBuilder.create(SpawnGroup.MISC, (EntityType.EntityFactory<NPCEntity>) NPCEntity::new).dimensions(EntityDimensions.fixed(0.8f, 2f)).build();
+	public static final EntityType<NPCEntity> NPC = FabricEntityTypeBuilder.create(SpawnGroup.MISC, (EntityType.EntityFactory<NPCEntity>) NPCEntity::new).dimensions(EntityDimensions.fixed(0.8f, 1.8f)).build();
 
 	public static void addAttributes() {
 		FabricDefaultAttributeRegistry.register(BIKE, BikeEntity.createAttributes());

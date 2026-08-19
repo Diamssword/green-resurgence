@@ -25,7 +25,7 @@ public class ClientGuiPacket {
 					openGui(new PlayerStatsGui());
 				}
 				case FactionClaimAntenna -> {
-					openGui(new ClaimAntennaGui(getTile(ClaimBlockEntity.class, message.pos())));
+					openGui(new ClaimAntennaGui(getTile(ClaimBlockEntity.class, message.pos()), message.extras()[0]));
 				}
 				case ClothBagEditGui -> {
 					openGui(new ClothBagEditGui());

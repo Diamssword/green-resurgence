@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.items;
 
 
+import com.diamssword.greenresurgence.blockEntities.ClaimBlockEntity;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionGuild;
 import com.diamssword.greenresurgence.systems.multiblock.DeployingMachineInstance;
@@ -59,11 +60,11 @@ public class ClaimBlockPlacerItem extends MutliBlockDeployerPlacerItem {
 		var guilds = world.getComponent(Components.BASE_LIST);
 		var currg = guilds.getForPlayer(player.getUuid(), false);
 		if(currg.isEmpty()) {
-			currg = Optional.of(FactionGuild.createForPlayer(player, at, 4));
+			currg = Optional.of(FactionGuild.createForPlayer(player, at, ClaimBlockEntity.minRange));
 			guilds.addGuild(currg.get());
 		}
 		if(currg.get().getTerrainAt(at).isEmpty()) {
-			currg.get().addZone(at, 4, world);
+			currg.get().addTerrain(at, ClaimBlockEntity.minRange, world);
 			instance.getExtraDatas().putUuid("faction", currg.get().getId());
 		}
 	}

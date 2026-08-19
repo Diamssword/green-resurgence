@@ -4,12 +4,15 @@ import com.diamssword.greenresurgence.blockEntities.ClaimBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.ModBlockEntity;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.GuiPackets;
+import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionMember;
+import com.diamssword.greenresurgence.systems.faction.perimeter.components.Perms;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
@@ -81,7 +84,19 @@ public class ClaimBlock extends ModBlockEntity<ClaimBlockEntity> {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if(!world.isClient && !player.isCreative()) {
-			Channels.MAIN.serverHandle(player).send(new GuiPackets.GuiPacket(GuiPackets.GUI.FactionClaimAntenna, pos));
+			var fac = getBlockEntity(pos, world).getFaction();
+			if(fac != null) {
+				if(fac.isAllowed(new FactionMember(player), Perms.PLACE)) {
+					var ls = fac.getTerrainsAt(pos);
+					if(ls.size() > 1) {
+						Channels.MAIN.serverHandle(player).send(new GuiPackets.GuiPacket(GuiPackets.GUI.FactionClaimAntenna, pos, 3));
+					} else
+						Channels.MAIN.serverHandle(player).send(new GuiPackets.GuiPacket(GuiPackets.GUI.FactionClaimAntenna, pos, fac.isAllowed(new FactionMember(player), Perms.ADMIN) ? 1 : 0));
+				} else
+					player.sendMessage(Text.translatable("gui.green_resurgence.claim_antenna.open.denied.perm"));
+			} else
+				player.sendMessage(Text.translatable("gui.green_resurgence.claim_antenna.open.denied.empty"));
+
 			return ActionResult.SUCCESS;
 		}
 		return ActionResult.PASS;

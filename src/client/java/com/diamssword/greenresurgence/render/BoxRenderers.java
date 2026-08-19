@@ -146,11 +146,10 @@ public class BoxRenderers {
 				});
 			} else if(ClaimAntennaGui.viewBounds && mc.player != null) {
 				CurrentZonePacket.OwnFactionBounds.forEach(b -> {
-					VertexConsumerProvider.Immediate store = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-					VertexConsumerProvider.Immediate store1 = MinecraftClient.getInstance().getBufferBuilders().getEffectVertexConsumers();
-
-					drawStructureBox(ctx, consumers, new Vec3d(b.getMinX(), mc.player.getBlockY(), b.getMinZ()), new Vec3d(b.getDimensions().getX() + 1, 0, b.getDimensions().getY() + 1), 1f, 0.8f, 0.8f, 0.8f);
-					drawStructureBox(ctx, consumers, new Vec3d(b.getMinX(), b.getMinY(), b.getMinZ()), Vec3d.of(b.getDimensions().add(1, 1, 1)), 1f, 1f, 1f, 1);
+					if(b.getCenter().isWithinDistance(mc.cameraEntity.getPos(), 128)) {
+						drawStructureBox(ctx, consumers, new Vec3d(b.getMinX(), Math.min(b.getMaxY(), Math.max(b.getMinY(), Math.ceil(mc.player.getY()))), b.getMinZ()), new Vec3d(b.getDimensions().getX() + 1, 0, b.getDimensions().getY() + 1), 1f, 0.8f, 0.8f, 0.8f);
+						drawStructureBox(ctx, consumers, new Vec3d(b.getMinX(), b.getMinY(), b.getMinZ()), Vec3d.of(b.getDimensions().add(1, 1, 1)), 1f, 1f, 1f, 1);
+					}
 				});
 			}
 		}
