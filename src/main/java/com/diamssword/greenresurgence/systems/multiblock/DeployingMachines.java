@@ -45,7 +45,8 @@ public class DeployingMachines {
 		public void onBlockDeployed(World world, BlockPos pos, BlockState state, NbtCompound extrasData) {
 			if(state.getBlock() == MBlocks.NANOTEK_GENERATOR_RELAY && !world.isClient) {
 				try {
-					MBlocks.NANOTEK_GENERATOR_RELAY.getBlockEntity(pos, world).setFaction(extrasData.getUuid("faction"));
+					if(extrasData.contains("faction"))
+						MBlocks.NANOTEK_GENERATOR_RELAY.getBlockEntity(pos, world).setFaction(extrasData.getUuid("faction"));
 				} catch(IllegalArgumentException e) {
 					e.printStackTrace();
 				}
@@ -66,7 +67,8 @@ public class DeployingMachines {
 			if(state.getBlock() == MBlocks.NANOTEK_GENERATOR_RELAY && !world.isClient) {
 				try {
 					var te = MBlocks.NANOTEK_GENERATOR_RELAY.getBlockEntity(pos, world);
-					te.setFaction(extrasData.getUuid("faction"));
+					if(extrasData.contains("faction"))
+						te.setFaction(extrasData.getUuid("faction"));
 					te.setLevel(extrasData.getInt("level"));
 				} catch(IllegalArgumentException e) {
 					e.printStackTrace();
@@ -94,7 +96,8 @@ public class DeployingMachines {
 			if(state.getBlock() == MBlocks.NANOTEK_GENERATOR_RELAY && !world.isClient) {
 				try {
 					var te = MBlocks.NANOTEK_GENERATOR_RELAY.getBlockEntity(pos, world);
-					te.setFaction(extrasData.getUuid("faction"));
+					if(extrasData.contains("faction"))
+						te.setFaction(extrasData.getUuid("faction"));
 					te.setLevel(extrasData.getInt("level"));
 				} catch(IllegalArgumentException e) {
 					e.printStackTrace();

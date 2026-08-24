@@ -89,4 +89,14 @@ public class Utils {
 	public static Box boxFromNBT(NbtCompound box) {
 		return new Box(box.getDouble("x1"), box.getDouble("y1"), box.getDouble("z1"), box.getDouble("x2"), box.getDouble("y2"), box.getDouble("z2"));
 	}
+
+	/**
+	 * return a float between [0,1), same string will always return same result.
+	 */
+	public static float StringToFloat(String value) {
+		int hash = value.hashCode();
+
+		// Convert to a deterministic value in [0, 1)
+		return (hash & 0x7fffffff) / (float) Integer.MAX_VALUE;
+	}
 }

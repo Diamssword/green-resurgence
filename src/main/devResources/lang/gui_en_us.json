@@ -48,6 +48,7 @@
   "gui.green_resurgence.generic.confirm": "Confirm",
   "gui.green_resurgence.generic.save": "Save",
   "gui.green_resurgence.generic.open": "Open",
+  "gui.green_resurgence.tootltip.ingredient.accept_tag": "Accept any %s",
 
   "gui.green_resurgence.faction_storage": "Base",
   "green_resurgence.container.loot": "Loot",

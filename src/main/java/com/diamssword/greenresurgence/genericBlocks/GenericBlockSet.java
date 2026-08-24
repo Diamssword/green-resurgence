@@ -6,6 +6,7 @@ import com.diamssword.greenresurgence.datagen.LangGenerator;
 import com.diamssword.greenresurgence.datagen.ModelHelper;
 import com.diamssword.greenresurgence.datagen.SchematicBlockStateSupplier;
 import com.diamssword.greenresurgence.items.BlockVariantItem;
+import com.diamssword.greenresurgence.utils.Utils;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
@@ -85,7 +86,7 @@ public class GenericBlockSet {
 				for(String name : entry.names) {
 					if(v.itemGroup != null)
 						itemGroups.get(v.itemGroup).addVariant(getBlockId(name, v));
-					var settings = processSettings(v);
+					var settings = processSettings(name, v);
 					if(v.multistate > 1 && v.type == BlockType.PILLAR) {
 						genericRegisterHelper(name, v, new GenericPillarMultiState(settings, v) {
 							@Override
@@ -104,11 +105,11 @@ public class GenericBlockSet {
 							case PANE -> genericRegisterHelper(name, v, new PaneBlock(settings));
 							case STAIRS -> genericRegisterHelper(name, v, new StairsBlock(Blocks.STONE.getDefaultState(), settings));
 							case LECTERN ->
-									genericRegisterHelper(name, v, new LecternShapedBlock(processSettings(v, AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY))));
-							case FENCE -> genericRegisterHelper(name, v, new FenceBlock(processSettings(v, settings)));
+									genericRegisterHelper(name, v, new LecternShapedBlock(processSettings(name, v, AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY))));
+							case FENCE -> genericRegisterHelper(name, v, new FenceBlock(processSettings(name, v, settings)));
 							case DOOR -> {
 								Item i;
-								Block b = new DoorLongBlock(processSettings(v, AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never)), BlockSetType.OAK);
+								Block b = new DoorLongBlock(processSettings(name, v, AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never)), BlockSetType.OAK);
 								Registry.register(Registries.BLOCK, getBlockId(name, v), b);
 								Registry.register(Registries.ITEM, getBlockId(name, v), i = new TallBlockItem(b, addItemGroup(v)));
 								generatedBlocks.add(new GeneratedBlockInstance(name, b, v));
@@ -116,18 +117,18 @@ public class GenericBlockSet {
 							}
 							case DOOR_TWO -> {
 								Item i;
-								Block b = new DoorDoubleBlock(processSettings(v, AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never)), BlockSetType.OAK);
+								Block b = new DoorDoubleBlock(processSettings(name, v, AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().pistonBehavior(PistonBehavior.DESTROY).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never)), BlockSetType.OAK);
 								Registry.register(Registries.BLOCK, getBlockId(name, v), b);
 								Registry.register(Registries.ITEM, getBlockId(name, v), i = new TallBlockItem(b, addItemGroup(v)));
 								generatedBlocks.add(new GeneratedBlockInstance(name, b, v));
 								generatedItems.add(new GeneratedItemInstance(name, i, v));
 							}
 							case LANTERN ->
-									genericRegisterHelper(name, v, new LanternGeneric(processSettings(v, AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).solid().strength(3.5f).sounds(BlockSoundGroup.LANTERN).luminance(LanternGeneric::produceLight).nonOpaque().pistonBehavior(PistonBehavior.DESTROY))));
+									genericRegisterHelper(name, v, new LanternGeneric(processSettings(name, v, AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).solid().strength(3.5f).sounds(BlockSoundGroup.LANTERN).luminance(LanternGeneric::produceLight).nonOpaque().pistonBehavior(PistonBehavior.DESTROY))));
 							case BED ->
-									genericRegisterHelper(name, v, new BedGeneric(processSettings(v, AbstractBlock.Settings.create().mapColor(MapColor.WHITE_GRAY).sounds(BlockSoundGroup.WOOD).strength(0.2f).nonOpaque().burnable().pistonBehavior(PistonBehavior.DESTROY))));
+									genericRegisterHelper(name, v, new BedGeneric(processSettings(name, v, AbstractBlock.Settings.create().mapColor(MapColor.WHITE_GRAY).sounds(BlockSoundGroup.WOOD).strength(0.2f).nonOpaque().burnable().pistonBehavior(PistonBehavior.DESTROY))));
 							case TRAPDOOR ->
-									genericRegisterHelper(name, v, new TrapdoorBlock(processSettings(v, AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never)), BlockSetType.OAK) {
+									genericRegisterHelper(name, v, new TrapdoorBlock(processSettings(name, v, AbstractBlock.Settings.create().mapColor(Blocks.OAK_PLANKS.getDefaultMapColor()).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never)), BlockSetType.OAK) {
 										@Override
 										public boolean isSideInvisible(BlockState state, BlockState stateFrom, Direction direction) {
 											return super.isSideInvisible(state, stateFrom, direction);
@@ -158,11 +159,11 @@ public class GenericBlockSet {
 		return new OwoItemSettings().group(GenericBlocks.GENERIC_GROUP).tab(this.tabIndex);
 	}
 
-	private AbstractBlock.Settings processSettings(GenericBlockProp entry) {
-		return processSettings(entry, AbstractBlock.Settings.create());
+	private AbstractBlock.Settings processSettings(String id, GenericBlockProp entry) {
+		return processSettings(id, entry, AbstractBlock.Settings.create());
 	}
 
-	private AbstractBlock.Settings processSettings(GenericBlockProp entry, AbstractBlock.Settings settings) {
+	private AbstractBlock.Settings processSettings(String id, GenericBlockProp entry, AbstractBlock.Settings settings) {
 		settings = settings.sounds(entry.sound);
 		if(entry.transparency != Transparency.OPAQUE)
 			settings = settings.nonOpaque().solidBlock(Blocks::never);
@@ -184,7 +185,10 @@ public class GenericBlockSet {
 				});
 			else
 				settings = settings.luminance(st -> l);
+
 		}
+		var f = Utils.StringToFloat(id);
+		settings = settings.strength(1f + f, 4.0f + (f * 2));
 		return settings;
 	}
 
@@ -224,7 +228,7 @@ public class GenericBlockSet {
 			for(TagKey<Block> tag : b.props.tags) {
 				factory.apply(tag).add(b.block);
 			}
-
+			factory.apply(BlockTags.PICKAXE_MINEABLE).add(b.block);
 
 		}
 	}
