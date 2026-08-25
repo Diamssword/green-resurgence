@@ -52,7 +52,6 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
 			inventoriesPos.add(BlockPos.fromLong(l));
 		}
 		for(BlockPos p1 : inventoriesPos) {
-
 			var te = w.getBlockEntity(p1);
 			if(te instanceof Inventory in) {
 				inventoriesCache.put(p1, in);
@@ -74,6 +73,7 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
 		if(inventoriesPos.contains(pos)) {
 			inventoriesPos.remove(pos);
 			inventoriesCache.remove(pos);
+			markDirty();
 		}
 	}
 

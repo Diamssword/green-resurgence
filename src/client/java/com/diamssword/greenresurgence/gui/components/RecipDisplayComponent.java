@@ -107,7 +107,7 @@ public class RecipDisplayComponent extends BaseComponent {
 	protected void drawResource(UniversalResource resource, OwoUIDrawContext context, int x, int y, boolean big) {
 		context.getMatrices().push();
 		if(big) {
-			context.getMatrices().scale(2f, 2f, 0f);
+			context.getMatrices().scale(2f, 2f, 2f);
 			context.getMatrices().translate(0, 0, 1);
 			x = x / 4;
 			y = y / 4;

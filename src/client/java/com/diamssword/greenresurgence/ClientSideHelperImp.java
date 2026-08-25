@@ -5,6 +5,8 @@ import com.diamssword.greenresurgence.utils.ClientSideHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class ClientSideHelperImp extends ClientSideHelper {
 	@Override
@@ -20,6 +22,11 @@ public class ClientSideHelperImp extends ClientSideHelper {
 	@Override
 	public PlayerEntity getPlayer() {
 		return MinecraftClient.getInstance().player;
+	}
+
+	@Override
+	public @Nullable World getMainWorld() {
+		return MinecraftClient.getInstance().world;
 	}
 
 	@Override

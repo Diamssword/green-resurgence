@@ -1,0 +1,28 @@
+{
+  "type": "creativeTab",
+  "ingredients": [
+    {
+      "type": "item",
+      "name": "minecraft:stick",
+      "count": 5
+    },
+    {
+      "type": "tag",
+      "name": "minecraft:logs",
+      "count": 2
+    },
+    {
+      "type": "tag",
+      "name": "minecraft:dirt",
+      "count": 3
+    },
+    {
+      "type": "tag",
+      "name": "c:chests",
+      "count": 1
+    }
+  ],
+  "ignoreFullBlocks": true,
+  "blocksOnly": true,
+  "tabs": ["colored_blocks","geckolib:geckolib_examples"]
+}

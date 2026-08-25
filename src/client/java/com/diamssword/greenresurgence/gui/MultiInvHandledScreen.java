@@ -13,6 +13,7 @@ import io.wispforest.owo.Owo;
 import io.wispforest.owo.ui.base.BaseOwoScreen;
 import io.wispforest.owo.ui.base.BaseParentComponent;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
+import io.wispforest.owo.ui.component.TextBoxComponent;
 import io.wispforest.owo.ui.core.Component;
 import io.wispforest.owo.ui.core.OwoUIAdapter;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
@@ -673,8 +674,13 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
 		if(super.keyPressed(keyCode, scanCode, modifiers)) {
 			return true;
 		}
+
 		if(this.client.options.inventoryKey.matchesKey(keyCode, scanCode)) {
-			this.close();
+
+			var el = this.uiAdapter.rootComponent.focusHandler().focused();
+			if(el == null || !shouldFocusedComponentBlockEscape(el)) {
+				this.close();
+			}
 			return true;
 		}
 		this.handleHotbarKeyPressed(keyCode, scanCode);
@@ -686,6 +692,13 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Override this to prevent gui closing with 'e' if the passed component is focused
+	 */
+	public boolean shouldFocusedComponentBlockEscape(Component component) {
+		return component instanceof TextBoxComponent;
 	}
 
 	protected boolean handleHotbarKeyPressed(int keyCode, int scanCode) {

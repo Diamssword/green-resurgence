@@ -3,6 +3,10 @@ package com.diamssword.greenresurgence.systems.crafting;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.DictionaryPackets;
+import com.diamssword.greenresurgence.systems.crafting.recipesProviders.CreativeTabJsonProvider;
+import com.diamssword.greenresurgence.systems.crafting.recipesProviders.IRecipesProvider;
+import com.diamssword.greenresurgence.systems.crafting.recipesProviders.MultiJsonProvider;
+import com.diamssword.greenresurgence.systems.crafting.recipesProviders.SimpleJsonProvider;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,33 +14,40 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.logging.LogUtils;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
+import net.minecraft.world.World;
 import org.slf4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Supplier;
 
 public class RecipeLoader implements SimpleSynchronousResourceReloadListener {
 
 	private final Map<Identifier, RecipeCollection> registry = new HashMap<>();
 
+	private final Map<Identifier, List<NbtCompound>> loadedProviders = new HashMap<>();
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private boolean shouldSync = false;
+	private Map<String, Supplier<IRecipesProvider>> recipesProviders = new HashMap<>();
 
 	public RecipeLoader() {
+		recipesProviders.put("simple", SimpleJsonProvider::new);
+		recipesProviders.put("multi", MultiJsonProvider::new);
+		recipesProviders.put("creativeTab", CreativeTabJsonProvider::new);
+
 	}
 
 	public Optional<RecipeCollection> getCollection(Identifier id) {
@@ -48,50 +59,82 @@ public class RecipeLoader implements SimpleSynchronousResourceReloadListener {
 		return GreenResurgence.asRessource("grecipes");
 	}
 
+	public void compileRecipes(World world) {
+		if(world != null) {
+			LOGGER.info("loading itemGroups content");
+			var ctx = new ItemGroup.DisplayContext(world.getEnabledFeatures(), false, world.getRegistryManager());
+			Registries.ITEM_GROUP.getKeys().forEach(k -> {
+
+				Registries.ITEM_GROUP.get(k.getValue()).updateEntries(ctx);
+			});
+		}
+		loadedProviders.forEach((k, v) -> {
+			var coll = new RecipeCollection(k);
+			registry.put(k, coll);
+			v.forEach(val -> {
+				var idR = val.getString("baseID");
+				if(!idR.isBlank()) {
+					try {
+						if(val.contains("type")) {
+							var type = val.getString("type");
+							var providerF = recipesProviders.get(type);
+							if(providerF != null) {
+								var provider = providerF.get();
+								provider.deserializer(val);
+								var recipes = provider.getRecipes(idR, world);
+								if(!recipes.isEmpty()) {
+									recipes.forEach((k_, r) -> r.blocksResult().ifPresent(v1 -> BaseInteractions.allowedBlocks.add(v1)));
+									coll.addAll(recipes);
+								}
+							} else
+								LOGGER.error("[unserializing]no provider found for type : '{}' for {} from {}", type, idR, getFabricId());
+						} else {
+							LOGGER.error("[unserializing]missing 'type' field for {} from {}", idR, getFabricId());
+						}
+					} catch(Exception e) {
+						LOGGER.error("Failed to decode a recipe provider: {} for collection '{}' of mod '{}'", idR, k, GreenResurgence.ID);
+						e.printStackTrace();
+					}
+				}
+			});
+		});
+	}
+
 	@Override
 	public void reload(ResourceManager manager) {
 		registry.clear();
+		loadedProviders.clear();
 		BaseInteractions.registerBlocks();
 		manager.findResources("grecipes", v -> v.getPath().endsWith(".json") && v.getPath().split("/").length > 2).forEach((id, re) -> {
 			try {
 				BufferedReader reader = re.getReader();
 				try {
 					var jsonElement = JsonHelper.deserialize(GSON, reader, JsonObject.class);
-					if (jsonElement.has("type")) {
+					var recipeId = id.getPath().substring(id.getPath().lastIndexOf("/") + 1).replace(".json", "");
+					if(jsonElement.has("type")) {
 						var type = jsonElement.get("type").getAsString();
-						if (type.equals("simple")) {
-							var recip = SimpleRecipe.deserializer(jsonElement);
+						var providerF = recipesProviders.get(type);
+						if(recipesProviders != null) {
+							var provider = providerF.get();
+							provider.fromJson(jsonElement);
 							var id1 = new Identifier(id.getNamespace(), id.getPath().substring(id.getPath().indexOf("/") + 1));
 							id1 = new Identifier(id1.getNamespace(), id1.getPath().substring(0, id1.getPath().lastIndexOf("/")));
-							if (!registry.containsKey(id1))
-								registry.put(id1, new RecipeCollection(id1));
-							recip.blocksResult().ifPresent(v1 -> BaseInteractions.allowedBlocks.add(v1));
-							var id2 = id.getPath().substring(id.getPath().lastIndexOf("/") + 1).replace(".json", "");
-							registry.get(id1).add(id2, recip);
-						} else if (type.equals("multi")) {
-							var recip = SimpleRecipe.deserializerMulti(jsonElement);
-							var id1 = new Identifier(id.getNamespace(), id.getPath().substring(id.getPath().indexOf("/") + 1));
-							id1 = new Identifier(id1.getNamespace(), id1.getPath().substring(0, id1.getPath().lastIndexOf("/")));
-							if (!registry.containsKey(id1))
-								registry.put(id1, new RecipeCollection(id1));
-							var id2 = id.getPath().substring(id.getPath().lastIndexOf("/") + 1).replace(".json", "");
-							recip.forEach(v -> v.blocksResult().ifPresent(v1 -> BaseInteractions.allowedBlocks.add(v1)));
-							var m = new HashMap<String, SimpleRecipe>();
-							for (int i = 0; i < recip.size(); i++) {
-								m.put(id2 + i, recip.get(i));
-							}
-							registry.get(id1).addAll(m);
+							var nbt = provider.serialize();
+							var ls = loadedProviders.computeIfAbsent(id1, _v -> new ArrayList<>());
+							nbt.putString("type", jsonElement.get("type").getAsString());
+							nbt.putString("baseID", recipeId.toString());
+							ls.add(nbt);
 						} else
-							LOGGER.error("unsupported 'type': '{}' for {} from {}", type, id, getFabricId());
+							LOGGER.error("no provider found for type : '{}' for {} from {}", type, recipeId, getFabricId());
 					} else {
-						LOGGER.error("missing 'type' field for {} from {}", id, getFabricId());
+						LOGGER.error("missing 'type' field for {} from {}", recipeId, getFabricId());
 					}
-				} catch (Exception e) {
+				} catch(Exception e) {
 					LOGGER.error("Couldn't parse data file {} from {}", id, getFabricId(), e);
 				} finally {
 					((Reader) reader).close();
 				}
-			} catch (JsonParseException | IOException | IllegalArgumentException exception) {
+			} catch(JsonParseException | IOException | IllegalArgumentException exception) {
 				LOGGER.error("Couldn't parse data file {} from {}", id, getFabricId(), exception);
 			}
 		});
@@ -99,58 +142,46 @@ public class RecipeLoader implements SimpleSynchronousResourceReloadListener {
 	}
 
 	public void worldTick(MinecraftServer server) {
-		if (shouldSync) {
+		if(shouldSync) {
 			shouldSync = false;
+			compileRecipes(server.getOverworld());
 			Channels.MAIN.serverHandle(server).send(BaseInteractions.getPacket());
 			Channels.serverHandle(server).send(new DictionaryPackets.RecipeList(this));
 		}
 	}
 
 	public static void serializer(PacketByteBuf write, RecipeLoader val) {
-		NbtList list = new NbtList();
-		val.registry.forEach((k, v) -> {
-			var tag = new NbtCompound();
-			tag.putString("id", k.toString());
-			var recs = v.getRecipes(null);
-
-			NbtList list1 = new NbtList();
-			recs.forEach(r -> {
-				var sr = r.serialize();
-				sr.addProperty("unserial", "simple");
-				list1.add(NbtString.of(sr.toString()));
-			});
-			tag.put("recipes", list1);
-			list.add(tag);
+		var ob = new NbtCompound();
+		val.loadedProviders.forEach((k, v) -> {
+			var ls = new NbtList();
+			ls.addAll(v);
+			ob.put(k.toString(), ls);
 		});
-		var res = new NbtCompound();
-		res.put("list", list);
-		write.writeNbt(res);
+		write.writeNbt(ob);
 	}
 
 	public static RecipeLoader unserializer(PacketByteBuf read) {
-
 		RecipeLoader loader = new RecipeLoader();
-		var comp = read.readNbt();
-		var list = comp.getList("list", NbtElement.COMPOUND_TYPE);
-
-		list.forEach(el -> {
-			var e = (NbtCompound) el;
-			var id = new Identifier(e.getString("id"));
-			loader.registry.putIfAbsent(id, new RecipeCollection(id));
-			if (id != null) {
-				var ls1 = e.getList("recipes", NbtElement.STRING_TYPE);
-				ls1.forEach(el1 -> {
-					var ob = JsonHelper.deserialize(GSON, el1.asString(), JsonObject.class);
-					if (ob.get("unserial").getAsString().equals("simple")) {
-						try {
-							var r1 = SimpleRecipe.deserializer(ob);
-							loader.registry.get(id).add(r1);
-						} catch (Exception ex) {
-							ex.printStackTrace();
-						}
+		var ob = read.readNbt();
+		ob.getKeys().forEach(id -> {
+			try {
+				var collection = new Identifier(id);
+				var lsR = new ArrayList<NbtCompound>();
+				loader.loadedProviders.put(collection, lsR);
+				var ls = ob.getList(id, NbtElement.COMPOUND_TYPE);
+				var coll = loader.registry.get(collection);
+				ls.forEach(prov -> {
+					if(prov instanceof NbtCompound provO) {
+						lsR.add(provO);
 					}
+
 				});
+			} catch(Exception e) {
+				LOGGER.error("Failed to decode a recipe collection: {} for {}", id, GreenResurgence.ID);
+				e.printStackTrace();
 			}
+
+
 		});
 		return loader;
 	}

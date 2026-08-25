@@ -108,7 +108,7 @@ public class FactionList implements ServerTickingComponent {
 		NbtList ls = tag.getList("guilds", NbtList.COMPOUND_TYPE);
 		guilds.clear();
 		ls.forEach(c -> {
-			FactionGuild b = FactionGuild.fromNBT((NbtCompound) c);
+			FactionGuild b = FactionGuild.fromNBT((NbtCompound) c, provider);
 			if(b != null)
 				guilds.add(b);
 		});

@@ -93,6 +93,12 @@ public class GreenResurgence implements ModInitializer {
 		ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
 			onPostInit();
 		});
+		ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
+			GreenResurgence.clientHelper.setMainWorld(server.getOverworld());
+		});
+		ServerLifecycleEvents.SERVER_STOPPED.register((server) -> {
+			GreenResurgence.clientHelper.setMainWorld(null);
+		});
 		CharactersApi.onReady(api -> {
 			ClassesRegister.init();
 			CharactersApi.get().unattachComponentFromCharacters(CharactersApi.CHARACTER_ATTACHED_COMPONENT_INVENTORY);

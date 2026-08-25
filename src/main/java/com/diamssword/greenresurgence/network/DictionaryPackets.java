@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.network;
 
+import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.systems.armor.ArmorLoader;
 import com.diamssword.greenresurgence.systems.crafting.RecipeLoader;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
@@ -22,6 +23,8 @@ public class DictionaryPackets {
 		});
 		Channels.MAIN.registerClientbound(RecipeList.class, (msg, ctx) -> {
 			Recipes.loader = msg.loader;
+			Recipes.loader.compileRecipes(GreenResurgence.clientHelper.getMainWorld());
+
 		});
 		Channels.MAIN.registerClientbound(ArmorList.class, (msg, ctx) -> {
 			ArmorLoader.loader = msg.loader;

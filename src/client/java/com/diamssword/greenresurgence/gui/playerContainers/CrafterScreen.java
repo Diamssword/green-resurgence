@@ -53,6 +53,7 @@ public class CrafterScreen extends PlayerBasedGui<CrafterBlock.ScreenHandler> {
 		});
 	}
 
+
 	@Override
 	protected void drawBackground(DrawContext ctx, float delta, int mouseY, int mouseX) {
 		//if(window!=null)

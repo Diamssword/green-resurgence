@@ -8,15 +8,19 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.Dynamic3CommandExceptionType;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
+import net.fabricmc.fabric.mixin.registry.sync.RegistriesAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.pattern.CachedBlockPosition;
+import net.minecraft.command.CommandSource;
 import net.minecraft.command.argument.BlockPosArgumentType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.*;
@@ -36,6 +40,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class RecipeHelperCommand {
+	private static final SuggestionProvider<ServerCommandSource> SUGGESTION_PROVIDER_REGISTRY = (context, builder) -> {
+		return CommandSource.suggestIdentifiers(RegistriesAccessor.getROOT().getKeys().stream().map(RegistryKey::getValue), builder);
+
+	};
 
 	public static void register(LiteralArgumentBuilder<ServerCommandSource> builder) {
 		builder.requires(ctx -> ctx.hasPermissionLevel(2))
@@ -44,7 +52,8 @@ public class RecipeHelperCommand {
 						.then(CommandManager.argument("name", StringArgumentType.string()).executes(RecipeHelperCommand::createRecipe))))
 				.then(CommandManager.literal("addToRecipe").then(CommandManager.argument("chest", BlockPosArgumentType.blockPos()).then(CommandManager.argument("name", StringArgumentType.string()).executes(RecipeHelperCommand::addRecipe))))
 				.then(CommandManager.literal("listblocks").then(CommandManager.argument("from", BlockPosArgumentType.blockPos()).then(CommandManager.argument("to", BlockPosArgumentType.blockPos()).executes(RecipeHelperCommand::listblocks))))
-				.then(CommandManager.literal("placeVariants").then(CommandManager.argument("from", BlockPosArgumentType.blockPos()).then(CommandManager.argument("to", BlockPosArgumentType.blockPos()).then(CommandManager.argument("variants", StringArgumentType.string()).executes(RecipeHelperCommand::createVariantBlocks)))));
+				.then(CommandManager.literal("placeVariants").then(CommandManager.argument("from", BlockPosArgumentType.blockPos()).then(CommandManager.argument("to", BlockPosArgumentType.blockPos()).then(CommandManager.argument("variants", StringArgumentType.string()).executes(RecipeHelperCommand::createVariantBlocks)))))
+				.then(CommandManager.literal("dumbRegistry").then(CommandManager.argument("registry", StringArgumentType.greedyString()).suggests(SUGGESTION_PROVIDER_REGISTRY).executes(RecipeHelperCommand::dumpCreativeTabs)));
 
 	}
 
@@ -87,6 +96,17 @@ public class RecipeHelperCommand {
 		} else {
 			return (Inventory) blockEntity;
 		}
+	}
+
+	private static int dumpCreativeTabs(CommandContext<ServerCommandSource> ctx) {
+		var stRegist = StringArgumentType.getString(ctx, "registry");
+		var registry = RegistriesAccessor.getROOT().get(new Identifier(stRegist));
+		StringBuilder str = new StringBuilder();
+		for(RegistryKey<?> k : registry.getKeys()) {
+			str.append(",\n").append(k.getValue());
+		}
+		ctx.getSource().sendFeedback(() -> copyable(Text.literal("[Registry dump:" + stRegist + " Cliquez pour copier]"), str.toString()), false);
+		return 1;
 	}
 
 	private static int listblocks(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {

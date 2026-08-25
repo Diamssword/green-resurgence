@@ -28,11 +28,7 @@
     }
   ],
   "results": [
-    {
-      "type": "item",
-      "name": "minecraft:oak_sign",
-      "count": 1
-    },
+
     {
       "type": "item",
       "name": "minecraft:stone",
@@ -65,82 +61,7 @@
     },
     {
       "type": "item",
-      "name": "minecraft:stone",
-      "count": 5
-    },
-    {
-      "type": "item",
-      "name": "minecraft:stone",
-      "count": 5
-    },
-    {
-      "type": "item",
-      "name": "minecraft:stone",
-      "count": 5
-    },
-    {
-      "type": "item",
-      "name": "minecraft:stone",
-      "count": 5
-    },
-    {
-      "type": "item",
-      "name": "minecraft:stone",
-      "count": 5
-    },
-    {
-      "type": "item",
-      "name": "minecraft:stone",
-      "count": 5
-    },
-    {
-      "type": "item",
-      "name": "minecraft:stone",
-      "count": 5
-    },
-    {
-      "type": "item",
-      "name": "minecraft:stone",
-      "count": 5
-    },
-    {
-      "type": "item",
-      "name": "minecraft:stone",
-      "count": 5
-    },
-    {
-      "type": "item",
-      "name": "minecraft:stone",
-      "count": 5
-    },
-    {
-      "type": "item",
-      "name": "minecraft:stone",
-      "count": 5
-    },
-    {
-      "type": "item",
-      "name": "minecraft:stone",
-      "count": 5
-    },
-    {
-      "type": "item",
-      "name": "minecraft:stone",
-      "count": 5
-    },
-    {
-      "type": "item",
-      "name": "minecraft:stone",
-      "count": 5
-    },
-    {
-      "type": "item",
-      "name": "minecraft:stone",
-      "count": 5
-    },
-    {
-      "type": "item",
-      "name": "minecraft:stone",
+      "name": "minecraft:stick",
       "count": 5
     },
     {

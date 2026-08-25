@@ -111,8 +111,9 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 			h.hidden(this.client.interactionManager.getCurrentGameMode() == GameMode.SPECTATOR);
 			var max = CustomPlayerInventory.getHotbarSlotCount(this.client.player);
 			var ls = DefaultedList.ofSize(max, ItemStack.EMPTY);
+			var inv = CustomPlayerInventory.getSurvivalInventory(this.client.player);
 			for(int i = 0; i < max; i++) {
-				ls.set(i, client.player.getInventory().main.get(i));
+				ls.set(i, inv.getHotBar().getStack(i));
 			}
 			var b = max != h.getSize();
 			h.setStacks(ls);

@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.systems.crafting;
 
+import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionZone;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -29,14 +30,14 @@ public class CraftingProvider {
 	public final CraftingProvider setForFaction(PlayerEntity player, BlockPos pos) {
 		var ls = player.getWorld().getComponent(Components.BASE_LIST);
 		ls.getTerrainAt(pos).ifPresent(t -> {
-			setInventories(InventoryStorage.of(player.getInventory(), null), InventoryStorage.of(t.getOwner().storage, null));
+			setInventories(InventoryStorage.of(CustomPlayerInventory.getPlayerCombinedInventory(player), null), InventoryStorage.of(t.getOwner().storage, null));
 		});
 		return this;
 	}
 
 	public final CraftingProvider setForTerrain(FactionZone terrain, @Nullable PlayerEntity player) {
-		if (player != null)
-			setInventories(InventoryStorage.of(player.getInventory(), null), InventoryStorage.of(terrain.getOwner().storage, null));
+		if(player != null)
+			setInventories(InventoryStorage.of(CustomPlayerInventory.getPlayerCombinedInventory(player), null), InventoryStorage.of(terrain.getOwner().storage, null));
 		else
 			setInventories(InventoryStorage.of(terrain.getOwner().storage, null));
 		return this;
@@ -50,26 +51,26 @@ public class CraftingProvider {
 	public boolean craftRecipe(SimpleRecipe recipe, PlayerEntity player) {
 		var ingrs = recipe.ingredients(player);
 		var complete = true;
-		try (Transaction t1 = Transaction.openOuter()) {
-			for (UniversalResource ingr : ingrs) {
-				if (ingr.getType().isItem) {
-					if (!hasItem(ingr, t1, null))
+		try(Transaction t1 = Transaction.openOuter()) {
+			for(UniversalResource ingr : ingrs) {
+				if(ingr.getType().isItem) {
+					if(!hasItem(ingr, t1, null))
 						complete = false;
-				} else if (ingr.getType().isFluid) {
-					if (!hasFluid(ingr, t1, null))
+				} else if(ingr.getType().isFluid) {
+					if(!hasFluid(ingr, t1, null))
 						complete = false;
 				} else
 					complete = false;
 			}
-			if (!complete)
+			if(!complete)
 				t1.abort();
 			else
 				t1.commit();
 		}
-		if (complete) {
+		if(complete) {
 			var res = recipe.result(player);
-			if (res.getType().isItem) {
-				if (!player.giveItemStack(res.asItem()))
+			if(res.getType().isItem) {
+				if(!player.giveItemStack(res.asItem()))
 					player.dropItem(res.asItem(), true);
 			}
 			return true;
@@ -81,17 +82,17 @@ public class CraftingProvider {
 		Map<UniversalResource, Boolean> status = new HashMap<>();
 		var ingrs = recipe.ingredients(player);
 		var complete = true;
-		try (Transaction t1 = Transaction.openOuter()) {
-			for (UniversalResource ingr : ingrs) {
-				if (ingr.getType().isItem) {
+		try(Transaction t1 = Transaction.openOuter()) {
+			for(UniversalResource ingr : ingrs) {
+				if(ingr.getType().isItem) {
 					var d = hasItem(ingr, t1, null);
 					status.put(ingr, d);
-					if (!d)
+					if(!d)
 						complete = false;
-				} else if (ingr.getType().isFluid) {
+				} else if(ingr.getType().isFluid) {
 					var d = hasFluid(ingr, t1, null);
 					status.put(ingr, d);
-					if (!d)
+					if(!d)
 						complete = false;
 				} else
 					complete = false;
@@ -104,14 +105,14 @@ public class CraftingProvider {
 
 	public boolean hasFluid(UniversalResource r, TransactionContext ctx, @Nullable Storage<FluidVariant> collector) {
 		long missing = r.getAmount();
-		for (Storage<FluidVariant> fluidStorage : fluidStorages) {
+		for(Storage<FluidVariant> fluidStorage : fluidStorages) {
 
-			for (Fluid stack : r.getAllFluids()) {
+			for(Fluid stack : r.getAllFluids()) {
 				var ex = fluidStorage.extract(FluidVariant.of(stack, r.extra()), missing, ctx);
 				missing = missing - ex;
-				if (collector != null)
+				if(collector != null)
 					collector.insert(FluidVariant.of(stack), ex, ctx);
-				if (missing <= 0)
+				if(missing <= 0)
 					return true;
 			}
 
@@ -121,13 +122,13 @@ public class CraftingProvider {
 
 	public boolean hasItem(UniversalResource r, TransactionContext ctx, @Nullable Storage<ItemVariant> collector) {
 		long missing = r.getAmount();
-		for (Storage<ItemVariant> itemStorage : itemStorages) {
-			for (ItemStack stack : r.getAllStacks()) {
+		for(Storage<ItemVariant> itemStorage : itemStorages) {
+			for(ItemStack stack : r.getAllStacks()) {
 				var ex = itemStorage.extract(ItemVariant.of(stack), missing, ctx);
 				missing = missing - ex;
-				if (collector != null)
+				if(collector != null)
 					collector.insert(ItemVariant.of(stack), ex, ctx);
-				if (missing <= 0)
+				if(missing <= 0)
 					return true;
 			}
 

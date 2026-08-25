@@ -1,13 +1,16 @@
 package com.diamssword.greenresurgence.mixin;
 
 import com.diamssword.greenresurgence.containers.AbstractMultiInvScreenHandler;
+import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.containers.player.compatibility.RoutedSlot;
 import com.diamssword.greenresurgence.systems.Components;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.collection.DefaultedList;
 import org.spongepowered.asm.mixin.Final;
@@ -26,6 +29,20 @@ public class ScreenHandlerMixin {
 	@Shadow
 	@Final
 	public DefaultedList<Slot> slots;
+
+	@Inject(
+			method = "internalOnSlotClick",
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/entity/player/PlayerInventory;getStack(I)Lnet/minecraft/item/ItemStack;"
+			),
+			cancellable = true
+	)
+	private void preventHiddenSlotSwap(int slotIndex, int button, SlotActionType actionType, PlayerEntity player, CallbackInfo ci) {
+		if(CustomPlayerInventory.getHotbarSlotCount(player) <= button) {
+			ci.cancel();
+		}
+	}
 
 	@Inject(method = "addSlot", at = @At("HEAD"))
 	private void replacePlayerSlot(Slot slot, CallbackInfoReturnable<Slot> cir) {

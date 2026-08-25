@@ -92,7 +92,7 @@ public abstract class MultiInvScreenHandler extends AbstractMultiInvScreenHandle
 		ready = true;
 		playerInventory = player.getComponent(Components.PLAYER_INVENTORY).getInventory();
 		this.setCursorStack(playerInventory.getAndClearCursorStack());
-		var ls = playerInventory.getAsContainers();
+		var ls = playerInventory.getAsContainers(false);
 		ls.addAll(Arrays.asList(inventories));
 		this.inventories = ls.toArray(new IGridContainer[0]);
 		//used to send the GridContainer information to the client
@@ -108,7 +108,7 @@ public abstract class MultiInvScreenHandler extends AbstractMultiInvScreenHandle
 		ready = true;
 		playerInventory = player.getComponent(Components.PLAYER_INVENTORY).getInventory();
 		this.setCursorStack(playerInventory.getAndClearCursorStack());
-		inventories = playerInventory.getAsContainers().toArray(new IGridContainer[0]);
+		inventories = playerInventory.getAsContainers(false).toArray(new IGridContainer[0]);
 		this.props = this.createProperty(GridContainerSyncer.class, new GridContainerSyncer(inventoryPos, inventories));
 		props.markDirty();
 		for(IGridContainer inventory : this.inventories) {
@@ -278,8 +278,9 @@ public abstract class MultiInvScreenHandler extends AbstractMultiInvScreenHandle
 		boolean bl = false;
 		List<IGridContainer> invs = Arrays.stream(this.inventories).filter(v -> v.isPlayerContainer() == fromContainer).toList();
 		if(invs.isEmpty() && !fromContainer) {
-			invs = Arrays.stream(this.inventories).filter(v -> v != origin).sorted((a, b) -> b.getQuickSlotPriority(stack) - a.getQuickSlotPriority(stack)).toList();
+			invs = Arrays.stream(this.inventories).filter(v -> v != origin).toList();
 		}
+		invs = invs.stream().sorted((a, b) -> b.getQuickSlotPriority(stack) - a.getQuickSlotPriority(stack)).toList();
 		if(stack.isStackable()) {
 			for(var inv : invs) {
 				for(var slot : this.getSlotForInventory(inv.getName())) {

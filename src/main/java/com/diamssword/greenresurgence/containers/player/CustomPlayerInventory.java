@@ -2,10 +2,7 @@ package com.diamssword.greenresurgence.containers.player;
 
 import com.diamssword.characters.api.ICharacterStored;
 import com.diamssword.characters.api.http.ApiCharacterValues;
-import com.diamssword.greenresurgence.containers.Containers;
-import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
-import com.diamssword.greenresurgence.containers.OffsetInventory;
-import com.diamssword.greenresurgence.containers.SlotedSimpleInventory;
+import com.diamssword.greenresurgence.containers.*;
 import com.diamssword.greenresurgence.containers.grids.IGridContainer;
 import com.diamssword.greenresurgence.containers.player.grids.ArmorGrid;
 import com.diamssword.greenresurgence.containers.player.grids.BagsGrid;
@@ -104,12 +101,13 @@ public class CustomPlayerInventory implements ICharacterStored {
 		return res;
 	}
 
-	public List<IGridContainer> getAsContainers() {
+	public List<IGridContainer> getAsContainers(boolean pickingOnly) {
 		List<IGridContainer> res = new ArrayList<>();
 
 		var hot = getHotBar();
 		res.add(new PlayerGrid("hotbar", hot, hot.size(), 1));
-		res.add(new OffHandGrid("offhand", getOffhand(), 1, 1));
+		if(!pickingOnly)
+			res.add(new OffHandGrid("offhand", getOffhand(), 1, 1));
 		res.add(new PlayerGrid("player", getMain(), 3, 3));
 		var b = getBackPack();
 		if(b != null) {
@@ -126,7 +124,8 @@ public class CustomPlayerInventory implements ICharacterStored {
 			var dim = invDimsFor(2);
 			res.add(new PlayerGrid("satchelRight", b, dim.getLeft(), dim.getRight()));
 		}
-		res.add(new ArmorGrid("armor", getArmor(), 1, 4));
+		if(!pickingOnly)
+			res.add(new ArmorGrid("armor", getArmor(), 1, 4));
 		return res;
 	}
 
@@ -280,22 +279,16 @@ public class CustomPlayerInventory implements ICharacterStored {
 		this.cursorStack = cursorStack;
 	}
 
-	public List<Inventory> getAllPickingInventories() {
-		List<Inventory> res = new ArrayList<>();
-		res.add(getHotBar());
-		res.add(getOffhand());
-		res.add(getMain());
-		var d = getBackPack();
-		if(d != null) {res.add(d);}
-		d = getSatchelLeft();
-		if(d != null) {res.add(d);}
-		d = getSatchelRight();
-		if(d != null) {res.add(d);}
-		return res;
+	public List<Inventory> getSortedPickingInventories(ItemStack sortFor) {
+		List<IGridContainer> res = getAsContainers(true);
+	
+		res.sort((a, b) -> b.getQuickSlotPriority(sortFor) - a.getQuickSlotPriority(sortFor));
+
+		return res.stream().map(IGridContainer::getInventory).toList();
 	}
 
-	public Optional<Pair<Inventory, Integer>> getEmptySlotInInventory() {
-		for(var inv : getAllPickingInventories()) {
+	public Optional<Pair<Inventory, Integer>> getEmptySlotInInventory(ItemStack destinedStack) {
+		for(var inv : getSortedPickingInventories(destinedStack)) {
 			var v = getEmptySlot(inv);
 			if(v > -1) {return Optional.of(new Pair<>(inv, v));}
 		}
@@ -305,7 +298,7 @@ public class CustomPlayerInventory implements ICharacterStored {
 
 	public boolean insterStack(ItemStack stack) {
 		if(stack.isDamaged()) {
-			var p = getEmptySlotInInventory();
+			var p = getEmptySlotInInventory(stack);
 			if(p.isPresent()) {
 				p.get().getLeft().setStack(p.get().getRight(), stack.copyAndEmpty());
 				p.get().getLeft().getStack(p.get().getRight()).setBobbingAnimationTime(5);
@@ -325,7 +318,7 @@ public class CustomPlayerInventory implements ICharacterStored {
 	private int addStack(ItemStack stack) {
 		var i = this.getOccupiedSlotWithRoomForStack(stack);
 		if(i.isEmpty()) {
-			i = this.getEmptySlotInInventory();
+			i = this.getEmptySlotInInventory(stack);
 		}
 
 		return i.isEmpty() ? stack.getCount() : this.addStack(i.get(), stack);
@@ -387,7 +380,7 @@ public class CustomPlayerInventory implements ICharacterStored {
 		} else if(this.canStackAddMore(this.getOffhand().getStack(0), stack)) {
 			return Optional.of(new Pair<>(this.getOffhand(), 0));
 		} else {
-			for(var inv : getAllPickingInventories()) {
+			for(var inv : getSortedPickingInventories(stack)) {
 				for(int i = 0; i < inv.size(); i++) {
 					if(this.canStackAddMore(inv.getStack(i), stack)) {
 						return Optional.of(new Pair<>(inv, i));
@@ -413,6 +406,23 @@ public class CustomPlayerInventory implements ICharacterStored {
 			}
 		}
 		return -1;
+	}
+
+	public CombinedInventory getCombinedInventory() {
+		return new CombinedInventory(this.getAllInventories());
+	}
+
+	/**
+	 * return the classic player inventory if player is in creative, or a CombinedInventory of all the survival bags, hotbar etc... (except backpack/satchel inventory)
+	 */
+	public static Inventory getPlayerCombinedInventory(PlayerEntity playerEntity) {
+		if(playerEntity.isCreative())
+			return playerEntity.getInventory();
+		return Components.PLAYER_INVENTORY.get(playerEntity).getInventory().getCombinedInventory();
+	}
+
+	public static CustomPlayerInventory getSurvivalInventory(PlayerEntity playerEntity) {
+		return Components.PLAYER_INVENTORY.get(playerEntity).getInventory();
 	}
 
 	@Override

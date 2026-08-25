@@ -253,7 +253,7 @@ public class FactionGuild {
 		return this.startingRole;
 	}
 
-	public static FactionGuild fromNBT(NbtCompound tag) {
+	public static FactionGuild fromNBT(NbtCompound tag, World world) {
 		var id = tag.getUuid("id");
 		if(id != null) {
 			var res = new FactionGuild(id);
@@ -300,6 +300,9 @@ public class FactionGuild {
 				NbtCompound tc = (NbtCompound) v;
 				res.allies.put(new FactionMember(tc.getCompound("member")), FactionPerm.fromNBT(tc.getCompound("perms")));
 			});
+			if(tag.contains("storage")) {
+				res.storage.fromNBT(tag.getCompound("storage"), world);
+			}
 			return res;
 		}
 		return null;
