@@ -54,7 +54,7 @@ public class Events {
 
 				ls.forEach(l1 -> {//on laisse le temps a MC d'envoyer les tags et autres données avant
 					Channels.sendToNonHost(l1, new DictionaryPackets.LootableList(Lootables.loader), new DictionaryPackets.RecipeList(Recipes.loader), new DictionaryPackets.ArmorList(ArmorLoader.loader));
-					Channels.MAIN.serverHandle(l1).send(BaseInteractions.getPacket());
+					Channels.MAIN.serverHandle(l1).send(BaseInteractions.allowedListSynced.toPacket());
 					CurrentZonePacket.sendDebugZone(l1.getWorld(), l1);
 					CurrentZonePacket.sendCreativeDebugZone(l1.getWorld(), l1);
 					EnvironmentPacket.sendListFor(l1, l1.getWorld());

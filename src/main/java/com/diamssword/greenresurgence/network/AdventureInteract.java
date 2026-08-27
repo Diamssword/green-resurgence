@@ -10,7 +10,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
@@ -33,14 +32,7 @@ public class AdventureInteract {
 
 	public static void init() {
 		Channels.MAIN.registerClientbound(AllowedList.class, (msg, ctx) -> {
-			BaseInteractions.allowedBlocks.clear();
-			BaseInteractions.allowedItems.clear();
-			for(Identifier block : msg.blocks) {
-				BaseInteractions.allowedBlocks.add(Registries.BLOCK.get(block));
-			}
-			for(Identifier block : msg.items) {
-				BaseInteractions.allowedItems.add(Registries.ITEM.get(block));
-			}
+			BaseInteractions.allowedListSynced.fromPacket(msg);
 		});
 		Channels.MAIN.registerServerbound(BlockInteract.class, (msg, ctx) -> {
 

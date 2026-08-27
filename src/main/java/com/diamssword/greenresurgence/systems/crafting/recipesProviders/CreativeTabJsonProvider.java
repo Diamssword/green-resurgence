@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.systems.crafting.recipesProviders;
 import com.diamssword.greenresurgence.systems.crafting.SimpleRecipe;
 import com.diamssword.greenresurgence.systems.crafting.UniversalResource;
 import com.google.gson.JsonObject;
+import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -19,17 +20,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class CreativeTabJsonProvider implements IRecipesProvider {
 
-	private List<UniversalResource> ingredients = new ArrayList<>();
-	private List<Identifier> tabs = new ArrayList<>();
-	private boolean ignoreFullBlocks = true;
-	private boolean blocksOnly = true;
+	protected List<UniversalResource> ingredients = new ArrayList<>();
+	protected List<Identifier> tabs = new ArrayList<>();
+	protected boolean ignoreFullBlocks = true;
+	protected boolean blocksOnly = true;
 
 	@Override
-	public Map<String, SimpleRecipe> getRecipes(String id, World world) {
-		var recipes = createRecipes(world);
+	public Map<String, SimpleRecipe> getRecipes(String id, World world, Consumer<Block> addBlockToWhitelist) {
+		var recipes = createRecipes(world, addBlockToWhitelist);
 		var m = new HashMap<String, SimpleRecipe>();
 		recipes.forEach((k, v) -> m.put(id + "_" + k, v));
 
@@ -52,20 +54,23 @@ public class CreativeTabJsonProvider implements IRecipesProvider {
 			this.blocksOnly = ob.get("blocksOnly").getAsBoolean();
 	}
 
-	private Map<String, SimpleRecipe> createRecipes(World world) {
+	protected Map<String, SimpleRecipe> createRecipes(World world, Consumer<Block> addBlockToWhitelist) {
 		Map<String, SimpleRecipe> recipes = new HashMap<>();
 		tabs.forEach(e -> {
 			var entry = Registries.ITEM_GROUP.getEntry(RegistryKey.of(RegistryKeys.ITEM_GROUP, e));
 			entry.ifPresent(tab -> {
 				tab.value().getDisplayStacks().forEach(st -> {
-					if(!blocksOnly || st.getItem() instanceof BlockItem) {
+					if(!blocksOnly || st.getItem() instanceof BlockItem be) {
 						var flg = true;
+						Block block = st.getItem() instanceof BlockItem be ? be.getBlock() : null;
 						if(ignoreFullBlocks && st.getItem() instanceof BlockItem be) {
 							flg = !be.getBlock().getDefaultState().isFullCube(world, BlockPos.ORIGIN);
 						}
 						if(flg) {
 							var id = Registries.ITEM.getId(st.getItem()).toUnderscoreSeparatedString();
 							recipes.put(id, new SimpleRecipe(UniversalResource.fromItem(st), ingredients));
+							addBlockToWhitelist.accept(block);
+
 						}
 					}
 				});
@@ -75,7 +80,7 @@ public class CreativeTabJsonProvider implements IRecipesProvider {
 	}
 
 	@Override
-	public void deserializer(NbtCompound ob) {
+	public void fromNbt(NbtCompound ob) {
 		tabs.clear();
 		if(ob.contains("ingredients") && ob.contains("tabs")) {
 			var ls1 = ob.getList("tabs", NbtElement.STRING_TYPE);
@@ -92,7 +97,7 @@ public class CreativeTabJsonProvider implements IRecipesProvider {
 
 
 	@Override
-	public NbtCompound serialize() {
+	public NbtCompound toNbt() {
 		NbtCompound res = new NbtCompound();
 
 		if(!ingredients.isEmpty()) {

@@ -32,11 +32,6 @@ public class PlayerCraftPanel extends SimpleSubPanel {
 		super("craft", "gui/subpanel/craft_icon", "survival/subpanel/craft");
 	}
 
-	private void expand(ScrollContainer<FlowLayout> scroll, Size v, FlowLayout root, int topH) {
-		scroll.verticalSizing(Sizing.fixed(v.height() - (topH + root.gap() + root.padding().get().vertical())));
-		root.onChildMutated(scroll);
-	}
-
 	@Override
 	public int desiredWidth() {
 		return 125;

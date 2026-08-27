@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.systems.crafting.recipesProviders;
 import com.diamssword.greenresurgence.systems.crafting.SimpleRecipe;
 import com.diamssword.greenresurgence.systems.crafting.UniversalResource;
 import com.google.gson.JsonObject;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -12,17 +13,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class MultiJsonProvider implements IRecipesProvider {
 
 	private List<SimpleRecipe> recipes = new ArrayList<>();
 
 	@Override
-	public Map<String, SimpleRecipe> getRecipes(String id, World world) {
+	public Map<String, SimpleRecipe> getRecipes(String id, World world, Consumer<Block> addBlockToWhitelist) {
 		if(recipes != null) {
 			var m = new HashMap<String, SimpleRecipe>();
 			for(int i = 0; i < recipes.size(); i++) {
-				m.put(id + i, recipes.get(i));
+				var r = recipes.get(i);
+				m.put(id + i, r);
+				r.blocksResult().ifPresent(addBlockToWhitelist);
 			}
 			return m;
 		}
@@ -36,7 +40,7 @@ public class MultiJsonProvider implements IRecipesProvider {
 	}
 
 	@Override
-	public void deserializer(NbtCompound ob) {
+	public void fromNbt(NbtCompound ob) {
 		recipes.clear();
 		if(ob.contains("ingredients") && ob.contains("results")) {
 			var ingredients = IRecipesProvider.unserializeIngredients(ob);
@@ -50,7 +54,7 @@ public class MultiJsonProvider implements IRecipesProvider {
 
 
 	@Override
-	public NbtCompound serialize() {
+	public NbtCompound toNbt() {
 		NbtCompound res = new NbtCompound();
 
 		if(recipes != null && !recipes.isEmpty()) {

@@ -1,8 +1,10 @@
 package com.diamssword.greenresurgence.gui.playerContainers;
 
+import com.diamssword.greenresurgence.blockEntities.CrafterBlockEntity;
 import com.diamssword.greenresurgence.blocks.CrafterBlock;
 import com.diamssword.greenresurgence.gui.components.ButtonInventoryComponent;
 import com.diamssword.greenresurgence.gui.components.RecipDisplayComponent;
+import com.diamssword.greenresurgence.network.ClientGuiPacket;
 import com.diamssword.greenresurgence.network.CraftPackets;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
 import io.wispforest.owo.ui.component.ButtonComponent;
@@ -14,9 +16,10 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class CrafterScreen extends PlayerBasedGui<CrafterBlock.ScreenHandler> {
+	private CrafterBlockEntity tile = null;
+
 	public CrafterScreen(CrafterBlock.ScreenHandler handler, PlayerInventory inv, Text title) {
 		super(handler, "survival/crafter");
-
 	}
 
 	@Override
@@ -33,21 +36,24 @@ public class CrafterScreen extends PlayerBasedGui<CrafterBlock.ScreenHandler> {
 			var r = disp.getRecipe();
 			if(r != null) {
 				if(disp.getStatus() == null || disp.getStatus().canCraft)
-					CraftPackets.sendCraftRequest(r, this.handler.getPos());
+					CraftPackets.sendCraftRequest(r.getId(), this.handler.getPos());
 			}
 		});
 		ls.onRecipePicked().subscribe((v, a, b) -> {
 			disp.setRecipe(v);
-			CraftPackets.requestStatus(v, this.handler.getPos(), disp::setCraftingStatus);
+			if(tile != null)
+				tile.requestStatus(v.getId(), this.client.player, disp::setCraftingStatus);
 			return true;
 		});
 		this.handler.onReady(un -> {
+			tile = ClientGuiPacket.getTile(CrafterBlockEntity.class, handler.getPos());
+			ls.setCollection(tile.getCollection());
 			Recipes.get(ls.collectionID).ifPresent(v -> {
 				var ls1 = v.getRecipes(this.client.player);
 				if(!ls1.isEmpty()) {
 					var r = ls1.get(0);
 					disp.setRecipe(r);
-					CraftPackets.requestStatus(r, this.handler.getPos(), disp::setCraftingStatus);
+					tile.requestStatus(r.getId(), this.client.player, disp::setCraftingStatus);
 				}
 			});
 		});

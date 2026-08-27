@@ -27,6 +27,7 @@ public class RessourceGuiHelper {
 
 		if(resource != null) {
 			var client = MinecraftClient.getInstance();
+
 			if(resource.getType().isItem) {
 				if(resource.getType() == UniversalResource.Type.itemtag) {
 					var st = resource.getCurrentItem(time);

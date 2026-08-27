@@ -192,7 +192,7 @@ public class ClientEvents {
 		if(mode.equals(GameMode.SURVIVAL)) {
 			if(CurrentZonePacket.currentZone != null) {
 				for(FactionZone box : CurrentZonePacket.currentZone.zones) {
-					if(box.getBounds().contains(ctx.getBlockPos()) && BaseInteractions.canBreak(ctx.getWorld(), ctx.getBlockPos(), state))
+					if(box.getBounds().contains(ctx.getBlockPos()) && BaseInteractions.canPlace(ctx.getWorld(), ctx.getBlockPos(), state))
 						return ActionResult.PASS;
 				}
 			}

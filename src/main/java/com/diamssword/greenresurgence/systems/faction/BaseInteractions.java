@@ -2,7 +2,6 @@ package com.diamssword.greenresurgence.systems.faction;
 
 import com.diamssword.greenresurgence.events.BaseEventCallBack;
 import com.diamssword.greenresurgence.events.PlaceBlockCallback;
-import com.diamssword.greenresurgence.network.AdventureInteract;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
 import com.diamssword.greenresurgence.systems.Components;
@@ -10,40 +9,23 @@ import com.diamssword.greenresurgence.systems.faction.perimeter.FactionList;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.*;
 import com.diamssword.greenresurgence.systems.faction.worldSnapshot.ChunkSnapshot;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BaseInteractions {
 
-	public static List<Block> allowedBlocks = new ArrayList<>();
-	public static List<Item> allowedItems = new ArrayList<>();
+	public static AllowedBlocksList allowedListSynced = new AllowedBlocksList(false);
+	public static AllowedBlocksList allowedListRecipe = new AllowedBlocksList(true);
 
-	public static void registerBlocks() {
-		BaseInteractions.allowedBlocks.clear();
-		BaseInteractions.allowedItems.clear();
-		allowedBlocks.add(Blocks.SAND);
-		allowedBlocks.add(Blocks.OAK_PLANKS);
-		allowedBlocks.add(Blocks.OAK_DOOR);
-		allowedBlocks.add(Blocks.CHEST);
-	}
 
 	public static void register() {
 		// ServerTickEvents.START_WORLD_TICK.register(BaseInteractions::playerTick);
@@ -62,7 +44,13 @@ public class BaseInteractions {
 	}
 
 	public static boolean canBreak(World world, BlockPos pos, BlockState state) {
-		return !state.isFullCube(world, pos) || allowedBlocks.contains(state.getBlock());
+
+		return allowedListSynced.canBreakBlock(world, pos, state) || allowedListRecipe.canBreakBlock(world, pos, state);
+	}
+
+	public static boolean canPlace(World world, BlockPos pos, BlockState state) {
+
+		return allowedListSynced.canPlaceBlock(world, pos, state) || allowedListRecipe.canPlaceBlock(world, pos, state);
 	}
 
 	private static ActionResult placeBlock(ItemPlacementContext ctx, BlockState state) {
@@ -70,7 +58,7 @@ public class BaseInteractions {
 			if(pl.interactionManager.getGameMode().equals(GameMode.SURVIVAL)) {
 				FactionList list = ctx.getWorld().getComponent(Components.BASE_LIST);
 				if(list.isAllowedAt(ctx.getBlockPos(), new FactionMember(pl), Perms.PLACE)) {
-					if(canBreak(ctx.getWorld(), ctx.getBlockPos(), state)) {
+					if(canPlace(ctx.getWorld(), ctx.getBlockPos(), state)) {
 						ChunkSnapshot.getSnapshotFor(ctx.getWorld(), ctx.getBlockPos()).putBlockIfAbsent(ctx.getBlockPos(), ctx.getWorld().getBlockState(ctx.getBlockPos()));
 						var sp = SpecialPlacement.REGISTRY.get(state.getBlock());
 						if(sp != null) {
@@ -86,12 +74,6 @@ public class BaseInteractions {
 			}
 		}
 		return ActionResult.PASS;
-	}
-
-	public static AdventureInteract.AllowedList getPacket() {
-		var l1 = allowedItems.stream().map(Registries.ITEM::getId);
-		var l2 = allowedBlocks.stream().map(Registries.BLOCK::getId);
-		return new AdventureInteract.AllowedList(l2.toList().toArray(new Identifier[0]), l1.toList().toArray(new Identifier[0]));
 	}
 
 	public static void onEnter(ServerPlayerEntity player, FactionGuild base) {
@@ -122,7 +104,6 @@ public class BaseInteractions {
 				if(list.isAllowedAt(pos, new FactionMember(pl), Perms.BREAK)) {
 					var st = w.getBlockState(pos);
 					if(canBreak(w, pos, st)) {
-						//TODO retrieving chunk can take up to 800ms sometime, might want to consider trying to implement snapshot directly on FactionZone.
 						var g = ChunkSnapshot.getSnapshotFor(w, pos);
 						g.putBlockIfAbsent(pos, st);
 						var sp = SpecialPlacement.REGISTRY.get(st.getBlock());
@@ -147,11 +128,12 @@ public class BaseInteractions {
 		return ActionResult.PASS;
 	}
 
+	public static boolean canUseItemAt(PlayerEntity player, BlockPos pos, Hand hand) {
+		var st = player.getStackInHand(hand);
+		return allowedListSynced.canUseItem(player.getWorld(), pos, st) || allowedListRecipe.canUseItem(player.getWorld(), pos, st);
+	}
+
 	public static boolean canUseItem(PlayerEntity player, Hand hand) {
-		var st = player.getStackInHand(hand).getItem();
-		if(st instanceof BlockItem be) {
-			return allowedBlocks.contains(be.getBlock());
-		} else
-			return allowedItems.contains(st);
+		return canUseItemAt(player, player.getBlockPos(), hand);
 	}
 }

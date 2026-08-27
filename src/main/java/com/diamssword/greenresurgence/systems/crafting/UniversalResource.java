@@ -5,6 +5,8 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
@@ -40,7 +42,7 @@ public class UniversalResource {
 	private Fluid[] fluidCache = new Fluid[]{};
 	private final int count;
 
-	private final NbtCompound data;
+	private NbtCompound data;
 	private final Identifier item;
 	private final Type type;
 
@@ -125,6 +127,47 @@ public class UniversalResource {
 		if(this.data != null)
 			i.setNbt(this.data);
 		return i;
+	}
+
+	/**
+	 * Only implemented for item types for now
+	 */
+	public UniversalResource withCustomName(@Nullable Text name) {
+		if(data == null)
+			data = new NbtCompound();
+		NbtCompound nbtCompound = data.getCompound(ItemStack.DISPLAY_KEY);
+		data.put(ItemStack.DISPLAY_KEY, nbtCompound);
+		if(name != null) {
+			nbtCompound.putString(ItemStack.NAME_KEY, Text.Serializer.toJson(name));
+		} else {
+			nbtCompound.remove(ItemStack.NAME_KEY);
+		}
+		fillCache();
+		return this;
+	}
+
+	/**
+	 * Add lore to the item
+	 * Only implemented for item types for now
+	 *
+	 * @param lorelines if empty, remove all lore
+	 */
+	public UniversalResource withLore(Text... lorelines) {
+		if(data == null)
+			data = new NbtCompound();
+		NbtCompound nbtCompound = data.getCompound(ItemStack.DISPLAY_KEY);
+		data.put(ItemStack.DISPLAY_KEY, nbtCompound);
+		if(lorelines.length > 0) {
+			var ls = new NbtList();
+			for(Text loreline : lorelines) {
+				ls.add(NbtString.of(Text.Serializer.toJson(loreline)));
+			}
+			nbtCompound.put(ItemStack.LORE_KEY, ls);
+		} else {
+			nbtCompound.remove(ItemStack.LORE_KEY);
+		}
+		fillCache();
+		return this;
 	}
 
 	public Fluid[] getAllFluids() {

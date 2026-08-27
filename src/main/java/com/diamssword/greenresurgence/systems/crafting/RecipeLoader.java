@@ -3,10 +3,10 @@ package com.diamssword.greenresurgence.systems.crafting;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.DictionaryPackets;
-import com.diamssword.greenresurgence.systems.crafting.recipesProviders.CreativeTabJsonProvider;
-import com.diamssword.greenresurgence.systems.crafting.recipesProviders.IRecipesProvider;
-import com.diamssword.greenresurgence.systems.crafting.recipesProviders.MultiJsonProvider;
-import com.diamssword.greenresurgence.systems.crafting.recipesProviders.SimpleJsonProvider;
+import com.diamssword.greenresurgence.systems.crafting.recipesProviders.*;
+import com.diamssword.greenresurgence.systems.crafting.stonecutters.ConquestStoneCutterRecipe;
+import com.diamssword.greenresurgence.systems.crafting.stonecutters.IStoneCutterTypeRecipe;
+import com.diamssword.greenresurgence.systems.crafting.stonecutters.MutltiStoneCutterRecipe;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -36,7 +36,7 @@ import java.util.function.Supplier;
 public class RecipeLoader implements SimpleSynchronousResourceReloadListener {
 
 	private final Map<Identifier, RecipeCollection> registry = new HashMap<>();
-
+	private final Map<Identifier, IStoneCutterTypeRecipe> stoneCuttersRegistry = new HashMap<>();
 	private final Map<Identifier, List<NbtCompound>> loadedProviders = new HashMap<>();
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 	private static final Logger LOGGER = LogUtils.getLogger();
@@ -47,7 +47,13 @@ public class RecipeLoader implements SimpleSynchronousResourceReloadListener {
 		recipesProviders.put("simple", SimpleJsonProvider::new);
 		recipesProviders.put("multi", MultiJsonProvider::new);
 		recipesProviders.put("creativeTab", CreativeTabJsonProvider::new);
+		recipesProviders.put("creativeTabConquest", CreativeTabConquest::new);
+		stoneCuttersRegistry.put(GreenResurgence.asRessource("stone_cutter"), new MutltiStoneCutterRecipe(new ConquestStoneCutterRecipe()));
 
+	}
+
+	public Optional<IStoneCutterTypeRecipe> getStoneCutter(Identifier id) {
+		return Optional.ofNullable(stoneCuttersRegistry.get(id));
 	}
 
 	public Optional<RecipeCollection> getCollection(Identifier id) {
@@ -80,10 +86,9 @@ public class RecipeLoader implements SimpleSynchronousResourceReloadListener {
 							var providerF = recipesProviders.get(type);
 							if(providerF != null) {
 								var provider = providerF.get();
-								provider.deserializer(val);
-								var recipes = provider.getRecipes(idR, world);
+								provider.fromNbt(val);
+								var recipes = provider.getRecipes(idR, world, (b) -> BaseInteractions.allowedListRecipe.addBlockToList(world, b));
 								if(!recipes.isEmpty()) {
-									recipes.forEach((k_, r) -> r.blocksResult().ifPresent(v1 -> BaseInteractions.allowedBlocks.add(v1)));
 									coll.addAll(recipes);
 								}
 							} else
@@ -104,7 +109,7 @@ public class RecipeLoader implements SimpleSynchronousResourceReloadListener {
 	public void reload(ResourceManager manager) {
 		registry.clear();
 		loadedProviders.clear();
-		BaseInteractions.registerBlocks();
+		BaseInteractions.allowedListRecipe.clear();
 		manager.findResources("grecipes", v -> v.getPath().endsWith(".json") && v.getPath().split("/").length > 2).forEach((id, re) -> {
 			try {
 				BufferedReader reader = re.getReader();
@@ -119,7 +124,7 @@ public class RecipeLoader implements SimpleSynchronousResourceReloadListener {
 							provider.fromJson(jsonElement);
 							var id1 = new Identifier(id.getNamespace(), id.getPath().substring(id.getPath().indexOf("/") + 1));
 							id1 = new Identifier(id1.getNamespace(), id1.getPath().substring(0, id1.getPath().lastIndexOf("/")));
-							var nbt = provider.serialize();
+							var nbt = provider.toNbt();
 							var ls = loadedProviders.computeIfAbsent(id1, _v -> new ArrayList<>());
 							nbt.putString("type", jsonElement.get("type").getAsString());
 							nbt.putString("baseID", recipeId.toString());
@@ -145,7 +150,6 @@ public class RecipeLoader implements SimpleSynchronousResourceReloadListener {
 		if(shouldSync) {
 			shouldSync = false;
 			compileRecipes(server.getOverworld());
-			Channels.MAIN.serverHandle(server).send(BaseInteractions.getPacket());
 			Channels.serverHandle(server).send(new DictionaryPackets.RecipeList(this));
 		}
 	}

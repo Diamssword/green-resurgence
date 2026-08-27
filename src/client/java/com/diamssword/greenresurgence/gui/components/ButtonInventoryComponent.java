@@ -59,6 +59,9 @@ public class ButtonInventoryComponent extends BaseComponent {
 		});
 	}
 
+	public void setCollection(Identifier id) {
+		this.setCollection(Recipes.get(id).orElse(new RecipeCollection(new Identifier("minecraft:void"))), id);
+	}
 
 	public void setCollection(RecipeCollection collection, Identifier id) {
 		this.collection = collection;

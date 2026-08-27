@@ -22,7 +22,7 @@
       "count": 1
     }
   ],
-  "ignoreFullBlocks": false,
+  "ignoreFullBlocks": true,
   "blocksOnly": true,
   "tabs": ["colored_blocks","geckolib:geckolib_examples"]
 }

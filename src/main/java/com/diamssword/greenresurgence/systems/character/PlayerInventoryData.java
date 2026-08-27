@@ -32,7 +32,7 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 	public PlayerInventoryData(PlayerEntity e) {
 		this.player = e;
 		inventory.fromNBT(new NbtCompound(), player);
-		if (!e.getWorld().isClient) {
+		if(!e.getWorld().isClient) {
 			crafterProvider.onNewRecipeQueued(() -> player.syncComponent(Components.PLAYER_INVENTORY));
 		}
 	}
@@ -43,7 +43,7 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 	}
 
 	public TimedCraftingProvider getCrafterProvider() {
-		crafterProvider.setForPlayer(getInventory());
+		crafterProvider.setForPlayer(player);
 		return crafterProvider;
 	}
 
@@ -70,11 +70,11 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 		crafterProvider.tick(player);
 		inventory.updateItems();
 		var bak1 = inventory.getBags().getStack(0);
-		if (bak1.getItem() != backpackStack.getItem()) {
+		if(bak1.getItem() != backpackStack.getItem()) {
 			backpackStack = bak1.copy();
 			player.syncComponent(Components.PLAYER_INVENTORY);
 		}
-		if (inventory.InventoryScreenNeedRefresh) {
+		if(inventory.InventoryScreenNeedRefresh) {
 			CustomPlayerInventory.openInventoryScreen(player);
 			inventory.InventoryScreenNeedRefresh = false;
 		}
@@ -85,7 +85,7 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 	public void writeSyncPacket(PacketByteBuf buf, ServerPlayerEntity recipient) {
 		NbtCompound tag = new NbtCompound();
 
-		if (recipient == player) {
+		if(recipient == player) {
 			NbtList pendingCrafts = new NbtList();
 			this.crafterProvider.getPendingCrafts().forEach(c -> {
 				pendingCrafts.add(NbtString.of(c.recipe.getId().toString()));
@@ -100,8 +100,8 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 	@Override
 	public void applySyncPacket(PacketByteBuf buf) {
 		NbtCompound tag = buf.readNbt();
-		if (tag != null) {
-			if (tag.contains("pendingcrafts")) {
+		if(tag != null) {
+			if(tag.contains("pendingcrafts")) {
 				var ls = tag.getList("pendingcrafts", NbtElement.STRING_TYPE);
 				crafterProvider.clearPendings();
 				ls.forEach(l1 -> {
@@ -109,7 +109,7 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 					r.ifPresent(recipe -> crafterProvider.addPending(new PendingCraft(recipe)));
 				});
 			}
-			if (tag.contains("backpack")) {
+			if(tag.contains("backpack")) {
 
 				backpackStack = ItemStack.fromNbt(tag.getCompound("backpack"));
 			}
@@ -119,9 +119,9 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 	@Override
 	public void readFromNbt(NbtCompound tag) {
 		inventory.fromNBT(tag, player);
-		if (tag.contains("crafter")) {
+		if(tag.contains("crafter")) {
 			crafterProvider = new TimedCraftingProvider(tag.getCompound("crafter"));
-			if (!player.getWorld().isClient)
+			if(!player.getWorld().isClient)
 				crafterProvider.onNewRecipeQueued(() -> player.syncComponent(Components.PLAYER_INVENTORY));
 		}
 

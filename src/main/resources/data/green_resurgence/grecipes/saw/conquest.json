@@ -1,0 +1,19 @@
+{
+  "type": "creativeTabConquest",
+  "ingredients": [
+    {
+      "type": "item",
+      "name": "minecraft:cobblestone",
+      "count": 5
+    },
+    {
+      "type": "tag",
+      "name": "minecraft:logs",
+      "count": 2
+    }
+  ],
+  "ignoreFullBlocks": true,
+  "blocksOnly": true,
+  "tags": ["minecraft:mineable/pickaxe"],
+  "tabs": ["minecraft:building_blocks"]
+}
