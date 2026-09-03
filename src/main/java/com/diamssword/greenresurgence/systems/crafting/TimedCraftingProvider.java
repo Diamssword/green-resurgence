@@ -1,13 +1,10 @@
 package com.diamssword.greenresurgence.systems.crafting;
 
-import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
-import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -33,7 +30,7 @@ public class TimedCraftingProvider extends CraftingProvider {
 			ls.forEach(v -> {
 				if(v instanceof NbtCompound comp) {
 					if(comp.contains("recipe")) {
-						var re = Recipes.getRecipe(new Identifier(comp.getString("recipe")));
+						var re = Recipes.getRecipe(new ComposedIdentifier(comp.getString("recipe")));
 						if(re.isPresent()) {
 							var d = new PendingCraft(re.get());
 							if(comp.contains("stacks")) {
@@ -71,10 +68,6 @@ public class TimedCraftingProvider extends CraftingProvider {
 		return nbt;
 	}
 
-	public final CraftingProvider setForPlayer(PlayerEntity player) {
-		setInventories(InventoryStorage.of(CustomPlayerInventory.getPlayerCombinedInventory(player), null));
-		return this;
-	}
 
 	public void clearPendings() {
 		this.pendingCrafts.clear();

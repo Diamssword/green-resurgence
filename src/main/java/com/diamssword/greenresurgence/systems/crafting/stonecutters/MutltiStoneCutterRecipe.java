@@ -15,10 +15,10 @@ public class MutltiStoneCutterRecipe implements IStoneCutterTypeRecipe {
 	}
 
 	@Override
-	public List<UniversalResource> getResultForOutput(UniversalResource input, @Nullable PlayerEntity player) {
+	public List<UniversalResource> getResultForInput(UniversalResource input, @Nullable PlayerEntity player) {
 		var res = new ArrayList<UniversalResource>();
 		for(IStoneCutterTypeRecipe sub : subs) {
-			res.addAll(sub.getResultForOutput(input, player));
+			res.addAll(sub.getResultForInput(input, player));
 		}
 		return res;
 	}

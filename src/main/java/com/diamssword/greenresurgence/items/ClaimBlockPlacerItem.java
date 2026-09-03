@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
 
 public class ClaimBlockPlacerItem extends MutliBlockDeployerPlacerItem {
@@ -60,10 +59,11 @@ public class ClaimBlockPlacerItem extends MutliBlockDeployerPlacerItem {
 		var guilds = world.getComponent(Components.BASE_LIST);
 		var currg = guilds.getForPlayer(player.getUuid(), false);
 		if(currg.isEmpty()) {
-			currg = Optional.of(FactionGuild.createForPlayer(player, at, ClaimBlockEntity.minRange));
-			guilds.addGuild(currg.get());
-		}
-		if(currg.get().getTerrainAt(at).isEmpty()) {
+			var cr = FactionGuild.createForPlayer(player, at, ClaimBlockEntity.minRange);
+			guilds.addGuild(cr);
+			instance.getExtraDatas().putUuid("faction", cr.getId());
+
+		} else if(currg.get().getTerrainAt(at).isEmpty()) {
 			currg.get().addTerrain(at, ClaimBlockEntity.minRange, world);
 			instance.getExtraDatas().putUuid("faction", currg.get().getId());
 		}

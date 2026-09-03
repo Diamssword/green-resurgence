@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.containers;
 
 import com.diamssword.greenresurgence.blockEntities.ArmorTinkererBlockEntity;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
+import com.diamssword.greenresurgence.blockEntities.StoneCutterBlockEntity;
 import com.diamssword.greenresurgence.blocks.*;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.items.BlockVariantItem;
@@ -27,6 +28,7 @@ public class Containers implements ContainerRegistryContainer {
 	public static final ScreenHandlerType<ArmorTinkererBlockEntity.Container> ARMOR_TINKERER = build(ArmorTinkererBlockEntity.Container::new);
 	public static final ScreenHandlerType<BlockVariantItem.Container> BLOCK_VARIANT_INV = build(BlockVariantItem.Container::new);
 	public static final ScreenHandlerType<CrafterBlock.ScreenHandler> CRAFTER = build(CrafterBlock.ScreenHandler::new);
+	public static final ScreenHandlerType<StoneCutterBlockEntity.ScreenHandler> STONE_CUTTER = build(StoneCutterBlockEntity.ScreenHandler::new);
 	public static final ScreenHandlerType<FactionTerrainStorage.ScreenHandler> FAC_STORAGE = build(FactionTerrainStorage.ScreenHandler::new);
 	public static final ScreenHandlerType<BaseStorageBlock.ScreenHandler> FAC_CHEST = build(BaseStorageBlock.ScreenHandler::new);
 	public static final ScreenHandlerType<GenericContainer> GENERIC_CONTAINER = build(GenericContainer::new);

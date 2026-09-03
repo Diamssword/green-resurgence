@@ -20,7 +20,7 @@
                 </flow-layout>
 
                 <scroll direction="vertical">
-                    <buttoninventory id="main" collection="minecraft:empty">
+                    <buttoninventory id="main" type="simple">
                         <sizing><vertical method="content">1</vertical></sizing>
                     </buttoninventory>
                     <sizing>

@@ -1,5 +1,7 @@
 package com.diamssword.greenresurgence.datagen;
 
+import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.MBlocks;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlockSet;
 import com.diamssword.greenresurgence.genericBlocks.GenericBlocks;
 import com.diamssword.greenresurgence.items.materials.MaterialSet;
@@ -32,7 +34,8 @@ public class ModelGenerator extends FabricModelProvider {
 		for(GenericBlockSet set : GenericBlocks.sets) {
 			set.modelGenerator(blockStateModelGenerator);
 		}
-
+		AdvancedModelGenerator.fluidLikes.put(MBlocks.SLUDGE, GreenResurgence.asRessource("block/sludge"));
+		AdvancedModelGenerator.create(blockStateModelGenerator);
 	}
 
 	@Override
@@ -50,7 +53,7 @@ public class ModelGenerator extends FabricModelProvider {
 		Equipments.equipments.forEach((k, v) -> {
 			v.forEach((k1, v1) -> {
 				var it = v1.getEquipmentItem();
-				itemModelGenerator.register(it, new DevModelCopy("gecko_delegated", new HashMap<>()));
+				itemModelGenerator.register(it, new DevModelCopy("items/gecko_delegated", new HashMap<>()));
 
 			});
 		});

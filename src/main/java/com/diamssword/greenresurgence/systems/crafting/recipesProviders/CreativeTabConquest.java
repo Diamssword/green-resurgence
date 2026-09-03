@@ -39,7 +39,7 @@ public class CreativeTabConquest extends CreativeTabJsonProvider {
 					if(st.getItem() instanceof BlockItem be) {
 						if(be.getBlock().getDefaultState().isFullCube(world, BlockPos.ORIGIN) && trueTags.stream().anyMatch(t -> be.getBlock().getDefaultState().isIn(t))) {
 							var id = Registries.ITEM.getId(st.getItem()).toUnderscoreSeparatedString();
-							recipes.put(id, new SimpleRecipe(UniversalResource.fromItem(st).withCustomName(Text.literal("[Material] ").append(st.getName())).withLore(Text.literal("This is just craft material"), Text.literal("You can craft it into useful shapes on the stonework table")), ingredients));
+							recipes.put(id, new SimpleRecipe(UniversalResource.fromItem(st).withCustomName(Text.literal("[Material] ").append(st.getName())).withLore(Text.literal("This is just craft material"), Text.literal("You can craft it into useful shapes \n on the stonework table")), ingredients));
 						}
 					}
 				});

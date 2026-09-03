@@ -2,10 +2,8 @@ package com.diamssword.greenresurgence.gui.components;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.gui.RessourceGuiHelper;
-import com.diamssword.greenresurgence.systems.crafting.RecipeCollection;
-import com.diamssword.greenresurgence.systems.crafting.Recipes;
-import com.diamssword.greenresurgence.systems.crafting.SimpleRecipe;
-import com.diamssword.greenresurgence.systems.crafting.UniversalResource;
+import com.diamssword.greenresurgence.systems.crafting.*;
+import com.diamssword.greenresurgence.systems.crafting.stonecutters.IStoneCutterTypeRecipe;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.base.BaseComponent;
 import io.wispforest.owo.ui.component.TextBoxComponent;
@@ -26,29 +24,34 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
-public class ButtonInventoryComponent extends BaseComponent {
+public abstract class ButtonInventoryComponent<T extends IRessourceDisplay> extends BaseComponent {
 	private final int slotSize = 18;
 	public static final Identifier SLOT_TEXTURE = GreenResurgence.asRessource("textures/gui/highlight.png");
-	private final EventStream<RecipePicked> onPicked = RecipePicked.newPickStream();
+	private final EventStream<ItemPicked<T>> onPicked = ItemPicked.newPickStream();
 	public Identifier collectionID;
 	private UniversalResource hovered;
-	private RecipeCollection collection;
 	private int columns = 3;
-	private List<SimpleRecipe> items = new ArrayList<>();
-	private Comparator<SimpleRecipe> sorter;
+	private List<T> items = new ArrayList<>();
+	private Comparator<T> sorter;
 	private String lastResearch = "";
 	protected boolean blend = false;
 	private float time = 0;
 
-	protected ButtonInventoryComponent(Sizing size, Identifier collectionID, RecipeCollection collection) {
+	protected ButtonInventoryComponent(Sizing size, Identifier collectionID) {
 		this.collectionID = collectionID;
-		this.collection = collection;
-		items = this.collection.getRecipes(MinecraftClient.getInstance().player);
+		items = getItems();
 		this.horizontalSizing(size);
 		this.verticalSizing(Sizing.content());
 
 	}
+
+	public boolean displayItemExtra() {
+		return false;
+	}
+
+	public abstract List<T> getItems();
 
 	public void bindSearchField(TextBoxComponent field) {
 		field.onChanged().subscribe(t -> {
@@ -60,11 +63,6 @@ public class ButtonInventoryComponent extends BaseComponent {
 	}
 
 	public void setCollection(Identifier id) {
-		this.setCollection(Recipes.get(id).orElse(new RecipeCollection(new Identifier("minecraft:void"))), id);
-	}
-
-	public void setCollection(RecipeCollection collection, Identifier id) {
-		this.collection = collection;
 		this.collectionID = id;
 		refreshSearch();
 	}
@@ -75,20 +73,20 @@ public class ButtonInventoryComponent extends BaseComponent {
 			this.parent.onChildMutated(this);
 	}
 
-	public Comparator<SimpleRecipe> getSorter() {
+	public Comparator<T> getSorter() {
 		return sorter;
 	}
 
-	public void setSorter(Comparator<SimpleRecipe> sorter) {
+	public void setSorter(Comparator<T> sorter) {
 		this.sorter = sorter;
 	}
 
 	public void refreshSearch() {
 		PlayerEntity pl = MinecraftClient.getInstance().player;
 		if(this.lastResearch.isBlank())
-			this.items = this.collection.getRecipes(pl);
+			this.items = getItems();
 		else
-			this.items = new ArrayList<>(this.collection.getRecipes(pl).stream().filter(v -> v.result(pl).getName().getString().toLowerCase().trim().contains(lastResearch)).toList());
+			this.items = new ArrayList<>(getItems().stream().filter(v -> v.getDisplay(pl).getName().getString().toLowerCase().trim().contains(lastResearch)).toList());
 		if(sorter != null)
 			this.items.sort(sorter);
 		setSize();
@@ -114,13 +112,13 @@ public class ButtonInventoryComponent extends BaseComponent {
 		var d = x + (y * columns);
 		if(x < columns && d < items.size()) {
 			UISounds.playButtonSound();
-			onPicked.sink().onPicked(items.get(d), this.collection, this.collectionID);
+			onPicked.sink().onPicked(items.get(d), this.collectionID);
 			return false;
 		}
 		return super.onMouseDown(mouseX, mouseY, button);
 	}
 
-	public EventSource<RecipePicked> onRecipePicked() {
+	public EventSource<ItemPicked<T>> onRecipePicked() {
 		return this.onPicked.source();
 	}
 
@@ -140,8 +138,8 @@ public class ButtonInventoryComponent extends BaseComponent {
 		int i = 0;
 		int j = 0;
 		hovered = null;
-		for(SimpleRecipe item : items) {
-			UniversalResource it = item.result(MinecraftClient.getInstance().player);
+		for(T item : items) {
+			UniversalResource it = item.getDisplay(MinecraftClient.getInstance().player);
 			var w1 = (i * slotSize);
 			var h1 = (j * slotSize);
 			if(mouseX >= this.x + w1 && mouseX <= this.x + w1 + slotSize - 1 && mouseY >= this.y + h1 && mouseY <= this.y + h1 + slotSize - 1) {
@@ -165,7 +163,8 @@ public class ButtonInventoryComponent extends BaseComponent {
 
 	protected void drawResource(UniversalResource resource, OwoUIDrawContext context, int x, int y) {
 		RessourceGuiHelper.drawRessource(context, resource, x, y, time);
-		//RessourceGuiHelper.drawRessourceExtra(context, resource, x, y, time, 16777215);
+		if(displayItemExtra())
+			RessourceGuiHelper.drawRessourceExtra(context, resource, x, y, time, 16777215);
 	}
 
 	public void drawTooltip(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
@@ -179,21 +178,106 @@ public class ButtonInventoryComponent extends BaseComponent {
 
 	}
 
-	public static ButtonInventoryComponent parse(Element element) {
-		UIParsing.expectAttributes(element, "collection");
-		var invId = UIParsing.parseIdentifier(element.getAttributeNode("collection"));
-		var r = Recipes.get(invId).orElse(new RecipeCollection(new Identifier("minecraft:void")));
-		return new ButtonInventoryComponent(Sizing.fill(100), invId, r);
+	public static class RecipeListComponent extends ButtonInventoryComponent<SimpleRecipe> {
+		RecipeCollection collection;
+
+		protected RecipeListComponent(Sizing size, Identifier collectionID) {
+			super(size, collectionID);
+			this.collection = Recipes.get(collectionID).orElse(new RecipeCollection(new Identifier("void")));
+		}
+
+		@Override
+		public void setCollection(Identifier id) {
+			super.setCollection(id);
+			this.collection = Recipes.get(id).orElse(new RecipeCollection(new Identifier("void")));
+			refreshSearch();
+		}
+
+		@Override
+		public List<SimpleRecipe> getItems() {
+			if(this.collection == null)
+				return List.of();
+			return this.collection.getRecipes(MinecraftClient.getInstance().player);
+		}
 	}
 
-	public interface RecipePicked {
-		boolean onPicked(SimpleRecipe picked, RecipeCollection collection, Identifier collectionID);
+	public static class SimpleResourceListComponent extends ButtonInventoryComponent<UniversalResource> {
 
-		static EventStream<RecipePicked> newPickStream() {
-			return new EventStream<>(subscribers -> (SimpleRecipe picked, RecipeCollection collection, Identifier collectionID) -> {
+		private Supplier<List<UniversalResource>> supplier = List::of;
+
+		protected SimpleResourceListComponent(Sizing size, Identifier collectionID) {
+			super(size, collectionID);
+		}
+
+		public void setSupplier(Supplier<List<UniversalResource>> supplier) {
+			this.supplier = supplier;
+			refreshSearch();
+		}
+
+		@Override
+		public List<UniversalResource> getItems() {
+			if(supplier == null)
+				return List.of();
+			return supplier.get();
+		}
+	}
+
+	public static class StoneCutterListComponent extends ButtonInventoryComponent<UniversalResource> {
+		private IStoneCutterTypeRecipe cutter;
+		private UniversalResource input;
+
+		protected StoneCutterListComponent(Sizing size, Identifier collectionID) {
+			super(size, collectionID);
+			this.cutter = Recipes.getStoneCutter(collectionID).orElse(null);
+		}
+
+		@Override
+		public boolean displayItemExtra() {
+			return true;
+		}
+
+		@Override
+		public void setCollection(Identifier id) {
+			super.setCollection(id);
+			this.cutter = Recipes.getStoneCutter(id).orElse(null);
+		}
+
+		public void setInput(UniversalResource input) {
+			this.input = input;
+			refreshSearch();
+		}
+
+		@Override
+		public List<UniversalResource> getItems() {
+			if(cutter != null && input != null)
+				return cutter.getResultForInput(input, MinecraftClient.getInstance().player);
+			return List.of();
+		}
+	}
+
+	public static ButtonInventoryComponent<?> parse(Element element) {
+		//UIParsing.expectAttributes(element, "collection");
+		var type = "recipe";
+		if(element.hasAttribute("type"))
+			type = element.getAttribute("type");
+		var invId = new Identifier("empty");
+		if(element.hasAttribute("collection"))
+			invId = UIParsing.parseIdentifier(element.getAttributeNode("collection"));
+		return switch(type) {
+			case "stonecutter" -> new StoneCutterListComponent(Sizing.fill(100), invId);
+			case "recipe" -> new RecipeListComponent(Sizing.fill(100), invId);
+			default -> new SimpleResourceListComponent(Sizing.fill(100), invId);
+		};
+	}
+
+	public interface ItemPicked<T extends IRessourceDisplay> {
+		boolean onPicked(T picked, Identifier collectionID);
+
+		static <T extends IRessourceDisplay> EventStream<ItemPicked<T>> newPickStream() {
+			return new EventStream<>(subscribers -> (T picked, Identifier collectionID) -> {
 				var anyTriggered = false;
 				for(var subscriber : subscribers) {
-					anyTriggered |= subscriber.onPicked(picked, collection, collectionID);
+					anyTriggered |= subscriber.onPicked(picked, collectionID);
 				}
 				return anyTriggered;
 			});

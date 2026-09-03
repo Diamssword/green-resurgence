@@ -16,6 +16,7 @@ public class ScreenHandlers {
 		HandledScreens.register(Containers.LOOTABLE_INV, LootableInvGui::new);
 		HandledScreens.register(Containers.BLOCK_VARIANT_INV, BlockVariantScreen::new);
 		HandledScreens.register(Containers.CRAFTER, CrafterScreen::new);
+		HandledScreens.register(Containers.STONE_CUTTER, StoneCutterScreen::new);
 		HandledScreens.register(Containers.FAC_STORAGE, FactionStorageScreen::new);
 		HandledScreens.register(Containers.FAC_CHEST, FactionChestGui::new);
 		HandledScreens.register(Containers.GENERIC_CONTAINER, GenericContainerGui::new);

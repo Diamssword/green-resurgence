@@ -88,6 +88,7 @@ public class DeployingMachines {
 			.add(1, MBlocks.NANOTEK_GENERATOR_CANISTER, new BlockPos(0, 0, 0), new BlockPos(1, 0, 0), 25)
 			.add(1, MBlocks.NANOTEK_GENERATOR_SERVER, new BlockPos(0, 0, 0), new BlockPos(-1, 0, 0), 30)
 			.add(1, MBlocks.NANOTEK_GENERATOR_RELAY, new BlockPos(0, 0, 0), new BlockPos(0, 1, 0), 35)
+			.add(2, MBlocks.NANOTEK_GENERATOR_SMALL_ANTENNA, new BlockPos(-1, 0, 0), new BlockPos(-1, 1, 0), 30)
 			.add(2, MBlocks.NANOTEK_GENERATOR_PILLAR, new BlockPos(0, 0, 0), new BlockPos(0, 2, 0), 60)
 			.add(2, MBlocks.NANOTEK_GENERATOR_BIG_ANTENNA, new BlockPos(0, 1, 0), new BlockPos(0, 3, 0), 60));
 	public static final String GENERATOR_T2 = DeployingMachines.register(new DeployingMachineDefinition("generator_t2") {

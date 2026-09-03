@@ -22,12 +22,13 @@ public class CraftingProvider {
 	Storage<ItemVariant>[] itemStorages = new Storage[0];
 	Storage<FluidVariant>[] fluidStorages = new Storage[0];
 
+	@SafeVarargs
 	public final CraftingProvider setInventories(Storage<ItemVariant>... storages) {
 		this.itemStorages = storages;
 		return this;
 	}
 
-	public final CraftingProvider setForFaction(PlayerEntity player, BlockPos pos) {
+	public CraftingProvider setForFaction(PlayerEntity player, BlockPos pos) {
 		var ls = player.getWorld().getComponent(Components.BASE_LIST);
 		ls.getTerrainAt(pos).ifPresent(t -> {
 			setInventories(InventoryStorage.of(CustomPlayerInventory.getPlayerCombinedInventory(player), null), InventoryStorage.of(t.getOwner().storage, null));
@@ -35,7 +36,17 @@ public class CraftingProvider {
 		return this;
 	}
 
-	public final CraftingProvider setForTerrain(FactionZone terrain, @Nullable PlayerEntity player) {
+	public CraftingProvider setForPlayer(@Nullable PlayerEntity player) {
+		if(player != null)
+			setInventories(InventoryStorage.of(CustomPlayerInventory.getPlayerCombinedInventory(player), null));
+		else
+			setInventories();
+		return this;
+	}
+
+	;
+
+	public CraftingProvider setForTerrain(FactionZone terrain, @Nullable PlayerEntity player) {
 		if(player != null)
 			setInventories(InventoryStorage.of(CustomPlayerInventory.getPlayerCombinedInventory(player), null), InventoryStorage.of(terrain.getOwner().storage, null));
 		else
@@ -43,7 +54,8 @@ public class CraftingProvider {
 		return this;
 	}
 
-	public CraftingProvider setTanks(Storage<FluidVariant>... storages) {
+	@SafeVarargs
+	public final CraftingProvider setTanks(Storage<FluidVariant>... storages) {
 		this.fluidStorages = storages;
 		return this;
 	}

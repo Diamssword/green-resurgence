@@ -173,7 +173,6 @@ public class RecipeLoader implements SimpleSynchronousResourceReloadListener {
 				var lsR = new ArrayList<NbtCompound>();
 				loader.loadedProviders.put(collection, lsR);
 				var ls = ob.getList(id, NbtElement.COMPOUND_TYPE);
-				var coll = loader.registry.get(collection);
 				ls.forEach(prov -> {
 					if(prov instanceof NbtCompound provO) {
 						lsR.add(provO);

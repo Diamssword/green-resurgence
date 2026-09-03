@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.systems.crafting;
 
 import com.google.gson.JsonObject;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,7 +20,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class UniversalResource {
+public class UniversalResource implements IRessourceDisplay {
+	@Override
+	public UniversalResource getDisplay(@Nullable PlayerEntity player) {
+		return this;
+	}
+
 	public enum Type {
 		item(true, false),
 		fluid(false, true),

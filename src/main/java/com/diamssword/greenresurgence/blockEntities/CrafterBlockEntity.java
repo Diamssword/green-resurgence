@@ -89,17 +89,26 @@ public class CrafterBlockEntity extends BlockEntity implements ICraftingTile<Sim
 	}
 
 	@Override
-	public boolean isCraftAllowed(Identifier recipeID, @Nullable PlayerEntity player) {
-		return collection != null && collection.equals(RecipeCollection.getCollectionFromFullId(recipeID));
+	public boolean isCraftAllowed(ComposedIdentifier recipeID, @Nullable PlayerEntity player) {
+		return collection != null && collection.equals(recipeID.getCollection());
 	}
 
 	@Override
-	public boolean tryCraft(Identifier recipeID, @Nullable PlayerEntity player) {
+	public boolean tryCraft(ComposedIdentifier recipeID, @Nullable CraftExtraControl control, @Nullable PlayerEntity player) {
 		if(!world.isClient() && isCraftAllowed(recipeID, player)) {
 			var recipe = recipeFromId(recipeID);
 			var prov = getCraftingProvider(player);
 			if(recipe.isPresent()) {
-				var b = prov.craftRecipe(recipe.get(), player);
+				var b = false;
+				int cnt = 1;
+				if(control != null)
+					cnt = control.getOperationCount(recipe.get().result(player));
+				for(int i = 0; i < cnt; i++) {
+					if(!prov.craftRecipe(recipe.get(), player))
+						break;
+					else
+						b = true;
+				}
 				if(b && player instanceof ServerPlayerEntity sp) {
 					var track = currentTrackedServer.get(sp);
 					Channels.MAIN.serverHandle(player).send(new CraftPackets.SendCraftStatus(track.index, pos, prov.getRecipeStatus(track.recipe, player)));
@@ -109,22 +118,25 @@ public class CrafterBlockEntity extends BlockEntity implements ICraftingTile<Sim
 			}
 			return false;
 		}
-		CraftPackets.sendCraftRequest(recipeID, pos);
+		Channels.MAIN.clientHandle().send(new CraftPackets.RequestCraft(pos, recipeID, control == null ? new CraftExtraControl(false, false) : control));
 		return true;
 	}
 
 	@Override
 	public CraftingProvider getCraftingProvider(@Nullable PlayerEntity player) {
-		return craftProvider.setForTerrain(terrain, player);
+		if(terrain != null) {
+			return craftProvider.setForTerrain(terrain, player);
+		}
+		return craftProvider.setForPlayer(player);
 	}
 
 	@Override
-	public Optional<SimpleRecipe> recipeFromId(Identifier id) {
+	public Optional<SimpleRecipe> recipeFromId(ComposedIdentifier id) {
 		return Recipes.getRecipe(id);
 	}
 
 	@Override
-	public void handleStatusRequest(int requestIndex, Identifier recipeID, ServerPlayerEntity playerEntity) {
+	public void handleStatusRequest(int requestIndex, ComposedIdentifier recipeID, ServerPlayerEntity playerEntity) {
 		recipeFromId(recipeID).ifPresent(re -> {
 			currentTrackedServer.put(playerEntity, new CraftStatusTracked(requestIndex, re));
 			Channels.MAIN.serverHandle(playerEntity).send(new CraftPackets.SendCraftStatus(requestIndex, pos, getCraftingProvider(playerEntity).getRecipeStatus(re, playerEntity)));
@@ -142,7 +154,7 @@ public class CrafterBlockEntity extends BlockEntity implements ICraftingTile<Sim
 
 
 	@Override
-	public void requestStatus(Identifier recipeID, PlayerEntity player, Consumer<CraftingResult> result) {
+	public void requestStatus(ComposedIdentifier recipeID, PlayerEntity player, Consumer<CraftingResult> result) {
 		statusIndex++;
 		currentTrackedClient = result;
 		Channels.MAIN.clientHandle().send(new CraftPackets.RequestCraftStatus(statusIndex, pos, recipeID));

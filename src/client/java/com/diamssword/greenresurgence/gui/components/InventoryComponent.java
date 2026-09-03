@@ -139,6 +139,7 @@ public class InventoryComponent extends BaseComponent implements IHideableCompon
 				context.drawText(Text.literal(t.getString()), visibleArea.x(), visibleArea.y(), 0.9f, 0xffffff);
 			}
 		}
+
 		context.drawTexture(SLOT_TEXTURE,
 				visibleArea.x() - 1,
 				visibleArea.y() + (name != null ? 9 : 0),

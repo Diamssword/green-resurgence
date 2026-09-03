@@ -17,24 +17,24 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class SimpleRecipe {
-	private Identifier id;
+public class SimpleRecipe implements IRessourceDisplay {
+	private ComposedIdentifier id;
 	private final UniversalResource result;
 	private final List<UniversalResource> ingredients;
 
 	public SimpleRecipe setID(Identifier collection, String recipeID) {
-		this.id = new Identifier(collection.getNamespace(), collection.getPath() + "/" + recipeID);
-
+		this.id = new ComposedIdentifier(collection, recipeID);
 		return this;
 	}
 
-	public SimpleRecipe setID(Identifier fullID) {
+	public SimpleRecipe setID(ComposedIdentifier fullID) {
 		this.id = fullID;
 		return this;
 	}
 
+
 	@Nullable
-	public Identifier getId() {
+	public ComposedIdentifier getId() {
 		return id;
 	}
 
@@ -80,7 +80,7 @@ public class SimpleRecipe {
 			var res = UniversalResource.deserializer(ob.getAsJsonObject("result"));
 			var r = new SimpleRecipe(res, deserializeIngredients(ob));
 			if(ob.has("id"))
-				r.setID(new Identifier(ob.get("id").getAsString()));
+				r.setID(new ComposedIdentifier(ob.get("id").getAsString()));
 			return r;
 
 		} else
@@ -127,10 +127,14 @@ public class SimpleRecipe {
 	public static SimpleRecipe unserializer(PacketByteBuf read) {
 		var id = read.readString();
 		if(!id.isEmpty()) {
-
-			var id1 = new Identifier(id);
+			var id1 = new ComposedIdentifier(id);
 			return Recipes.getRecipe(id1).orElse(new SimpleRecipe(ItemStack.EMPTY.copy(), ItemStack.EMPTY.copy()));
 		}
 		return null;
+	}
+
+	@Override
+	public UniversalResource getDisplay(@Nullable PlayerEntity player) {
+		return this.result(player);
 	}
 }

@@ -16,7 +16,7 @@
                                     <margins><all>2</all><bottom>0</bottom></margins>
                                 </text-box>
                                 <scroll direction="vertical">
-                                    <buttoninventory id="list" collection="empty">
+                                    <buttoninventory id="list" type="recipe" collection="empty">
                                     </buttoninventory>
                                     <padding><all>3</all><top>0</top></padding>
                                     <sizing><vertical method="fill">90</vertical><horizontal

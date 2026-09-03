@@ -3,8 +3,7 @@ package com.diamssword.greenresurgence.gui;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.gui.components.ButtonInventoryComponent;
 import com.diamssword.greenresurgence.items.BlockVariantItem;
-import com.diamssword.greenresurgence.systems.crafting.RecipeCollection;
-import com.diamssword.greenresurgence.systems.crafting.SimpleRecipe;
+import com.diamssword.greenresurgence.systems.crafting.UniversalResource;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.TextBoxComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
@@ -16,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Comparator;
@@ -39,7 +37,12 @@ public class BlockVariantScreen extends MultiInvHandledScreen<BlockVariantItem.C
 	@Override
 	protected void build(FlowLayout rootComponent) {
 		if(this.parent != null) {
-			ButtonInventoryComponent comp = rootComponent.childById(ButtonInventoryComponent.class, "main");
+			ButtonInventoryComponent<?> comp = rootComponent.childById(ButtonInventoryComponent.class, "main");
+			if(comp instanceof ButtonInventoryComponent.SimpleResourceListComponent sr) {
+				sr.setSupplier(() -> parent.getVariants().stream().map(UniversalResource::fromItem).toList());
+				sr.onRecipePicked().subscribe((v, v1) -> onPick(v));
+				sr.setSorter(sorter());
+			}
 			var search = rootComponent.childById(TextBoxComponent.class, "search");
 			search.setPlaceholder(Text.translatable("gui." + GreenResurgence.ID + ".generic.search"));
 			this.setFocused(search);
@@ -47,11 +50,7 @@ public class BlockVariantScreen extends MultiInvHandledScreen<BlockVariantItem.C
 			comp.focusGained().subscribe(v -> {
 				this.setFocused(search);
 			});
-			var coll = new RecipeCollection(new Identifier("minecraft:void"));
-			parent.getVariants().forEach(v -> coll.add(new SimpleRecipe(v).setID(v)));
-			comp.onRecipePicked().subscribe((v, v1, v2) -> onPick(v));
-			comp.setSorter(sorter());
-			comp.setCollection(coll, GreenResurgence.asRessource("air"));
+
 		}
 	}
 
@@ -60,11 +59,11 @@ public class BlockVariantScreen extends MultiInvHandledScreen<BlockVariantItem.C
 
 	}
 
-	private Comparator<SimpleRecipe> sorter() {
+	private Comparator<UniversalResource> sorter() {
 
 		return (o1, o2) -> {
-			String[] wordsA = o1.getId().getPath().split("_");
-			String[] wordsB = o2.getId().getPath().split("_");
+			String[] wordsA = o1.getID().getPath().split("_");
+			String[] wordsB = o2.getID().getPath().split("_");
 
 			int maxLength = Math.max(wordsA.length, wordsB.length);
 			for(int i = 0; i < maxLength; i++) {
@@ -85,17 +84,16 @@ public class BlockVariantScreen extends MultiInvHandledScreen<BlockVariantItem.C
 		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
-	private boolean onPick(SimpleRecipe re) {
-		var st = re.result(client.player);
+	private boolean onPick(UniversalResource re) {
 		if((InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_SHIFT) || InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_RIGHT_SHIFT))) {
 			int i = this.handler.getPlayerInventory().getEmptySlot();
 			if(i > -1) {
-				this.handler.getPlayerInventory().setStack(i, st.asItem().copyWithCount(64));
-				this.client.interactionManager.clickCreativeStack(st.asItem().copyWithCount(64), i);
+				this.handler.getPlayerInventory().setStack(i, re.asItem().copyWithCount(64));
+				this.client.interactionManager.clickCreativeStack(re.asItem().copyWithCount(64), i);
 			}
 
 		} else {
-			this.handler.setCursorStack(st.asItem());
+			this.handler.setCursorStack(re.asItem());
 		}
 		onWindow = true;
 		return true;

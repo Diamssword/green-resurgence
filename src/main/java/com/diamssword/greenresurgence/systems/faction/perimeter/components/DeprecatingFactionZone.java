@@ -1,8 +1,9 @@
 package com.diamssword.greenresurgence.systems.faction.perimeter.components;
 
+import com.diamssword.greenresurgence.MBlocks;
+import com.diamssword.greenresurgence.blocks.SludgeBlock;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.faction.worldSnapshot.ChunkSnapshot;
-import net.minecraft.block.Blocks;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -11,12 +12,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DeprecatingFactionZone extends FactionZone {
-	private Map<ChunkPos, ChunkSnapshot> chunkSnaps1 = new HashMap<>();
 	private List<ChunkPos> chunksPos = new ArrayList<>();
 	public List<BlockPos> posToProcess = new ArrayList<>();
 	public List<BlockPos> processedPos = new ArrayList<>();
@@ -64,15 +62,17 @@ public class DeprecatingFactionZone extends FactionZone {
 			processedPos.add(l);
 			currentChunk.getBlockAt(l).ifPresent(state -> {
 				if(state.isAir()) {
-					world.setBlockState(l, Blocks.SLIME_BLOCK.getDefaultState());
-					world.updateNeighbors(l, Blocks.SLIME_BLOCK.getDefaultState().getBlock());
+					var st = MBlocks.SLUDGE.getDefaultState().with(SludgeBlock.LEVEL, world.random.nextBetween(5, 8));
+					world.setBlockState(l, st);
+					world.updateNeighbors(l, MBlocks.SLUDGE);
 				} else {
 					world.setBlockState(l, state);
 					world.updateNeighbors(l, state.getBlock());
 				}
 				world.playSound(null, l.getX(), l.getY(), l.getZ(), SoundEvents.BLOCK_NYLIUM_BREAK, SoundCategory.BLOCKS, 0.5f, 0.8f + world.random.nextFloat() * 0.4f);
 			});
-		}
+		} else
+			posToProcess.remove(l);
 		if(posToProcess.isEmpty())
 			currentChunk = null;
 		return false;

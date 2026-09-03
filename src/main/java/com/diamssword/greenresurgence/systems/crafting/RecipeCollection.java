@@ -18,18 +18,18 @@ public class RecipeCollection {
 		recipes.put(id, recipe.setID(this.id, id));
 	}
 
+	public Identifier getId() {
+		return id;
+	}
+
 	public void add(SimpleRecipe recipe) {
 		var id1 = "";
 		var id = recipe.getId();
 		if(id != null) {
-			id1 = id.getPath().substring(id.getPath().lastIndexOf("/") + 1);
+			id1 = id.getId();
 		} else
 			id1 = recipes.size() + "";
 		recipes.put(id1, recipe.setID(this.id, id1));
-	}
-
-	public static Identifier getCollectionFromFullId(Identifier id) {
-		return new Identifier(id.getNamespace(), id.getPath().substring(0, id.getPath().lastIndexOf("/")));
 	}
 
 	public void addAll(Map<String, SimpleRecipe> recipes) {

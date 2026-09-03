@@ -281,7 +281,7 @@ public class CustomPlayerInventory implements ICharacterStored {
 
 	public List<Inventory> getSortedPickingInventories(ItemStack sortFor) {
 		List<IGridContainer> res = getAsContainers(true);
-	
+
 		res.sort((a, b) -> b.getQuickSlotPriority(sortFor) - a.getQuickSlotPriority(sortFor));
 
 		return res.stream().map(IGridContainer::getInventory).toList();

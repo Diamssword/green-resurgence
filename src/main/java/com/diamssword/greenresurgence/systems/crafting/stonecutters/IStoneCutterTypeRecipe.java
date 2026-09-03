@@ -9,9 +9,10 @@ import java.util.List;
 public interface IStoneCutterTypeRecipe {
 
 
-	public List<UniversalResource> getResultForOutput(UniversalResource input, @Nullable PlayerEntity player);
+	public List<UniversalResource> getResultForInput(UniversalResource input, @Nullable PlayerEntity player);
 
-	public default List<UniversalResource> getResultForOutput(UniversalResource input) {
-		return getResultForOutput(input, null);
+	public default List<UniversalResource> getResultForInput(UniversalResource input) {
+		return getResultForInput(input, null);
 	}
+
 }

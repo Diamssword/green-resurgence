@@ -18,6 +18,7 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -43,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class EquipmentTool extends StackBasedGeckoItem implements FabricItem, IEquipementItem {
+public class EquipmentTool extends StackBasedGeckoItem implements Equipment, FabricItem, IEquipementItem {
 
 	public final String category;
 	public final String subCategory;
@@ -251,4 +252,8 @@ public class EquipmentTool extends StackBasedGeckoItem implements FabricItem, IE
 		return MathHelper.hsvToRgb(getDurabilityProgress(stack) / 3.0F, 1.0F, 1.0F);
 	}
 
+	@Override
+	public EquipmentSlot getSlotType() {
+		return EquipmentSlot.MAINHAND;
+	}
 }

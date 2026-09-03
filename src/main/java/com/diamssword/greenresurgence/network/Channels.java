@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.network;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.grids.GridContainerSyncer;
 import com.diamssword.greenresurgence.systems.armor.ArmorLoader;
+import com.diamssword.greenresurgence.systems.crafting.ComposedIdentifier;
 import com.diamssword.greenresurgence.systems.crafting.CraftingResult;
 import com.diamssword.greenresurgence.systems.crafting.RecipeLoader;
 import com.diamssword.greenresurgence.systems.crafting.SimpleRecipe;
@@ -41,6 +42,7 @@ public class Channels {
 		PacketBufSerializer.register(FactionMember.class, FactionMember::serializer, FactionMember::unserializer);
 		PacketBufSerializer.register(FactionPerm.class, FactionPerm::serializer, FactionPerm::unserializer);
 		PacketBufSerializer.register(BlockState.class, StructureSizePacket::serializer, StructureSizePacket::unserializer);
+		PacketBufSerializer.register(ComposedIdentifier.class, (a, b) -> a.writeString(b.toString()), a -> new ComposedIdentifier(a.readString()));
 		AdventureInteract.init();
 		StructureSizePacket.init();
 		CurrentZonePacket.init();

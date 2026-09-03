@@ -10,6 +10,7 @@ import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -105,6 +106,8 @@ public class MBlocks implements BlockRegistryContainer {
 	@ModelGen
 	public static final CrafterBlock CRAFTER = new CrafterBlock();
 	@ModelGen
+	public static final StoneCutterBlock STONE_CUTTER = new StoneCutterBlock();
+	@ModelGen
 	public static final GeneratorBlock GENERATOR_T1 = new GeneratorBlock(FabricBlockSettings.create());
 	@NoItemGroup
 	public static final DeployableLadderBlock DEPLOYABLE_LADDER = new DeployableLadderBlock(FabricBlockSettings.create().resistance(20000).sounds(BlockSoundGroup.WOOL));
@@ -138,6 +141,8 @@ public class MBlocks implements BlockRegistryContainer {
 	@NoItemGroup
 	@NoDrop
 	public static final DeployableMachineBlock DEPLOYABLE_MACHINE_BLOCK = new DeployableMachineBlock(AbstractBlock.Settings.create().nonOpaque().dropsNothing().strength(99999, 99999).suffocates(Blocks::never));
+	@NoDrop
+	public static final SludgeBlock SLUDGE = new SludgeBlock(AbstractBlock.Settings.create().mapColor(MapColor.DARK_GREEN).replaceable().noCollision().ticksRandomly().sounds(BlockSoundGroup.SLIME).pistonBehavior(PistonBehavior.DESTROY));
 
 	@Override
 	public void afterFieldProcessing() {

@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.systems.character;
 
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.systems.Components;
+import com.diamssword.greenresurgence.systems.crafting.ComposedIdentifier;
 import com.diamssword.greenresurgence.systems.crafting.PendingCraft;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
 import com.diamssword.greenresurgence.systems.crafting.TimedCraftingProvider;
@@ -17,7 +18,6 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Contract;
 
 public class PlayerInventoryData implements ComponentV3, ServerTickingComponent, ClientTickingComponent, AutoSyncedComponent {
@@ -105,7 +105,7 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 				var ls = tag.getList("pendingcrafts", NbtElement.STRING_TYPE);
 				crafterProvider.clearPendings();
 				ls.forEach(l1 -> {
-					var r = Recipes.getRecipe(new Identifier(l1.asString()));
+					var r = Recipes.getRecipe(new ComposedIdentifier(l1.asString()));
 					r.ifPresent(recipe -> crafterProvider.addPending(new PendingCraft(recipe)));
 				});
 			}

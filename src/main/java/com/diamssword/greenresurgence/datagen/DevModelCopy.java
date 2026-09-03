@@ -20,6 +20,6 @@ public class DevModelCopy extends Model {
 
 	@Override
 	public JsonObject createJson(Identifier id, Map<TextureKey, Identifier> textures) {
-		return SchematicBlockStateSupplier.deepCopyWithStringReplace(ModelHelper.readDevModel("models/items/" + path + ".json"), searchAndReplace).getAsJsonObject();
+		return SchematicBlockStateSupplier.deepCopyWithStringReplace(ModelHelper.readDevModel("models/" + path + ".json"), searchAndReplace).getAsJsonObject();
 	}
 }

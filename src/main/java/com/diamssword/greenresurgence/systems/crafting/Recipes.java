@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.systems.crafting;
 
+import com.diamssword.greenresurgence.systems.crafting.stonecutters.IStoneCutterTypeRecipe;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
@@ -13,11 +14,15 @@ public class Recipes {
 		return loader.getCollection(id);
 	}
 
-	public static Optional<SimpleRecipe> getRecipe(Identifier id) {
-		var i = get(RecipeCollection.getCollectionFromFullId(id));
+	public static Optional<SimpleRecipe> getRecipe(ComposedIdentifier id) {
+		var i = get(id.getCollection());
 		if(i.isPresent()) {
-			return i.get().getById(id.getPath().substring(id.getPath().lastIndexOf("/") + 1));
+			return i.get().getById(id.getId());
 		}
 		return Optional.empty();
+	}
+
+	public static Optional<IStoneCutterTypeRecipe> getStoneCutter(Identifier collection) {
+		return loader.getStoneCutter(collection);
 	}
 }

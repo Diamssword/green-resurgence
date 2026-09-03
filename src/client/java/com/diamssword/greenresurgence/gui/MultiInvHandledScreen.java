@@ -7,9 +7,11 @@ import com.diamssword.greenresurgence.containers.AbstractMultiInvScreenHandler;
 import com.diamssword.greenresurgence.gui.components.InventoryComponent;
 import com.diamssword.greenresurgence.systems.crafting.UniversalResource;
 import com.google.common.collect.Sets;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import io.wispforest.owo.Owo;
+import io.wispforest.owo.renderdoc.RenderDoc;
 import io.wispforest.owo.ui.base.BaseOwoScreen;
 import io.wispforest.owo.ui.base.BaseParentComponent;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
@@ -188,7 +190,7 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
 	}
 
 	protected @NotNull OwoUIAdapter<R> createAdapter() {
-		return this.model.createAdapter(rootComponentClass, this);
+		return new MyAdapter<>(this.model.createAdapter(rootComponentClass, this));
 	}
 
 	/**
@@ -264,15 +266,17 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
 		int j = this.y;
 		this.drawBackground(context, delta, mouseX, mouseY);
 		RenderSystem.disableDepthTest();
-		super.render(context, mouseX, mouseY, delta);
+		context.draw();
+		uiAdapter.render(context, mouseX, mouseY, delta);
+		//super.render(context, mouseX, mouseY, delta);
+		context.draw();
 		context.getMatrices().push();
 		context.getMatrices().translate(i, j, 0.0f);
 		this.focusedSlot = null;
 		drawSlots(context, mouseX, mouseY, delta);
 		this.drawForeground(context, mouseX, mouseY);
-		ItemStack itemStack2 = itemStack = this.touchDragStack.isEmpty() ? this.handler.getCursorStack() : this.touchDragStack;
+		itemStack = this.touchDragStack.isEmpty() ? this.handler.getCursorStack() : this.touchDragStack;
 		if(!itemStack.isEmpty()) {
-			int n = 8;
 			l = this.touchDragStack.isEmpty() ? 8 : 16;
 			String string = null;
 			if(!this.touchDragStack.isEmpty() && this.touchIsRightClickDrag) {
@@ -298,6 +302,58 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
 		RenderSystem.enableDepthTest();
 
 		this.drawMouseoverTooltip(context, mouseX, mouseY);
+		if(this.uiAdapter != null && this.uiAdapter.rootComponent != null) {
+			this.uiAdapter.rootComponent.drawTooltip(context1, mouseX, mouseY, MinecraftClient.getInstance().getLastFrameDuration(), delta);
+		}
+	}
+
+	private static class MyAdapter<R extends ParentComponent> extends OwoUIAdapter<R> {
+
+
+		protected MyAdapter(OwoUIAdapter<R> parent) {
+			super(parent.x(), parent.y(), parent.width(), parent.height(), parent.rootComponent);
+		}
+
+		@Override
+		public void render(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+			if(!(context instanceof OwoUIDrawContext)) context = OwoUIDrawContext.of(context);
+			var owoContext = (OwoUIDrawContext) context;
+			try {
+
+				if(this.captureFrame) RenderDoc.startFrameCapture();
+
+				final var delta = MinecraftClient.getInstance().getLastFrameDuration();
+				final var window = MinecraftClient.getInstance().getWindow();
+
+				this.rootComponent.update(delta, mouseX, mouseY);
+
+				RenderSystem.enableDepthTest();
+				GlStateManager._enableScissorTest();
+
+				GlStateManager._scissorBox(0, 0, window.getFramebufferWidth(), window.getFramebufferHeight());
+				this.rootComponent.draw(owoContext, mouseX, mouseY, partialTicks, delta);
+
+				GlStateManager._disableScissorTest();
+				RenderSystem.disableDepthTest();
+
+				//this.rootComponent.drawTooltip(owoContext, mouseX, mouseY, partialTicks, delta);
+
+				final var hovered = this.rootComponent.childAt(mouseX, mouseY);
+				if(!disposed && hovered != null) {
+					this.cursorAdapter.applyStyle(hovered.cursorStyle());
+				}
+
+				if(this.enableInspector) {
+					context.getMatrices().translate(0, 0, this.inspectorZOffset);
+					owoContext.drawInspector(this.rootComponent, mouseX, mouseY, !this.globalInspector);
+					context.getMatrices().translate(0, 0, -this.inspectorZOffset);
+				}
+
+				if(this.captureFrame) RenderDoc.endFrameCapture();
+			} finally {
+				this.captureFrame = false;
+			}
+		}
 	}
 
 	public static void drawSlotHighlight(DrawContext context, int x, int y, int z) {
@@ -376,13 +432,16 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
 				context.fill(pos.getFirst(), pos.getSecond(), pos.getFirst() + 16, pos.getSecond() + 16, -2130706433);
 			}
 			context.drawItem(itemStack, pos.getFirst(), pos.getSecond(), pos.getFirst() + pos.getSecond() * this.backgroundWidth);
+			context.getMatrices().push();
 			if(string != null || itemStack.isItemBarVisible())
 				context.drawItemInSlot(this.textRenderer, itemStack, pos.getFirst(), pos.getSecond(), string);
 			else if(!itemStack.isEmpty() && itemStack.getCount() > 1)
 				RessourceGuiHelper.drawRessourceExtra(context, UniversalResource.fromItemOpti(itemStack), pos.getFirst(), pos.getSecond(), 0, 16777215);
+			context.pop();
 		}
 		context.getMatrices().pop();
 	}
+
 
 	protected void drawSlotExtra(DrawContext ctx, int x, int y, Slot slot, String inventory) {
 
