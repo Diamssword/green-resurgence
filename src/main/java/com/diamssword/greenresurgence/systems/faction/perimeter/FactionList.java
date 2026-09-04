@@ -58,11 +58,12 @@ public class FactionList implements ServerTickingComponent {
 			guilds.add(guild);
 			guild.getOwner().asPlayer(this.provider).ifPresent(p -> {
 				if(!p.getWorld().isClient) {
-					CurrentZonePacket.sendCreativeDebugZone(this.provider, null);
-					CurrentZonePacket.sendDebugZone(this.provider, p);
+
 					Channels.MAIN.serverHandle(p).send(new CurrentZonePacket.MyGuild(guild.getId(), guild.getName()));
 				}
 			});
+			if(this.provider.getServer() != null && !this.provider.isClient)
+				CurrentZonePacket.sendCreativeDebugZoneToAll(this.provider.getServer());
 			return true;
 		} else
 			return false;
@@ -80,10 +81,14 @@ public class FactionList implements ServerTickingComponent {
 
 	public boolean doBoxIntersectWithOtherFaction(UUID guildOwner, BlockBox box) {
 		for(FactionGuild guild : guilds) {
-			for(FactionZone terrain : guild.getAllTerrains()) {
-				if(terrain.getBounds().intersects(box)) {
-					if(!guild.getOwner().getId().equals(guildOwner))
-						return true;
+			if(!guild.getOwner().getId().equals(guildOwner)) {
+				for(FactionArea area : guild.getAllAreas()) {
+					if(area.getBounds().intersects(box)) {
+						for(var t : area.getAllTerrains()) {
+							if(t.getBounds().intersects(box))
+								return true;
+						}
+					}
 				}
 			}
 		}

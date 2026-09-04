@@ -1,14 +1,17 @@
 package com.diamssword.greenresurgence.systems.faction.perimeter.components;
 
+import com.diamssword.greenresurgence.systems.faction.perimeter.FactionArea;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
+import org.jetbrains.annotations.Nullable;
 
 public class FactionZone {
 	private final FactionGuild owner;
 	private final BlockBox bounds;
 	private final boolean isMainZone = false;
+	private @Nullable FactionArea area;
 
 	public FactionZone(FactionGuild owner, BlockBox bounds) {
 		this.bounds = bounds;
@@ -28,6 +31,11 @@ public class FactionZone {
 
 	}
 
+	public FactionZone setArea(FactionArea area) {
+		this.area = area;
+		return this;
+	}
+
 	public boolean isIn(Vec3i pos) {
 		return bounds.contains(pos);
 	}
@@ -38,6 +46,10 @@ public class FactionZone {
 
 	public BlockBox getBounds() {
 		return bounds;
+	}
+
+	public BlockPos getCenter() {
+		return bounds.getCenter();
 	}
 
 	public boolean fullyContainsBox(BlockBox other) {
@@ -51,7 +63,12 @@ public class FactionZone {
 	}
 
 	public FactionGuild getOwner() {
-		return owner;
+		return getArea().getOwner();
+	}
+
+	@Nullable
+	public FactionArea getArea() {
+		return area;
 	}
 
 	public static BlockBox BoundFromArray(int[] arr) {

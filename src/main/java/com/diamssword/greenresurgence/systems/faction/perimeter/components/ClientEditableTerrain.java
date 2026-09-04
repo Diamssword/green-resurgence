@@ -5,14 +5,19 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ClientEditableTerrain {
-	public List<FactionZone> zones = new ArrayList<>();
+	public List<FactionZone> zones = Collections.synchronizedList(new ArrayList<>());
 	public FactionPerm perms;
 
 	public ClientEditableTerrain(FactionGuild guild, PlayerEntity player) {
-		zones = guild.getAllTerrains();
+
+		guild.getAreaAt(player.getBlockPos()).ifPresent(p -> {
+			zones = Collections.synchronizedList(p.getAllTerrains());
+		});
+
 		perms = guild.getPermsOf(new FactionMember(player));
 	}
 

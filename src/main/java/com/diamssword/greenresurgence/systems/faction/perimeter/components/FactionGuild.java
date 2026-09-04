@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.systems.faction.perimeter.components;
 import com.diamssword.greenresurgence.events.BaseEventCallBack;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;
+import com.diamssword.greenresurgence.systems.faction.perimeter.FactionArea;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -30,19 +31,20 @@ public class FactionGuild {
 	 */
 	private Map<FactionMember, String> members = new HashMap<>();
 	private final Map<FactionMember, FactionPerm> allies = new HashMap<>();
-	private final List<FactionZone> terrains = new ArrayList<>();
+	//private final List<FactionZone> terrains = new ArrayList<>();
+	private final List<FactionArea> areas = new ArrayList<>();
 	private final List<DeprecatingFactionZone> deprecatedTerrains = new ArrayList<>();
+	public FactionTerrainStorage storage = new FactionTerrainStorage();
+	public TerrainEnergyStorage energyStorage = new TerrainEnergyStorage();
 
 	public UUID getId() {
 		return id;
 	}
 
+
 	public String getName() {
 		return name;
 	}
-
-	public FactionTerrainStorage storage = new FactionTerrainStorage();
-	public TerrainEnergyStorage energyStorage = new TerrainEnergyStorage();
 
 	public FactionMember getOwner() {
 		return owner;
@@ -87,7 +89,6 @@ public class FactionGuild {
 		if(!world.isClient) {
 			if(member.isPlayer()) {
 				member.asPlayer(world).ifPresent(v -> {
-					CurrentZonePacket.sendDebugZone(world, v);
 					Channels.MAIN.serverHandle(v).send(new CurrentZonePacket.MyGuild(this.getId(), this.getName()));
 				});
 
@@ -130,19 +131,24 @@ public class FactionGuild {
 	}
 
 	public void addTerrain(BlockPos center, int size, @Nullable World world) {
-		terrains.add(new FactionZone(this, center, size));
-		this.getOwner().asPlayer(world).ifPresent(p -> {
-			if(!p.getWorld().isClient) {
-				CurrentZonePacket.sendDebugZone(p.getWorld(), p);
-				CurrentZonePacket.sendCreativeDebugZone(p.getWorld(), null);
+		var b = false;
+		for(FactionArea area : areas) {
+			if(area.addIfValid(new FactionZone(this, center, size))) {
+				b = true;
+				break;
 			}
-		});
+		}
+		if(!b) {
+			areas.add(new FactionArea(this, new FactionZone(this, center, size)));
+		}
+		if(world != null && !world.isClient && world.getServer() != null)
+			CurrentZonePacket.sendCreativeDebugZoneToAll(world.getServer());
 	}
 
 	public static FactionGuild createForPlayer(PlayerEntity player, BlockPos pos, int radius) {
 		var r = new FactionGuild();
 		r.owner = new FactionMember(player);
-		r.terrains.add(new FactionZone(r, pos, radius));
+		r.areas.add(new FactionArea(r, new FactionZone(r, pos, radius)));
 		r.name = player.getName().getString() + "'s Claim" + r.getId().toString().substring(r.getId().toString().length() - 5);
 		r.addDefaultRole();
 		return r;
@@ -167,21 +173,43 @@ public class FactionGuild {
 	}
 
 	public boolean isIn(Vec3i pos) {
-		for(FactionZone b : terrains) {
+		for(FactionArea b : areas) {
 			if(b.isIn(pos))
 				return true;
 		}
 		return false;
 	}
 
-	public List<FactionZone> getAllTerrains() {
-		return terrains;
+	public Optional<FactionArea> getClosestArea(Vec3i pos, int maxDistance) {
+		FactionArea c = null;
+		double dist = maxDistance;
+		for(FactionArea area : areas) {
+			var d1 = area.getBounds().getCenter().getSquaredDistance(pos);
+			if(d1 < dist) {
+				c = area;
+				dist = d1;
+			}
+		}
+		return Optional.ofNullable(c);
+	}
+
+	public List<FactionArea> getAllAreas() {
+		return areas;
+	}
+
+	public Optional<FactionArea> getAreaAt(Vec3i pos) {
+		for(var b : areas) {
+			if(b.isIn(pos))
+				return Optional.of(b);
+		}
+		return Optional.empty();
 	}
 
 	public Optional<FactionZone> getTerrainAt(Vec3i pos) {
-		for(var b : terrains) {
-			if(b.isIn(pos))
-				return Optional.of(b);
+		for(var b : areas) {
+			var b1 = b.terrainAt(pos);
+			if(b1.isPresent())
+				return b1;
 		}
 		return Optional.empty();
 	}
@@ -233,7 +261,6 @@ public class FactionGuild {
 					BaseEventCallBack.LEAVE.invoker().enterOrLeave(p, this);
 				} else
 					BaseEventCallBack.PLAYER_TICK.invoker().tick(p, this);
-
 			} else {
 				if(this.isIn(p.getBlockPos())) {
 					inBase.add(p);
@@ -258,10 +285,10 @@ public class FactionGuild {
 		if(id != null) {
 			var res = new FactionGuild(id);
 			res.name = tag.getString("name");
-			NbtList ls = tag.getList("terrains", NbtList.COMPOUND_TYPE);
+			NbtList ls = tag.getList("areas", NbtList.COMPOUND_TYPE);
 			ls.forEach(c -> {
-				FactionZone b = new FactionZone(res, (NbtCompound) c);
-				res.terrains.add(b);
+				FactionArea b = new FactionArea(res, (NbtCompound) c);
+				res.areas.add(b);
 			});
 			NbtList lsDe = tag.getList("deprecatingTerrains", NbtList.COMPOUND_TYPE);
 			lsDe.forEach(c -> {
@@ -315,12 +342,12 @@ public class FactionGuild {
 		owner.writeNbt(t3);
 		tag.put("owner", t3);
 		NbtList zones = new NbtList();
-		this.terrains.forEach(b -> {
+		this.areas.forEach(b -> {
 			var tg = new NbtCompound();
 			b.writeNbt(tg);
 			zones.add(tg);
 		});
-		tag.put("terrains", zones);
+		tag.put("areas", zones);
 		NbtList depZones = new NbtList();
 		this.deprecatedTerrains.forEach(b -> {
 			var tg = new NbtCompound();
@@ -406,10 +433,7 @@ public class FactionGuild {
 
 	public List<FactionZone> getTerrainsAt(BlockPos pos) {
 		List<FactionZone> r = new ArrayList<>();
-		terrains.forEach(f -> {
-			if(f.getBounds().contains(pos))
-				r.add(f);
-		});
+		areas.forEach(f -> f.getTerrainsAt(pos, r));
 		return r;
 	}
 
@@ -423,26 +447,24 @@ public class FactionGuild {
 	}
 
 	public void removeTerrain(FactionZone zone, WorldAccess world) {
-		this.terrains.remove(zone);
-		this.getOwner().asPlayer(world).ifPresent(p1 -> {
-			if(!p1.getWorld().isClient) {
-				CurrentZonePacket.sendDebugZone(p1.getWorld(), p1);
+		FactionArea areaRem = null;
+		for(FactionArea area : this.areas) {
+			if(area.remove(zone)) {
+				if(area.isEmpty())
+					areaRem = area;
+				break;
 			}
-		});
-		if(!world.isClient())
-			this.getMembers().forEach(m -> {
-				m.asPlayer(world).ifPresent(p1 -> {
-					CurrentZonePacket.sendDebugZone(p1.getWorld(), p1);
-				});
-			});
+		}
+		if(areaRem != null)
+			areas.remove(areaRem);
 		if(world instanceof ServerWorld sw) {
 			sw.getPlayers().forEach(p -> {
-				CurrentZonePacket.sendCreativeDebugZone(p.getWorld(), null);
 				if(zone.isIn(p.getBlockPos())) {
 					inBase.remove(p);
 					BaseEventCallBack.LEAVE.invoker().enterOrLeave(p, this);
 				}
 			});
+			CurrentZonePacket.sendCreativeDebugZoneToAll(sw.getServer());
 		}
 
 	}

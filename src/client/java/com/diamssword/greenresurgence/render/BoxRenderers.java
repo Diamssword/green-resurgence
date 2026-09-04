@@ -145,7 +145,8 @@ public class BoxRenderers {
 					drawStructureBox(ctx, consumers, new Vec3d(b.getRight().getMinX(), b.getRight().getMinY(), b.getRight().getMinZ()), Vec3d.of(b.getRight().getDimensions().add(1, 1, 1)), red, green, blue, 1);
 				});
 			} else if(ClaimAntennaGui.viewBounds && mc.player != null) {
-				CurrentZonePacket.OwnFactionBounds.forEach(b -> {
+				CurrentZonePacket.currentZone.zones.forEach(z -> {
+					var b = z.getBounds();
 					if(b.getCenter().isWithinDistance(mc.cameraEntity.getPos(), 128)) {
 						drawStructureBox(ctx, consumers, new Vec3d(b.getMinX(), Math.min(b.getMaxY(), Math.max(b.getMinY(), Math.ceil(mc.player.getY()))), b.getMinZ()), new Vec3d(b.getDimensions().getX() + 1, 0, b.getDimensions().getY() + 1), 1f, 0.8f, 0.8f, 0.8f);
 						drawStructureBox(ctx, consumers, new Vec3d(b.getMinX(), b.getMinY(), b.getMinZ()), Vec3d.of(b.getDimensions().add(1, 1, 1)), 1f, 1f, 1f, 1);

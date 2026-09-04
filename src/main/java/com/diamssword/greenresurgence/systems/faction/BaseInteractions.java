@@ -83,6 +83,7 @@ public class BaseInteractions {
 				player.changeGameMode(GameMode.SURVIVAL);
 			Channels.MAIN.serverHandle(player).send(CurrentZonePacket.from(base, player));
 		}
+		CurrentZonePacket.sendCreativeDebugZone(player);
 	}
 
 	public static boolean shouldOverlayBlock(World world, BlockPos pos, BlockState state) {
