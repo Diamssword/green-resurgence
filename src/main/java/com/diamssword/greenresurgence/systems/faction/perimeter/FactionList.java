@@ -39,6 +39,15 @@ public class FactionList implements ServerTickingComponent {
 
 	}
 
+	public Optional<FactionArea> getAreaAt(Vec3i pos) {
+		for(FactionGuild base : guilds) {
+			var b = base.getAreaAt(pos);
+			if(b.isPresent())
+				return b;
+		}
+		return Optional.empty();
+	}
+
 	public Optional<FactionZone> getTerrainAt(Vec3i pos) {
 		for(FactionGuild base : guilds) {
 			var b = base.getTerrainAt(pos);

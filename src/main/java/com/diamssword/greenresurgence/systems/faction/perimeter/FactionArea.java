@@ -1,12 +1,15 @@
 package com.diamssword.greenresurgence.systems.faction.perimeter;
 
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionGuild;
+import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionTerrainStorage;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionZone;
+import com.diamssword.greenresurgence.systems.faction.perimeter.components.TerrainEnergyStorage;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +20,25 @@ public class FactionArea {
 	private BlockBox bounds = new BlockBox(BlockPos.ORIGIN);
 	private final List<FactionZone> terrains = new ArrayList<>();
 	private final FactionGuild owner;
+	private final FactionTerrainStorage storage = new FactionTerrainStorage();
+	private final TerrainEnergyStorage energyStorage = new TerrainEnergyStorage();
 
-	public FactionArea(FactionGuild owner, NbtCompound fromNBT) {
+	public FactionArea(FactionGuild owner, World world, NbtCompound fromNBT) {
 		this.owner = owner;
 		NbtList ls = fromNBT.getList("terrains", NbtList.COMPOUND_TYPE);
 		ls.forEach(c -> {
 			FactionZone b = new FactionZone(owner, (NbtCompound) c).setArea(this);
 			this.terrains.add(b);
 		});
+		if(fromNBT.contains("storage")) {
+			storage.fromNBT(fromNBT.getCompound("storage"), world);
+		}
+		if(fromNBT.contains("energy")) {
+			energyStorage.fromNBT(fromNBT.getCompound("energy"));
+		}
 		recalculateBounds();
 	}
+
 
 	public FactionArea(FactionGuild owner, FactionZone initial) {
 		this.bounds = new BlockBox(initial.getBounds().getCenter()).expand(maxDistanceBetweenCenters);
@@ -46,6 +58,20 @@ public class FactionArea {
 			zones.add(tg);
 		});
 		tag.put("terrains", zones);
+		var t1 = new NbtCompound();
+		storage.toNBT(t1);
+		tag.put("storage", t1);
+		var t2 = new NbtCompound();
+		energyStorage.toNBT(t2);
+		tag.put("energy", t1);
+	}
+
+	public FactionTerrainStorage getStorage() {
+		return storage;
+	}
+
+	public TerrainEnergyStorage getEnergyStorage() {
+		return energyStorage;
 	}
 
 	public boolean isIn(Vec3i pos) {

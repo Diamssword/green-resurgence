@@ -2,7 +2,7 @@ package com.diamssword.greenresurgence.systems.crafting;
 
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.systems.Components;
-import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionZone;
+import com.diamssword.greenresurgence.systems.faction.perimeter.FactionArea;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
@@ -30,8 +30,8 @@ public class CraftingProvider {
 
 	public CraftingProvider setForFaction(PlayerEntity player, BlockPos pos) {
 		var ls = player.getWorld().getComponent(Components.BASE_LIST);
-		ls.getTerrainAt(pos).ifPresent(t -> {
-			setInventories(InventoryStorage.of(CustomPlayerInventory.getPlayerCombinedInventory(player), null), InventoryStorage.of(t.getOwner().storage, null));
+		ls.getAreaAt(pos).ifPresent(t -> {
+			setInventories(InventoryStorage.of(CustomPlayerInventory.getPlayerCombinedInventory(player), null), InventoryStorage.of(t.getStorage(), null));
 		});
 		return this;
 	}
@@ -46,11 +46,11 @@ public class CraftingProvider {
 
 	;
 
-	public CraftingProvider setForTerrain(FactionZone terrain, @Nullable PlayerEntity player) {
+	public CraftingProvider setForTerrain(FactionArea terrain, @Nullable PlayerEntity player) {
 		if(player != null)
-			setInventories(InventoryStorage.of(CustomPlayerInventory.getPlayerCombinedInventory(player), null), InventoryStorage.of(terrain.getOwner().storage, null));
+			setInventories(InventoryStorage.of(CustomPlayerInventory.getPlayerCombinedInventory(player), null), InventoryStorage.of(terrain.getStorage(), null));
 		else
-			setInventories(InventoryStorage.of(terrain.getOwner().storage, null));
+			setInventories(InventoryStorage.of(terrain.getStorage(), null));
 		return this;
 	}
 

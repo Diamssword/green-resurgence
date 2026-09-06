@@ -28,11 +28,11 @@ import java.lang.reflect.Field;
 public class MBlocks implements BlockRegistryContainer {
 
 	@NoItemGroup
-	public static final LootedBlock LOOTED_BLOCK = new LootedBlock(AbstractBlock.Settings.create().nonOpaque().dropsNothing().strength(99999, 99999).suffocates(Blocks::never));
+	public static final LootedBlock LOOTED_BLOCK = new LootedBlock(AbstractBlock.Settings.create().nonOpaque().dropsNothing().strength(1, 99999).suffocates(Blocks::never));
 	@DiamsGroup
-	public static final ConnectorBlock CONNECTOR = new ConnectorBlock(AbstractBlock.Settings.create().nonOpaque().strength(99999, 99999).suffocates(Blocks::never), new Vec3d(0, 0.25, 0));
+	public static final ConnectorBlock CONNECTOR = new ConnectorBlock(AbstractBlock.Settings.create().nonOpaque().strength(1, 99999).suffocates(Blocks::never), new Vec3d(0, 0.25, 0));
 	@DiamsGroup
-	public static final ConnectorBlock ELECTRICAL_POWER_COIL = new ConnectorBlock(AbstractBlock.Settings.create().nonOpaque().strength(99999, 99999).suffocates(Blocks::never), new Vec3d(0, 0.8, 0));
+	public static final ConnectorBlock ELECTRICAL_POWER_COIL = new ConnectorBlock(AbstractBlock.Settings.create().nonOpaque().strength(1, 99999).suffocates(Blocks::never), new Vec3d(0, 0.8, 0));
 
 	@DiamsGroup
 	public static final MetroCorridorFull METRO_CORRIDOR = new MetroCorridorFull(AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL), 0);
@@ -72,7 +72,9 @@ public class MBlocks implements BlockRegistryContainer {
 	};
 	//public static final StructureBlock STRUCTURE_BLOCK =new StructureBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
 	//public static final SmartStructureBlock STRUCTURE_BLOCK_SMART =new SmartStructureBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___)->false).nonOpaque());
+	@NoDrop
 	public static final ItemBlock ITEM_BLOCK = new ItemBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque());
+	@NoDrop
 	public static final LootableItemBlock LOOT_ITEM_BLOCK = new LootableItemBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque());
 	@DiamsGroup
 	public static final ShelfBlock SHELF_BLOCK = new ShelfBlock(FabricBlockSettings.create().resistance(20000).solidBlock((_1, __, ___) -> false).nonOpaque(), false) {
@@ -100,9 +102,9 @@ public class MBlocks implements BlockRegistryContainer {
 		}
 	};
 	@ModelGen
-	public static final BaseStorageBlock BASE_CRATE_T1 = new BaseStorageBlock(FabricBlockSettings.create().resistance(20000).sounds(BlockSoundGroup.WOOD), 9);
+	public static final BaseStorageBlock BASE_CRATE_T1 = new BaseStorageBlock(FabricBlockSettings.create().ticksRandomly().resistance(20000).sounds(BlockSoundGroup.WOOD), 9);
 	@ModelGen
-	public static final BaseStorageBlock BASE_CRATE_T2 = new BaseStorageBlock(FabricBlockSettings.create().resistance(20000).sounds(BlockSoundGroup.WOOD), 18);
+	public static final BaseStorageBlock BASE_CRATE_T2 = new BaseStorageBlock(FabricBlockSettings.create().ticksRandomly().resistance(20000).sounds(BlockSoundGroup.WOOD), 18);
 	@ModelGen
 	public static final CrafterBlock CRAFTER = new CrafterBlock();
 	@ModelGen

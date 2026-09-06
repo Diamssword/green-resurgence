@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.blockEntities;
 
 import com.diamssword.greenresurgence.systems.Components;
-import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionZone;
+import com.diamssword.greenresurgence.systems.faction.perimeter.FactionArea;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -21,7 +21,7 @@ public class GeneratorBlockEntity extends BlockEntity {
 
 	private int burntime = 0;
 	public final int rfGen;
-	private FactionZone terrain;
+	private FactionArea terrain;
 
 	public GeneratorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, int rfPerTick) {
 		super(type, pos, state);
@@ -33,18 +33,18 @@ public class GeneratorBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(World world, BlockPos pos, BlockState state, GeneratorBlockEntity blockEntity) {
-		if (world.getTime() % 10 == 0) {
+		if(world.getTime() % 10 == 0) {
 			var bl = world.getComponent(Components.BASE_LIST);
-			blockEntity.terrain = bl.getTerrainAt(pos).orElseGet(() -> null);
+			blockEntity.terrain = bl.getAreaAt(pos).orElseGet(() -> null);
 
 		}
-		if (blockEntity.terrain != null) {
+		if(blockEntity.terrain != null) {
 
-			if (blockEntity.burntime <= 0) {
-				var inv = InventoryStorage.of(blockEntity.terrain.getOwner().storage, null);
-				try (Transaction t1 = Transaction.openOuter()) {
+			if(blockEntity.burntime <= 0) {
+				var inv = InventoryStorage.of(blockEntity.terrain.getStorage(), null);
+				try(Transaction t1 = Transaction.openOuter()) {
 					var ext = inv.extract(ItemVariant.of(Items.COAL), 1, t1);
-					if (ext > 0) {
+					if(ext > 0) {
 						blockEntity.burntime = 200;
 						t1.commit();
 						blockEntity.markDirty();
@@ -52,10 +52,10 @@ public class GeneratorBlockEntity extends BlockEntity {
 				}
 
 			}
-			if (blockEntity.burntime > 0) {
+			if(blockEntity.burntime > 0) {
 				blockEntity.burntime--;
-				try (Transaction t1 = Transaction.openOuter()) {
-					blockEntity.terrain.getOwner().energyStorage.insert(blockEntity.rfGen, t1);
+				try(Transaction t1 = Transaction.openOuter()) {
+					blockEntity.terrain.getEnergyStorage().insert(blockEntity.rfGen, t1);
 					t1.commit();
 				}
 				blockEntity.markDirty();

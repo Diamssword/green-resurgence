@@ -8,7 +8,7 @@ import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import com.diamssword.greenresurgence.containers.grids.GridContainer;
 import com.diamssword.greenresurgence.containers.grids.IGridContainer;
 import com.diamssword.greenresurgence.systems.Components;
-import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionZone;
+import com.diamssword.greenresurgence.systems.faction.perimeter.FactionArea;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.SpecialPlacement;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -23,6 +23,7 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
@@ -30,6 +31,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -85,8 +87,8 @@ public class BaseStorageBlock extends ModBlockEntity<GenericStorageBlockEntity> 
 		if(state.getBlock() != newState.getBlock()) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			var ls = world.getComponent(Components.BASE_LIST);
-			var terr = ls.getTerrainAt(pos);
-			terr.ifPresent(terrainInstance -> terrainInstance.getOwner().storage.removeInventory(pos));
+			var terr = ls.getAreaAt(pos);
+			terr.ifPresent(terrainInstance -> terrainInstance.getStorage().removeInventory(pos));
 			if(blockEntity instanceof GenericStorageBlockEntity) {
 				ItemScatterer.spawn(world, pos, (Inventory) blockEntity);
 				((GenericStorageBlockEntity) blockEntity).clear();
@@ -137,13 +139,29 @@ public class BaseStorageBlock extends ModBlockEntity<GenericStorageBlockEntity> 
 	}
 
 	@Override
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		super.randomTick(state, world, pos, random);
+		var ls = world.getComponent(Components.BASE_LIST);
+		var terr = ls.getAreaAt(pos);
+		if(terr.isPresent()) {
+			var te = world.getBlockEntity(pos);
+			if(te instanceof GenericStorageBlockEntity te1) {terr.get().getStorage().addIfMissing(pos, te1);}
+		}
+	}
+
+	@Override
+	public boolean hasRandomTicks(BlockState state) {
+		return true;
+	}
+
+	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
 		super.onPlaced(world, pos, state, placer, itemStack);
 		var ls = world.getComponent(Components.BASE_LIST);
-		var terr = ls.getTerrainAt(pos);
+		var terr = ls.getAreaAt(pos);
 		if(terr.isPresent()) {
 			var te = world.getBlockEntity(pos);
-			if(te instanceof GenericStorageBlockEntity te1) {terr.get().getOwner().storage.addIfMissing(pos, te1);}
+			if(te instanceof GenericStorageBlockEntity te1) {terr.get().getStorage().addIfMissing(pos, te1);}
 		}
 	}
 
@@ -166,13 +184,13 @@ public class BaseStorageBlock extends ModBlockEntity<GenericStorageBlockEntity> 
 	static {
 		var i = new SpecialPlacement() {
 			@Override
-			public boolean onPlacement(PlayerEntity player, FactionZone terrain, BlockPos pos) {
+			public boolean onPlacement(PlayerEntity player, FactionArea terrain, BlockPos pos) {
 				return true;
 			}
 
 			@Override
-			public boolean onBreak(PlayerEntity player, FactionZone terrain, BlockPos pos) {
-				terrain.getOwner().storage.removeInventory(pos);
+			public boolean onBreak(PlayerEntity player, FactionArea terrain, BlockPos pos) {
+				terrain.getStorage().removeInventory(pos);
 				return true;
 			}
 		};

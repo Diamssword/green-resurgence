@@ -122,18 +122,18 @@ public class GuiPackets {
 
 				case Inventory -> {
 					var ls = ctx.player().getWorld().getComponent(Components.BASE_LIST);
-					var terr = ls.getTerrainAt(ctx.player().getBlockPos());
+					var terr = ls.getAreaAt(ctx.player().getBlockPos());
 					terr.ifPresent(v -> {
 						NamedScreenHandlerFactory screen = new NamedScreenHandlerFactory() {
 							@Nullable
 							@Override
 							public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-								return terr.get().getOwner().storage.createMenu(syncId, playerInventory, player);
+								return terr.get().getStorage().createMenu(syncId, playerInventory, player);
 							}
 
 							@Override
 							public Text getDisplayName() {
-								return terr.get().getOwner().storage.getDisplayName();
+								return terr.get().getStorage().getDisplayName();
 							}
 						};
 						ctx.player().openHandledScreen(screen);

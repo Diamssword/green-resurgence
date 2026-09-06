@@ -25,6 +25,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import java.util.Random;
 public class LootableLogic {
 	public static ActionResult onRightClick(PlayerEntity player, World w, Hand hand, BlockHitResult hit) {
 		if(player instanceof ServerPlayerEntity pl) {
-			if(pl.interactionManager.getGameMode().isSurvivalLike()) {
+			if(pl.interactionManager.getGameMode() == GameMode.ADVENTURE) {
 				BlockPos p = hit.getBlockPos();
 				BlockState state = player.getWorld().getBlockState(p);
 				if(state.getBlock() == MBlocks.LOOTED_BLOCK) {

@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.systems.faction;
 
+import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.network.AdventureInteract;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -7,6 +8,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -15,9 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AllowedBlocksList {
+	public static TagKey<Block> CAN_BREAK = TagKey.of(Registries.BLOCK.getKey(), GreenResurgence.asRessource("breakable"));
 	public final boolean dontCheckGeneric;
-	private List<Block> allowedBlocks = new ArrayList<>();
-	private List<Item> allowedItems = new ArrayList<>();
+	private final List<Block> allowedBlocks = new ArrayList<>();
+	private final List<Item> allowedItems = new ArrayList<>();
 
 	public AllowedBlocksList(boolean dontCheckGeneric) {this.dontCheckGeneric = dontCheckGeneric;}
 
@@ -37,7 +40,9 @@ public class AllowedBlocksList {
 	}
 
 	public boolean genericCanPlaceBlock(World world, BlockPos pos, BlockState blockstate) {
-		return !blockstate.isFullCube(world, pos);
+		if(!blockstate.isFullCube(world, pos))
+			return true;
+		return blockstate.isIn(CAN_BREAK);
 	}
 
 	public void fromPacket(AdventureInteract.AllowedList packet) {

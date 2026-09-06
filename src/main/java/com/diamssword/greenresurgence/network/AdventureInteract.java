@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.network;
 import com.diamssword.greenresurgence.MBlocks;
 import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
+import com.diamssword.greenresurgence.systems.faction.worldSnapshot.ChunkSnapshot;
 import com.diamssword.greenresurgence.systems.lootables.IAdvancedLootableBlock;
 import com.diamssword.greenresurgence.systems.lootables.LootableLogic;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
@@ -15,6 +16,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 
@@ -36,7 +38,7 @@ public class AdventureInteract {
 		});
 		Channels.MAIN.registerServerbound(BlockInteract.class, (msg, ctx) -> {
 
-			if(ctx.player().interactionManager.getGameMode().isSurvivalLike() && checkCooldown(ctx.player())) {
+			if(ctx.player().interactionManager.getGameMode() == GameMode.ADVENTURE && checkCooldown(ctx.player())) {
 				ItemStack st = ctx.player().getMainHandStack();
 				BlockState state = ctx.player().getWorld().getBlockState(msg.pos);
 				if(state.getBlock() == MBlocks.LOOTED_BLOCK) {
@@ -70,7 +72,7 @@ public class AdventureInteract {
 					st.postMine(ctx.player().getWorld(), state, msg.pos, ctx.player());
 					LootableLogic.giveLoot(ctx.player(), msg.pos, state);
 					ctx.player().getWorld().syncWorldEvent(WorldEvents.BLOCK_BROKEN, msg.pos, Block.getRawIdFromState(state));
-
+					ChunkSnapshot.getSnapshotFor(ctx.player().getWorld(), msg.pos).putBlock(msg.pos, ctx.player().getWorld().getBlockState(msg.pos), false);
 					ctx.player().getWorld().playSound(null, msg.pos, state.getSoundGroup().getBreakSound(), SoundCategory.BLOCKS, 0.5f, 1f + (float) Math.random());
 					Lootables.loader.getTable(state.getBlock()).ifPresent(l -> {
 						if(l.getConnected() != null) {
@@ -99,6 +101,7 @@ public class AdventureInteract {
 			te.lastBreak = System.currentTimeMillis();
 			te.markDirty();
 			LootableLogic.giveLoot(player, pos, state);
+			ChunkSnapshot.getSnapshotFor(world, pos).putBlock(pos, world.getBlockState(pos), false);
 			world.syncWorldEvent(WorldEvents.BLOCK_BROKEN, pos, Block.getRawIdFromState(state));
 
 		}

@@ -34,8 +34,6 @@ public class FactionGuild {
 	//private final List<FactionZone> terrains = new ArrayList<>();
 	private final List<FactionArea> areas = new ArrayList<>();
 	private final List<DeprecatingFactionZone> deprecatedTerrains = new ArrayList<>();
-	public FactionTerrainStorage storage = new FactionTerrainStorage();
-	public TerrainEnergyStorage energyStorage = new TerrainEnergyStorage();
 
 	public UUID getId() {
 		return id;
@@ -287,7 +285,7 @@ public class FactionGuild {
 			res.name = tag.getString("name");
 			NbtList ls = tag.getList("areas", NbtList.COMPOUND_TYPE);
 			ls.forEach(c -> {
-				FactionArea b = new FactionArea(res, (NbtCompound) c);
+				FactionArea b = new FactionArea(res, world, (NbtCompound) c);
 				res.areas.add(b);
 			});
 			NbtList lsDe = tag.getList("deprecatingTerrains", NbtList.COMPOUND_TYPE);
@@ -327,9 +325,7 @@ public class FactionGuild {
 				NbtCompound tc = (NbtCompound) v;
 				res.allies.put(new FactionMember(tc.getCompound("member")), FactionPerm.fromNBT(tc.getCompound("perms")));
 			});
-			if(tag.contains("storage")) {
-				res.storage.fromNBT(tag.getCompound("storage"), world);
-			}
+
 			return res;
 		}
 		return null;
@@ -355,12 +351,7 @@ public class FactionGuild {
 			depZones.add(tg);
 		});
 		tag.put("deprecatingTerrains", depZones);
-		var t1 = new NbtCompound();
-		storage.toNBT(t1);
-		tag.put("storage", t1);
-		var t2 = new NbtCompound();
-		energyStorage.toNBT(t2);
-		tag.put("energy", t1);
+
 		var permLS = new NbtList();
 		var memberLs = new NbtCompound();
 		for(var p : this.roles.values()) {

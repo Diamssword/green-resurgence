@@ -5,6 +5,7 @@ import com.diamssword.greenresurgence.containers.Containers;
 import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import com.diamssword.greenresurgence.containers.grids.ExtractOnlyGrid;
 import com.diamssword.greenresurgence.containers.grids.IGridContainer;
+import com.diamssword.greenresurgence.systems.faction.worldSnapshot.ChunkSnapshot;
 import com.diamssword.greenresurgence.systems.lootables.LootableLogic;
 import com.diamssword.greenresurgence.systems.lootables.Lootables;
 import net.minecraft.block.Block;
@@ -67,7 +68,9 @@ public class LootedBlockEntity extends BlockEntity {
 	}
 
 	public void restoreDurability() {
+		ChunkSnapshot.getSnapshotFor(world, pos).putBlock(pos, this.getRealBlock(), false);
 		this.world.setBlockState(pos, this.getRealBlock());
+
 	}
 
 	public void attackBlock(ServerPlayerEntity player) {
@@ -81,6 +84,7 @@ public class LootedBlockEntity extends BlockEntity {
 			if(this.durability == 0) {this.inventory = null;}
 			this.lastBreak = System.currentTimeMillis();
 			this.markDirty();
+			ChunkSnapshot.getSnapshotFor(world, pos).putBlock(pos, getCachedState(), false);
 			this.world.updateListeners(this.pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_ALL);
 
 		}

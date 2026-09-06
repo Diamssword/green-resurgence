@@ -56,7 +56,6 @@ public class DeprecatingFactionZone extends FactionZone {
 			return false;
 
 		var guilds = world.getComponent(Components.BASE_LIST);
-
 		if(getBounds().contains(l) && guilds.getTerrainAt(l).isEmpty()) {
 			posToProcess.remove(l);
 			processedPos.add(l);
@@ -68,8 +67,18 @@ public class DeprecatingFactionZone extends FactionZone {
 				} else {
 					world.setBlockState(l, state);
 					world.updateNeighbors(l, state.getBlock());
+					if(state.hasBlockEntity()) {
+						currentChunk.getTilesDataAt(l).ifPresent(td -> {
+							var te = world.getBlockEntity(l);
+							if(te != null) {
+								te.readNbt(td);
+							}
+						});
+
+					}
 				}
 				world.playSound(null, l.getX(), l.getY(), l.getZ(), SoundEvents.BLOCK_NYLIUM_BREAK, SoundCategory.BLOCKS, 0.5f, 0.8f + world.random.nextFloat() * 0.4f);
+				currentChunk.removeBlock(l);
 			});
 		} else
 			posToProcess.remove(l);

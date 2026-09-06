@@ -59,10 +59,10 @@ public class BaseInteractions {
 				FactionList list = ctx.getWorld().getComponent(Components.BASE_LIST);
 				if(list.isAllowedAt(ctx.getBlockPos(), new FactionMember(pl), Perms.PLACE)) {
 					if(canPlace(ctx.getWorld(), ctx.getBlockPos(), state)) {
-						ChunkSnapshot.getSnapshotFor(ctx.getWorld(), ctx.getBlockPos()).putBlockIfAbsent(ctx.getBlockPos(), ctx.getWorld().getBlockState(ctx.getBlockPos()));
+						ChunkSnapshot.getSnapshotFor(ctx.getWorld(), ctx.getBlockPos()).putBlockIfAbsent(ctx.getBlockPos(), ctx.getWorld().getBlockState(ctx.getBlockPos()), true);
 						var sp = SpecialPlacement.REGISTRY.get(state.getBlock());
 						if(sp != null) {
-							var terr = list.getTerrainAt(ctx.getBlockPos());
+							var terr = list.getAreaAt(ctx.getBlockPos());
 							if(terr.isPresent())
 								return sp.onPlacement(ctx.getPlayer(), terr.get(), ctx.getBlockPos()) ? ActionResult.PASS : ActionResult.FAIL;
 						}
@@ -97,7 +97,6 @@ public class BaseInteractions {
 	}
 
 	public static ActionResult destroyBlock(PlayerEntity player, World w, Hand hand, BlockPos pos, Direction dir) {
-		var m = System.currentTimeMillis();
 		if(player instanceof ServerPlayerEntity pl) {
 			if(pl.interactionManager.getGameMode().equals(GameMode.SURVIVAL)) {
 
@@ -106,10 +105,10 @@ public class BaseInteractions {
 					var st = w.getBlockState(pos);
 					if(canBreak(w, pos, st)) {
 						var g = ChunkSnapshot.getSnapshotFor(w, pos);
-						g.putBlockIfAbsent(pos, st);
+						g.putBlockIfAbsent(pos, st, true);
 						var sp = SpecialPlacement.REGISTRY.get(st.getBlock());
 						if(sp != null) {
-							var terr = list.getTerrainAt(pos);
+							var terr = list.getAreaAt(pos);
 							if(terr.isPresent())
 								return sp.onBreak(player, terr.get(), pos) ? ActionResult.PASS : ActionResult.FAIL;
 						}

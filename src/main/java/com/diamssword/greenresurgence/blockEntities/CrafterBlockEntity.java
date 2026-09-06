@@ -4,7 +4,7 @@ import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.CraftPackets;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.crafting.*;
-import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionZone;
+import com.diamssword.greenresurgence.systems.faction.perimeter.FactionArea;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -31,7 +31,7 @@ public class CrafterBlockEntity extends BlockEntity implements ICraftingTile<Sim
 
 	private record CraftStatusTracked(Integer index, SimpleRecipe recipe) {}
 
-	private FactionZone terrain;
+	private FactionArea terrain;
 	private Identifier collection;
 	private CraftingProvider craftProvider = new CraftingProvider();
 
@@ -57,7 +57,7 @@ public class CrafterBlockEntity extends BlockEntity implements ICraftingTile<Sim
 	public static void tick(World world, BlockPos pos, BlockState state, CrafterBlockEntity blockEntity) {
 		if(world.getTime() % 10 == 0) {
 			var bl = world.getComponent(Components.BASE_LIST);
-			bl.getTerrainAt(pos).ifPresent(p -> blockEntity.terrain = p);
+			bl.getAreaAt(pos).ifPresent(p -> blockEntity.terrain = p);
 
 		}
 		if(world.getTime() % 20 == 0) {

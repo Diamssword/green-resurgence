@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.systems.faction.perimeter.components;
 
+import com.diamssword.greenresurgence.systems.faction.perimeter.FactionArea;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -10,7 +11,7 @@ import java.util.Map;
 public interface SpecialPlacement {
 	Map<Block, SpecialPlacement> REGISTRY = new HashMap<>();
 
-	boolean onPlacement(PlayerEntity player, FactionZone terrain, BlockPos pos);
+	boolean onPlacement(PlayerEntity player, FactionArea terrain, BlockPos pos);
 
-	boolean onBreak(PlayerEntity player, FactionZone terrain, BlockPos pos);
+	boolean onBreak(PlayerEntity player, FactionArea terrain, BlockPos pos);
 }

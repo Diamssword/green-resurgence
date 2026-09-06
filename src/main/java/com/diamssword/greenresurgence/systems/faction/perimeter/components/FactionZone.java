@@ -63,7 +63,7 @@ public class FactionZone {
 	}
 
 	public FactionGuild getOwner() {
-		return getArea().getOwner();
+		return owner;
 	}
 
 	@Nullable

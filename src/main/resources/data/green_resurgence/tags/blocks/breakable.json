@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "green_resurgence:item_block",
+    "green_resurgence:looted_block"
+  ]
+}

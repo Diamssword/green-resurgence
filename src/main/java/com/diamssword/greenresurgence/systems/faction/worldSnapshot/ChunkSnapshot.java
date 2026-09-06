@@ -21,6 +21,7 @@ import java.util.Optional;
 public class ChunkSnapshot implements Component {
 	private final Chunk chunk;
 	private final Map<BlockPos, BlockState> blocks = new HashMap<>();
+	private final Map<BlockPos, NbtCompound> tiles = new HashMap<>();
 
 	public ChunkSnapshot(Chunk chunk) {this.chunk = chunk;}
 
@@ -35,10 +36,15 @@ public class ChunkSnapshot implements Component {
 	@Override
 	public void readFromNbt(NbtCompound tag) {
 		blocks.clear();
+		tiles.clear();
 		var ls = tag.getList("blocks", NbtElement.COMPOUND_TYPE);
 		ls.forEach(t -> {
 			var c = (NbtCompound) t;
-			blocks.put(BlockPos.fromLong(c.getLong("pos")), NbtHelper.toBlockState(Registries.BLOCK.getReadOnlyWrapper(), c.getCompound("state")));
+			var p = BlockPos.fromLong(c.getLong("pos"));
+			blocks.put(p, NbtHelper.toBlockState(Registries.BLOCK.getReadOnlyWrapper(), c.getCompound("state")));
+			if(c.contains("tile")) {
+				tiles.put(p, c.getCompound("tile"));
+			}
 		});
 	}
 
@@ -49,16 +55,33 @@ public class ChunkSnapshot implements Component {
 		blocks.forEach((p, b) -> {
 			nb.putLong("pos", p.asLong());
 			nb.put("state", NbtHelper.fromBlockState(b));
+			var tile = tiles.get(p);
+			if(tile != null)
+				nb.put("tile", tile);
 			ls.add(nb);
 		});
 		tag.put("blocks", ls);
 	}
 
 	public void putBlockIfAbsent(BlockPos pos, BlockState state) {
+		putBlockIfAbsent(pos, state, false);
+	}
+
+	public void putBlockIfAbsent(BlockPos pos, BlockState state, boolean destructive) {
 		if(!blocks.containsKey(pos)) {
 			blocks.put(pos, state);
+			if(state.hasBlockEntity()) {
+				var p = this.chunk.getBlockEntity(pos);
+				tiles.put(pos, p.createNbt());
+				if(destructive)
+					p.readNbt(new NbtCompound());
+			}
 			chunk.setNeedsSaving(true);
 		}
+	}
+
+	public Optional<NbtCompound> getTilesDataAt(BlockPos pos) {
+		return Optional.ofNullable(tiles.get(pos));
 	}
 
 	public Optional<BlockState> getBlockAt(BlockPos pos) {
@@ -75,11 +98,18 @@ public class ChunkSnapshot implements Component {
 
 	public void removeBlock(BlockPos pos) {
 		blocks.remove(pos);
+		tiles.remove(pos);
 		chunk.setNeedsSaving(true);
 	}
 
-	public void putBlock(BlockPos pos, BlockState state) {
+	public void putBlock(BlockPos pos, BlockState state, boolean destructive) {
 		blocks.put(pos, state);
+		if(state.hasBlockEntity()) {
+			var p = chunk.getBlockEntity(pos);
+			tiles.put(pos, p.createNbt());
+			if(destructive)
+				p.readNbt(new NbtCompound());
+		}
 		chunk.setNeedsSaving(true);
 	}
 
