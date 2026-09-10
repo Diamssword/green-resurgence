@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.network;
 
 import com.diamssword.characters.api.ComponentManager;
+import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.blockEntities.IGuiPacketReceiver;
 import com.diamssword.greenresurgence.containers.IOptionalInventory;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
@@ -16,6 +17,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
@@ -39,17 +41,16 @@ public class GuiPackets {
 	public record GuiPacket(GUI gui, @Nullable BlockPos pos, int... extras) {
 	}
 
-	public record ReturnValue(String topic, String value) {
-	}
-
-	public record ReturnError(String topic, Text message) {
-	}
 
 	public record ItemStackValue(NbtCompound tag) {}
 
 	public record GuiTileValue(BlockPos pos, String key, String value) {
 		public GuiTileValue(BlockPos pos, String key, float value) {
 			this(pos, key, value + "");
+		}
+
+		public GuiTileValue(BlockPos pos, String key, Text text) {
+			this(pos, key, Text.Serializer.toJson(text));
 		}
 
 		public GuiTileValue(BlockPos pos, String key, int value) {
@@ -62,6 +63,65 @@ public class GuiPackets {
 
 		public GuiTileValue(BlockPos pos, String key, boolean value) {
 			this(pos, key, value ? "1" : "0");
+		}
+
+		public void replyTo(PlayerEntity player, String key, String value) {
+			if(!player.getWorld().isClient)
+				Channels.MAIN.serverHandle(player).send(new GuiTileValue(this.pos, key, value));
+		}
+
+		public void replyToServer(String key, String value) {
+			if(GreenResurgence.clientHelper.isClient())
+				Channels.MAIN.clientHandle().send(new GuiTileValue(this.pos, key, value));
+		}
+
+		public void replyTo(PlayerEntity player, String key, float value) {
+			if(!player.getWorld().isClient)
+				Channels.MAIN.serverHandle(player).send(new GuiTileValue(this.pos, key, value));
+		}
+
+		public void replyToServer(String key, float value) {
+			if(GreenResurgence.clientHelper.isClient())
+				Channels.MAIN.clientHandle().send(new GuiTileValue(this.pos, key, value));
+		}
+
+		public void replyTo(PlayerEntity player, String key, int value) {
+
+			if(!player.getWorld().isClient)
+				Channels.MAIN.serverHandle(player).send(new GuiTileValue(this.pos, key, value));
+		}
+
+		public void replyToServer(String key, int value) {
+			if(GreenResurgence.clientHelper.isClient())
+				Channels.MAIN.clientHandle().send(new GuiTileValue(this.pos, key, value));
+		}
+
+		public void replyTo(PlayerEntity player, String key, double value) {
+			if(!player.getWorld().isClient)
+				Channels.MAIN.serverHandle(player).send(new GuiTileValue(this.pos, key, value));
+		}
+
+		public void replyToServer(String key, double value) {
+			if(GreenResurgence.clientHelper.isClient())
+				Channels.MAIN.clientHandle().send(new GuiTileValue(this.pos, key, value));
+		}
+
+		public void replyTo(PlayerEntity player, String key, boolean value) {
+			if(!player.getWorld().isClient)
+				Channels.MAIN.serverHandle(player).send(new GuiTileValue(this.pos, key, value));
+		}
+
+		public void replyToServer(String key, boolean value) {
+			if(GreenResurgence.clientHelper.isClient())
+				Channels.MAIN.clientHandle().send(new GuiTileValue(this.pos, key, value));
+		}
+
+		public MutableText asText() {
+			return Text.Serializer.fromJson(value);
+		}
+
+		public String asString() {
+			return value;
 		}
 
 		public double asDouble() {
@@ -102,8 +162,6 @@ public class GuiPackets {
 
 	public static void init() {
 		Channels.MAIN.registerClientboundDeferred(GuiPacket.class);
-		Channels.MAIN.registerClientboundDeferred(ReturnValue.class);
-		Channels.MAIN.registerClientboundDeferred(ReturnError.class);
 		Channels.MAIN.registerServerbound(ItemStackValue.class, (msg, ctx) -> {
 			var hand = ctx.player().getMainHandStack();
 			if(hand.getItem() instanceof IGuiStackPacketReceiver re) {
@@ -117,6 +175,7 @@ public class GuiPackets {
 					ib.receiveGuiPacket(ctx.player(), msg);
 			}
 		});
+		Channels.MAIN.registerClientboundDeferred(GuiTileValue.class);
 		Channels.MAIN.registerServerbound(KeyPress.class, (msg, ctx) -> {
 			switch(msg.key) {
 

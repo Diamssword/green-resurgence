@@ -128,6 +128,7 @@ public class FormattedInventory implements Inventory {
 						ins = ret;
 					ret -= ins;
 					st1.increment(ins);
+					parent.setStack(i, st1);
 					if(ret == 0) {
 						refresh();
 						return 0;
@@ -175,6 +176,7 @@ public class FormattedInventory implements Inventory {
 				var ins = Math.min(i1.getMaxCount() - i1.getCount(), stack.getCount());
 				stack.decrement(ins);
 				i1.increment(ins);
+				parent.setStack(i, i1);
 				if(stack.isEmpty())
 					break;
 			}
@@ -192,7 +194,6 @@ public class FormattedInventory implements Inventory {
 
 	@Override
 	public void markDirty() {
-		this.parent.markDirty();
 		if(this.listeners != null) {
 			for(InventoryChangedListener inventoryChangedListener : this.listeners) {
 				inventoryChangedListener.onInventoryChanged(this);

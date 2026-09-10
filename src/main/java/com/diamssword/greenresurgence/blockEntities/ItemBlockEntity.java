@@ -6,6 +6,7 @@ import com.diamssword.greenresurgence.network.GuiPackets;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -13,7 +14,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
@@ -77,7 +77,7 @@ public class ItemBlockEntity extends BlockEntity implements IGuiPacketReceiver {
 		}
 	}
 
-	public void receiveGuiPacket(ServerPlayerEntity player, GuiPackets.GuiTileValue msg) {
+	public void receiveGuiPacket(PlayerEntity player, GuiPackets.GuiTileValue msg) {
 		if(!player.isCreative())
 			return;
 		var pos = this.getPosition();

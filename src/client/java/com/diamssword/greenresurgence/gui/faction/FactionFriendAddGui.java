@@ -2,9 +2,10 @@ package com.diamssword.greenresurgence.gui.faction;
 
 import com.diamssword.characters.api.CharactersApi;
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.gui.IPacketNotifiedChange;
+import com.diamssword.greenresurgence.blockEntities.IGuiPacketReceiver;
 import com.diamssword.greenresurgence.gui.components.ClickableLayoutComponent;
 import com.diamssword.greenresurgence.network.Channels;
+import com.diamssword.greenresurgence.network.GuiPackets;
 import com.diamssword.greenresurgence.network.GuildPackets;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionMember;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
@@ -13,6 +14,7 @@ import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.TextBoxComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.*;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -20,7 +22,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implements IPacketNotifiedChange {
+public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implements IGuiPacketReceiver {
 
 	public static final Identifier MISSING_HEAD = GreenResurgence.asRessource("textures/gui/missing_head.png");
 
@@ -157,21 +159,14 @@ public class FactionFriendAddGui extends BaseUIModelScreen<FlowLayout> implement
 		});
 	}
 
-
 	@Override
-	public void onChangeReceived(String topic, String value) {
-
-		if(topic.equals("addMember")) {
+	public void receiveGuiPacket(PlayerEntity player, GuiPackets.GuiTileValue msg) {
+		if(msg.key().equals("errAddMember")) {
 			menu.clearChildren();
-			menu.child(Components.label(Text.translatable("gui.green_resurgence.friend_gui.added_confirm", value)));
-		}
-	}
-
-	@Override
-	public void onErrorReceived(String topic, Text message) {
-		if(topic.equals("addMember")) {
+			menu.child(Components.label(msg.asText()));
+		} else if(msg.key().equals("addMember")) {
 			menu.clearChildren();
-			menu.child(Components.label(message));
+			menu.child(Components.label(Text.translatable("gui.green_resurgence.friend_gui.added_confirm", msg.value())));
 		}
 	}
 }

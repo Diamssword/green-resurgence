@@ -96,7 +96,16 @@ public class DeployingMachineInstance {
 	}
 
 	private boolean isBlockReplacable(WorldAccess world, BlockPos pos) {
-		return world.getBlockState(pos).isReplaceable();
+		var st = world.getBlockState(pos);
+		if(st.isReplaceable())
+			return true;
+		for(List<AnimatedBlockState> value : steps.values()) {
+			for(AnimatedBlockState an : value) {
+				if(st.getBlock() == an.blockState.getBlock())
+					return true;
+			}
+		}
+		return false;
 	}
 
 	public BlockPos rotatedCoordinate(BlockPos baseCoord) {

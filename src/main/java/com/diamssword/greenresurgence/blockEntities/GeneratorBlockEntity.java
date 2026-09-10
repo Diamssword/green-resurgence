@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 public class GeneratorBlockEntity extends BlockEntity {
 
 	private int burntime = 0;
-	public final int rfGen;
+	public int rfGen;
 	private FactionArea terrain;
 
 	public GeneratorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, int rfPerTick) {
@@ -35,7 +35,7 @@ public class GeneratorBlockEntity extends BlockEntity {
 	public static void tick(World world, BlockPos pos, BlockState state, GeneratorBlockEntity blockEntity) {
 		if(world.getTime() % 10 == 0) {
 			var bl = world.getComponent(Components.BASE_LIST);
-			blockEntity.terrain = bl.getAreaAt(pos).orElseGet(() -> null);
+			blockEntity.terrain = bl.getAreaAt(pos).orElse(null);
 
 		}
 		if(blockEntity.terrain != null) {
@@ -66,12 +66,15 @@ public class GeneratorBlockEntity extends BlockEntity {
 	@Override
 	public void writeNbt(NbtCompound nbt) {
 		nbt.putInt("fuel", burntime);
+		nbt.putInt("gen", rfGen);
 		super.writeNbt(nbt);
 	}
 
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		burntime = nbt.getInt("fuel");
+		if(nbt.contains("gen"))
+			rfGen = nbt.getInt("gen");
 		super.readNbt(nbt);
 	}
 

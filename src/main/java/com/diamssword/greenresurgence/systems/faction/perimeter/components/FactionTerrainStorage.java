@@ -6,6 +6,8 @@ import com.diamssword.greenresurgence.containers.MultiInvScreenHandler;
 import com.diamssword.greenresurgence.containers.grids.GridContainer;
 import com.diamssword.greenresurgence.containers.grids.GridContainerSyncer;
 import com.diamssword.greenresurgence.containers.grids.IGridContainer;
+import com.diamssword.greenresurgence.systems.faction.perimeter.FactionArea;
+import com.diamssword.greenresurgence.utils.Triple;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -23,7 +25,6 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ClickType;
-import net.minecraft.util.Pair;
 import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
@@ -37,6 +38,11 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
 	private final List<BlockPos> inventoriesPos = new ArrayList<>();
 	private final Map<BlockPos, Inventory> inventoriesCache = new HashMap<>();
 	private final FormattedInventory formated = new FormattedInventory(this);
+	private final World world;
+
+	public FactionTerrainStorage(World world) {
+		this.world = world;
+	}
 
 	public void toNBT(NbtCompound tag) {
 		List<Long> ls = new ArrayList<>();
@@ -44,7 +50,7 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
 		tag.putLongArray("inventories", ls);
 	}
 
-	public void fromNBT(NbtCompound tag, World w) {
+	public void fromNBT(NbtCompound tag) {
 		inventoriesPos.clear();
 		inventoriesCache.clear();
 		var ls = tag.getLongArray("inventories");
@@ -52,13 +58,17 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
 			inventoriesPos.add(BlockPos.fromLong(l));
 		}
 		for(BlockPos p1 : inventoriesPos) {
-			var te = w.getBlockEntity(p1);
+			var te = world.getBlockEntity(p1);
 			if(te instanceof Inventory in) {
 				inventoriesCache.put(p1, in);
 				if(in instanceof GenericStorageBlockEntity in1) {in1.addListener(l -> formated.refresh());}
 			}
 		}
 		formated.refresh();
+	}
+
+	public Map<BlockPos, Inventory> getInventories() {
+		return inventoriesCache;
 	}
 
 	public void addIfMissing(BlockPos pos, Inventory inventory) {
@@ -71,10 +81,20 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
 
 	public void removeInventory(BlockPos pos) {
 		if(inventoriesPos.contains(pos)) {
+			markDirty(pos);
 			inventoriesPos.remove(pos);
 			inventoriesCache.remove(pos);
-			markDirty();
 		}
+	}
+
+	public void refreshContainers(FactionArea area) {
+		List<BlockPos> toRemove = new ArrayList<>();
+		this.inventoriesPos.forEach(p -> {
+			if(!area.isIn(p)) {
+				toRemove.add(p);
+			}
+		});
+		toRemove.forEach(this::removeInventory);
 	}
 
 	@Override
@@ -114,12 +134,12 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
 		return ItemStack.EMPTY;
 	}
 
-	private Pair<Integer, Inventory> findInventory(int slot) {
-		for(Inventory value : inventoriesCache.values()) {
-			if(slot < value.size()) {
-				return new Pair<>(slot, value);
+	private Triple<Integer, BlockPos, Inventory> findInventory(int slot) {
+		for(Map.Entry<BlockPos, Inventory> value : inventoriesCache.entrySet()) {
+			if(slot < value.getValue().size()) {
+				return new Triple<>(slot, value.getKey(), value.getValue());
 			}
-			slot -= value.size();
+			slot -= value.getValue().size();
 		}
 		return null;
 	}
@@ -128,7 +148,10 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
 	public ItemStack removeStack(int slot, int amount) {
 		var p = findInventory(slot);
 		if(p != null) {
-			return p.getRight().removeStack(p.getLeft(), amount);
+
+			var r = p.getRight().removeStack(p.getLeft(), amount);
+			markDirty(p.getMiddle());
+			return r;
 		}
 		return ItemStack.EMPTY;
 	}
@@ -137,7 +160,9 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
 	public ItemStack removeStack(int slot) {
 		var p = findInventory(slot);
 		if(p != null) {
-			return p.getRight().removeStack(p.getLeft());
+			var r = p.getRight().removeStack(p.getLeft());
+			markDirty(p.getMiddle());
+			return r;
 		}
 		return ItemStack.EMPTY;
 	}
@@ -147,12 +172,26 @@ public class FactionTerrainStorage implements NamedScreenHandlerFactory, Invento
 		var p = findInventory(slot);
 		if(p != null) {
 			p.getRight().setStack(p.getLeft(), stack);
+			markDirty(p.getMiddle());
+		}
+	}
+
+	public void markDirty(BlockPos pos) {
+		var v = inventoriesCache.get(pos);
+		if(v != null) {
+			v.markDirty();
+			if(this.world != null)
+				world.getWorldChunk(pos).setNeedsSaving(true);
 		}
 	}
 
 	@Override
 	public void markDirty() {
-		inventoriesCache.forEach((k, v) -> v.markDirty());
+		inventoriesCache.forEach((k, v) -> {
+			v.markDirty();
+			if(this.world != null)
+				world.getWorldChunk(k).setNeedsSaving(true);
+		});
 	}
 
 	@Override

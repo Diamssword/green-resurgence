@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -17,7 +18,6 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.Registries;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DataPool;
 import net.minecraft.util.math.BlockPos;
@@ -64,7 +64,7 @@ public class SpawnerBlockEntity extends BlockEntity implements IGuiPacketReceive
 		if(this.world instanceof ServerWorld sw) {sw.getChunkManager().markForUpdate(pos);}
 	}
 
-	public void receiveGuiPacket(ServerPlayerEntity player, GuiPackets.GuiTileValue msg) {
+	public void receiveGuiPacket(PlayerEntity player, GuiPackets.GuiTileValue msg) {
 		if(!player.isCreative())
 			return;
 		switch(msg.key()) {

@@ -1,9 +1,10 @@
 package com.diamssword.greenresurgence.gui.faction;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.gui.IPacketNotifiedChange;
+import com.diamssword.greenresurgence.blockEntities.IGuiPacketReceiver;
 import com.diamssword.greenresurgence.gui.components.ClickableLayoutComponent;
 import com.diamssword.greenresurgence.network.Channels;
+import com.diamssword.greenresurgence.network.GuiPackets;
 import com.diamssword.greenresurgence.network.GuildPackets;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionPerm;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.Perms;
@@ -13,11 +14,12 @@ import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.TextBoxComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.*;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 
 import java.util.UUID;
 
-public class FactionEditRoleGui extends BaseUIModelScreen<FlowLayout> implements IPacketNotifiedChange {
+public class FactionEditRoleGui extends BaseUIModelScreen<FlowLayout> implements IGuiPacketReceiver {
 
 	private final FactionPerm perms;
 	private final boolean shoudlClose = false;
@@ -54,7 +56,7 @@ public class FactionEditRoleGui extends BaseUIModelScreen<FlowLayout> implements
 
 	private void updateList(FlowLayout parent) {
 		parent.clearChildren();
-		for (var n : Perms.values()) {
+		for(var n : Perms.values()) {
 			var l = new ClickableLayoutComponent(Sizing.fill(100), Sizing.fixed(20), FlowLayout.Algorithm.HORIZONTAL);
 			l.surface2(Surface.DARK_PANEL);
 
@@ -71,14 +73,13 @@ public class FactionEditRoleGui extends BaseUIModelScreen<FlowLayout> implements
 		}
 	}
 
-	@Override
-	public void onChangeReceived(String topic, String value) {
-		Channels.MAIN.clientHandle().send(new GuildPackets.RequestGui("roles", id));
-	}
 
 	@Override
-	public void onErrorReceived(String topic, Text value) {
-		System.err.println(value.toString());
+	public void receiveGuiPacket(PlayerEntity player, GuiPackets.GuiTileValue msg) {
+		if(msg.key().startsWith("err"))
+			System.err.println(msg.asText());
+		else
+			Channels.MAIN.clientHandle().send(new GuildPackets.RequestGui("roles", id));
 	}
 }
 

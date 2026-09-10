@@ -18,9 +18,9 @@ public class TerrainEnergyStorage extends SnapshotParticipant<Long> implements E
 
 	}
 
-	public void addCapacity(int amount) {
+	public void addCapacity(long amount) {
 		capacity = Math.max(0, capacity + amount);
-		if (this.amount > capacity)
+		if(this.amount > capacity)
 			this.amount = capacity;
 	}
 
@@ -39,7 +39,7 @@ public class TerrainEnergyStorage extends SnapshotParticipant<Long> implements E
 		StoragePreconditions.notNegative(maxAmount);
 		long inserted = Math.min(maxAmount, capacity - amount);
 
-		if (inserted > 0) {
+		if(inserted > 0) {
 			updateSnapshots(transaction);
 			amount += inserted;
 			return inserted;
@@ -52,8 +52,7 @@ public class TerrainEnergyStorage extends SnapshotParticipant<Long> implements E
 		StoragePreconditions.notNegative(maxAmount);
 
 		long extracted = Math.min(maxAmount, amount);
-
-		if (extracted > 0) {
+		if(extracted > 0) {
 			updateSnapshots(transaction);
 			amount -= extracted;
 			return extracted;

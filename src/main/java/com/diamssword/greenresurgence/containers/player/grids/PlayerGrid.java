@@ -42,7 +42,7 @@ public class PlayerGrid extends GridContainer {
 	public int getQuickSlotPriority(ItemStack item) {
 		if(this.getName().equals("hotbar")) {
 			var eq = Equipment.fromStack(item);
-			if((eq != null && (eq.getSlotType() == EquipmentSlot.MAINHAND || eq.getSlotType() == EquipmentSlot.OFFHAND)) || item.getItem() instanceof ToolItem) {return 10;} else {return 0;}
+			if((eq != null && (eq.getSlotType() == EquipmentSlot.MAINHAND || eq.getSlotType() == EquipmentSlot.OFFHAND)) || item.getItem() instanceof ToolItem) {return 10;} else {return 3;}
 		} else if(this.getName().equals("player")) {return 2;}
 		return 1;
 		//return super.getQuickSlotPriority(item);

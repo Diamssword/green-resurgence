@@ -5,23 +5,69 @@
             <children>
                 <flow-layout direction="vertical" id="mainLay">
                     <children>
-                        <button id="seeZone">
-                            <text translate="true">gui.green_resurgence.claim_antenna.hide_border</text>
-                        </button>
+                        <flow-layout direction="horizontal">
+                            <children>
+                                <scroll direction="vertical" id="leftP">
+                                    <flow-layout direction="vertical" id="left">
+                                        <children>
+
+                                        </children>
+                                        <margins><all>5</all></margins>
+                                        <sizing>
+                                            <horizontal method="fill">100</horizontal>
+                                        </sizing>
+                                    </flow-layout>
+                                    <sizing>
+                                        <vertical method="fill">100</vertical>
+                                        <horizontal method="fill">30</horizontal>
+                                    </sizing>
+                                </scroll>
+                                <flow-layout direction="vertical" id="center">
+                                    <children>
+                                    </children>
+                                     <margins><all>5</all></margins>
+                                    <gap>5</gap>
+                                      <sizing>
+                                        <vertical method="fill">100</vertical>
+                                        <horizontal method="fill">33</horizontal>
+                                    </sizing>
+                                         <horizontal-alignment>center</horizontal-alignment>
+                                </flow-layout>
+                                <flow-layout direction="vertical" id="right">
+                                    <children>
+                                        <label><text>Generator Statut: ONLINE</text></label>
+                                        <label><text>Consumption: 2.4 GW</text></label>
+                                    </children>
+                                        <margins><top>5</top></margins>
+                                      <sizing>
+                                        <vertical method="fill">100</vertical>
+                                        <horizontal method="fill">34</horizontal>
+                                    </sizing>
+                                </flow-layout>
+                            </children>
+                            <sizing><vertical method="fixed">130</vertical></sizing>
+                        </flow-layout>
+                        <flow-layout direction="vertical">
+                            <children>
+                                <button id="seeZone">
+                                    <text translate="true">gui.green_resurgence.claim_antenna.hide_border</text>
+                                </button>
+                            </children>
+
+                        </flow-layout>
+
 
                     </children>
-                    <padding>
-                        <all>5</all>
-                    </padding>
-                    <gap>2</gap>
+                    <padding><all>2</all></padding>
+                     <surface>
+                        <gpanel/>
+                    </surface>
                     <horizontal-alignment>center</horizontal-alignment>
                     <sizing>
                         <vertical method="content">1</vertical>
-                        <horizontal method="fixed">170</horizontal>
+                        <horizontal method="fill">60</horizontal>
                     </sizing>
-                    <surface>
-                        <gpanel/>
-                    </surface>
+
                 </flow-layout>
             </children>
             <sizing>

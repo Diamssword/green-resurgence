@@ -129,18 +129,41 @@ public class FactionGuild {
 	}
 
 	public void addTerrain(BlockPos center, int size, @Nullable World world) {
-		var b = false;
+		FactionArea main;
+		List<FactionArea> validAreas = new ArrayList<>();
+		var zone = new FactionZone(this, center, size);
 		for(FactionArea area : areas) {
-			if(area.addIfValid(new FactionZone(this, center, size))) {
-				b = true;
-				break;
+			if(area.isPositionValid(center)) {
+				validAreas.add(area);
+
 			}
 		}
-		if(!b) {
-			areas.add(new FactionArea(this, new FactionZone(this, center, size)));
+		if(validAreas.isEmpty()) {
+			areas.add(main = new FactionArea(this, new FactionZone(this, center, size)));
+		} else if(validAreas.size() == 1) {
+			main = validAreas.get(0);
+			main.addIfValid(zone);
+		} else {
+			main = validAreas.get(0);
+			main.addIfValid(zone);
+			for(var i = 1; i < validAreas.size(); i++) {
+				var v = validAreas.get(i);
+				areas.remove(v);
+				main.absorb(v);
+			}
+
 		}
-		if(world != null && !world.isClient && world.getServer() != null)
+		if(world != null && !world.isClient && world.getServer() != null) {
 			CurrentZonePacket.sendCreativeDebugZoneToAll(world.getServer());
+			if(world instanceof ServerWorld sw) {
+				sw.getPlayers().forEach(p -> {
+					if(main.isIn(p.getBlockPos())) {
+						inBase.add(p);
+						BaseEventCallBack.ENTER.invoker().enterOrLeave(p, this);
+					}
+				});
+			}
+		}
 	}
 
 	public static FactionGuild createForPlayer(PlayerEntity player, BlockPos pos, int radius) {
@@ -439,15 +462,33 @@ public class FactionGuild {
 
 	public void removeTerrain(FactionZone zone, WorldAccess world) {
 		FactionArea areaRem = null;
+		FactionArea picked = null;
+		List<FactionArea> splited = new ArrayList<>();
 		for(FactionArea area : this.areas) {
 			if(area.remove(zone)) {
 				if(area.isEmpty())
 					areaRem = area;
+				else {
+					splited = area.split();
+					picked = area;
+				}
 				break;
 			}
 		}
 		if(areaRem != null)
 			areas.remove(areaRem);
+		if(splited.size() > 1) {
+			areas.remove(picked);
+			areas.addAll(splited);
+			if(world instanceof ServerWorld sw) {
+				for(ServerPlayerEntity p : sw.getPlayers()) {
+					if(picked.isIn(p.getBlockPos())) {
+						inBase.remove(p);
+						BaseEventCallBack.LEAVE.invoker().enterOrLeave(p, this);
+					}
+				}
+			}
+		}
 		if(world instanceof ServerWorld sw) {
 			sw.getPlayers().forEach(p -> {
 				if(zone.isIn(p.getBlockPos())) {

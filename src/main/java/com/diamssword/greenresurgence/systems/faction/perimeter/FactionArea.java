@@ -4,6 +4,7 @@ import com.diamssword.greenresurgence.systems.faction.perimeter.components.Facti
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionTerrainStorage;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionZone;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.TerrainEnergyStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.BlockBox;
@@ -11,39 +12,59 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class FactionArea {
-	public final static int maxDistanceBetweenCenters = 64;
+	public final static int maxDistanceBetweenCenters = 66;
 	private BlockBox bounds = new BlockBox(BlockPos.ORIGIN);
+	private FactionZone mainZone;
 	private final List<FactionZone> terrains = new ArrayList<>();
 	private final FactionGuild owner;
-	private final FactionTerrainStorage storage = new FactionTerrainStorage();
+	private final FactionTerrainStorage storage;
+	;
 	private final TerrainEnergyStorage energyStorage = new TerrainEnergyStorage();
 
 	public FactionArea(FactionGuild owner, World world, NbtCompound fromNBT) {
 		this.owner = owner;
+		this.storage = new FactionTerrainStorage(world);
 		NbtList ls = fromNBT.getList("terrains", NbtList.COMPOUND_TYPE);
 		ls.forEach(c -> {
 			FactionZone b = new FactionZone(owner, (NbtCompound) c).setArea(this);
 			this.terrains.add(b);
 		});
 		if(fromNBT.contains("storage")) {
-			storage.fromNBT(fromNBT.getCompound("storage"), world);
+			storage.fromNBT(fromNBT.getCompound("storage"));
 		}
 		if(fromNBT.contains("energy")) {
 			energyStorage.fromNBT(fromNBT.getCompound("energy"));
 		}
 		recalculateBounds();
+		findAMain();
 	}
 
+	public FactionZone getMainZone() {
+		return mainZone;
+	}
+
+	private FactionArea(FactionGuild owner, Collection<FactionZone> terrains) {
+		this.owner = owner;
+		this.storage = new FactionTerrainStorage(owner.getOwner().getWorld());
+		this.terrains.addAll(terrains);
+
+		for(FactionZone terrain : this.terrains) {
+			terrain.setArea(this);
+		}
+		recalculateBounds();
+		findAMain();
+	}
 
 	public FactionArea(FactionGuild owner, FactionZone initial) {
 		this.bounds = new BlockBox(initial.getBounds().getCenter()).expand(maxDistanceBetweenCenters);
 		this.terrains.add(initial.setArea(this));
+		initial.setMainZone(true);
+		mainZone = initial;
 		this.owner = owner;
+		this.storage = new FactionTerrainStorage(owner.getOwner().getWorld());
 	}
 
 	public FactionGuild getOwner() {
@@ -105,13 +126,115 @@ public class FactionArea {
 	}
 
 	public boolean isPositionValid(BlockPos pos) {
-		if(bounds.contains(pos.getX(), pos.getY(), pos.getZ())) {
-			for(FactionZone terrain : terrains) {
-				if(terrain.getCenter().isWithinDistance(pos, maxDistanceBetweenCenters))
-					return true;
+		//	if(bounds.contains(pos.getX(), pos.getY(), pos.getZ())) {
+		for(FactionZone terrain : terrains) {
+			if(terrain.getCenter().isWithinDistance(pos, maxDistanceBetweenCenters))
+				return true;
+		}
+		//	}
+		return false;
+	}
+
+	public void absorb(FactionArea otherArea) {
+		terrains.addAll(otherArea.getAllTerrains());
+		otherArea.getStorage().getInventories().forEach(storage::addIfMissing);
+		getEnergyStorage().addCapacity(otherArea.getEnergyStorage().getCapacity());
+		try(Transaction t1 = Transaction.openOuter()) {
+			getEnergyStorage().insert(otherArea.getEnergyStorage().getAmount(), t1);
+			t1.commit();
+		}
+		terrains.forEach(t -> {
+			t.setArea(this);
+			if(t.isMainZone() && t != mainZone)
+				t.setMainZone(false);
+		});
+		recalculateBounds();
+	}
+
+	public List<FactionArea> split() {
+		List<FactionZone> remaining = new ArrayList<>(terrains);
+		Set<FactionZone> unvisited = new HashSet<>(remaining);
+		List<List<FactionZone>> components = new ArrayList<>();
+
+		while(!unvisited.isEmpty()) {
+			FactionZone start = unvisited.iterator().next();
+			List<FactionZone> component = new ArrayList<>();
+			Queue<FactionZone> queue = new ArrayDeque<>();
+			queue.add(start);
+			unvisited.remove(start);
+			while(!queue.isEmpty()) {
+				FactionZone current = queue.poll();
+				component.add(current);
+				Iterator<FactionZone> it = unvisited.iterator();
+				while(it.hasNext()) {
+					FactionZone candidate = it.next();
+
+					if(current.getCenter().isWithinDistance(
+							candidate.getCenter(),
+							maxDistanceBetweenCenters
+					)) {
+						it.remove();
+						queue.add(candidate);
+					}
+				}
+			}
+			components.add(component);
+		}
+		if(components.size() == 1) {
+			getStorage().refreshContainers(this);
+			recalculateBounds();
+			return List.of(this);
+		}
+		terrains.clear();
+		terrains.addAll(components.get(0));
+		if(!terrains.isEmpty()) {
+			getStorage().refreshContainers(this);
+			recalculateBounds();
+			findAMain();
+
+		}
+		for(FactionZone terrain : terrains) {
+			terrain.setArea(this);
+		}
+		List<FactionArea> result = new ArrayList<>();
+		result.add(this);
+
+		for(int i = 1; i < components.size(); i++) {
+			result.add(new FactionArea(owner, components.get(i)));
+		}
+
+		return result;
+	}
+
+	private void findAMain() {
+		mainZone = null;
+		terrains.forEach(t -> {
+			if(t.isMainZone()) {
+				if(mainZone == null)
+					mainZone = t;
+				else
+					t.setMainZone(false);
+			}
+		});
+		if(mainZone == null) {
+			var center = bounds.getCenter();
+			FactionZone closest = null;
+			double dist = Integer.MAX_VALUE;
+			for(FactionZone m : terrains) {
+				var d = m.getCenter().getSquaredDistance(center);
+				if(closest == null) {
+					closest = m;
+					dist = d;
+				} else if(d < dist) {
+					closest = m;
+					dist = d;
+				}
+			}
+			if(closest != null) {
+				closest.setMainZone(true);
+				this.mainZone = closest;
 			}
 		}
-		return false;
 	}
 
 	public boolean addIfValid(FactionZone terrain) {
@@ -132,12 +255,17 @@ public class FactionArea {
 			if(b1.getMaxZ() > z2)
 				z2 = b1.getMaxZ();
 			bounds = new BlockBox(x1, y1, z1, x2, y2, z2);
+			terrain.setArea(this);
 			return true;
 		}
 		return false;
 	}
 
 	protected void recalculateBounds() {
+		if(terrains.isEmpty()) {
+			this.bounds = new BlockBox(BlockPos.ORIGIN);
+			return;
+		}
 		int x1 = Integer.MAX_VALUE, y1 = Integer.MAX_VALUE, z1 = Integer.MAX_VALUE, x2 = Integer.MIN_VALUE, y2 = Integer.MIN_VALUE, z2 = Integer.MIN_VALUE;
 		for(FactionZone terrain : terrains) {
 			var b1 = terrain.getBounds();
@@ -163,7 +291,11 @@ public class FactionArea {
 
 	public boolean remove(FactionZone terrain) {
 		if(terrains.remove(terrain)) {
-			recalculateBounds();
+			if(terrain == mainZone)
+				findAMain();
+			if(!terrains.isEmpty())
+				recalculateBounds();
+			getStorage().refreshContainers(this);
 			return true;
 		}
 		return false;

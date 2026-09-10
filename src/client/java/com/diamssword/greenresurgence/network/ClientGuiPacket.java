@@ -1,9 +1,9 @@
 package com.diamssword.greenresurgence.network;
 
 import com.diamssword.greenresurgence.blockEntities.ClaimBlockEntity;
+import com.diamssword.greenresurgence.blockEntities.IGuiPacketReceiver;
 import com.diamssword.greenresurgence.blockEntities.ImageBlockEntity;
 import com.diamssword.greenresurgence.gui.ClothBagEditGui;
-import com.diamssword.greenresurgence.gui.IPacketNotifiedChange;
 import com.diamssword.greenresurgence.gui.ImageBlockGui;
 import com.diamssword.greenresurgence.gui.PlayerStatsGui;
 import com.diamssword.greenresurgence.gui.faction.ClaimAntennaGui;
@@ -32,13 +32,10 @@ public class ClientGuiPacket {
 				}
 			}
 		});
-		Channels.MAIN.registerClientbound(GuiPackets.ReturnValue.class, (m, c) -> {
-			if(MinecraftClient.getInstance().currentScreen instanceof IPacketNotifiedChange pn)
-				pn.onChangeReceived(m.topic(), m.value());
-		});
-		Channels.MAIN.registerClientbound(GuiPackets.ReturnError.class, (m, c) -> {
-			if(MinecraftClient.getInstance().currentScreen instanceof IPacketNotifiedChange pn)
-				pn.onErrorReceived(m.topic(), m.message());
+		Channels.MAIN.registerClientbound(GuiPackets.GuiTileValue.class, (msg, ctx) -> {
+			if(MinecraftClient.getInstance().currentScreen instanceof IGuiPacketReceiver pr) {
+				pr.receiveGuiPacket(ctx.player(), msg);
+			}
 		});
 	}
 

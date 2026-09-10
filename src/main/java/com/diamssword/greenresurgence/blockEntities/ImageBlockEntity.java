@@ -4,11 +4,11 @@ import com.diamssword.greenresurgence.network.GuiPackets;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
@@ -133,7 +133,7 @@ public class ImageBlockEntity extends BlockEntity implements IGuiPacketReceiver 
 		return offsetY;
 	}
 
-	public void receiveGuiPacket(ServerPlayerEntity player, GuiPackets.GuiTileValue msg) {
+	public void receiveGuiPacket(PlayerEntity player, GuiPackets.GuiTileValue msg) {
 		if(!player.isCreative())
 			return;
 		switch(msg.key()) {

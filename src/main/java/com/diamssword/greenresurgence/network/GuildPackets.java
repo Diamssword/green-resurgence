@@ -6,6 +6,7 @@ import com.diamssword.greenresurgence.systems.faction.perimeter.components.Facti
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.Perms;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,14 +76,14 @@ public class GuildPackets {
 			if(guild.isPresent()) {
 				if(guild.get().getPermsOf(new FactionMember(ctx.player())).isAllowed(Perms.INVITE)) {
 					if(guild.get().addMember(msg.member, guild.get().getStartingRole(), ctx.player().getWorld()))
-						Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnValue("addMember", msg.member.getName()));
+						Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.GuiTileValue(BlockPos.ORIGIN, "addMember", msg.member.getName()));
 					else
-						Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("addMember", Text.translatable("message.green_resurgence.guild.packet.invite.error", msg.member.getName())));
+						Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.GuiTileValue(BlockPos.ORIGIN, "errAddMember", Text.translatable("message.green_resurgence.guild.packet.invite.error", msg.member.getName())));
 
 				} else
-					Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("addMember", Text.translatable("message.green_resurgence.guild.packet.invite.error.permission")));
+					Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.GuiTileValue(BlockPos.ORIGIN, "errAddMember", Text.translatable("message.green_resurgence.guild.packet.invite.error.permission")));
 			} else
-				Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("addMember", Text.translatable("message.green_resurgence.guild.packet.invite.error.no_guild")));
+				Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.GuiTileValue(BlockPos.ORIGIN, "errAddMember", Text.translatable("message.green_resurgence.guild.packet.invite.error.no_guild")));
 		});
 		Channels.MAIN.registerServerbound(ChangeRole.class, (msg, ctx) -> {
 			var g1 = ctx.player().getWorld().getComponent(Components.BASE_LIST).getForPlayer(ctx.player().getUuid(), false);
@@ -126,21 +127,21 @@ public class GuildPackets {
 						if(a < b) {
 							currentRoleEdit.remove(ctx.player());
 							if(g.get().replacePerm(r, msg.role))
-								Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnValue("editRole", msg.role.getName()));
+								Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.GuiTileValue(BlockPos.ORIGIN, "editRole", msg.role.getName()));
 							else
-								Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("editRole", Text.translatable("message.green_resurgence.guild.packet.role.edit.error.name")));
+								Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.GuiTileValue(BlockPos.ORIGIN, "errEditRole", Text.translatable("message.green_resurgence.guild.packet.role.edit.error.name")));
 						}
 
 					}
 				} else {
 					if(g.get().addRole(msg.role))
-						Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnValue("addRole", msg.role.getName()));
+						Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.GuiTileValue(BlockPos.ORIGIN, "addRole", msg.role.getName()));
 					else
-						Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("editRole", Text.translatable("message.green_resurgence.guild.packet.role.edit.error.name")));
+						Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.GuiTileValue(BlockPos.ORIGIN, "errEditRole", Text.translatable("message.green_resurgence.guild.packet.role.edit.error.name")));
 				}
 
 			} else
-				Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.ReturnError("editRole", Text.translatable("message.green_resurgence.guild.packet.invite.error.no_guild")));
+				Channels.MAIN.serverHandle(ctx.player()).send(new GuiPackets.GuiTileValue(BlockPos.ORIGIN, "errEditRole", Text.translatable("message.green_resurgence.guild.packet.invite.error.no_guild")));
 		});
 		Channels.MAIN.registerServerbound(PermEditRequest.class, (msg, ctx) -> {
 			var guilds = ctx.player().getWorld().getComponent(Components.BASE_LIST);

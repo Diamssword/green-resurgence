@@ -29,6 +29,7 @@ public class ClaimBlock extends ModBlockEntity<ClaimBlockEntity> {
 
 	public ClaimBlock(Settings settings) {
 		super(settings.strength(-1.0f, 3600000.0f).dropsNothing().allowsSpawning(Blocks::never));
+		this.setTickerFactory((p, v) -> ClaimBlockEntity::tick);
 	}
 
 	@Deprecated

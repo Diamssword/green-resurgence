@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 public class FactionZone {
 	private final FactionGuild owner;
 	private final BlockBox bounds;
-	private final boolean isMainZone = false;
+	private boolean isMainZone = false;
 	private @Nullable FactionArea area;
 
 	public FactionZone(FactionGuild owner, BlockBox bounds) {
@@ -27,6 +27,7 @@ public class FactionZone {
 
 	public FactionZone(FactionGuild owner, NbtCompound tag) {
 		this.bounds = BoundFromArray(tag.getIntArray("bounds"));
+		this.isMainZone = tag.getBoolean("isMainZone");
 		this.owner = owner;
 
 	}
@@ -36,12 +37,21 @@ public class FactionZone {
 		return this;
 	}
 
+	public boolean isMainZone() {
+		return isMainZone;
+	}
+
+	public void setMainZone(boolean mainZone) {
+		isMainZone = mainZone;
+	}
+
 	public boolean isIn(Vec3i pos) {
 		return bounds.contains(pos);
 	}
 
 	public void writeNbt(NbtCompound tag) {
 		tag.putIntArray("bounds", this.boundsToArray());
+		tag.putBoolean("isMainZone", isMainZone);
 	}
 
 	public BlockBox getBounds() {
