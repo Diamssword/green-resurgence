@@ -3,15 +3,12 @@ package com.diamssword.greenresurgence.blockEntities;
 import com.diamssword.greenresurgence.blocks.ClaimBlock;
 import com.diamssword.greenresurgence.network.GuiPackets;
 import com.diamssword.greenresurgence.systems.Components;
-import com.diamssword.greenresurgence.systems.faction.perimeter.FactionArea;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionGuild;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionMember;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionZone;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.Perms;
 import com.diamssword.greenresurgence.systems.multiblock.DeployingMachines;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -32,7 +29,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ClaimBlockEntity extends BlockEntity implements IGuiPacketReceiver {
+public class ClaimBlockEntity extends AreaAwareBlockEntity implements IGuiPacketReceiver {
 	public final static int baseConsumption = 1;
 	public final static double distanceMultiplier = 0.1;
 	public final static int maxRangeT1 = 8;
@@ -44,7 +41,6 @@ public class ClaimBlockEntity extends BlockEntity implements IGuiPacketReceiver 
 	private boolean isMain = false;
 	private int level = 0;
 	private int range = minRange;
-	private FactionArea currentArea;
 	private int consumption;
 
 	public ClaimBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -52,41 +48,48 @@ public class ClaimBlockEntity extends BlockEntity implements IGuiPacketReceiver 
 	}
 
 	public int getConsumption(double distanceModifier) {
+		if(this.isMain)
+			return 0;
 		var b = baseConsumption * range;
 		return (int) Math.ceil(b * distanceModifier);
 
 	}
 
 	public double getDistanceModifier() {
-		if(currentArea != null) {
-			var c = currentArea.getMainZone().getCenter();
+		return getArea().map(v -> {
+			var c = v.getMainZone().getCenter();
 			var dt = Math.sqrt(c.getSquaredDistance(pos));
 			return Math.max(1, dt * distanceMultiplier);
+		}).orElse(1d);
+	}
+
+	@Override
+	public int getIO() {
+		return -consumption;
+	}
+
+	@Override
+	public long getCapacity() {
+
+		return Math.max(100, consumption * 2L);
+	}
+
+	@Override
+	protected void checkForArea(boolean force) {
+		if(world != null && !world.isClient && (force || world.getTime() % 40 == 0)) {
+			var fac = getFaction();
+			if(fac != null) {
+				fac.getAreaAt(this.pos).ifPresent(this::setCachedArea);
+			}
 		}
-		return 1;
 	}
 
 	public static void tick(World world, BlockPos blockPos, BlockState blockState, ClaimBlockEntity claimBlockEntity) {
+		claimBlockEntity.checkForArea(false);
 		if(!world.isClient) {
 			if(world.getTime() % 50 == 0) {
-				var fac = claimBlockEntity.getFaction();
-				if(fac != null) {
-					fac.getAreaAt(blockPos).ifPresent(m -> claimBlockEntity.currentArea = m);
-					claimBlockEntity.consumption = claimBlockEntity.getConsumption(claimBlockEntity.getDistanceModifier());
-				}
-			}
-			if(world.getTime() % 20 == 0) {
-				if(claimBlockEntity.currentArea != null) {
-					try(Transaction t1 = Transaction.openOuter()) {
-						if(claimBlockEntity.consumption == claimBlockEntity.currentArea.getEnergyStorage().extract(claimBlockEntity.consumption, t1)) {
-							t1.commit();
-
-						} else {
-							t1.abort();
-						}
-					}
-				}
-
+				claimBlockEntity.consumption = claimBlockEntity.getConsumption(claimBlockEntity.getDistanceModifier());
+				claimBlockEntity.updateGrid();
 			}
 		}
 	}
@@ -95,7 +98,8 @@ public class ClaimBlockEntity extends BlockEntity implements IGuiPacketReceiver 
 	public void receiveGuiPacket(PlayerEntity player, GuiPackets.GuiTileValue msg) {
 		if(msg.key().equals("askEnergy")) {
 			var d = getDistanceModifier();
-			msg.replyTo(player, "power", String.format(Locale.ROOT, "%.1f", d) + ";" + getConsumption(1) + ";" + getConsumption(d));
+			var v = getArea().map(a -> a.getEnergyStorage().getRateLastSecond()).orElse(0);
+			msg.replyTo(player, "power", String.format(Locale.ROOT, "%.1f", d) + ";" + getConsumption(1) + ";" + getConsumption(d) + ";" + v);
 		} else {
 			var fac = getFaction();
 			if(fac != null && fac.getPermsOf(new FactionMember(player)).isAllowed(Perms.ADMIN)) {
@@ -153,10 +157,10 @@ public class ClaimBlockEntity extends BlockEntity implements IGuiPacketReceiver 
 	}
 
 	public Optional<FactionZone> getRelatedZone() {
-
-		if(currentArea != null) {
+		var currentArea = getArea();
+		if(currentArea.isPresent()) {
 			var ls = new ArrayList<FactionZone>();
-			currentArea.getTerrainsAt(pos, ls);
+			currentArea.get().getTerrainsAt(pos, ls);
 			if(ls.size() == 1)
 				return Optional.of(ls.get(0));
 			else if(!ls.isEmpty()) {

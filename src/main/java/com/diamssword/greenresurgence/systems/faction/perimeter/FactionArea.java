@@ -4,7 +4,6 @@ import com.diamssword.greenresurgence.systems.faction.perimeter.components.Facti
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionTerrainStorage;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionZone;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.TerrainEnergyStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.BlockBox;
@@ -21,7 +20,6 @@ public class FactionArea {
 	private final List<FactionZone> terrains = new ArrayList<>();
 	private final FactionGuild owner;
 	private final FactionTerrainStorage storage;
-	;
 	private final TerrainEnergyStorage energyStorage = new TerrainEnergyStorage();
 
 	public FactionArea(FactionGuild owner, World world, NbtCompound fromNBT) {
@@ -42,9 +40,6 @@ public class FactionArea {
 		findAMain();
 	}
 
-	public FactionZone getMainZone() {
-		return mainZone;
-	}
 
 	private FactionArea(FactionGuild owner, Collection<FactionZone> terrains) {
 		this.owner = owner;
@@ -65,6 +60,14 @@ public class FactionArea {
 		mainZone = initial;
 		this.owner = owner;
 		this.storage = new FactionTerrainStorage(owner.getOwner().getWorld());
+	}
+
+	public FactionZone getMainZone() {
+		return mainZone;
+	}
+
+	public void tick(World world) {
+		energyStorage.tick();
 	}
 
 	public FactionGuild getOwner() {
@@ -138,11 +141,8 @@ public class FactionArea {
 	public void absorb(FactionArea otherArea) {
 		terrains.addAll(otherArea.getAllTerrains());
 		otherArea.getStorage().getInventories().forEach(storage::addIfMissing);
-		getEnergyStorage().addCapacity(otherArea.getEnergyStorage().getCapacity());
-		try(Transaction t1 = Transaction.openOuter()) {
-			getEnergyStorage().insert(otherArea.getEnergyStorage().getAmount(), t1);
-			t1.commit();
-		}
+		getEnergyStorage().absorb(otherArea.getEnergyStorage());
+
 		terrains.forEach(t -> {
 			t.setArea(this);
 			if(t.isMainZone() && t != mainZone)

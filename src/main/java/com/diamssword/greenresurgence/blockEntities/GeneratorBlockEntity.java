@@ -1,12 +1,9 @@
 package com.diamssword.greenresurgence.blockEntities;
 
-import com.diamssword.greenresurgence.systems.Components;
-import com.diamssword.greenresurgence.systems.faction.perimeter.FactionArea;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -17,11 +14,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class GeneratorBlockEntity extends BlockEntity {
+public class GeneratorBlockEntity extends AreaAwareBlockEntity {
 
 	private int burntime = 0;
 	public int rfGen;
-	private FactionArea terrain;
 
 	public GeneratorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, int rfPerTick) {
 		super(type, pos, state);
@@ -33,34 +29,29 @@ public class GeneratorBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(World world, BlockPos pos, BlockState state, GeneratorBlockEntity blockEntity) {
-		if(world.getTime() % 10 == 0) {
-			var bl = world.getComponent(Components.BASE_LIST);
-			blockEntity.terrain = bl.getAreaAt(pos).orElse(null);
-
-		}
-		if(blockEntity.terrain != null) {
-
-			if(blockEntity.burntime <= 0) {
-				var inv = InventoryStorage.of(blockEntity.terrain.getStorage(), null);
+		blockEntity.checkForArea(false);
+		if(blockEntity.burntime <= 0) {
+			blockEntity.getArea().ifPresent(ar -> {
+				var inv = InventoryStorage.of(ar.getStorage(), null);
 				try(Transaction t1 = Transaction.openOuter()) {
 					var ext = inv.extract(ItemVariant.of(Items.COAL), 1, t1);
 					if(ext > 0) {
 						blockEntity.burntime = 200;
+						blockEntity.updateGrid();
 						t1.commit();
 						blockEntity.markDirty();
 					}
 				}
+			});
 
-			}
-			if(blockEntity.burntime > 0) {
-				blockEntity.burntime--;
-				try(Transaction t1 = Transaction.openOuter()) {
-					blockEntity.terrain.getEnergyStorage().insert(blockEntity.rfGen, t1);
-					t1.commit();
-				}
-				blockEntity.markDirty();
-			}
+
 		}
+		if(blockEntity.burntime > 0) {
+			blockEntity.burntime--;
+			blockEntity.markDirty();
+		} else
+			blockEntity.updateGrid();
+
 	}
 
 	@Override
@@ -87,5 +78,15 @@ public class GeneratorBlockEntity extends BlockEntity {
 	@Override
 	public NbtCompound toInitialChunkDataNbt() {
 		return createNbt();
+	}
+
+	@Override
+	public int getIO() {
+		return burntime > 0 ? rfGen : 0;
+	}
+
+	@Override
+	public long getCapacity() {
+		return rfGen * 2L;
 	}
 }

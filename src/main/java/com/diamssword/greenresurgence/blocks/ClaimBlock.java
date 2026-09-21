@@ -1,7 +1,6 @@
 package com.diamssword.greenresurgence.blocks;
 
 import com.diamssword.greenresurgence.blockEntities.ClaimBlockEntity;
-import com.diamssword.greenresurgence.blockEntities.ModBlockEntity;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.GuiPackets;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionMember;
@@ -23,7 +22,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class ClaimBlock extends ModBlockEntity<ClaimBlockEntity> {
+public class ClaimBlock extends ElecGridBlock<ClaimBlockEntity> {
 	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 	public static final VoxelShape SMALL = Block.createCuboidShape(2, 0, 2, 14, 16, 14);
 

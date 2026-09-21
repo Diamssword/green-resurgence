@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.render.entities;
 
 import com.diamssword.characters.api.CharactersApi;
 import com.diamssword.characters.api.http.ApiSkinValues;
+import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.entities.NPCEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -11,15 +12,10 @@ import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 public class NPCEntityRenderer extends LivingEntityRenderer<NPCEntity, PlayerEntityModel<NPCEntity>> {
-
-	private Map<UUID, Identifier> textures = new HashMap<>();
-	private PlayerEntityModel<NPCEntity> slimModel;
-	private PlayerEntityModel<NPCEntity> normalModel;
+	public final static Identifier DEFAULT_SKIN = GreenResurgence.asRessource("textures/entity/npc.png");
+	private final PlayerEntityModel<NPCEntity> slimModel;
+	private final PlayerEntityModel<NPCEntity> normalModel;
 
 	public NPCEntityRenderer(EntityRendererFactory.Context ctx) {
 		super(ctx, new PlayerEntityModel<>(ctx.getPart(new EntityModelLayer(new Identifier("character_sheet:player"), "main")), false), 0.4f);
@@ -55,14 +51,12 @@ public class NPCEntityRenderer extends LivingEntityRenderer<NPCEntity, PlayerEnt
 
 	@Override
 	public Identifier getTexture(NPCEntity entity) {
-		var t = textures.get(entity.getUuid());
+		var t = entity.getCachedSkin();
 		if(t == null) {
 			if(entity.getSkinDatas().layers.length > 0) {
-				CharactersApi.skin().getEntityTexture(entity, cl -> {
-					textures.put(entity.getUuid(), cl);
-				});
+				CharactersApi.skin().getEntityTexture(entity, entity::setCachedSkin);
 			}
-			return new Identifier("empty");
+			return DEFAULT_SKIN;
 		}
 		return t;
 	}

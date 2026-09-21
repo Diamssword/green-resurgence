@@ -295,6 +295,7 @@ public class FactionGuild {
 			if(it.next().tick(world))
 				it.remove();
 		}
+		areas.forEach(a -> a.tick(world));
 	}
 
 	public String getStartingRole() {

@@ -9,6 +9,8 @@ import com.diamssword.characters.api.http.ApiSkinValues;
 import com.diamssword.characters.api.http.SkinLayerValue;
 import com.diamssword.characters.api.skin.BodyLayerCategory;
 import com.diamssword.characters.api.skin.BodyLayerImageGroup;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ai.goal.*;
@@ -27,6 +29,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -35,6 +38,7 @@ public class NPCEntity extends PathAwareEntity implements IPlayerAppearanceProvi
 	private static final TrackedData<NbtCompound> CLOTH = DataTracker.registerData(NPCEntity.class, TrackedDataHandlerRegistry.NBT_COMPOUND);
 	private static final TrackedData<NbtCompound> APPEARANCE = DataTracker.registerData(NPCEntity.class, TrackedDataHandlerRegistry.NBT_COMPOUND);
 	private Map<LayerDef, ClothData> cloths = new HashMap<>();
+	private Identifier cachedSkin;
 
 	public NPCEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
 		super(entityType, world);
@@ -63,6 +67,17 @@ public class NPCEntity extends PathAwareEntity implements IPlayerAppearanceProvi
 		super.initDataTracker();
 		this.dataTracker.startTracking(CLOTH, new NbtCompound());
 		this.dataTracker.startTracking(APPEARANCE, new NbtCompound());
+	}
+
+	@Nullable
+	@Environment(EnvType.CLIENT)
+	public Identifier getCachedSkin() {
+		return cachedSkin;
+	}
+
+	@Environment(EnvType.CLIENT)
+	public void setCachedSkin(Identifier cachedSkin) {
+		this.cachedSkin = cachedSkin;
 	}
 
 	@Override

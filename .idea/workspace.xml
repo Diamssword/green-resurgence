@@ -6,30 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="d2280433-581a-4b82-ab53-687b6ee5ff53" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/IPacketNotifiedChange.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/faction/ClaimAntennaGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/faction/ClaimAntennaGui.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/faction/FactionEditRoleGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/faction/FactionEditRoleGui.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/faction/FactionFriendAddGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/faction/FactionFriendAddGui.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/network/ClientGuiPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/network/ClientGuiPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/entities/NPCEntityRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/render/entities/NPCEntityRenderer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/devResources/lang/gui_en_us.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/devResources/lang/gui_en_us.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/ClaimBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/ClaimBlockEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/GeneratorBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/GeneratorBlockEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/IGuiPacketReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/IGuiPacketReceiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/ImageBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/ImageBlockEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/ItemBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/ItemBlockEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/SpawnerBlockEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blockEntities/SpawnerBlockEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/ClaimBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/ClaimBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/player/grids/PlayerGrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/containers/player/grids/PlayerGrid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/GuiPackets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/GuiPackets.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/GuildPackets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/network/GuildPackets.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/GeneratorBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/blocks/GeneratorBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/entities/NPCEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/entities/NPCEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/FactionArea.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/FactionArea.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/components/FactionGuild.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/components/FactionGuild.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/components/FactionTerrainStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/components/FactionTerrainStorage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/components/FactionZone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/components/FactionZone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/components/FormattedInventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/components/FormattedInventory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/components/TerrainEnergyStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/faction/perimeter/components/TerrainEnergyStorage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/multiblock/DeployingMachineInstance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/systems/multiblock/DeployingMachineInstance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/faction/claim_antenna.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/faction/claim_antenna.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,7 +173,7 @@
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/diamssword/Dev/Git/green-resurgence/src/main/resources/assets/green_resurgence/owo_ui/faction&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.7468355&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
@@ -206,11 +193,11 @@
       <recent name="$PROJECT_DIR$/src/main/resources/data/green_resurgence/grecipes/saw" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/entity" />
+      <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/" />
       <recent name="$PROJECT_DIR$/src/main/resources/data/green_resurgence/grecipes/exemples" />
       <recent name="$PROJECT_DIR$/src/main/resources/data/green_resurgence" />
       <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/shaders/program" />
-      <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence" />
-      <recent name="D:\Git\green-resurgence\src\main\resources\assets\green_resurgence\owo_ui\survival\subpanel" />
     </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="com.diamssword.greenresurgence.genericBlocks" />

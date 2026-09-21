@@ -140,8 +140,9 @@ public class ClaimAntennaGui extends BaseUIModelScreen<FlowLayout> implements IG
 	public void receiveGuiPacket(PlayerEntity player, GuiPackets.GuiTileValue msg) {
 		if(msg.key().equals("power")) {
 			var vals = msg.value().split(";");
-			if(vals.length >= 3) {
-				power.text(Text.translatable("gui.green_resurgence.claim_antenna.power.detail", vals[1], vals[0], vals[2]));
+			if(vals.length >= 4) {
+				power.text(Text.translatable("gui.green_resurgence.claim_antenna.power.detail", vals[1], vals[0], vals[2], vals[3]));
+
 			}
 
 		}

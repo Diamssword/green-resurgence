@@ -1,18 +1,10 @@
 package com.diamssword.greenresurgence.blocks;
 
 import com.diamssword.greenresurgence.blockEntities.GeneratorBlockEntity;
-import com.diamssword.greenresurgence.blockEntities.ModBlockEntity;
-import com.diamssword.greenresurgence.systems.Components;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
-public class GeneratorBlock extends ModBlockEntity<GeneratorBlockEntity> {
+public class GeneratorBlock extends ElecGridBlock<GeneratorBlockEntity> {
 	public GeneratorBlock(Settings settings) {
 		super(settings);
 		this.setTickerFactory((p, w) -> GeneratorBlockEntity::tick);
@@ -28,28 +20,4 @@ public class GeneratorBlock extends ModBlockEntity<GeneratorBlockEntity> {
 		return BlockRenderType.MODEL;
 	}
 
-	@Override
-	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-		if(state.getBlock() != newState.getBlock()) {
-			BlockEntity blockEntity = world.getBlockEntity(pos);
-			var ls = world.getComponent(Components.BASE_LIST);
-			var terr = ls.getAreaAt(pos);
-			if(blockEntity instanceof GeneratorBlockEntity gen) {
-				terr.ifPresent(terrainInstance -> terrainInstance.getEnergyStorage().addCapacity(-gen.rfGen));
-			}
-			super.onStateReplaced(state, world, pos, newState, moved);
-		}
-	}
-
-	@Override
-	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-		super.onPlaced(world, pos, state, placer, itemStack);
-		var ls = world.getComponent(Components.BASE_LIST);
-		var terr = ls.getAreaAt(pos);
-		if(terr.isPresent()) {
-			var te = world.getBlockEntity(pos);
-			if(te instanceof GeneratorBlockEntity te1)
-				terr.get().getEnergyStorage().addCapacity(te1.rfGen);
-		}
-	}
 }
