@@ -77,8 +77,8 @@ public class RenderersRegister {
 		EntityRendererRegistry.register(MEntities.CHAIR, RenderersRegister::emptyEntityRender);
 		EntityRendererRegistry.register(MEntities.THROWN_WEAPON, ThrownWeaponRenderer::new);
 		EntityRendererRegistry.register(MEntities.BACKPACK, BackpackEntityRenderer::new);
-		EntityRendererRegistry.register(MEntities.CADDIE, CaddieEntityRenderer::new);
 		EntityRendererRegistry.register(MEntities.BIKE, BikeEntityRenderer::new);
+		EntityRendererRegistry.register(MEntities.CADDIE, NewCaddieEntityRenderer::new);
 		EntityRendererRegistry.register(MEntities.FLAME_PUDDLE, RenderersRegister::emptyEntityRender);
 		EntityRendererRegistry.register(MEntities.DEPLOYABLE_SUB_BOX, RenderersRegister::emptyEntityRender);
 		EntityRendererRegistry.register(MEntities.DEPLOYABLE, DeployableEntityRenderer::new);

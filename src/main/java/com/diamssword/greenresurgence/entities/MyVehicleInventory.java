@@ -1,34 +1,41 @@
 package com.diamssword.greenresurgence.entities;
 
+import com.diamssword.greenresurgence.containers.GenericContainer;
 import com.diamssword.greenresurgence.containers.IOptionalInventory;
+import com.diamssword.greenresurgence.containers.grids.GridContainer;
 import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.PiglinBrain;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.StackReference;
+import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.ItemScatterer;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
@@ -47,12 +54,97 @@ public abstract class MyVehicleInventory extends AnimalEntity implements Invento
 
 	abstract void resetInventory();
 
+	abstract boolean canBeDyed();
+
+	abstract boolean canHaveChest();
+
+	public abstract int getColor();
+
+	public abstract void setColor(int color);
+
+	public void setColor(DyeColor color) {
+		setColor(color.getId());
+	}
+
+	public abstract void setHasChest(boolean hasChest);
+
 	public void setInventoryLootTableId(@Nullable Identifier lootTableId) {
 		this.lootTableId = lootTableId;
 	}
 
 	private long getInventoryLootTableSeed() {
 		return this.lootTableSeed;
+	}
+
+	private void removeChest() {
+		ItemScatterer.spawn(this.getWorld(), this, this);
+		this.clearInventory();
+		this.setHasChest(false);
+
+	}
+
+	public ActionResult interactWithItem(PlayerEntity player, ItemStack stack, Hand hand) {
+		if(canHaveChest() && stack.getItem() == Items.CHEST) {
+			if(this.hasChest()) {
+				removeChest();
+				stack.increment(1);
+			} else {
+				this.setHasChest(true);
+				stack.decrement(1);
+			}
+			player.swingHand(hand);
+
+			return ActionResult.CONSUME;
+		} else if(canBeDyed() && stack.getItem() instanceof DyeItem dy) {
+			if(this.getColor() != dy.getColor().getId()) {
+				this.setColor(dy.getColor());
+				player.swingHand(hand);
+				stack.decrement(1);
+				return ActionResult.CONSUME;
+			}
+
+		}
+		return ActionResult.PASS;
+	}
+
+	@Override
+	public ActionResult interactMob(PlayerEntity player, Hand hand) {
+		var res = interactWithItem(player, player.getStackInHand(hand), hand);
+		if(res != ActionResult.PASS)
+			return res;
+		else if(this.canAddPassenger(player) && !player.shouldCancelInteraction()) {
+			player.startRiding(this);
+			player.swingHand(hand);
+			return ActionResult.CONSUME;
+		} else if(hasChest()) {
+			player.openHandledScreen(this);
+			this.emitGameEvent(GameEvent.CONTAINER_OPEN, player);
+			player.swingHand(hand);
+			return !player.getWorld().isClient ? ActionResult.CONSUME : ActionResult.SUCCESS;
+
+		}
+
+		return ActionResult.PASS;
+	}
+
+	@Override
+	protected @org.jetbrains.annotations.Nullable SoundEvent getDeathSound() {
+		return null;
+	}
+
+	@Override
+	public ItemStack getPickBlockStack() {
+		return this.getVehicleItemStack();
+	}
+
+	@Override
+	protected void dropLoot(DamageSource damageSource, boolean causedByPlayer) {
+		this.dropStack(this.getVehicleItemStack());
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return SoundEvents.ENTITY_PLAYER_ATTACK_CRIT;
 	}
 
 	@Nullable
@@ -93,7 +185,12 @@ public abstract class MyVehicleInventory extends AnimalEntity implements Invento
 		}
 	}
 
-	abstract protected ScreenHandler getScreenHandler(int SyncID, PlayerInventory playerInventory, PlayerEntity player);
+	protected ScreenHandler getScreenHandler(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+		if(player.isCreative()) {
+			return new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X1, syncId, playerInventory, this, 1);
+		}
+		return new GenericContainer(syncId, player, new GridContainer("container", this, 4, 4));
+	}
 
 	public void writeInventoryToNbt(NbtCompound nbt) {
 
@@ -119,23 +216,6 @@ public abstract class MyVehicleInventory extends AnimalEntity implements Invento
 
 	}
 
-	public void onBroken(DamageSource source, World world, Entity vehicle) {
-		if(world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
-			ItemScatterer.spawn(world, vehicle, this);
-			if(!world.isClient) {
-				Entity entity = source.getSource();
-				if(entity != null && entity.getType() == EntityType.PLAYER) {
-					PiglinBrain.onGuardedBlockInteracted((PlayerEntity) entity, true);
-				}
-			}
-
-		}
-	}
-
-	public ActionResult open(PlayerEntity player) {
-		player.openHandledScreen(this);
-		return !player.getWorld().isClient ? ActionResult.CONSUME : ActionResult.SUCCESS;
-	}
 
 	public void generateInventoryLoot(@Nullable PlayerEntity player) {
 		MinecraftServer minecraftServer = this.getWorld().getServer();
@@ -240,15 +320,90 @@ public abstract class MyVehicleInventory extends AnimalEntity implements Invento
 	@Override
 	public void openInventory(PlayerEntity player) {
 		player.openHandledScreen(this);
-		if(!player.getWorld().isClient) {
-			this.emitGameEvent(GameEvent.CONTAINER_OPEN, player);
-			PiglinBrain.onGuardedBlockInteracted(player, true);
-		}
+
 	}
 
 	public boolean canPlayerAccess(PlayerEntity player) {
 
 		return !this.isRemoved() && this.getPos().isInRange(player.getPos(), ReachEntityAttributes.getReachDistance(player, 8.0));
 	}
+
+
+	@Override
+	public int getXpToDrop() {
+		return 0;
+	}
+
+	@Override
+	public boolean isInvulnerableTo(DamageSource damageSource) {
+
+		return this.isRemoved() || this.isInvulnerable() && !damageSource.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY) && !damageSource.isSourceCreativePlayer() || damageSource.isIn(DamageTypeTags.IS_FIRE) || damageSource.isIn(DamageTypeTags.IS_DROWNING) || damageSource.isIn(DamageTypeTags.IS_FREEZING) || damageSource.isOf(DamageTypes.WITHER) || damageSource.isOf(DamageTypes.MAGIC) || damageSource.isOf(DamageTypes.CACTUS);
+	}
+
+	@Override
+	public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
+		return null;
+	}
+
+	@Override
+	public void writeCustomDataToNbt(NbtCompound nbt) {
+		super.writeCustomDataToNbt(nbt);
+		writeStackData(nbt);
+		if(this.hasChest()) {
+			this.writeInventoryToNbt(nbt);
+		}
+	}
+
+	@Override
+	public void writeStackData(NbtCompound nbt) {
+		if(this.canHaveChest())
+			nbt.putBoolean("Chested", this.hasChest());
+		if(this.canBeDyed())
+			nbt.putInt("Color", this.getColor());
+
+	}
+
+	@Override
+	public void readStackData(NbtCompound nbt) {
+		if(this.canHaveChest())
+			this.setHasChest(nbt.getBoolean("Chested"));
+		if(this.canBeDyed())
+			this.setColor(nbt.getInt("Color"));
+	}
+
+	@Override
+	public void readCustomDataFromNbt(NbtCompound nbt) {
+		super.readCustomDataFromNbt(nbt);
+		this.readStackData(nbt);
+		if(this.hasChest()) {
+			this.readInventoryFromNbt(nbt);
+		}
+	}
+
+	@Override
+	public ItemStack getStack(int slot) {
+		return this.getInventoryStack(slot);
+	}
+
+	@Override
+	public ItemStack removeStack(int slot, int amount) {
+		return this.removeInventoryStack(slot, amount);
+	}
+
+	@Override
+	public ItemStack removeStack(int slot) {
+		return this.removeInventoryStack(slot);
+	}
+
+	@Override
+	public void setStack(int slot, ItemStack stack) {
+		this.setInventoryStack(slot, stack);
+	}
+
+	@Override
+	public StackReference getStackReference(int mappedIndex) {
+		return this.getInventoryStackReference(mappedIndex);
+	}
+
 }
 

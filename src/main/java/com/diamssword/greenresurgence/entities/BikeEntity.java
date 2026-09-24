@@ -2,8 +2,6 @@ package com.diamssword.greenresurgence.entities;
 
 import com.diamssword.greenresurgence.MItems;
 import com.diamssword.greenresurgence.MSounds;
-import com.diamssword.greenresurgence.containers.GenericContainer;
-import com.diamssword.greenresurgence.containers.grids.GridContainer;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.character.PosesManager;
 import net.minecraft.block.BlockRenderType;
@@ -14,46 +12,29 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.PiglinBrain;
-import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.InventoryChangedListener;
-import net.minecraft.inventory.StackReference;
-import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.registry.tag.EntityTypeTags;
-import net.minecraft.screen.GenericContainerScreenHandler;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -102,63 +83,16 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 		this.dataTracker.set(CHEST, hasChest);
 	}
 
+	@Override
 	public int getColor() {
 		return this.dataTracker.get(COLOR);
 	}
 
+	@Override
 	public void setColor(int color) {
 		this.dataTracker.set(COLOR, Math.max(0, Math.min(15, color)));
 	}
 
-	public void setColor(DyeColor color) {
-		this.dataTracker.set(COLOR, color.getId());
-	}
-
-	@Override
-	protected @org.jetbrains.annotations.Nullable SoundEvent getDeathSound() {
-		return null;
-	}
-
-	@Override
-	protected SoundEvent getHurtSound(DamageSource source) {
-		return SoundEvents.ENTITY_PLAYER_ATTACK_CRIT;
-	}
-
-	@Override
-	protected void dropLoot(DamageSource damageSource, boolean causedByPlayer) {
-		this.dropStack(this.getVehicleItemStack());
-	}
-
-
-	@Override
-	public ActionResult interactMob(PlayerEntity player, Hand hand) {
-		if(player.getStackInHand(hand).getItem() == Items.CHEST) {
-			this.setHasChest(!this.hasChest());
-			player.swingHand(hand);
-			return ActionResult.CONSUME;
-		} else if(player.getStackInHand(hand).getItem() instanceof DyeItem dy) {
-			if(this.getColor() != dy.getColor().getId()) {
-				this.setColor(dy.getColor());
-				player.swingHand(hand);
-				return ActionResult.CONSUME;
-			}
-
-		}
-		if(this.canAddPassenger(player) && !player.shouldCancelInteraction()) {
-			player.startRiding(this);
-			player.swingHand(hand);
-			return ActionResult.CONSUME;
-		} else {
-			ActionResult actionResult = this.open(player);
-			if(actionResult.isAccepted()) {
-				this.emitGameEvent(GameEvent.CONTAINER_OPEN, player);
-				player.swingHand(hand);
-				PiglinBrain.onGuardedBlockInteracted(player, true);
-			}
-
-			return actionResult;
-		}
-	}
 
 	@Override
 	protected void mobTick() {
@@ -212,11 +146,6 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 	}
 
 	@Override
-	public int getXpToDrop() {
-		return 0;
-	}
-
-	@Override
 	public boolean shouldSpawnSprintingParticles() {
 		return this.getVelocity().length() > 0.2f && !this.isTouchingWater() && !this.isSpectator() && !this.isInSneakingPose() && !this.isInLava() && this.isAlive();
 	}
@@ -245,12 +174,6 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 
 			this.getWorld().addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, blockState), d, this.getY() + 0.1, e, vec3d.x * -4.0, 1.5, vec3d.z * -4.0);
 		}
-	}
-
-	@Override
-	public boolean isInvulnerableTo(DamageSource damageSource) {
-
-		return this.isRemoved() || this.isInvulnerable() && !damageSource.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY) && !damageSource.isSourceCreativePlayer() || damageSource.isIn(DamageTypeTags.IS_FIRE) || damageSource.isIn(DamageTypeTags.IS_DROWNING) || damageSource.isIn(DamageTypeTags.IS_FREEZING) || damageSource.isOf(DamageTypes.WITHER) || damageSource.isOf(DamageTypes.MAGIC) || damageSource.isOf(DamageTypes.CACTUS);
 	}
 
 	@Override
@@ -306,12 +229,6 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 	@Override
 	public boolean isLogicalSideForUpdatingMovement() {
 		return super.isLogicalSideForUpdatingMovement();
-		//	return true;
-	}
-
-	@Override
-	public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
-		return null;
 	}
 
 	public float bikeRodDir() {
@@ -343,10 +260,6 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 		return MItems.BIKE;
 	}
 
-	@Override
-	public ItemStack getPickBlockStack() {
-		return this.getVehicleItemStack();
-	}
 
 	@Override
 	public AnimatableInstanceCache getAnimatableInstanceCache() {
@@ -355,36 +268,16 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 
 
 	@Override
-	public void writeCustomDataToNbt(NbtCompound nbt) {
-		super.writeCustomDataToNbt(nbt);
-		writeStackData(nbt);
-		if(this.hasChest()) {
-			this.writeInventoryToNbt(nbt);
-		}
-	}
-
-	@Override
 	public void writeStackData(NbtCompound nbt) {
-		nbt.putBoolean("Chested", this.hasChest());
+		super.writeStackData(nbt);
 		nbt.putBoolean("Light", this.isLightOn(this, null));
-		nbt.putInt("Color", this.getColor());
 
 	}
 
 	@Override
 	public void readStackData(NbtCompound nbt) {
-		this.setHasChest(nbt.getBoolean("Chested"));
+		super.readStackData(nbt);
 		this.setHasLight(nbt.getBoolean("Light"));
-		this.setColor(nbt.getInt("Color"));
-	}
-
-	@Override
-	public void readCustomDataFromNbt(NbtCompound nbt) {
-		super.readCustomDataFromNbt(nbt);
-		this.readStackData(nbt);
-		if(this.hasChest()) {
-			this.readInventoryFromNbt(nbt);
-		}
 	}
 
 	@Override
@@ -392,40 +285,10 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 
 	}
 
-	@Override
-	public ItemStack getStack(int slot) {
-		return this.getInventoryStack(slot);
-	}
-
-	@Override
-	public ItemStack removeStack(int slot, int amount) {
-		return this.removeInventoryStack(slot, amount);
-	}
-
-	@Override
-	public ItemStack removeStack(int slot) {
-		return this.removeInventoryStack(slot);
-	}
-
-	@Override
-	public void setStack(int slot, ItemStack stack) {
-		this.setInventoryStack(slot, stack);
-	}
-
-	@Override
-	public StackReference getStackReference(int mappedIndex) {
-		return this.getInventoryStackReference(mappedIndex);
-	}
 
 	@Override
 	public void markDirty() {
-	}
 
-	@Override
-	protected ScreenHandler getScreenHandler(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-		if(player.isCreative())
-			return new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X1, syncId, playerInventory, this, 1);
-		return new GenericContainer(syncId, player, new GridContainer("container", this, 4, 4));
 	}
 
 	@Override
@@ -436,6 +299,16 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 	@Override
 	public void resetInventory() {
 		this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
+	}
+
+	@Override
+	boolean canBeDyed() {
+		return true;
+	}
+
+	@Override
+	boolean canHaveChest() {
+		return true;
 	}
 
 
