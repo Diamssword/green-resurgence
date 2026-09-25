@@ -18,7 +18,23 @@
                   }
                ],
                "name": "air",
-               "weight": 30
+               "weight": 20
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 2,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_wood_furniture",
+               "weight": 61
             },
             {
                "type": "minecraft:item",
@@ -33,8 +49,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_acetone",
-               "weight": 10
+               "name": "green_resurgence:material_adesive_screw",
+               "weight": 9
             },
             {
                "type": "minecraft:item",
@@ -49,8 +65,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_acid",
-               "weight": 40
+               "name": "green_resurgence:material_adesive_nail",
+               "weight": 9
             },
             {
                "type": "minecraft:item",
@@ -65,24 +81,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_acid1",
-               "weight": 10
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_chemical_solvant",
-               "weight": 10
+               "name": "green_resurgence:material_compost_compost",
+               "weight": 1
             }
          ],
          "rolls": {

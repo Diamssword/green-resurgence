@@ -8,8 +8,9 @@ const tableGenerators={
 fs.mkdirSync("loot_tables/lootable/",{recursive:true})
 parseBlocks(fs.readFileSync("csv/blocks.csv").toString());
 /**
- * 
- * @param {string[]} files 
+ *
+ * @param {string[]} files
+ * @returns {{rollMin:10,rollMax:0,items:{[key:string]:{min:number,max:number,perc:number}}}}
  */
 function combineTable(files)
 {
@@ -19,7 +20,7 @@ function combineTable(files)
         const number=parseInt(parts[1])||1
         if(parts[0]=="vide")
             return {rollMin: 1,rollMax: 1,items: {}}
-        
+
         var ob=parse(fs.readFileSync("csv/"+parts[0]+".csv").toString());
         for(var k in ob)
             {
@@ -36,7 +37,7 @@ function combineTable(files)
                 if(o["item"] && o["item"].length>1)
                 {
                     var item=o["item"];
-                    if(cat)   
+                    if(cat)
                     {
                         item="green_resurgence:material_"+o["categorie"]+"_"+item;
                     }
@@ -60,20 +61,20 @@ function combineTable(files)
                 }
                 else
                     console.log("missing item line :"+k+" for table: "+f)
-                  
+
             }
     })
     if(res.rollMin==1000)
         console.log("erreur probable de format pour les rolls de les table "+files)
     return res;
  //   fs.writeFileSync("loot_tables/lootable/"+file.replace(".csv",".json"),JSON.stringify(res,undefined,3))
-    
+
 }
 /**
- * 
- * @param {{rollMin:number,rollMax:number,items:{[id:string]:[{min:number,max:number,perc:number}]}}} table 
- * @param {string} name 
- * @returns 
+ *
+ * @param {{rollMin:number,rollMax:number,items:{[id:string]:[{min:number,max:number,perc:number}]}}} table
+ * @param {string} name
+ * @returns
  */
 function parseTable(table,name)
 {
@@ -93,8 +94,22 @@ function parseTable(table,name)
         }
         else
         {
-            items.forEach(o=>{
-                res.entries.push(tableGenerators[gen](id,o))
+          var nbtF = handleNBT(id);
+          if (nbtF)
+          {
+            id = nbtF.item;
+            delete nbtF.item;
+          }
+
+          items.forEach(o => {
+              var generated = tableGenerators[gen](id, o)
+              if (nbtF)
+              {
+                if (!generated.functions)
+                  generated.functions = [];
+                generated.functions.push(nbtF)
+              }
+              res.entries.push(generated)
             })
         }
     }
@@ -103,9 +118,10 @@ function parseTable(table,name)
     fs.writeFileSync("loot_tables/lootable/"+name+".json",JSON.stringify(res,undefined,3))
     return res;
 }
+
 /**
- * 
- * @param {string} text 
+ *
+ * @param {string} text
  */
 function splitNb(text)
 {
@@ -113,9 +129,9 @@ function splitNb(text)
     return [parseFloat(s[0]),parseFloat(s[1]||s[0])]
 }
 /**
- * 
- * @param {string} id 
- * @param {{replace:string,tables:{[tool:string]:string[]}}} props 
+ *
+ * @param {string} id
+ * @param {{replace:string,tables:{[tool:string]:string[]}}} props
  */
 function handleBlock(id,props)
 {
@@ -131,43 +147,45 @@ function handleBlock(id,props)
             parseTable(t,tn)
             table_dic[tn]=t;
         }
-        d.tables[tool]="green_resurgence:lootable/"+tn;            
+        d.tables[tool]="green_resurgence:lootable/"+tn;
     }
     return d;
-    
+
 }
 function parseBlocks(text)
 {
-const ob=parse(text);
+  const ob=parse(text);
 
-var result={};
-for(var k in ob)
-{
-    const o=ob[k];
-    var table=(o["Table"]||"").trim();
-    var tool=  (o["Outils"]||"").trim();
-    var replace= o["Remplace"]?o["Remplace"]:"minecraft:air"
-    var connected= o["Connecté"];
-    if(table && tool && replace)
-    {
-            o["blocs"].split(" ").forEach(b=>{
-                if(!result[b])
-                    result[b]={replace,connected, tables:{[tool]:[table]}}
-                else
-                {
-                    if(!result[b].tables[tool])
-                        result[b].tables[tool]=[table]
-                    else
-                        result[b].tables[tool].push(table)
-                }
-                    
-            })
-    }
-    else
-        console.error("Error reading from line "+k);
+  var result={};
+  for(var k in ob)
+  {
+      const o=ob[k];
+      var table=(o["Table"]||"").trim();
+      var tool=  (o["Outils"]||"").trim();
+      var replace= o["Remplace"]?o["Remplace"]:"minecraft:air"
+      var connected= o["Connecté"];
+      if(table && tool && replace)
+      {
+              o["blocs"].split(" ").forEach(b=>{
+                  if(!result[b])
+                      result[b]={replace,connected, tables:{[tool]:[table]}}
+                  else
+                  {
+                      if (result[b].replace == "minecraft:air")
+                        result[b].replace = replace;
+                      if(!result[b].tables[tool])
+                          result[b].tables[tool]=[table]
+                      else
+                          result[b].tables[tool].push(table)
+                  }
 
-    
-    
+              })
+      }
+      else
+          console.error("Error reading from line "+k);
+
+
+
 }
 var res=[]
 for(k in result)
@@ -183,8 +201,8 @@ fs.writeFileSync("lootables.json",JSON.stringify(res,undefined,3))
 
 
 /**
- * 
- * @param {string} text 
+ *
+ * @param {string} text
  */
 function parse(text)
 {
@@ -199,8 +217,8 @@ function parse(text)
         {
             if(heads[i1])
                 ob[heads[i1].trim()]=l[i1].replace("$virg",",").trim();
-            
-            
+
+
         }
         res.push(ob);
     }
@@ -213,7 +231,7 @@ function parse(text)
  */
 function simpleTableGenerator(id,table)
 {
-return { "type": "minecraft:item","functions": [
+return{ "type": "minecraft:item","functions": [
             {
               "add": false,
               "count": {
@@ -228,23 +246,38 @@ return { "type": "minecraft:item","functions": [
           "weight": table.perc}
 }
 /**
+ *
+ * @param {string} item
+ */
+function handleNBT(item)
+{
+  var parts = item.split("{");
+  if (parts.length > 1 && parts[1].endsWith("}"))
+  {
+    return {item:parts[0],
+      "function": "minecraft:set_nbt",
+      "tag": "{" + parts[1]
+    }
+  }
+}
+/**
  * @param {string} id
  * @param {{min:number,max:number,perc:number}} table
  * @returns
  */
 function anyTableFnGenerator(id,table)
 {
-return { "type": "minecraft:dynamic","functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": table.max,
-                "min": table.min
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": id,
-          "weight": table.perc}
+  return { "type": "minecraft:dynamic","functions": [
+              {
+                "add": false,
+                "count": {
+                  "type": "minecraft:uniform",
+                  "max": table.max,
+                  "min": table.min
+                },
+                "function": "minecraft:set_count"
+              }
+            ],
+            "name": id,
+            "weight": table.perc}
 }

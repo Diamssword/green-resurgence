@@ -18,7 +18,7 @@
                   }
                ],
                "name": "air",
-               "weight": 47
+               "weight": 40
             },
             {
                "type": "minecraft:item",
@@ -33,8 +33,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_fuel_gas",
-               "weight": 10
+               "name": "air",
+               "weight": 20
             },
             {
                "type": "minecraft:item",
@@ -49,7 +49,23 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_fuel_bio_fuel",
+               "name": "green_resurgence:material_bones_big",
+               "weight": 45
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_bones_ivory",
                "weight": 15
             },
             {
@@ -65,8 +81,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_fuel_gasoline",
-               "weight": 10
+               "name": "green_resurgence:material_adesive_screw",
+               "weight": 3
             },
             {
                "type": "minecraft:item",
@@ -81,8 +97,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_amonia",
-               "weight": 2
+               "name": "green_resurgence:material_adesive_nail",
+               "weight": 3
             },
             {
                "type": "minecraft:item",
@@ -97,8 +113,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_acetone",
-               "weight": 2
+               "name": "green_resurgence:material_wood_bark",
+               "weight": 71
             },
             {
                "type": "minecraft:item",
@@ -113,45 +129,13 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_acid",
-               "weight": 10
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_chemical_acid1",
-               "weight": 2
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_chemical_solvant",
-               "weight": 2
+               "name": "green_resurgence:material_adesive_rivet",
+               "weight": 3
             }
          ],
          "rolls": {
             "type": "minecraft:uniform",
-            "max": 1,
+            "max": 2,
             "min": 1
          }
       }

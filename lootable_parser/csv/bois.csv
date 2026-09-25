@@ -1,11 +1,8 @@
-categorie,item,quantitée,pourcentage,rolls
-wood,log,1-2,20,1
-wood,furniture,2-3,100,
-alloy,brass,1,10,
-metal,scrap,1,10,
-adesive,scotch,1,10,
-paper,cardboard,1,15,
-metal,scrap,1-2,10,
-adesive,nail,1-4,20,
-adesive,screw,2-3,20,
-adesive,nuts,1-2,15,
+categorie,item,quantitée,pourcentage 1,pourcentage 2,rolls
+,air,1,20,20,1
+wood,furniture,1-2,61,,
+adesive,screw,1,9,3,
+adesive,nail,1,9,3,
+compost,compost,1,1,,
+wood,bark,1,,71,
+adesive,rivet,1,,3,

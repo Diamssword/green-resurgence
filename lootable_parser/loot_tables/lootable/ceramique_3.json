@@ -18,38 +18,6 @@
                   }
                ],
                "name": "air",
-               "weight": 30
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_chemical_acetone",
-               "weight": 10
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_chemical_acid",
                "weight": 40
             },
             {
@@ -59,14 +27,14 @@
                      "add": false,
                      "count": {
                         "type": "minecraft:uniform",
-                        "max": 1,
+                        "max": 2,
                         "min": 1
                      },
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_acid1",
-               "weight": 10
+               "name": "green_resurgence:material_build_ceramic",
+               "weight": 45
             },
             {
                "type": "minecraft:item",
@@ -81,8 +49,24 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_solvant",
+               "name": "green_resurgence:material_build_sand",
                "weight": 10
+            },
+            {
+               "type": "minecraft:dynamic",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:any_lootable",
+               "weight": 5
             }
          ],
          "rolls": {

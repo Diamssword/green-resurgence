@@ -18,7 +18,7 @@
                   }
                ],
                "name": "air",
-               "weight": 47
+               "weight": 30
             },
             {
                "type": "minecraft:item",
@@ -33,7 +33,7 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_fuel_gas",
+               "name": "green_resurgence:material_compost_manure",
                "weight": 10
             },
             {
@@ -49,8 +49,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_fuel_bio_fuel",
-               "weight": 15
+               "name": "green_resurgence:material_compost_compost",
+               "weight": 40
             },
             {
                "type": "minecraft:item",
@@ -65,8 +65,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_fuel_gasoline",
-               "weight": 10
+               "name": "green_resurgence:material_compost_bonemeal",
+               "weight": 8
             },
             {
                "type": "minecraft:item",
@@ -81,8 +81,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_amonia",
-               "weight": 2
+               "name": "green_resurgence:material_bones_small",
+               "weight": 4
             },
             {
                "type": "minecraft:item",
@@ -97,8 +97,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_acetone",
-               "weight": 2
+               "name": "green_resurgence:material_bones_fish",
+               "weight": 4
             },
             {
                "type": "minecraft:item",
@@ -113,40 +113,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_acid",
-               "weight": 10
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_chemical_acid1",
-               "weight": 2
-            },
-            {
-               "type": "minecraft:item",
-               "functions": [
-                  {
-                     "add": false,
-                     "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1,
-                        "min": 1
-                     },
-                     "function": "minecraft:set_count"
-                  }
-               ],
-               "name": "green_resurgence:material_chemical_solvant",
-               "weight": 2
+               "name": "green_resurgence:material_leather_pig",
+               "weight": 4
             }
          ],
          "rolls": {

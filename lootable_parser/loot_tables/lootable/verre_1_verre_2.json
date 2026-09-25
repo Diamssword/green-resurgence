@@ -18,7 +18,7 @@
                   }
                ],
                "name": "air",
-               "weight": 47
+               "weight": 80
             },
             {
                "type": "minecraft:item",
@@ -33,7 +33,7 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_fuel_gas",
+               "name": "air",
                "weight": 10
             },
             {
@@ -43,13 +43,61 @@
                      "add": false,
                      "count": {
                         "type": "minecraft:uniform",
+                        "max": 2,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_glass_shards",
+               "weight": 13
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 2,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_glass_shards",
+               "weight": 72
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
                         "max": 1,
                         "min": 1
                      },
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_fuel_bio_fuel",
+               "name": "green_resurgence:material_glass_window",
+               "weight": 4
+            },
+            {
+               "type": "minecraft:item",
+               "functions": [
+                  {
+                     "add": false,
+                     "count": {
+                        "type": "minecraft:uniform",
+                        "max": 1,
+                        "min": 1
+                     },
+                     "function": "minecraft:set_count"
+                  }
+               ],
+               "name": "green_resurgence:material_glass_window",
                "weight": 15
             },
             {
@@ -65,8 +113,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_fuel_gasoline",
-               "weight": 10
+               "name": "green_resurgence:material_adesive_screw",
+               "weight": 1
             },
             {
                "type": "minecraft:item",
@@ -81,8 +129,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_amonia",
-               "weight": 2
+               "name": "green_resurgence:material_adesive_screw",
+               "weight": 1
             },
             {
                "type": "minecraft:item",
@@ -97,8 +145,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_acetone",
-               "weight": 2
+               "name": "green_resurgence:material_metal_scrap",
+               "weight": 1
             },
             {
                "type": "minecraft:item",
@@ -113,8 +161,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_acid",
-               "weight": 10
+               "name": "green_resurgence:material_metal_scrap",
+               "weight": 1
             },
             {
                "type": "minecraft:item",
@@ -129,8 +177,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_acid1",
-               "weight": 2
+               "name": "green_resurgence:material_metal_ironbar",
+               "weight": 1
             },
             {
                "type": "minecraft:item",
@@ -145,8 +193,8 @@
                      "function": "minecraft:set_count"
                   }
                ],
-               "name": "green_resurgence:material_chemical_solvant",
-               "weight": 2
+               "name": "green_resurgence:material_metal_ironbar",
+               "weight": 1
             }
          ],
          "rolls": {

@@ -1,0 +1,15 @@
+categorie,item,quantitée,pourcentage 1,pourcentage 2,pourcentage 3,pourcentage 4,pourcentage 5,pourcentage 6,pourcentage 7,rolls
+,air,1,60,30,50,60,60,50,40,1
+build,sand,1-2,39,,,,,,,
+build,stone,1,,,5,39,,,,
+build,clay,1-2,,,45,,,,,
+compost,manure,1,,10,,,,,,
+compost,compost,1,,40,,,,,,
+compost,bonemeal,1,,8,,,,,,
+bones,small,1,,4,,,,,,
+bones,fish,1,,4,,,,,,
+leather,pig,1,,4,,,,,,
+,#green_resurgence:any_lootable,1,1,,,,,,,
+build,brick,1,,,,,,50,,
+build,parpaing,1,,,,,40,,,
+fuel,coal,1,,,,,,,60,
