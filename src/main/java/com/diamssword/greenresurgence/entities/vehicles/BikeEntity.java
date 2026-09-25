@@ -1,7 +1,9 @@
-package com.diamssword.greenresurgence.entities;
+package com.diamssword.greenresurgence.entities.vehicles;
 
 import com.diamssword.greenresurgence.MItems;
 import com.diamssword.greenresurgence.MSounds;
+import com.diamssword.greenresurgence.entities.ILightAndSoundMount;
+import com.diamssword.greenresurgence.entities.deployable.MultiPassengerVehicle;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.character.PosesManager;
 import net.minecraft.block.BlockRenderType;
@@ -42,9 +44,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
-
-public class BikeEntity extends MyVehicleInventory implements GeoEntity, InventoryChangedListener, ILightAndSoundMount {
+public class BikeEntity extends MultiPassengerVehicle implements GeoEntity, InventoryChangedListener, ILightAndSoundMount {
 	private static final TrackedData<Boolean> CHEST = DataTracker.registerData(BikeEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	private static final TrackedData<Boolean> LIGHT = DataTracker.registerData(BikeEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	private static final TrackedData<Integer> COLOR = DataTracker.registerData(BikeEntity.class, TrackedDataHandlerRegistry.INTEGER);
@@ -81,6 +81,11 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 
 	public void setHasChest(boolean hasChest) {
 		this.dataTracker.set(CHEST, hasChest);
+		if(hasChest) {
+			var p = passengers.get(1);
+			if(p != null)
+				p.dismountVehicle();
+		}
 	}
 
 	@Override
@@ -122,16 +127,16 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 	@Override
 	protected void tickControlled(PlayerEntity controllingPlayer, Vec3d movementInput) {
 		super.tickControlled(controllingPlayer, movementInput);
-
 		if(this.getWorld().isClient) {
 			float turnSpeed = 4f; // higher = faster turning
 			float newYaw = MathHelper.lerpAngleDegrees(0.1f * turnSpeed, this.getYaw(), controllingPlayer.getYaw());
 			setYaw(newYaw);
-			//	setPitch(controllingPlayer.getPitch() * 0.5f);
+
 			setRotation(getYaw(), getPitch());
 
 			this.bodyYaw = this.getYaw();
 			this.headYaw = this.bodyYaw;
+
 		}
 	}
 
@@ -203,27 +208,71 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 	public void travel(Vec3d pos) {
 		if(this.isAlive()) {
 			if(this.hasPassengers()) {
-				LivingEntity passenger = (LivingEntity) getControllingPassenger();
+				LivingEntity passenger = getControllingPassenger();
+				if(passenger != null) {
+					float x = passenger.sidewaysSpeed * 0.25F;
+					float z = passenger.forwardSpeed;
 
-				float x = passenger.sidewaysSpeed * 0.25F;
-				float z = passenger.forwardSpeed;
+					if(z <= 0)
+						z *= 0.25f;
+					this.setMovementSpeed(0.3f);
 
-				if(z <= 0)
-					z *= 0.25f;
-				this.setMovementSpeed(0.3f);
+					super.travel(new Vec3d(x, pos.y, z));
 
-				super.travel(new Vec3d(x, pos.y, z));
-
+				} else
+					super.travel(pos);
 			} else
 				super.travel(pos);
 		}
 	}
 
-	// Get the controlling passenger
-	@Nullable
 	@Override
-	public LivingEntity getControllingPassenger() {
-		return getFirstPassenger() instanceof LivingEntity entity ? entity : null;
+	protected void updatePassengerPosition(Entity passenger, PositionUpdater positionUpdater) {
+		float deltaYaw = MathHelper.wrapDegrees(this.getYaw() - this.prevYaw);
+		super.updatePassengerPosition(passenger, positionUpdater);
+		if(passenger.getWorld().isClient && getIndexOfPassenger(passenger).orElse(0) == 1 && passenger instanceof PlayerEntity ps) {
+			float vehicleYaw = getYaw();
+
+			// Maximum amount the player can look away from the vehicle.
+			float maxHeadOffset = 75.0f;
+
+			float playerYaw = passenger.getYaw();
+
+			float offset = MathHelper.wrapDegrees(
+					playerYaw - vehicleYaw
+			);
+
+			if(offset > maxHeadOffset) {
+				playerYaw = vehicleYaw + maxHeadOffset;
+			} else if(offset < -maxHeadOffset) {
+				playerYaw = vehicleYaw - maxHeadOffset;
+			}
+			ps.setYaw(playerYaw);
+			// Body is always the vehicle.
+			ps.bodyYaw = vehicleYaw;
+			ps.prevBodyYaw = vehicleYaw;
+		}
+
+	}
+
+	@Override
+	protected Vec3d getPassengerOffset(int passengerIndex) {
+
+		return passengerIndex == 0 ? new Vec3d(0, 0.75, 0) : new Vec3d(-0.65, 0.75, 0);
+	}
+
+	@Override
+	public int getPassengerIndexForInteraction(PlayerEntity player, double zHitPos) {
+		if(hasChest())
+			return 0;
+		if(hasControllingPassenger())
+			return 1;
+		return 0;
+	}
+
+	@Override
+	public int getMaxPassengers() {
+		return hasChest() ? 1 : 2;
 	}
 
 	@Override
@@ -259,7 +308,6 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 	public Item asItem() {
 		return MItems.BIKE;
 	}
-
 
 	@Override
 	public AnimatableInstanceCache getAnimatableInstanceCache() {
@@ -302,12 +350,12 @@ public class BikeEntity extends MyVehicleInventory implements GeoEntity, Invento
 	}
 
 	@Override
-	boolean canBeDyed() {
+	public boolean canBeDyed() {
 		return true;
 	}
 
 	@Override
-	boolean canHaveChest() {
+	public boolean canHaveChest() {
 		return true;
 	}
 

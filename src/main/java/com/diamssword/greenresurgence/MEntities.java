@@ -3,6 +3,8 @@ package com.diamssword.greenresurgence;
 import com.diamssword.greenresurgence.entities.*;
 import com.diamssword.greenresurgence.entities.deployable.DeployableEntity;
 import com.diamssword.greenresurgence.entities.deployable.DeployableSubEntity;
+import com.diamssword.greenresurgence.entities.vehicles.BikeEntity;
+import com.diamssword.greenresurgence.entities.vehicles.CaddieEntity;
 import io.wispforest.owo.registration.reflect.EntityRegistryContainer;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
@@ -20,7 +22,7 @@ public class MEntities implements EntityRegistryContainer {
 	public static final EntityType<Entity> CHAIR = FabricEntityTypeBuilder.create(SpawnGroup.MISC, ChairEntity::new).dimensions(EntityDimensions.fixed(0.1f, 0.1f)).build();
 	public static final EntityType<BackpackEntity> BACKPACK = FabricEntityTypeBuilder.create(SpawnGroup.MISC, (EntityType.EntityFactory<BackpackEntity>) BackpackEntity::new).dimensions(EntityDimensions.fixed(0.8f, 0.4f)).build();
 	public static final EntityType<BikeEntity> BIKE = FabricEntityTypeBuilder.create(SpawnGroup.MISC, (EntityType.EntityFactory<BikeEntity>) BikeEntity::new).fireImmune().dimensions(EntityDimensions.fixed(1f, 1.2f)).build();
-	public static final EntityType<NewCaddieEntity> CADDIE = FabricEntityTypeBuilder.create(SpawnGroup.MISC, (EntityType.EntityFactory<NewCaddieEntity>) NewCaddieEntity::new).fireImmune().dimensions(EntityDimensions.fixed(1f, 1.2f)).build();
+	public static final EntityType<CaddieEntity> CADDIE = FabricEntityTypeBuilder.create(SpawnGroup.MISC, (EntityType.EntityFactory<CaddieEntity>) CaddieEntity::new).fireImmune().dimensions(EntityDimensions.fixed(1f, 1.2f)).build();
 	public static final EntityType<ThrownWeaponEntity> THROWN_WEAPON = FabricEntityTypeBuilder.create(SpawnGroup.MISC, (EntityType.EntityFactory<ThrownWeaponEntity>) ThrownWeaponEntity::new).fireImmune().dimensions(EntityDimensions.fixed(0.5f, 0.5f)).trackedUpdateRate(20).trackRangeChunks(4).build();
 	public static final EntityType<FlamePuddleEntity> FLAME_PUDDLE = FabricEntityTypeBuilder.create(SpawnGroup.MISC, (EntityType.EntityFactory<FlamePuddleEntity>) FlamePuddleEntity::new).fireImmune().trackedUpdateRate(20).trackRangeChunks(2).build();
 	public static final EntityType<Entity> DEPLOYABLE_SUB_BOX = FabricEntityTypeBuilder.create(SpawnGroup.MISC, DeployableSubEntity::new).disableSaving().build();
@@ -29,7 +31,7 @@ public class MEntities implements EntityRegistryContainer {
 
 	public static void addAttributes() {
 		FabricDefaultAttributeRegistry.register(BIKE, BikeEntity.createAttributes());
-		FabricDefaultAttributeRegistry.register(CADDIE, NewCaddieEntity.createAttributes());
+		FabricDefaultAttributeRegistry.register(CADDIE, CaddieEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(NPC, NPCEntity.createAttributes());
 	}
 

@@ -1,6 +1,7 @@
-package com.diamssword.greenresurgence.entities;
+package com.diamssword.greenresurgence.entities.vehicles;
 
 import com.diamssword.greenresurgence.MItems;
+import com.diamssword.greenresurgence.entities.deployable.MultiPassengerVehicle;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.character.PosesManager;
 import net.minecraft.block.BlockRenderType;
@@ -40,8 +41,8 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class NewCaddieEntity extends MultiPassenger implements GeoEntity, InventoryChangedListener {
-	private static final TrackedData<Boolean> CHEST = DataTracker.registerData(NewCaddieEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+public class CaddieEntity extends MultiPassengerVehicle implements GeoEntity, InventoryChangedListener {
+	private static final TrackedData<Boolean> CHEST = DataTracker.registerData(CaddieEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4 * 4, ItemStack.EMPTY);
 	private int timeUntilMyRegen;
@@ -49,12 +50,12 @@ public class NewCaddieEntity extends MultiPassenger implements GeoEntity, Invent
 	private double lastHeight;
 	private double downhillSpeedBonus = 0.0;
 
-	public NewCaddieEntity(EntityType<? extends NewCaddieEntity> type, World level) {
+	public CaddieEntity(EntityType<? extends CaddieEntity> type, World level) {
 		super(type, level);
 		//this.ignoreCameraFrustum = true;
 	}
 
-	public NewCaddieEntity(EntityType<? extends NewCaddieEntity> type, World level, double x, double y, double z) {
+	public CaddieEntity(EntityType<? extends CaddieEntity> type, World level, double x, double y, double z) {
 		this(type, level);
 		this.setPosition(x, y, z);
 		this.prevX = x;
@@ -594,12 +595,12 @@ public class NewCaddieEntity extends MultiPassenger implements GeoEntity, Invent
 	}
 
 	@Override
-	boolean canBeDyed() {
+	public boolean canBeDyed() {
 		return false;
 	}
 
 	@Override
-	boolean canHaveChest() {
+	public boolean canHaveChest() {
 		return true;
 	}
 

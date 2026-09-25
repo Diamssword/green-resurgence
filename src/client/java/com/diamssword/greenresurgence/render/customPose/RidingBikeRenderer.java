@@ -16,7 +16,7 @@ public class RidingBikeRenderer implements ICustomPoseRenderer {
 
 	@Override
 	public void beforeRender(AbstractClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, IPlayerCustomPose pose) {
-		
+
 	}
 
 	@Override
@@ -26,21 +26,23 @@ public class RidingBikeRenderer implements ICustomPoseRenderer {
 
 	@Override
 	public void angles(AbstractClientPlayerEntity player, PlayerEntityModel model, IPlayerCustomPose pose) {
-		float o = player.limbAnimator.getSpeed(MinecraftClient.getInstance().getTickDelta()) * (player == MinecraftClient.getInstance().player ? 10f : 1f);
-		float n = player.limbAnimator.getPos(MinecraftClient.getInstance().getTickDelta()) * (player == MinecraftClient.getInstance().player ? 10f : 1f);
-		if(o > 1.0F) {
-			o = 1.0F;
+		Vec3d movement = Vec3d.ZERO;
+		if(player.hasVehicle()) {
+			var v = player.getVehicle();
+			movement = v.getPos().subtract(v.prevX, v.prevY, v.prevZ);
 		}
-		model.rightLeg.pitch = MathHelper.cos(n * 0.6662F) * 0.4F * o;
-		model.leftLeg.pitch = MathHelper.cos(n * 0.6662F + (float) Math.PI) * 0.4F * o;
-		model.rightLeg.yaw = (float) Math.toRadians(5);
-		model.rightLeg.roll = (float) Math.toRadians(5);
-		//model.rightLeg.pitch = (float) Math.toRadians(-10);
-		model.leftLeg.yaw = (float) Math.toRadians(-5);
-		model.leftLeg.roll = (float) Math.toRadians(-5);
+		double horizontalSpeed = Math.sqrt(movement.x * movement.x + movement.z * movement.z);
+		float intensity = MathHelper.clamp((float) (horizontalSpeed / 1.5), 0.0F, 1.0F);
+		float phase = (player.age + MinecraftClient.getInstance().getTickDelta()) * 0.5F;
+
+		model.leftLeg.pitch = MathHelper.cos(phase * 0.6662F) * 1.4F * intensity;
+
+		model.rightLeg.pitch = MathHelper.cos(phase * 0.6662F + (float) Math.PI) * 1.4F * intensity;
+
+		model.rightLeg.roll = (float) Math.toRadians(10);
+		model.leftLeg.roll = (float) Math.toRadians(-10);
 		model.rightArm.pitch = (float) Math.toRadians(-50);
 		model.leftArm.pitch = (float) Math.toRadians(-50);
-
 		model.leftPants.copyTransform(model.leftLeg);
 		model.rightPants.copyTransform(model.rightLeg);
 		model.leftSleeve.copyTransform(model.leftArm);

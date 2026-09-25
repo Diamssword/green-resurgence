@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.render.entities;
 
 import com.diamssword.greenresurgence.GreenResurgence;
-import com.diamssword.greenresurgence.entities.BikeEntity;
+import com.diamssword.greenresurgence.entities.vehicles.BikeEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.EntityRendererFactory;

@@ -1,4 +1,4 @@
-package com.diamssword.greenresurgence.entities;
+package com.diamssword.greenresurgence.entities.deployable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -19,11 +19,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.OptionalInt;
 
-public abstract class MultiPassenger extends MyVehicleInventory {
-	private static final TrackedData<NbtCompound> CONTROLLER_POS = DataTracker.registerData(MultiPassenger.class, TrackedDataHandlerRegistry.NBT_COMPOUND);
+public abstract class MultiPassengerVehicle extends VehicleWithInventory {
+	private static final TrackedData<NbtCompound> CONTROLLER_POS = DataTracker.registerData(MultiPassengerVehicle.class, TrackedDataHandlerRegistry.NBT_COMPOUND);
 	protected final Map<Integer, LivingEntity> passengers = new HashMap<>();
 
-	protected MultiPassenger(EntityType<? extends AnimalEntity> entityType, World world) {
+	protected MultiPassengerVehicle(EntityType<? extends AnimalEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
@@ -80,7 +80,7 @@ public abstract class MultiPassenger extends MyVehicleInventory {
 		return getPassengerOffset(0).y;
 	}
 
-	OptionalInt getIndexOfPassenger(Entity entity) {
+	public OptionalInt getIndexOfPassenger(Entity entity) {
 		for(Integer i : passengers.keySet()) {
 			if(passengers.get(i) == entity)
 				return OptionalInt.of(i);

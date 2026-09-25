@@ -1,8 +1,9 @@
-package com.diamssword.greenresurgence.entities;
+package com.diamssword.greenresurgence.entities.deployable;
 
 import com.diamssword.greenresurgence.containers.GenericContainer;
 import com.diamssword.greenresurgence.containers.IOptionalInventory;
 import com.diamssword.greenresurgence.containers.grids.GridContainer;
+import com.diamssword.greenresurgence.entities.ISPawnableVehicle;
 import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
@@ -40,23 +41,23 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class MyVehicleInventory extends AnimalEntity implements Inventory, NamedScreenHandlerFactory, IOptionalInventory, ISPawnableVehicle {
+public abstract class VehicleWithInventory extends AnimalEntity implements Inventory, NamedScreenHandlerFactory, IOptionalInventory, ISPawnableVehicle {
 
 	@org.jetbrains.annotations.Nullable
 	private Identifier lootTableId;
 	private long lootTableSeed;
 
-	protected MyVehicleInventory(EntityType<? extends AnimalEntity> entityType, World world) {
+	protected VehicleWithInventory(EntityType<? extends AnimalEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
-	abstract DefaultedList<ItemStack> getInventory();
+	public abstract DefaultedList<ItemStack> getInventory();
 
-	abstract void resetInventory();
+	public abstract void resetInventory();
 
-	abstract boolean canBeDyed();
+	public abstract boolean canBeDyed();
 
-	abstract boolean canHaveChest();
+	public abstract boolean canHaveChest();
 
 	public abstract int getColor();
 
@@ -284,11 +285,11 @@ public abstract class MyVehicleInventory extends AnimalEntity implements Invento
 	public StackReference getInventoryStackReference(final int slot) {
 		return slot >= 0 && slot < this.size() ? new StackReference() {
 			public ItemStack get() {
-				return MyVehicleInventory.this.getInventoryStack(slot);
+				return VehicleWithInventory.this.getInventoryStack(slot);
 			}
 
 			public boolean set(ItemStack stack) {
-				MyVehicleInventory.this.setInventoryStack(slot, stack);
+				VehicleWithInventory.this.setInventoryStack(slot, stack);
 				return true;
 			}
 		} : StackReference.EMPTY;
