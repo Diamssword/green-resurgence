@@ -7,6 +7,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.HitResult;
@@ -27,6 +29,11 @@ public class EntityPlacerItem extends Item {
 	public <T extends Entity> EntityPlacerItem(BiFunction<PlayerEntity, Vec3d, T> spawner, Item.Settings settings) {
 		super(settings);
 		this.spawner = spawner;
+	}
+
+	@Override
+	public Text getName(ItemStack stack) {
+		return Text.literal("").append(super.getName(stack)).formatted(Formatting.GOLD);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.diamssword.greenresurgence.entities.deployable;
+package com.diamssword.greenresurgence.entities.vehicles;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -13,6 +13,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -179,7 +180,12 @@ public abstract class MultiPassengerVehicle extends VehicleWithInventory {
 
 			double localZ = hitPos.x * Math.sin(entityYaw) + hitPos.z * Math.cos(entityYaw);
 			int index = getPassengerIndexForInteraction(player, localZ);
-			if(!hasPassenger(index)) {
+			if(player.shouldCancelInteraction() && hasChest()) {
+				player.openHandledScreen(this);
+				this.emitGameEvent(GameEvent.CONTAINER_OPEN, player);
+				player.swingHand(hand);
+				return !player.getWorld().isClient ? ActionResult.CONSUME : ActionResult.SUCCESS;
+			} else if(!hasPassenger(index)) {
 				if(player.startRiding(this)) {
 					setPassengerIndex(player, index);
 				}

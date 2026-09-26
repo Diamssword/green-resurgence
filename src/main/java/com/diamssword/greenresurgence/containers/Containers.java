@@ -7,6 +7,7 @@ import com.diamssword.greenresurgence.blocks.*;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.items.BlockVariantItem;
 import com.diamssword.greenresurgence.items.CustomSpawnEgg;
+import com.diamssword.greenresurgence.items.VehicleToolKit;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionTerrainStorage;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -23,6 +24,7 @@ public class Containers implements ContainerRegistryContainer {
 	public static final ScreenHandlerType<ItemBlock.ScreenHandler> ITEMBLOCK = build(ItemBlock.ScreenHandler::new);
 	public static final ScreenHandlerType<SpawnerBlock.ScreenHandler> SPAWNER_BLOCK = build(SpawnerBlock.ScreenHandler::new);
 	public static final ScreenHandlerType<CustomSpawnEgg.ScreenHandler> SPAWN_EGG = build(CustomSpawnEgg.ScreenHandler::new);
+	public static final ScreenHandlerType<VehicleToolKit.ScreenHandler> VEHICLE_TOOLKIT = build(VehicleToolKit.ScreenHandler::new);
 	public static final ScreenHandlerType<ShelfBlock.ScreenHandler> ITEMBLOCKSIMPLE = build(ShelfBlock.ScreenHandler::new);
 	public static final ScreenHandlerType<LootedBlockEntity.Container> LOOTABLE_INV = build(LootedBlockEntity.Container::new);
 	public static final ScreenHandlerType<ArmorTinkererBlockEntity.Container> ARMOR_TINKERER = build(ArmorTinkererBlockEntity.Container::new);

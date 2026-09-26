@@ -50,7 +50,7 @@
         </flow-layout>
 
             </children>
-    <horizontal-alignment>left</horizontal-alignment>
+            <horizontal-alignment>left</horizontal-alignment>
             <vertical-alignment>center</vertical-alignment>
             <margins>
                 <all>5</all>

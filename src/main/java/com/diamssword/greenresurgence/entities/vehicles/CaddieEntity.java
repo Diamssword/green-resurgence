@@ -1,7 +1,6 @@
 package com.diamssword.greenresurgence.entities.vehicles;
 
 import com.diamssword.greenresurgence.MItems;
-import com.diamssword.greenresurgence.entities.deployable.MultiPassengerVehicle;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.character.PosesManager;
 import net.minecraft.block.BlockRenderType;

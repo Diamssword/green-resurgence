@@ -52,6 +52,7 @@ public class MItems implements ItemRegistryContainer {
 	public static final GasMaskItem GAS_MASK = new GasMaskItem(new OwoItemSettings().group(GROUP).tab(1).maxCount(1));
 	public static final GasTankItem SMALL_GAS_TANK = new GasTankItem(new OwoItemSettings().group(GROUP).tab(1).maxCount(1), 10000);
 	public static final DeployablePlacer CAMPFIRE = new DeployablePlacer(new OwoItemSettings().group(GROUP).tab(0).maxCount(1), DeployableRegistry.CAMPFIRE);
+	public static final VehicleToolKit VEHICLE_TOOLKIT = new VehicleToolKit();
 
 	@Override
 	public void afterFieldProcessing() {

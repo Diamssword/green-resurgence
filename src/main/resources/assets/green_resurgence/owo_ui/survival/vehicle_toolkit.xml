@@ -1,0 +1,42 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+<components>
+<flow-layout direction="vertical">
+    <children>
+        <flow-layout direction="vertical">
+            <children>
+                <label><text>green_resurgence.gui.vehicle_toolkit.title</text></label>
+                <flow-layout direction="horizontal" id="chestC">
+                    <children>
+                        <inventory id="chest" width="1" height="1" name="disabled">
+                        </inventory>
+                        <label><text translate="true">green_resurgence.gui.vehicle_toolkit.chest_label</text><tooltip-text
+                                translate="true">green_resurgence.gui.vehicle_toolkit.chest_tooltip</tooltip-text></label>
+                    </children>
+                    <vertical-alignment>center</vertical-alignment>
+                </flow-layout>
+                <flow-layout direction="horizontal" id="dyeC">
+                    <children>
+                        <inventory id="dye" width="1" height="1" name="disabled">
+                        </inventory>
+                        <label><text translate="true">green_resurgence.gui.vehicle_toolkit.dye_label</text><tooltip-text
+                                translate="true">green_resurgence.gui.vehicle_toolkit.dye_tooltip</tooltip-text></label>
+                    </children>
+                    <vertical-alignment>center</vertical-alignment>
+                </flow-layout>
+            </children>
+            <padding><all>5</all></padding>
+            <gap>5</gap>
+            <surface>
+                <panel/>
+            </surface>
+
+        </flow-layout>
+    </children>
+    <sizing><horizontal method="fill">30</horizontal></sizing>
+    <horizontal-alignment>left</horizontal-alignment>
+    <vertical-alignment>center</vertical-alignment>
+</flow-layout>
+
+</components>
+</owo-ui>

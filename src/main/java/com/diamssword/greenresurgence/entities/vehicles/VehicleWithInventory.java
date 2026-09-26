@@ -1,5 +1,6 @@
-package com.diamssword.greenresurgence.entities.deployable;
+package com.diamssword.greenresurgence.entities.vehicles;
 
+import com.diamssword.greenresurgence.MItems;
 import com.diamssword.greenresurgence.containers.GenericContainer;
 import com.diamssword.greenresurgence.containers.IOptionalInventory;
 import com.diamssword.greenresurgence.containers.grids.GridContainer;
@@ -17,9 +18,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.StackReference;
-import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
@@ -77,7 +76,7 @@ public abstract class VehicleWithInventory extends AnimalEntity implements Inven
 		return this.lootTableSeed;
 	}
 
-	private void removeChest() {
+	public void removeChest() {
 		ItemScatterer.spawn(this.getWorld(), this, this);
 		this.clearInventory();
 		this.setHasChest(false);
@@ -85,26 +84,11 @@ public abstract class VehicleWithInventory extends AnimalEntity implements Inven
 	}
 
 	public ActionResult interactWithItem(PlayerEntity player, ItemStack stack, Hand hand) {
-		if(canHaveChest() && stack.getItem() == Items.CHEST) {
-			if(this.hasChest()) {
-				removeChest();
-				stack.increment(1);
-			} else {
-				this.setHasChest(true);
-				stack.decrement(1);
-			}
-			player.swingHand(hand);
-
-			return ActionResult.CONSUME;
-		} else if(canBeDyed() && stack.getItem() instanceof DyeItem dy) {
-			if(this.getColor() != dy.getColor().getId()) {
-				this.setColor(dy.getColor());
-				player.swingHand(hand);
-				stack.decrement(1);
-				return ActionResult.CONSUME;
-			}
-
+		if(stack.getItem() == MItems.VEHICLE_TOOLKIT) {
+			stack.useOnEntity(player, this, hand);
+			return ActionResult.SUCCESS;
 		}
+
 		return ActionResult.PASS;
 	}
 

@@ -13,6 +13,7 @@ public class ScreenHandlers {
 		HandledScreens.register(Containers.ITEMBLOCKSIMPLE, ItemBlockGuiSimple::new);
 		HandledScreens.register(Containers.SPAWNER_BLOCK, SpawnerBlockGui::new);
 		HandledScreens.register(Containers.SPAWN_EGG, SpawnEggGui::new);
+		HandledScreens.register(Containers.VEHICLE_TOOLKIT, VehicleToolkitGui::new);
 		HandledScreens.register(Containers.LOOTABLE_INV, LootableInvGui::new);
 		HandledScreens.register(Containers.BLOCK_VARIANT_INV, BlockVariantScreen::new);
 		HandledScreens.register(Containers.CRAFTER, CrafterScreen::new);
