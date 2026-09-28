@@ -3,7 +3,7 @@ package com.diamssword.greenresurgence.entities.vehicles;
 import com.diamssword.greenresurgence.MItems;
 import com.diamssword.greenresurgence.containers.GenericContainer;
 import com.diamssword.greenresurgence.containers.IOptionalInventory;
-import com.diamssword.greenresurgence.containers.grids.GridContainer;
+import com.diamssword.greenresurgence.containers.grids.IGridContainer;
 import com.diamssword.greenresurgence.entities.ISPawnableVehicle;
 import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import net.minecraft.advancement.criterion.Criteria;
@@ -172,10 +172,26 @@ public abstract class VehicleWithInventory extends AnimalEntity implements Inven
 
 	protected ScreenHandler getScreenHandler(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 		if(player.isCreative()) {
-			return new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X1, syncId, playerInventory, this, 1);
+			var cont = ScreenHandlerType.GENERIC_9X1;
+			int rows = (int) Math.max(1, Math.floor((double) this.size() / 9));
+			if(rows == 2)
+				cont = ScreenHandlerType.GENERIC_9X2;
+			else if(rows == 3)
+				cont = ScreenHandlerType.GENERIC_9X3;
+			else if(rows == 4)
+				cont = ScreenHandlerType.GENERIC_9X4;
+			else if(rows == 5)
+				cont = ScreenHandlerType.GENERIC_9X5;
+			else if(rows > 6) {
+				cont = ScreenHandlerType.GENERIC_9X6;
+				rows = 6;
+			}
+			return new GenericContainerScreenHandler(cont, syncId, playerInventory, this, rows);
 		}
-		return new GenericContainer(syncId, player, new GridContainer("container", this, 4, 4));
+		return new GenericContainer(syncId, player, getInventoryGrid("container"));
 	}
+
+	public abstract IGridContainer getInventoryGrid(String name);
 
 	public void writeInventoryToNbt(NbtCompound nbt) {
 

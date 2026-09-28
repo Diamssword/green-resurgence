@@ -5,7 +5,7 @@
     <children>
         <flow-layout direction="vertical">
             <children>
-                <label><text>green_resurgence.gui.vehicle_toolkit.title</text></label>
+                <label><text translate="true">green_resurgence.gui.vehicle_toolkit.title</text></label>
                 <flow-layout direction="horizontal" id="chestC">
                     <children>
                         <inventory id="chest" width="1" height="1" name="disabled">

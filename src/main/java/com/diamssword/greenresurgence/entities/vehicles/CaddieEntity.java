@@ -1,6 +1,8 @@
 package com.diamssword.greenresurgence.entities.vehicles;
 
 import com.diamssword.greenresurgence.MItems;
+import com.diamssword.greenresurgence.containers.grids.GridContainer;
+import com.diamssword.greenresurgence.containers.grids.IGridContainer;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.character.PosesManager;
 import net.minecraft.block.BlockRenderType;
@@ -43,7 +45,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class CaddieEntity extends MultiPassengerVehicle implements GeoEntity, InventoryChangedListener {
 	private static final TrackedData<Boolean> CHEST = DataTracker.registerData(CaddieEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
-	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4 * 4, ItemStack.EMPTY);
+	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5 * 4, ItemStack.EMPTY);
 	private int timeUntilMyRegen;
 	private int ticksUnderwater;
 	private double lastHeight;
@@ -52,6 +54,11 @@ public class CaddieEntity extends MultiPassengerVehicle implements GeoEntity, In
 	public CaddieEntity(EntityType<? extends CaddieEntity> type, World level) {
 		super(type, level);
 		//this.ignoreCameraFrustum = true;
+	}
+
+	@Override
+	public IGridContainer getInventoryGrid(String name) {
+		return new GridContainer(name, this, 5, 4);
 	}
 
 	public CaddieEntity(EntityType<? extends CaddieEntity> type, World level, double x, double y, double z) {

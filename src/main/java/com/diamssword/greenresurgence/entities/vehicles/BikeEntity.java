@@ -2,6 +2,8 @@ package com.diamssword.greenresurgence.entities.vehicles;
 
 import com.diamssword.greenresurgence.MItems;
 import com.diamssword.greenresurgence.MSounds;
+import com.diamssword.greenresurgence.containers.grids.GridContainer;
+import com.diamssword.greenresurgence.containers.grids.IGridContainer;
 import com.diamssword.greenresurgence.entities.ILightAndSoundMount;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.character.PosesManager;
@@ -48,7 +50,7 @@ public class BikeEntity extends MultiPassengerVehicle implements GeoEntity, Inve
 	private static final TrackedData<Boolean> LIGHT = DataTracker.registerData(BikeEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	private static final TrackedData<Integer> COLOR = DataTracker.registerData(BikeEntity.class, TrackedDataHandlerRegistry.INTEGER);
 	private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
-	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4 * 4, ItemStack.EMPTY);
+	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4 * 3, ItemStack.EMPTY);
 	private int timeUntilMyRegen;
 	private int lastSoundTick;
 
@@ -76,6 +78,11 @@ public class BikeEntity extends MultiPassengerVehicle implements GeoEntity, Inve
 
 	public boolean hasChest() {
 		return this.dataTracker.get(CHEST);
+	}
+
+	@Override
+	public IGridContainer getInventoryGrid(String name) {
+		return new GridContainer(name, this, 4, 3);
 	}
 
 	public void setHasChest(boolean hasChest) {

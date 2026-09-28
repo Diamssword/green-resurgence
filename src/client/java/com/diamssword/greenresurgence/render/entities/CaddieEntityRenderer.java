@@ -5,13 +5,15 @@ import com.diamssword.greenresurgence.entities.vehicles.CaddieEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.util.Identifier;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.molang.MolangParser;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class NewCaddieEntityRenderer extends GeoEntityRenderer<CaddieEntity> {
+public class CaddieEntityRenderer extends GeoEntityRenderer<CaddieEntity> {
 
-	public NewCaddieEntityRenderer(EntityRendererFactory.Context ctx) {
+	public CaddieEntityRenderer(EntityRendererFactory.Context ctx) {
 		super(ctx, new CaddieModele());
 	}
 
@@ -23,6 +25,15 @@ public class NewCaddieEntityRenderer extends GeoEntityRenderer<CaddieEntity> {
 		@Override
 		public RenderLayer getRenderType(CaddieEntity animatable, Identifier texture) {
 			return RenderLayer.getEntityCutoutNoCull(getTextureResource(animatable));
+		}
+
+		@Override
+		public void setCustomAnimations(CaddieEntity animatable, long instanceId, AnimationState<CaddieEntity> animationState) {
+			super.setCustomAnimations(animatable, instanceId, animationState);
+			CoreGeoBone sac = getAnimationProcessor().getBone("Chest");
+			if(sac != null) {
+				sac.setHidden(!animatable.hasChest());
+			}
 		}
 
 		@Override
