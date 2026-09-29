@@ -122,11 +122,12 @@ public class RenderersRegister {
 		BlockEntityRendererFactories.register(MBlocks.CRUMBELING_BLOCK.getEntityType(), CrumbelingBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(MBlocks.SPAWNER.getEntityType(), SpawnerBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(MBlocks.DEPLOYABLE_MACHINE_BLOCK.getEntityType(), DeployableBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(MBlocks.DEPLOYABLE_LADDER.getEntityType(), DeployableLadderEntityRenderer::new);
 	}
 
 
-	public static EntityRenderer emptyEntityRender(EntityRendererFactory.Context ctx) {
-		return new EntityRenderer<Entity>(ctx) {
+	public static EntityRenderer<Entity> emptyEntityRender(EntityRendererFactory.Context ctx) {
+		return new EntityRenderer<>(ctx) {
 			@Override
 			public Identifier getTexture(Entity entity) {
 				return null;
