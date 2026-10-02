@@ -2,7 +2,7 @@ package com.diamssword.greenresurgence.systems.character.classes;
 
 import com.diamssword.greenresurgence.systems.attributs.Attributes;
 import com.diamssword.greenresurgence.systems.equipement.Equipments;
-import com.diamssword.greenresurgence.utils.TextUtils;
+import com.diamssword.greenresurgence.utils.ColorUtils;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -65,8 +65,8 @@ public class ClasseFerrailleur extends com.diamssword.characters.api.stats.Stats
 	@Override
 	public void getTextForLevel(PlayerEntity player, int palier, List<Text> lines) {
 		if(palier == 0)
-			lines.add(TextUtils.whiteText("Get a screwdriver"));
+			lines.add(ColorUtils.whiteText("Get a screwdriver"));
 		if(palier == 2)
-			lines.add(TextUtils.whiteText("Get a hammer"));
+			lines.add(ColorUtils.whiteText("Get a hammer"));
 	}
 }

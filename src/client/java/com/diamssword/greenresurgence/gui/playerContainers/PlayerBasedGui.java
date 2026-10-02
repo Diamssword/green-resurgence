@@ -191,7 +191,11 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 		var b = Components.button(Text.literal("x"), (u) -> closePanel(bottom, parent));
 		b.positioning(Positioning.absolute(width - 10, bottom ? height : 0)).sizing(Sizing.fixed(10)).zIndex(100);
 		parent.child(b);
-		panel.build(r1.getRoot(), this, width, height);
+		try {
+			panel.build(r1.getRoot(), this, width, height);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void pickPanel(SubPanel panel, FlowLayout parent) {

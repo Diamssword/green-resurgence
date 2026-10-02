@@ -2,18 +2,18 @@ package com.diamssword.greenresurgence.gui.playerContainers;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
+import com.diamssword.greenresurgence.gui.components.AdaptiveLabelComponent;
 import com.diamssword.greenresurgence.gui.components.RButtonComponent;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.PosesPackets;
 import com.diamssword.greenresurgence.systems.character.PosesManager;
-import com.diamssword.greenresurgence.utils.TextUtils;
-import io.wispforest.owo.ui.component.Components;
+import com.diamssword.greenresurgence.utils.ColorUtils;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
-import io.wispforest.owo.ui.container.GridLayout;
 import io.wispforest.owo.ui.core.HorizontalAlignment;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
+import io.wispforest.owo.ui.core.VerticalAlignment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
@@ -32,7 +32,6 @@ public class PlayerInventoryGui extends PlayerBasedGui<CustomPlayerInventory.Van
 	public PlayerInventoryGui(CustomPlayerInventory.VanillaPlayerInvMokup handler, PlayerInventory inv, Text title) {
 		super(handler, "survival/player_stats", true);
 		openSubPanelOnLoad = true;
-
 	}
 
 	@Override
@@ -54,41 +53,64 @@ public class PlayerInventoryGui extends PlayerBasedGui<CustomPlayerInventory.Van
 			setupEmotePanel(emotes);
 	}
 
-	private void fillStats(FlowLayout parent) {
+	private AdaptiveLabelComponent.SyncedScale scaler = new AdaptiveLabelComponent.SyncedScale();
+	private AdaptiveLabelComponent.SyncedScale scaler1 = new AdaptiveLabelComponent.SyncedScale();
 
+	private void fillStats(FlowLayout parent) {
+		scaler.clear();
+		scaler1.clear();
 		var player = client.player;
 		parent.clearChildren();
-		var c1 = Containers.grid(Sizing.content(), Sizing.content(), 4, 2);
-		var c2 = Containers.grid(Sizing.content(), Sizing.content(), 4, 2);
-		parent.child(c1);
-		parent.child(c2);
+		var cC1 = Containers.horizontalFlow(Sizing.fill(48), Sizing.content());
+		cC1.horizontalAlignment(HorizontalAlignment.LEFT);
+		var cC2 = Containers.horizontalFlow(Sizing.fill(48), Sizing.content());
+		cC2.horizontalAlignment(HorizontalAlignment.LEFT);
+		var c1 = Containers.verticalFlow(Sizing.fill(48), Sizing.content());
+		var cM1 = Containers.verticalFlow(Sizing.fill(4), Sizing.content());
+		var c2 = Containers.verticalFlow(Sizing.fill(48), Sizing.content());
+		var c3 = Containers.verticalFlow(Sizing.fill(48), Sizing.content());
+		var cM2 = Containers.verticalFlow(Sizing.fill(4), Sizing.content());
+		var c4 = Containers.verticalFlow(Sizing.fill(48), Sizing.content());
+		cC1.child(c1);
+		cC1.child(cM1);
+		cC1.child(c2);
+		parent.child(cC1);
+		cC2.child(c3);
+		cC2.child(cM2);
+		cC2.child(c4);
+		parent.child(cC2);
+		for(int i = 0; i < 4; i++) {
+			cM1.child(new AdaptiveLabelComponent(scaler, ColorUtils.whiteText(":")).verticalTextAlignment(VerticalAlignment.CENTER).sizing(Sizing.content(), Sizing.fixed(8)));
+			cM2.child(new AdaptiveLabelComponent(scaler, ColorUtils.whiteText(":")).verticalTextAlignment(VerticalAlignment.CENTER).sizing(Sizing.content(), Sizing.fixed(8)));
+		}
+
 		var pdata = player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_DATA);
 
 
-		statLabel(0, c1, "health", pdata.healthManager.getHealthAmount() * 5f, pdata.healthManager.getMaxHealthAmount() * 5f);
-		statLabel(1, c1, "shield", pdata.healthManager.getShieldAmount() * 5f, pdata.healthManager.getMaxShieldAmount() * 5f);
-		statLabel(2, c1, "hunger", "full");
-		statLabel(3, c1, "thirst", "full");
-		statLabel(0, c2, "infection", pdata.healthManager.getContaminationAmount(), pdata.healthManager.getMaxContaminationAmount());
-		statLabel(1, c2, "stamina", pdata.healthManager.getEnergyAmount(), pdata.healthManager.getMaxEnergyAmount());
-		statLabel(2, c2, "oxygen", player.getAir(), player.getMaxAir());
-		statLabel(3, c2, "armor", player.getArmor());
+		statLabel(c1, c2, "health", pdata.healthManager.getHealthAmount() * 5f, pdata.healthManager.getMaxHealthAmount() * 5f);
+		statLabel(c1, c2, "shield", pdata.healthManager.getShieldAmount() * 5f, pdata.healthManager.getMaxShieldAmount() * 5f);
+		statLabel(c1, c2, "hunger", "full");
+		statLabel(c1, c2, "thirst", "full");
+		statLabel(c3, c4, "infection", pdata.healthManager.getContaminationAmount(), pdata.healthManager.getMaxContaminationAmount());
+		statLabel(c3, c4, "stamina", pdata.healthManager.getEnergyAmount(), pdata.healthManager.getMaxEnergyAmount());
+		statLabel(c3, c4, "oxygen", player.getAir(), player.getMaxAir());
+		statLabel(c3, c4, "armor", player.getArmor());
 	}
 
-	private void statLabel(int pos, GridLayout panel, String text, double v1, double v2) {
+	private void statLabel(FlowLayout panel1, FlowLayout panel2, String text, double v1, double v2) {
 		DecimalFormat df = new DecimalFormat("0.#");
-		panel.child(Components.label(TextUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.survival_inventory." + text)).lineHeight(8).margins(Insets.right(1)), pos, 0);
-		panel.child(Components.label(TextUtils.whiteText(": " + df.format(v1) + "/" + df.format(v2))).lineHeight(8).margins(Insets.right(1)), pos, 1);
+		panel1.child(new AdaptiveLabelComponent(scaler, ColorUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.survival_inventory." + text)).verticalTextAlignment(VerticalAlignment.CENTER).sizing(Sizing.fill(100), Sizing.fixed(8)));
+		panel2.child(new AdaptiveLabelComponent(scaler1, ColorUtils.whiteText(df.format(v1) + "/" + df.format(v2))).verticalTextAlignment(VerticalAlignment.CENTER).lineHeight(8).sizing(Sizing.fill(100), Sizing.fixed(8)).margins(Insets.right(1)));
 	}
 
-	private void statLabel(int pos, GridLayout panel, String text, int value) {
-		panel.child(Components.label(TextUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.survival_inventory." + text)).lineHeight(8).margins(Insets.right(1)), pos, 0);
-		panel.child(Components.label(TextUtils.whiteText(": " + value)).lineHeight(8).margins(Insets.right(1)), pos, 1);
+	private void statLabel(FlowLayout panel1, FlowLayout panel2, String text, int value) {
+		panel1.child(new AdaptiveLabelComponent(scaler, ColorUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.survival_inventory." + text)).verticalTextAlignment(VerticalAlignment.CENTER).sizing(Sizing.fill(100), Sizing.fixed(8)));
+		panel2.child(new AdaptiveLabelComponent(scaler1, ColorUtils.whiteText(value + "")).verticalTextAlignment(VerticalAlignment.CENTER).lineHeight(8).sizing(Sizing.fill(100), Sizing.fixed(8)).margins(Insets.right(1)));
 	}
 
-	private void statLabel(int pos, GridLayout panel, String text, String value) {
-		panel.child(Components.label(TextUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.survival_inventory." + text)).lineHeight(8).margins(Insets.right(1)), pos, 0);
-		panel.child(Components.label(TextUtils.whiteText(": ").append(TextUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.survival_inventory." + text + "." + value))).lineHeight(8).margins(Insets.right(1)), pos, 1);
+	private void statLabel(FlowLayout panel1, FlowLayout panel2, String text, String value) {
+		panel1.child(new AdaptiveLabelComponent(scaler, ColorUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.survival_inventory." + text)).verticalTextAlignment(VerticalAlignment.CENTER).sizing(Sizing.fill(100), Sizing.fixed(8)));
+		panel2.child(new AdaptiveLabelComponent(scaler1, ColorUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.survival_inventory." + text + "." + value)).verticalTextAlignment(VerticalAlignment.CENTER).lineHeight(8).sizing(Sizing.fill(100), Sizing.fixed(8)).margins(Insets.right(1)));
 	}
 
 	private void setupEmotePanel(FlowLayout emotes) {

@@ -5,22 +5,20 @@ import com.diamssword.characters.api.ComponentManager;
 import com.diamssword.characters.api.stats.StatsRole;
 import com.diamssword.greenresurgence.DrawUtils;
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.gui.components.AdaptiveLabelComponent;
 import com.diamssword.greenresurgence.gui.components.ClickableLayoutComponent;
-import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
 import com.diamssword.greenresurgence.gui.components.PlayerComponent;
 import com.diamssword.greenresurgence.gui.components.hud.BarComponent;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.StatsPackets;
 import com.diamssword.greenresurgence.systems.character.classes.IClasseAdditionalTooltips;
-import com.diamssword.greenresurgence.utils.TextUtils;
+import com.diamssword.greenresurgence.utils.ColorUtils;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.LabelComponent;
+import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
-import io.wispforest.owo.ui.core.Insets;
-import io.wispforest.owo.ui.core.Sizing;
-import io.wispforest.owo.ui.core.Surface;
-import io.wispforest.owo.ui.core.VerticalAlignment;
+import io.wispforest.owo.ui.core.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
@@ -33,7 +31,7 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 		super(FlowLayout.class, DataSource.asset(GreenResurgence.asRessource("character/stats")));
 	}
 
-	private FreeRowGridLayout statsPanel;
+	private FlowLayout statsPanel;
 
 	@Override
 	public void tick() {
@@ -53,10 +51,10 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 
 		var chara = ComponentManager.getPlayerCharacter(MinecraftClient.getInstance().player).getCurrentCharacter();
 		if(chara != null) {
-			np.child(Components.label(TextUtils.whiteText(chara.stats.firstname + " " + chara.stats.lastname)).lineHeight(8));
-			np.child(Components.label(TextUtils.whiteText(chara.stats.origine)).lineHeight(8));
-			np.child(Components.label(TextUtils.whiteText(chara.stats.faction)).lineHeight(8));
-			np.child(Components.label(TextUtils.whiteText(chara.stats.job)).lineHeight(8));
+			np.child(new AdaptiveLabelComponent(ColorUtils.whiteText(chara.stats.firstname + " " + chara.stats.lastname)).horizontalSizing(Sizing.fill(100)));
+			np.child(new AdaptiveLabelComponent(ColorUtils.whiteText(chara.stats.origine)).horizontalSizing(Sizing.fill(100)));
+			np.child(new AdaptiveLabelComponent(ColorUtils.whiteText(chara.stats.faction)).horizontalSizing(Sizing.fill(100)));
+			np.child(new AdaptiveLabelComponent(ColorUtils.whiteText(chara.stats.job)).horizontalSizing(Sizing.fill(100)));
 		}
 		var pane = root.childById(FlowLayout.class, "listPanel");
 		for(var k : CharactersApi.stats().getRoles().keySet()) {
@@ -66,7 +64,7 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 			var r = CharactersApi.stats().getRole(k);
 			var dtC = ComponentManager.getPlayerDatas(client.player);
 			c.onPress(v -> loadInfos(root.childById(FlowLayout.class, "infosPanel"), k, r.get()));
-			c.child(Components.label(TextUtils.whiteTitle(r.get().name + "   Niv." + dtC.getStats().getLevel(k))).horizontalSizing(Sizing.fill(80)));
+			c.child(new AdaptiveLabelComponent(ColorUtils.whiteText(r.get().name + "   Niv." + dtC.getStats().getLevel(k))).horizontalSizing(Sizing.fill(80)));
 			var bt = io.wispforest.owo.ui.component.Components.button(Text.literal("\uD83C\uDFB2"), (r1) -> {
 				Channels.MAIN.clientHandle().send(new StatsPackets.RollStat(k));
 				close();
@@ -76,7 +74,7 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 			c.child(bt);
 			pane.child(c);
 		}
-		statsPanel = root.childById(FreeRowGridLayout.class, "statsPanel");
+		statsPanel = root.childById(FlowLayout.class, "statsPanel");
 		if(statsPanel != null)
 			fillStats(statsPanel);
 	}
@@ -84,14 +82,14 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 	private void loadInfos(FlowLayout parent, String roleId, StatsRole role) {
 		var st = ComponentManager.getPlayerDatas(client.player).getStats();
 		parent.clearChildren();
-		parent.child(Components.label(TextUtils.whiteTitle(role.name)));
+		parent.child(Components.label(ColorUtils.whiteText(role.name)));
 		var bar = new BarComponent(GreenResurgence.asRessource("textures/gui/hud/stamina.png"), 0, 0, 256, 10, 256, 64, true);
 		bar.setFillPercent(CharactersApi.stats().percentOfXpForNext(client.player, roleId));
 		bar.tooltip(Text.translatable(st.getXp(roleId) + "/" + CharactersApi.stats().getXpCostForLevel(st.getLevel(roleId) + 1) + " xp"));
 		bar.horizontalSizing(Sizing.fill(90));
-		parent.child(Components.label(TextUtils.whiteTitle("WIP")));
+		parent.child(Components.label(ColorUtils.whiteText("WIP")));
 		parent.child(bar);
-		parent.child(paragraph(TextUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.stats.desc." + roleId)));
+		parent.child(paragraph(ColorUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.stats.desc." + roleId)));
 		addGlobalModInfos(parent, role, st.getLevel(roleId));
 		var cur = st.getLevel(roleId);
 		for(var i = 0; i < role.stages.length; i++) {
@@ -99,15 +97,15 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 		}
 	}
 
-	private LabelComponent paragraph(Text text) {
-		var c = Components.label(text);
-		c.verticalTextAlignment(VerticalAlignment.CENTER).lineHeight(4).horizontalSizing(Sizing.fill(90));
+	private AdaptiveLabelComponent paragraph(Text text) {
+		var c = new AdaptiveLabelComponent(text);
+		c.verticalTextAlignment(VerticalAlignment.CENTER).horizontalSizing(Sizing.fill(90));
 		return c;
 	}
 
 	private LabelComponent simple(Text text) {
-		var c = Components.label(text);
-		c.verticalTextAlignment(VerticalAlignment.CENTER).lineHeight(6).horizontalSizing(Sizing.fill(90));
+		var c = new AdaptiveLabelComponent(text);
+		c.verticalTextAlignment(VerticalAlignment.CENTER).horizontalSizing(Sizing.fill(90));
 		return c;
 	}
 
@@ -115,31 +113,31 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 		var mods = role.getGlobalModifiers();
 		DecimalFormat df = new DecimalFormat("0.#");
 		if(!mods.isEmpty()) {
-			parent.child(Components.label(TextUtils.textTranslated(GreenResurgence.ID + ".gui.stats.global_bonus", DrawUtils.ORANGE)).horizontalSizing(Sizing.fill(90)));
-			var text = TextUtils.whiteText("");
+			parent.child(new AdaptiveLabelComponent(ColorUtils.textTranslated(GreenResurgence.ID + ".gui.stats.global_bonus", DrawUtils.ORANGE)).maximumScale(0.8f).horizontalSizing(Sizing.fill(90)));
+			var text = ColorUtils.whiteText("");
 			for(var p : mods.entrySet()) {
 				var d = p.getValue().apply(level);
-				text = text.append(TextUtils.whiteText(" - ")).append(TextUtils.whiteTextTranslated(p.getKey().getTranslationKey()));
-				text = text.append(TextUtils.whiteText(": +" + df.format(d.getValue() * 100) + "%"));
+				text = text.append(ColorUtils.whiteText(" - ")).append(ColorUtils.whiteTextTranslated(p.getKey().getTranslationKey()));
+				text = text.append(ColorUtils.whiteText(": +" + df.format(d.getValue() * 100) + "%"));
 				var d1 = p.getValue().apply(1);
-				text = text.append(TextUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.stats.global_bonus.per_level", df.format(d1.getValue() * 100)));
+				text = text.append(ColorUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.stats.global_bonus.per_level", df.format(d1.getValue() * 100)));
 				text = text.append("\n");
 			}
-			parent.child(paragraph(text));
+			parent.child(paragraph(text).maximumScale(0.7f));
 		}
 	}
 
 	private void addPalierInfo(FlowLayout parent, StatsRole role, int palier, int level, boolean unlocked) {
 		var mods = role.getPalierInfos(palier);
-		parent.child(Components.label(TextUtils.textTranslated(GreenResurgence.ID + ".gui.stats.palier.title", unlocked ? DrawUtils.ORANGE : DrawUtils.WHITE, palier + 1, level)).horizontalSizing(Sizing.fill(90)));
-		var text = TextUtils.whiteText("");
+		parent.child(new AdaptiveLabelComponent(ColorUtils.textTranslated(GreenResurgence.ID + ".gui.stats.palier.title", unlocked ? DrawUtils.ORANGE : DrawUtils.WHITE, palier + 1, level)).maximumScale(0.8f).horizontalSizing(Sizing.fill(90)));
+		var text = ColorUtils.whiteText("");
 		if(mods != null) {
 
 			DecimalFormat df = new DecimalFormat("0.#");
 			for(var p : mods.getModifiers().entrySet()) {
 				var d = p.getValue();
-				text = text.append(TextUtils.whiteText(" - ")).append(TextUtils.whiteTextTranslated(p.getKey().getTranslationKey()));
-				text = text.append(TextUtils.whiteText(": +" + df.format(d.getValue() * 100) + "%\n"));
+				text = text.append(ColorUtils.whiteText(" - ")).append(ColorUtils.whiteTextTranslated(p.getKey().getTranslationKey()));
+				text = text.append(ColorUtils.whiteText(": +" + df.format(d.getValue() * 100) + "%\n"));
 			}
 		}
 		if(role instanceof IClasseAdditionalTooltips ctps) {
@@ -147,38 +145,74 @@ public class PlayerStatsGui extends BaseUIModelScreen<FlowLayout> {
 			ctps.getTextForLevel(client.player, palier, ls);
 			if(!ls.isEmpty()) {
 				for(int i = 0; i < ls.size(); i++) {
-					text.append(TextUtils.whiteText(" - ").append(ls.get(i)));
+					text.append(ColorUtils.whiteText(" - ").append(ls.get(i)));
 					if(i < ls.size() - 1)
 						text.append("\n");
 				}
 
 			}
 		}
-		parent.child(paragraph(text));
+		parent.child(paragraph(text).maximumScale(0.7f));
 	}
 
-	private void fillStats(FreeRowGridLayout parent) {
+	private AdaptiveLabelComponent.SyncedScale scaler = new AdaptiveLabelComponent.SyncedScale();
+	private AdaptiveLabelComponent.SyncedScale scaler1 = new AdaptiveLabelComponent.SyncedScale();
 
+	private void fillStats(FlowLayout parent) {
+		scaler.clear();
+		scaler1.clear();
 		var player = client.player;
+		parent.clearChildren();
+		var cC1 = Containers.horizontalFlow(Sizing.fill(48), Sizing.content());
+		cC1.horizontalAlignment(HorizontalAlignment.LEFT);
+		var cC2 = Containers.horizontalFlow(Sizing.fill(48), Sizing.content());
+		cC2.horizontalAlignment(HorizontalAlignment.LEFT);
+		var c1 = Containers.verticalFlow(Sizing.fill(48), Sizing.content());
+		var cM1 = Containers.verticalFlow(Sizing.fill(4), Sizing.content());
+		var c2 = Containers.verticalFlow(Sizing.fill(48), Sizing.content());
+		var c3 = Containers.verticalFlow(Sizing.fill(48), Sizing.content());
+		var cM2 = Containers.verticalFlow(Sizing.fill(4), Sizing.content());
+		var c4 = Containers.verticalFlow(Sizing.fill(48), Sizing.content());
+		cC1.child(c1);
+		cC1.child(cM1);
+		cC1.child(c2);
+		parent.child(cC1);
+		cC2.child(c3);
+		cC2.child(cM2);
+		cC2.child(c4);
+		parent.child(cC2);
+		for(int i = 0; i < 4; i++) {
+			cM1.child(new AdaptiveLabelComponent(scaler, ColorUtils.whiteText(":")).verticalTextAlignment(VerticalAlignment.CENTER).sizing(Sizing.content(), Sizing.fixed(8)));
+			cM2.child(new AdaptiveLabelComponent(scaler, ColorUtils.whiteText(":")).verticalTextAlignment(VerticalAlignment.CENTER).sizing(Sizing.content(), Sizing.fixed(8)));
+		}
+
 		var pdata = player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_DATA);
-		parent.clear();
-		parent.child(statLabel("Vie  ", pdata.healthManager.getHealthAmount() * 5f, pdata.healthManager.getMaxHealthAmount() * 5f));
-		parent.child(statLabel("Infec ", pdata.healthManager.getContaminationAmount(), pdata.healthManager.getMaxContaminationAmount()));
-		parent.child(statLabel("Shield", pdata.healthManager.getShieldAmount() * 5f, pdata.healthManager.getMaxShieldAmount() * 5f));
-		parent.child(Components.label(TextUtils.whiteText("Faim   : Plein")).lineHeight(8));
-		parent.child(statLabel("Endu  ", pdata.healthManager.getEnergyAmount(), pdata.healthManager.getMaxEnergyAmount()));
-		parent.child(Components.label(TextUtils.whiteText("Soif   : Plein")).lineHeight(8));
-		parent.child(statLabel("Oxygen", player.getAir(), player.getMaxAir()));
-		parent.child(Components.label(TextUtils.whiteText("Armure: " + player.getArmor())).lineHeight(8));
 
 
+		statLabel(c1, c2, "health", pdata.healthManager.getHealthAmount() * 5f, pdata.healthManager.getMaxHealthAmount() * 5f);
+		statLabel(c1, c2, "shield", pdata.healthManager.getShieldAmount() * 5f, pdata.healthManager.getMaxShieldAmount() * 5f);
+		statLabel(c1, c2, "hunger", "full");
+		statLabel(c1, c2, "thirst", "full");
+		statLabel(c3, c4, "infection", pdata.healthManager.getContaminationAmount(), pdata.healthManager.getMaxContaminationAmount());
+		statLabel(c3, c4, "stamina", pdata.healthManager.getEnergyAmount(), pdata.healthManager.getMaxEnergyAmount());
+		statLabel(c3, c4, "oxygen", player.getAir(), player.getMaxAir());
+		statLabel(c3, c4, "armor", player.getArmor());
 	}
 
-	private LabelComponent statLabel(String text, double v1, double v2) {
+	private void statLabel(FlowLayout panel1, FlowLayout panel2, String text, double v1, double v2) {
 		DecimalFormat df = new DecimalFormat("0.#");
-		var c = Components.label(TextUtils.whiteText(text + ": " + df.format(v1) + "/" + df.format(v2))).lineHeight(8);
-		c.margins(Insets.right(1));
-		return c;
+		panel1.child(new AdaptiveLabelComponent(scaler, ColorUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.survival_inventory." + text)).verticalTextAlignment(VerticalAlignment.CENTER).sizing(Sizing.fill(100), Sizing.fixed(8)));
+		panel2.child(new AdaptiveLabelComponent(scaler1, ColorUtils.whiteText(df.format(v1) + "/" + df.format(v2))).verticalTextAlignment(VerticalAlignment.CENTER).lineHeight(8).sizing(Sizing.fill(100), Sizing.fixed(8)).margins(Insets.right(1)));
+	}
+
+	private void statLabel(FlowLayout panel1, FlowLayout panel2, String text, int value) {
+		panel1.child(new AdaptiveLabelComponent(scaler, ColorUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.survival_inventory." + text)).verticalTextAlignment(VerticalAlignment.CENTER).sizing(Sizing.fill(100), Sizing.fixed(8)));
+		panel2.child(new AdaptiveLabelComponent(scaler1, ColorUtils.whiteText(value + "")).verticalTextAlignment(VerticalAlignment.CENTER).lineHeight(8).sizing(Sizing.fill(100), Sizing.fixed(8)).margins(Insets.right(1)));
+	}
+
+	private void statLabel(FlowLayout panel1, FlowLayout panel2, String text, String value) {
+		panel1.child(new AdaptiveLabelComponent(scaler, ColorUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.survival_inventory." + text)).verticalTextAlignment(VerticalAlignment.CENTER).sizing(Sizing.fill(100), Sizing.fixed(8)));
+		panel2.child(new AdaptiveLabelComponent(scaler1, ColorUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.survival_inventory." + text + "." + value)).verticalTextAlignment(VerticalAlignment.CENTER).lineHeight(8).sizing(Sizing.fill(100), Sizing.fixed(8)).margins(Insets.right(1)));
 	}
 
 	public boolean shouldPause() {

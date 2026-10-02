@@ -5,13 +5,14 @@ import com.diamssword.characters.api.ComponentManager;
 import com.diamssword.greenresurgence.DrawUtils;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.gui.PlayerStatsGui;
+import com.diamssword.greenresurgence.gui.components.AdaptiveLabelComponent;
 import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
 import com.diamssword.greenresurgence.gui.components.PlayerComponent;
 import com.diamssword.greenresurgence.gui.components.SubScreenLayout;
 import com.diamssword.greenresurgence.gui.playerContainers.PlayerBasedGui;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.StatsPackets;
-import com.diamssword.greenresurgence.utils.TextUtils;
+import com.diamssword.greenresurgence.utils.ColorUtils;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.container.Containers;
@@ -34,8 +35,13 @@ public class CharacterStatsPanel extends SimpleSubPanel {
 	}
 
 	@Override
+	public int minWidth() {
+		return 100;
+	}
+
+	@Override
 	public int desiredWidth() {
-		return 125;
+		return 140;
 	}
 
 	@Override
@@ -55,12 +61,16 @@ public class CharacterStatsPanel extends SimpleSubPanel {
 		var np = root.childById(FlowLayout.class, "namePanel");
 		var chara = ComponentManager.getPlayerCharacter(MinecraftClient.getInstance().player).getCurrentCharacter();
 		if(chara != null) {
-			np.child(Components.label(TextUtils.whiteText(chara.stats.firstname + " " + chara.stats.lastname)));
-			np.child(Components.label(TextUtils.whiteText(chara.stats.origine)));
-			np.child(Components.label(TextUtils.whiteText(chara.stats.faction)));
-			np.child(Components.label(TextUtils.whiteText(chara.stats.job)));
+			np.child(new AdaptiveLabelComponent(ColorUtils.whiteText(chara.stats.firstname + " " + chara.stats.lastname)).horizontalSizing(Sizing.fill(100)));
+			np.child(new AdaptiveLabelComponent(ColorUtils.whiteText(chara.stats.origine)).horizontalSizing(Sizing.fill(100)));
+			np.child(new AdaptiveLabelComponent(ColorUtils.whiteText(chara.stats.faction)).horizontalSizing(Sizing.fill(100)));
+			np.child(new AdaptiveLabelComponent(ColorUtils.whiteText(chara.stats.job)).horizontalSizing(Sizing.fill(100)));
+			np.child(Components.button(Text.translatable("gui.green_resurgence.generic.open"), (f) -> {
+				MinecraftClient.getInstance().setScreen(new PlayerStatsGui());
+			}));
 		}
 		var pane = root.childById(FreeRowGridLayout.class, "listPanel");
+		var scaler = new AdaptiveLabelComponent.SyncedScale();
 		for(var k : CharactersApi.stats().getRoles().keySet()) {
 			var c = Containers.horizontalFlow(Sizing.fill(49), Sizing.fixed(20));
 			c.surface(Surface.flat(DrawUtils.whithAlpha(DrawUtils.GRAY_GREEN, 0xFF))).padding(Insets.of(2)).margins(Insets.of(1));
@@ -75,11 +85,9 @@ public class CharacterStatsPanel extends SimpleSubPanel {
 			//bt.renderer(btr);
 			bt.tooltip(Text.translatable("gui.green_resurgence.playerstats.dice"));
 			c.child(bt);
-			c.child(Components.label(TextUtils.whiteText(r.get().name)));
+			c.child(new AdaptiveLabelComponent(scaler, ColorUtils.whiteText(r.get().name)).horizontalTextAlignment(HorizontalAlignment.CENTER).verticalTextAlignment(VerticalAlignment.CENTER).sizing(Sizing.fill(55), Sizing.fill(90)));
+			//c.child(Components.label(TextUtils.whiteText(r.get().name)));
 			pane.child(c);
 		}
-		root.childById(ButtonComponent.class, "openGui").onPress(p -> {
-			MinecraftClient.getInstance().setScreen(new PlayerStatsGui());
-		});
 	}
 }

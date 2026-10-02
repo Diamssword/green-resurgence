@@ -6,7 +6,7 @@ import com.diamssword.greenresurgence.blockEntities.IGuiPacketReceiver;
 import com.diamssword.greenresurgence.gui.components.OddSlider;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.GuiPackets;
-import com.diamssword.greenresurgence.utils.TextUtils;
+import com.diamssword.greenresurgence.utils.ColorUtils;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
@@ -76,7 +76,7 @@ public class ClaimAntennaGui extends BaseUIModelScreen<FlowLayout> implements IG
 				messages.add(Text.translatable("gui.green_resurgence.claim_antenna.error.zone"));
 			var l = Containers.verticalFlow(Sizing.fill(100), Sizing.content());
 			l.gap(1).padding(Insets.of(5)).horizontalAlignment(HorizontalAlignment.CENTER);
-			l.surface(Surface.flat(TextUtils.whithAlpha(TextUtils.ORANGE, 0x6f)));
+			l.surface(Surface.flat(ColorUtils.whithAlpha(ColorUtils.ORANGE, 0x6f)));
 			l.child(Components.label(Text.translatable("gui.green_resurgence.claim_antenna.resize")));
 			var s = new OddSlider(Sizing.fill(90), (ClaimBlockEntity.minRange * 2) + 1, (blockEntity.getMaxRange() * 2) + 1, false);
 			s.scrollStep(0.02);
@@ -93,7 +93,7 @@ public class ClaimAntennaGui extends BaseUIModelScreen<FlowLayout> implements IG
 			sc.child(l);
 			var l1 = Containers.verticalFlow(Sizing.fill(100), Sizing.content());
 			l1.gap(1).padding(Insets.of(5)).horizontalAlignment(HorizontalAlignment.CENTER);
-			l1.surface(Surface.flat(TextUtils.whithAlpha(TextUtils.ORANGE, 0x6f)));
+			l1.surface(Surface.flat(ColorUtils.whithAlpha(ColorUtils.ORANGE, 0x6f)));
 			if(blockEntity.getLevel() < 2) {
 				var up = Components.button(Text.translatable("gui.green_resurgence.claim_antenna.upgrade"), c -> {
 					Channels.MAIN.clientHandle().send(new GuiPackets.GuiTileValue(blockEntity.getPos(), "upgrade", true));

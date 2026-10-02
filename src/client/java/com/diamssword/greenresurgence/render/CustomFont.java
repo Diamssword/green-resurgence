@@ -3,7 +3,6 @@ package com.diamssword.greenresurgence.render;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.mixin.client.ClientAccessor;
 import com.diamssword.greenresurgence.mixin.client.FontManagerAccessor;
-import com.diamssword.greenresurgence.utils.TextUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.FontStorage;
 import net.minecraft.client.font.TextRenderer;
@@ -18,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class CustomFont {
 
 	private static final MinecraftClient mc = MinecraftClient.getInstance();
-	private static final List<Identifier> toLoad = List.of(TextUtils.LILITA_ONE, TextUtils.LILITA_ONE_TITLE, TextUtils.MC_LITTLE);
+	private static final List<Identifier> toLoad = List.of();
 	private static final Map<Identifier, TextRenderer> fonts = new HashMap<>();
 
 	private static Pair<TextRenderer, Boolean> getTextRenderer(Identifier identifier) {

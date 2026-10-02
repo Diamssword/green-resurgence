@@ -7,9 +7,9 @@
                             <children>
                                 <player id="playerSkin">
                                   <sizing>
-
-                                    <vertical method="fill">90</vertical>
+                                    <vertical method="fixed">40</vertical>
                                     </sizing>
+                                    <margins><bottom>2</bottom></margins>
                                     <look-at-cursor>true</look-at-cursor>
                                     <scale-to-fit>true</scale-to-fit>
                                 </player>
@@ -17,18 +17,16 @@
                                     <children>
 
                                     </children>
+                                    <margins><right>6</right><bottom>2</bottom></margins>
+                                    <sizing><horizontal method="fill">60</horizontal>
+                                        <vertical method="fill">100</vertical></sizing>
                                 </flow-layout>
-                                <flow-layout direction="horizontal">
-                                    <children>
-                                        <button id="openGui">
-                                            <text translate="true">gui.green_resurgence.generic.open</text>
-                                        </button>
-                                    </children>
-                                </flow-layout>
+
                             </children>
-                            <sizing><horizontal method="fill">100</horizontal><vertical method="fixed">40</vertical></sizing>
+                            <sizing><horizontal method="fill">100</horizontal><vertical method="fixed">60</vertical></sizing>
                             <surface><flat>#3F5427</flat></surface>
                         </flow-layout>
+
                         <scroll direction="vertical" id="scroll1">
                              <freerowgrid columns="2" id="listPanel">
                                  <children/>

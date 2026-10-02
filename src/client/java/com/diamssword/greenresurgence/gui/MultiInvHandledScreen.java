@@ -106,6 +106,8 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
 	 * itself on the next frame
 	 */
 	protected boolean invalid = false;
+	private boolean globalInspector;
+	private boolean enableInspector;
 
 	public MultiInvHandledScreen(T handler, Class<R> rootComponentClass, BaseUIModelScreen.DataSource source) {
 		super(Text.literal(""));
@@ -300,7 +302,11 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
 		}
 		context.getMatrices().pop();
 		RenderSystem.enableDepthTest();
-
+		if(this.enableInspector) {
+			context.getMatrices().translate(0, 0, 1000);
+			context1.drawInspector(this.uiAdapter.rootComponent, mouseX, mouseY, !this.globalInspector);
+			context.getMatrices().translate(0, 0, -1000);
+		}
 		this.drawMouseoverTooltip(context, mouseX, mouseY);
 		if(this.uiAdapter != null && this.uiAdapter.rootComponent != null) {
 			this.uiAdapter.rootComponent.drawTooltip(context1, mouseX, mouseY, MinecraftClient.getInstance().getLastFrameDuration(), delta);
@@ -724,11 +730,30 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
 		this.client.interactionManager.clickSlot(this.handler.syncId, slotId, button, actionType, this.client.player);
 	}
 
+	public boolean toggleInspector() {
+		return this.enableInspector = !this.enableInspector;
+	}
+
+	/**
+	 * @return Toggle the inspector between
+	 * hovered and global mode
+	 */
+	public boolean toggleGlobalInspector() {
+		return this.globalInspector = !this.globalInspector;
+	}
+
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if(Owo.DEBUG && this.modelId != null && keyCode == GLFW.GLFW_KEY_F5 && (modifiers & GLFW.GLFW_MOD_CONTROL) != 0) {
 			this.client.setScreen(new ConfigureHotReloadScreen(this.modelId, this));
 			return true;
+		}
+		if(Owo.DEBUG && keyCode == GLFW.GLFW_KEY_LEFT_SHIFT) {
+			if((modifiers & GLFW.GLFW_MOD_CONTROL) != 0) {
+				this.toggleInspector();
+			} else if((modifiers & GLFW.GLFW_MOD_ALT) != 0) {
+				this.toggleGlobalInspector();
+			}
 		}
 		if(super.keyPressed(keyCode, scanCode, modifiers)) {
 			return true;

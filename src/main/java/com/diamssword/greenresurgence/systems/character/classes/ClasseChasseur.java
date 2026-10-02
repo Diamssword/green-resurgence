@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.systems.character.classes;
 
 import com.diamssword.greenresurgence.systems.attributs.Attributes;
-import com.diamssword.greenresurgence.utils.TextUtils;
+import com.diamssword.greenresurgence.utils.ColorUtils;
 import com.google.gson.JsonObject;
 import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -42,7 +42,7 @@ public class ClasseChasseur extends com.diamssword.characters.api.stats.StatsRol
 	@Override
 	public void getTextForLevel(PlayerEntity player, int palier, List<Text> lines) {
 		if(palier == 0)
-			lines.add(TextUtils.whiteText("Get a bow"));
+			lines.add(ColorUtils.whiteText("Get a bow"));
 	}
 
 	private void eventsRegister() {

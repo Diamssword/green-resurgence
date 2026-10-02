@@ -2,7 +2,7 @@ package com.diamssword.greenresurgence.systems.character.classes;
 
 import com.diamssword.greenresurgence.MItems;
 import com.diamssword.greenresurgence.items.materials.Materials;
-import com.diamssword.greenresurgence.utils.TextUtils;
+import com.diamssword.greenresurgence.utils.ColorUtils;
 import com.google.gson.JsonObject;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -40,8 +40,8 @@ public class ClasseMedecin extends com.diamssword.characters.api.stats.StatsRole
 	@Override
 	public void getTextForLevel(PlayerEntity player, int palier, List<Text> lines) {
 		if(palier == 0)
-			lines.add(TextUtils.whiteText("Get a satchel and 5 Dollypranes"));
+			lines.add(ColorUtils.whiteText("Get a satchel and 5 Dollypranes"));
 		if(palier == 2)
-			lines.add(TextUtils.whiteText("Get a satchel and 10 Dollypranes"));
+			lines.add(ColorUtils.whiteText("Get a satchel and 10 Dollypranes"));
 	}
 }

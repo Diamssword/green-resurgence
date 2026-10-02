@@ -1,7 +1,7 @@
 package com.diamssword.greenresurgence.systems.character.classes;
 
 import com.diamssword.greenresurgence.systems.attributs.Attributes;
-import com.diamssword.greenresurgence.utils.TextUtils;
+import com.diamssword.greenresurgence.utils.ColorUtils;
 import com.google.gson.JsonObject;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,6 +28,6 @@ public class ClasseFermier extends com.diamssword.characters.api.stats.StatsRole
 	@Override
 	public void getTextForLevel(PlayerEntity player, int palier, List<Text> lines) {
 		if(palier == 2)
-			lines.add(TextUtils.whiteText("No bad effects below 40% infection"));
+			lines.add(ColorUtils.whiteText("No bad effects below 40% infection"));
 	}
 }

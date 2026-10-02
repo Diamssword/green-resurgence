@@ -34,7 +34,7 @@
                                     <children/>
 
                                 </flow-layout>
-                                <freerowgrid columns="2" id="statsPanel">
+                                <flow-layout direction="horizontal" id="statsPanel">
                                     <children/>
                                     <gap>2</gap>
                                     <padding><all>2</all></padding>
@@ -42,7 +42,8 @@
                                     <surface>
                                         <flat>#bb7d25</flat>
                                     </surface>
-                                </freerowgrid>
+                                    <sizing><horizontal method="fill">30</horizontal></sizing>
+                                </flow-layout>
                             </children>
                             <vertical-alignment>center</vertical-alignment>
 
