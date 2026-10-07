@@ -1,7 +1,8 @@
 package com.diamssword.greenresurgence;
 
 import com.diamssword.characters.api.CharactersApi;
-import com.diamssword.greenresurgence.gui.WardrobeGui;
+import com.diamssword.greenresurgence.gui.character_sheet.BodyPartEditorGui;
+import com.diamssword.greenresurgence.gui.character_sheet.WardrobeGui;
 import com.diamssword.greenresurgence.gui.components.ComponentsRegister;
 import com.diamssword.greenresurgence.gui.hud.CustomHud;
 import com.diamssword.greenresurgence.items.GeckoToolEquipmentRenderer;
@@ -48,6 +49,7 @@ public class GreenResurgenceClient implements ClientModInitializer {
 		GreenResurgence.clientHelper = new ClientSideHelperImp();
 		CharactersApi.onReady(api -> {
 			api.overrideWardrobeGui(WardrobeGui::new);
+			api.overrideCharacterGui(BodyPartEditorGui::new);
 		});
 	}
 

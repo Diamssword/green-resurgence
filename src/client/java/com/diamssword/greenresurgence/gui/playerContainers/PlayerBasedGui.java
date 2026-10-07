@@ -7,8 +7,7 @@ import com.diamssword.greenresurgence.gui.components.EffectComponent;
 import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
 import com.diamssword.greenresurgence.gui.components.RButtonComponent;
 import com.diamssword.greenresurgence.gui.components.SubScreenLayout;
-import com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel.CharacterStatsPanel;
-import com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel.PlayerCraftPanel;
+import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
 import com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel.SubPanel;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.Components;
@@ -25,7 +24,9 @@ import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHandledScreen<T, FlowLayout> {
@@ -37,18 +38,13 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 	private final Map<StatusEffect, EffectComponent> activeBonus = new HashMap<>();
 	private final Map<StatusEffect, EffectComponent> activeMalus = new HashMap<>();
 	private final Map<SubPanel, RButtonComponent> buttonsMap = new HashMap<>();
-	public static List<SubPanel> subpanels = new ArrayList<>();
+
 	protected boolean openSubPanelOnLoad = false;
 	private boolean needResize = false;
 	protected int subScreenSize = 0;
 
-	static {
-		subpanels.add(new PlayerCraftPanel());
-		subpanels.add(new CharacterStatsPanel());
 
-	}
-
-	public static SubPanel subPanelTop = subpanels.get(0);
+	public static SubPanel subPanelTop = PlayerInventoryCustomization.subpanels.get(0);
 	public static SubPanel subPanelBot;
 
 	public PlayerBasedGui(T handler, String subscreen) {
@@ -59,6 +55,9 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 		super(handler, FlowLayout.class, BaseUIModelScreen.DataSource.asset(GreenResurgence.asRessource("survival/player_inventory")));
 		this.subscreen = subscreen;
 		this.showLeftMenu = showLeftMenu;
+		this.handler.onReady(c -> {
+			PlayerInventoryCustomization.editInventory(this.uiAdapter.rootComponent, handler);
+		});
 	}
 
 	public void setSubScreenSize(int percent) {
@@ -84,7 +83,7 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 		if(showLeftMenu) {
 			var subBtPanel = rootComponent.childById(FlowLayout.class, "subPanelButtons");
 			var subPan = rootComponent.childById(FlowLayout.class, "layoutSubPanels");
-			subpanels.forEach(v -> {
+			PlayerInventoryCustomization.subpanels.forEach(v -> {
 				var d = new RButtonComponent(Text.literal(""), (z) -> {
 					pickPanel(v, subPan);
 				});
@@ -189,6 +188,7 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 		var r1 = new SubScreenLayout(Sizing.fixed(width), Sizing.fixed(height), FlowLayout.Algorithm.VERTICAL, panel.guiLocation());
 		parent.child(r1);
 		var b = Components.button(Text.literal("x"), (u) -> closePanel(bottom, parent));
+		b.renderer(HoloPanels.button());
 		b.positioning(Positioning.absolute(width - 10, bottom ? height : 0)).sizing(Sizing.fixed(10)).zIndex(100);
 		parent.child(b);
 		try {

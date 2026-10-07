@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.mixin.client;
 
-import com.diamssword.greenresurgence.gui.components.Panels;
+import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
+import com.diamssword.greenresurgence.gui.components.panels.Panels;
 import io.wispforest.owo.ui.core.Color;
 import io.wispforest.owo.ui.core.Surface;
 import io.wispforest.owo.ui.parsing.UIModelParsingException;
@@ -22,6 +23,10 @@ public interface OwOSurfaceMixin {
 
 		for(var child : children) {
 			surface = switch(child.getNodeName()) {
+				case "hdp_outline" -> surface.and(HoloPanels.outline());
+				case "hdp_panel" -> surface.and(HoloPanels.crtLines(0));
+				case "hdp_solid" -> surface.and(HoloPanels.panel(child.getAttribute("alt").equalsIgnoreCase("true"), child.getAttribute("opaque").equalsIgnoreCase("true")));
+				case "hdp" -> surface.and(HoloPanels.outline()).and(HoloPanels.crtLines(1));
 				case "gpanel" -> surface.and(child.getAttribute("white").equalsIgnoreCase("true") ? Panels.PANEL_WHITE : Panels.PANEL);
 				case "craft" -> {
 					var search = false;

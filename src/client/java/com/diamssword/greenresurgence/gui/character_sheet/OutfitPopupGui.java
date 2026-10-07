@@ -1,4 +1,4 @@
-package com.diamssword.greenresurgence.gui;
+package com.diamssword.greenresurgence.gui.character_sheet;
 
 import com.diamssword.characters.api.CharactersApi;
 import com.diamssword.greenresurgence.GreenResurgence;
@@ -26,7 +26,7 @@ public class OutfitPopupGui extends BaseUIModelScreen<FlowLayout> {
 	protected void build(FlowLayout rootComponent) {
 		rootComponent.childById(RButtonComponent.class, "button").onPress(v -> {
 			var text = rootComponent.childById(TextAreaComponent.class, "text");
-			if (!text.getText().isEmpty()) {
+			if(!text.getText().isEmpty()) {
 				CharactersApi.clothing().clientAskSaveOutfit(text.getText(), index);
 				bt.tooltip(Text.literal(text.getText()));
 				MinecraftClient.getInstance().setScreen(parent);

@@ -24,7 +24,7 @@
 
                             </children>
                             <sizing><horizontal method="fill">100</horizontal><vertical method="fixed">60</vertical></sizing>
-                            <surface><flat>#3F5427</flat></surface>
+                            <surface><hdp/></surface>
                         </flow-layout>
 
                         <scroll direction="vertical" id="scroll1">
@@ -33,7 +33,7 @@
                                 <sizing><horizontal method="fill">100</horizontal></sizing>
                                 <gap>2</gap>
                              </freerowgrid>
-                            <surface><flat>#3F5427</flat></surface>
+                            <surface><hdp></hdp></surface>
                             <sizing><horizontal method="fill">100</horizontal><vertical method="fill">100</vertical></sizing>
                         </scroll>
 
@@ -41,7 +41,7 @@
                     <padding><all>2</all></padding>
                     <gap>2</gap>
                     <surface>
-                        <outline>#3F5427</outline>
+                        <hdp_outline></hdp_outline>
                     </surface>
                     <sizing><vertical method="fill">100</vertical><horizontal method="fill">100</horizontal></sizing>
                 </flow-layout>

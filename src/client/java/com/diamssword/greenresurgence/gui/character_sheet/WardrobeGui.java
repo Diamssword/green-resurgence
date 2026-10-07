@@ -1,4 +1,4 @@
-package com.diamssword.greenresurgence.gui;
+package com.diamssword.greenresurgence.gui.character_sheet;
 
 import com.diamssword.characters.api.CharactersApi;
 import com.diamssword.characters.api.ComponentManager;
@@ -156,7 +156,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 
 				bt.onPress(v1 -> {
 					if(Screen.hasShiftDown()) {
-						createOutfitWindow(v1, i1);
+						createOutfitWindow(bt, i1);
 					} else {
 						CharactersApi.clothing().clientAskEquipOutfit(i1);
 						dt.getAppearence().equipOutfit(i1);

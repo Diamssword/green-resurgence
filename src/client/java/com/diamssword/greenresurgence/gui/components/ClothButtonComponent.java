@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.gui.components;
 
 import com.diamssword.characters.api.appearence.Cloth;
+import com.diamssword.greenresurgence.gui.components.panels.Panels;
 import com.diamssword.greenresurgence.render.cosmetics.ClothingModel;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.mixin.ui.access.ClickableWidgetAccessor;

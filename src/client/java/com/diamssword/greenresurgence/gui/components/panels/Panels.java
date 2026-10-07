@@ -1,4 +1,4 @@
-package com.diamssword.greenresurgence.gui.components;
+package com.diamssword.greenresurgence.gui.components.panels;
 
 import com.diamssword.greenresurgence.DrawUtils;
 import com.mojang.blaze3d.systems.RenderSystem;

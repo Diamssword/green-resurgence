@@ -32,6 +32,7 @@ public class InventoryComponent extends BaseComponent implements IHideableCompon
 	private boolean hidden;
 	private int slotWidth;
 	private boolean noTextCut = false;
+	private InventoryBackground surface;
 
 	public InventoryComponent(String inventoryId, int width, int height, String name) {
 		this.inventoryId = inventoryId;
@@ -112,8 +113,9 @@ public class InventoryComponent extends BaseComponent implements IHideableCompon
 	public void draw(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
 		if(hidden)
 			return;
+		if(surface != null)
+			surface.draw(context, this);
 		RenderSystem.enableDepthTest();
-
 		if(this.blend) {
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
@@ -249,5 +251,25 @@ public class InventoryComponent extends BaseComponent implements IHideableCompon
 	public InventoryComponent setNoTextCut(boolean noTextCut) {
 		this.noTextCut = noTextCut;
 		return this;
+	}
+
+	public InventoryBackground surface() {
+		return surface;
+	}
+
+	public InventoryComponent surface(InventoryBackground surface) {
+		this.surface = surface;
+		return this;
+	}
+
+	public interface InventoryBackground {
+		void draw(OwoUIDrawContext context, InventoryComponent component);
+
+		default InventoryBackground and(InventoryBackground surface) {
+			return (context, component) -> {
+				this.draw(context, component);
+				surface.draw(context, component);
+			};
+		}
 	}
 }

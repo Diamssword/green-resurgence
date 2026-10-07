@@ -4,6 +4,7 @@ import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.gui.components.AdaptiveLabelComponent;
 import com.diamssword.greenresurgence.gui.components.RButtonComponent;
+import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.PosesPackets;
 import com.diamssword.greenresurgence.systems.character.PosesManager;
@@ -125,6 +126,7 @@ public class PlayerInventoryGui extends PlayerBasedGui<CustomPlayerInventory.Van
 				Channels.MAIN.clientHandle().send(new PosesPackets.EmoteRequest(em, false));
 				this.close();
 			});
+			d.renderer(HoloPanels.button());
 			d.sizing(Sizing.fixed(28));
 			d.tooltip(Text.translatable(GreenResurgence.ID + ".emotes." + s.poseID));
 			d.icon("emotes/" + s.poseID);

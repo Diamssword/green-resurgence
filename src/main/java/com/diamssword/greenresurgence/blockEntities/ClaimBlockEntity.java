@@ -57,9 +57,12 @@ public class ClaimBlockEntity extends AreaAwareBlockEntity implements IGuiPacket
 
 	public double getDistanceModifier() {
 		return getArea().map(v -> {
-			var c = v.getMainZone().getCenter();
-			var dt = Math.sqrt(c.getSquaredDistance(pos));
-			return Math.max(1, dt * distanceMultiplier);
+			if(v.getMainZone() != null) {
+				var c = v.getMainZone().getCenter();
+				var dt = Math.sqrt(c.getSquaredDistance(pos));
+				return Math.max(1, dt * distanceMultiplier);
+			}
+			return 1d;
 		}).orElse(1d);
 	}
 

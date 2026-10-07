@@ -2,13 +2,13 @@ package com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel;
 
 import com.diamssword.characters.api.CharactersApi;
 import com.diamssword.characters.api.ComponentManager;
-import com.diamssword.greenresurgence.DrawUtils;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.gui.PlayerStatsGui;
 import com.diamssword.greenresurgence.gui.components.AdaptiveLabelComponent;
 import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
 import com.diamssword.greenresurgence.gui.components.PlayerComponent;
 import com.diamssword.greenresurgence.gui.components.SubScreenLayout;
+import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
 import com.diamssword.greenresurgence.gui.playerContainers.PlayerBasedGui;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.StatsPackets;
@@ -73,7 +73,7 @@ public class CharacterStatsPanel extends SimpleSubPanel {
 		var scaler = new AdaptiveLabelComponent.SyncedScale();
 		for(var k : CharactersApi.stats().getRoles().keySet()) {
 			var c = Containers.horizontalFlow(Sizing.fill(49), Sizing.fixed(20));
-			c.surface(Surface.flat(DrawUtils.whithAlpha(DrawUtils.GRAY_GREEN, 0xFF))).padding(Insets.of(2)).margins(Insets.of(1));
+			c.surface(HoloPanels.panel(true, false)).padding(Insets.of(2)).margins(Insets.of(1));
 			c.verticalAlignment(VerticalAlignment.CENTER);
 			var r = CharactersApi.stats().getRole(k);
 			var btr = ButtonComponent.Renderer.texture(GreenResurgence.asRessource("textures/gui/dice.png"), 0, 0, 20, 40);
@@ -82,7 +82,7 @@ public class CharacterStatsPanel extends SimpleSubPanel {
 				gui.close();
 			});
 			bt.sizing(Sizing.fixed(16)).margins(Insets.right(2));
-			//bt.renderer(btr);
+			bt.renderer(HoloPanels.button());
 			bt.tooltip(Text.translatable("gui.green_resurgence.playerstats.dice"));
 			c.child(bt);
 			c.child(new AdaptiveLabelComponent(scaler, ColorUtils.whiteText(r.get().name)).horizontalTextAlignment(HorizontalAlignment.CENTER).verticalTextAlignment(VerticalAlignment.CENTER).sizing(Sizing.fill(55), Sizing.fill(90)));
