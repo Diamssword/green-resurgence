@@ -15,7 +15,7 @@ import java.util.*;
 
 public class FreeRowGridLayout extends BaseParentComponent {
 
-	protected final int columns;
+	protected int columns;
 	private boolean inverted = false;
 
 	protected final List<Component> children = new ArrayList<>();
@@ -25,6 +25,16 @@ public class FreeRowGridLayout extends BaseParentComponent {
 	public FreeRowGridLayout(Sizing horizontalSizing, Sizing verticalSizing, int columns) {
 		super(horizontalSizing, verticalSizing);
 		this.columns = columns;
+	}
+
+	public int getColumns() {
+		return columns;
+	}
+
+	public void setColumns(int columns) {
+		this.columns = Math.max(1, columns);
+		if(this.hasParent())
+			this.parent().onChildMutated(this);
 	}
 
 	@Override
@@ -87,7 +97,7 @@ public class FreeRowGridLayout extends BaseParentComponent {
 	}
 
 	public int rows() {
-		return (int) Math.ceil(this.children.size() / (float) columns);
+		return Math.max((int) Math.ceil(this.children.size() / (float) columns), 1);
 	}
 
 	@Override
@@ -191,7 +201,8 @@ public class FreeRowGridLayout extends BaseParentComponent {
 	public static FreeRowGridLayout parse(Element element) {
 		UIParsing.expectAttributes(element, "columns");
 		int columns = UIParsing.parseUnsignedInt(element.getAttributeNode("columns"));
+		boolean inverted = element.hasAttribute("inverted") && UIParsing.parseBool(element.getAttributeNode("inverted"));
 
-		return new FreeRowGridLayout(Sizing.content(), Sizing.content(), columns);
+		return new FreeRowGridLayout(Sizing.content(), Sizing.content(), columns).setInverted(inverted);
 	}
 }

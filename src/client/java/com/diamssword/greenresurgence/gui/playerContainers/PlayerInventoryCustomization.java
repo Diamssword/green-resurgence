@@ -8,6 +8,9 @@ import com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel.Player
 import com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel.SubPanel;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Insets;
+import io.wispforest.owo.ui.core.Positioning;
+import io.wispforest.owo.ui.core.Sizing;
+import io.wispforest.owo.ui.core.Surface;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
@@ -57,7 +60,7 @@ public class PlayerInventoryCustomization {
 		}
 
 		public Identifier getTexturePath(InventoryBGSettings settings) {
-			return GreenResurgence.asRessource("textures/gui/player_inventory/" + folderName + "/" + folderName + "_" + settings.width + "x" + settings.height + ".png");
+			return GreenResurgence.asRessource("textures/gui/player_inventory/" + folderName + "/" + folderName + "_" + settings.height + "x" + settings.width + ".png");
 		}
 
 		public InventoryBGSettings getFor(int size) {
@@ -78,8 +81,8 @@ public class PlayerInventoryCustomization {
 			return settings.get(smaller);
 		}
 
-		public InventoryBGGroup add(int i, int i1) {
-			return add(i, i1, Insets.none());
+		public InventoryBGGroup add(int width, int height) {
+			return add(width, height, Insets.none());
 		}
 	}
 
@@ -88,10 +91,10 @@ public class PlayerInventoryCustomization {
 			"player", new InventoryBGGroup("inventory", 140, 100, false), "hotbar", new InventoryBGGroup("belt", 200, 60, false));
 
 	static {
-		backgrounds.get("backpack").add(2, 3).add(2, 4).add(2, 5).add(3, 3).add(3, 4).add(3, 5).add(3, 6).add(4, 4).add(4, 5).add(4, 6);
+		backgrounds.get("backpack").add(3, 2).add(4, 2).add(5, 2).add(3, 3).add(4, 3).add(5, 3).add(6, 3).add(4, 4).add(5, 4).add(6, 4);
 		backgrounds.get("satchelLeft").add(1, 1).add(1, 2).add(1, 3).add(2, 2).add(2, 3);
 		backgrounds.get("satchelRight").add(1, 1).add(1, 2).add(1, 3).add(2, 2).add(2, 3);
-		backgrounds.get("player").add(3, 3).add(3, 4).add(3, 5);
+		backgrounds.get("player").add(3, 3).add(4, 3).add(5, 3);
 		backgrounds.get("hotbar").add(5, 1).add(6, 1).add(7, 1).add(8, 1).add(9, 1);
 	}
 
@@ -102,16 +105,82 @@ public class PlayerInventoryCustomization {
 				var grid = handler.getInventory(key);
 				if(grid != null) {
 					var settings = bg.getFor(grid.getInventory().size());
-					inv.surface(createBgRenderer(bg.getTexturePath(settings), bg.textureWidth, bg.textureHeight, bg.revert));
+					if(inv.hasParent()) {
+						//	inv.margins(Insets.horizontal(10));
+						inv.parent().allowOverflow(true);
+						inv.parent().surface(createBgRenderer(bg.getTexturePath(settings), bg.textureWidth, bg.textureHeight, bg.revert));
+
+					}
+					//inv.surface();
+
 				}
 			}
 		});
+		var sL = rootComponent.childById(InventoryComponent.class, "satchelLeft");
+		var sR = rootComponent.childById(InventoryComponent.class, "satchelRight");
+		if(sL != null && sR != null && sL.hasParent() && sR.hasParent()) {
+			if(sR.width() < sL.width()) {
+				var d1 = rootComponent.childById(FlowLayout.class, "satchelPadderRight");
+				if(d1 != null)
+					d1.sizing(Sizing.fixed(sL.width() - sR.width()), Sizing.fixed(10));
+
+			} else if(sL.width() < sR.width()) {
+				var d1 = rootComponent.childById(FlowLayout.class, "satchelPadderLeft");
+				if(d1 != null)
+					d1.sizing(Sizing.fixed(sR.width() - sL.width()), Sizing.fixed(10));
+			}
+
+		}
+		var mgr = rootComponent.childById(FlowLayout.class, "maingrid");
+		var eqP = rootComponent.childById(FlowLayout.class, "equipmentsPanel");
+		var bpM = rootComponent.childById(FlowLayout.class, "backpackMainLayout");
+		var offP = rootComponent.childById(FlowLayout.class, "offHandPanel");
+		if(eqP != null) {
+			if(bpM != null && offP != null && mgr != null) {
+				var x = (offP.x() - mgr.x()) - (6);
+				if(x + eqP.width() > (bpM.x() - mgr.x()) - 20) {
+					x = (bpM.x() - mgr.x()) - (eqP.width() + 20);
+					offP.positioning(Positioning.absolute((x - (offP.parent().x() - mgr.x())) + (eqP.width() > 30 ? eqP.width() / 4 : 0), 0));
+				}
+				eqP.positioning(Positioning.absolute(x, bpM.height() - eqP.height()));
+			}
+			eqP.allowOverflow(true);
+			eqP.surface(createBgRenderer(GreenResurgence.asRessource("textures/gui/player_inventory/quiver.png"), 100, 300, false));
+		}
+		if(mgr != null) {
+			int YCenter = mgr.height() / 2;
+			var plInv = rootComponent.childById(InventoryComponent.class, "player");
+			if(plInv != null) {
+				var y1 = plInv.y() - mgr.y();
+				YCenter = y1 + (plInv.height() / 2);
+			}
+			var p1 = (rootComponent.height() / 2) - YCenter;
+			if(p1 < 36)
+				p1 = 36;
+			mgr.positioning(Positioning.absolute((rootComponent.width() / 2) - (mgr.width() / 2), p1));
+		}
 
 	}
 
-	public static InventoryComponent.InventoryBackground createBgRenderer(Identifier texture, int width, int height, boolean revert) {
+	public static Surface createBgRenderer(Identifier texture, int width, int height, boolean revert) {
 		return (context, component) -> {
-			context.drawTexture(texture, component.x(), component.y(), 0, 0, component.width(), component.height(), width, height);
+
+			float centerX = component.x() + component.width() / 2f;
+			float centerY = component.y() + component.height() / 2f;
+
+			float x = centerX - width / 2f;
+			float y = centerY - height / 2f;
+
+			int u = revert ? width : 0;
+			int textureWidth = revert ? -width : width;
+
+			context.drawTexture(
+					texture,
+					(int) x, (int) y,
+					u, 0,
+					width, height,
+					textureWidth, height
+			);
 		};
 	}
 }

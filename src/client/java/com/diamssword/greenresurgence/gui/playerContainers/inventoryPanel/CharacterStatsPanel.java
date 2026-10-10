@@ -36,12 +36,12 @@ public class CharacterStatsPanel extends SimpleSubPanel {
 
 	@Override
 	public int minWidth() {
-		return 100;
+		return 80;
 	}
 
 	@Override
 	public int desiredWidth() {
-		return 140;
+		return 1400;
 	}
 
 	@Override

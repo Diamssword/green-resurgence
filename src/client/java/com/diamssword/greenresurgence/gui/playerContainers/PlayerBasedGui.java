@@ -12,7 +12,6 @@ import com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel.SubPan
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.container.FlowLayout;
-import io.wispforest.owo.ui.container.GridLayout;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Positioning;
 import io.wispforest.owo.ui.core.Sizing;
@@ -27,18 +26,13 @@ import org.joml.Vector2i;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHandledScreen<T, FlowLayout> {
 	public final String subscreen;
 	public final boolean showLeftMenu;
-	private FreeRowGridLayout gridBonus;
-	private FreeRowGridLayout gridMalus;
 	private Vector2i leftPaneSpace;
-	private final Map<StatusEffect, EffectComponent> activeBonus = new HashMap<>();
-	private final Map<StatusEffect, EffectComponent> activeMalus = new HashMap<>();
 	private final Map<SubPanel, RButtonComponent> buttonsMap = new HashMap<>();
-
+	protected SubScreenLayout rightPane;
 	protected boolean openSubPanelOnLoad = false;
 	private boolean needResize = false;
 	protected int subScreenSize = 0;
@@ -68,18 +62,16 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 
 	@Override
 	protected void build(FlowLayout rootComponent) {
-		var sub = rootComponent.childById(SubScreenLayout.class, "subcontainer");
+		rightPane = rootComponent.childById(SubScreenLayout.class, "subcontainer");
 		var leftMenu = rootComponent.childById(FlowLayout.class, "leftMenu");
-		if(sub != null) {
-			sub.setLayout(subscreen);
-			rootComponent.onChildMutated(sub);
+		if(rightPane != null) {
+			rightPane.setLayout(subscreen);
+			rootComponent.onChildMutated(rightPane);
 		}
 		if(!showLeftMenu && leftMenu != null) {
 			leftMenu.clearChildren();
 		}
-		gridBonus = rootComponent.childById(FreeRowGridLayout.class, "bonusLayout");
-		gridMalus = rootComponent.childById(FreeRowGridLayout.class, "malusLayout");
-		gridBonus.setInverted(true);
+
 		if(showLeftMenu) {
 			var subBtPanel = rootComponent.childById(FlowLayout.class, "subPanelButtons");
 			var subPan = rootComponent.childById(FlowLayout.class, "layoutSubPanels");
@@ -113,30 +105,33 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 	}
 
 	protected void updateLayout(FlowLayout rootComponent) {
+		PlayerInventoryCustomization.editInventory(this.uiAdapter.rootComponent, handler);
 		var leftM = rootComponent.childById(FlowLayout.class, "leftMenu");
 		var subPan = rootComponent.childById(FlowLayout.class, "layoutSubPanels");
-		var inventory = rootComponent.childById(GridLayout.class, "maingrid");
-		var subScr = rootComponent.childById(SubScreenLayout.class, "subcontainer");
-		if(showLeftMenu) {
-			if(inventory != null) {
-				if(subScr != null) {
-					var s = rootComponent.width() - (inventory.x() + inventory.width());
-					if(subScreenSize > 0) {
-						int m = (int) (rootComponent.width() * (subScreenSize * 0.01f));
-						if(inventory.positioning().get().type == Positioning.Type.ABSOLUTE || m > s) {
-							s = m;
-							inventory.positioning(Positioning.absolute(rootComponent.width() - s - inventory.width(), (rootComponent.height() / 2) - (inventory.height() / 2)));
-						}
+		var inventory = rootComponent.childById(FlowLayout.class, "maingrid");
+		var eqP = rootComponent.childById(FlowLayout.class, "equipmentsPanel");
+		//TODO leftPanel should become another accessible subscreen container, create a custom subscreen for the subpanes, enable it only for the player inventory, and leave this space usable for something else if needed for other GUI
+		if(inventory != null) {
+			if(rightPane != null) {
+				var s = rootComponent.width() - (inventory.x() + inventory.width());
+				if(subScreenSize > 0) {
+					int m = (int) (rootComponent.width() * (subScreenSize * 0.01f));
+					if(inventory.positioning().get().type == Positioning.Type.ABSOLUTE || m > s) {
+						s = m;
+						var y = (rootComponent.height() / 2) - (inventory.height() / 2);
+						var old = inventory.positioning().get();
+						if(old.type == Positioning.Type.ABSOLUTE)
+							y = old.y;
+						inventory.positioning(Positioning.absolute(rootComponent.width() - s - inventory.width(), y));
 					}
-					subScr.horizontalSizing(Sizing.fixed(s));
 				}
-				if(leftM != null)
-					leftPaneSpace = new Vector2i(inventory.x() - 25, leftM.height());
-				if(subPan != null)
-					recreatePanels(subPan);
+				rightPane.horizontalSizing(Sizing.fixed(s));
 			}
+			if(leftM != null && eqP != null)
+				leftPaneSpace = new Vector2i(eqP.x() - (eqP.width() > 30 ? 30 : 40), leftM.height());
+			if(subPan != null)
+				recreatePanels(subPan);
 		}
-		drawStatusEffect();
 	}
 
 	public void closePanel(boolean bottom, FlowLayout parent) {
@@ -222,20 +217,12 @@ public class PlayerBasedGui<T extends MultiInvScreenHandler> extends MultiInvHan
 		});
 	}
 
-	private void drawStatusEffect() {
-		if(gridBonus != null && gridMalus != null) {
-			Collection<StatusEffectInstance> collection = this.client.player.getStatusEffects();
-			drawEffects(collection.stream().filter(v -> v.getEffectType().isBeneficial()).collect(Collectors.toList()), gridBonus, activeBonus);
-			drawEffects(collection.stream().filter(v -> !v.getEffectType().isBeneficial()).collect(Collectors.toList()), gridMalus, activeMalus);
-		}
-	}
 
 	@Override
 	protected void handledScreenTick() {
 
 		super.handledScreenTick();
 		//resizeLeftPanel(uiAdapter.rootComponent);
-		drawStatusEffect();
 		if(subPanelTop != null)
 			subPanelTop.panelTick();
 		if(subPanelBot != null)

@@ -3,6 +3,8 @@ package com.diamssword.greenresurgence.gui.playerContainers;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.gui.components.AdaptiveLabelComponent;
+import com.diamssword.greenresurgence.gui.components.EffectComponent;
+import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
 import com.diamssword.greenresurgence.gui.components.RButtonComponent;
 import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
 import com.diamssword.greenresurgence.network.Channels;
@@ -16,19 +18,27 @@ import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.core.VerticalAlignment;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
 import java.text.DecimalFormat;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class PlayerInventoryGui extends PlayerBasedGui<CustomPlayerInventory.VanillaPlayerInvMokup> {
 
 	private FlowLayout statsPanel;
 	private Map<PosesManager.EmoteDef, RButtonComponent> emotesBts = new HashMap<>();
 	private boolean isShift = false;
+	private FreeRowGridLayout gridBonus;
+	private FreeRowGridLayout gridMalus;
+	private final Map<StatusEffect, EffectComponent> activeBonus = new HashMap<>();
+	private final Map<StatusEffect, EffectComponent> activeMalus = new HashMap<>();
 
 	public PlayerInventoryGui(CustomPlayerInventory.VanillaPlayerInvMokup handler, PlayerInventory inv, Text title) {
 		super(handler, "survival/player_stats", true);
@@ -38,6 +48,8 @@ public class PlayerInventoryGui extends PlayerBasedGui<CustomPlayerInventory.Van
 	@Override
 	protected void build(FlowLayout rootComponent) {
 		super.build(rootComponent);
+		gridBonus = rootComponent.childById(FreeRowGridLayout.class, "bonusLayout");
+		gridMalus = rootComponent.childById(FreeRowGridLayout.class, "malusLayout");
 		var offHandFlow = rootComponent.childById(FlowLayout.class, "flowOffhand");
 		var extraSLay = rootComponent.childById(FlowLayout.class, "extraSlotsLayout");
 		if(extraSLay != null)
@@ -56,6 +68,41 @@ public class PlayerInventoryGui extends PlayerBasedGui<CustomPlayerInventory.Van
 
 	private AdaptiveLabelComponent.SyncedScale scaler = new AdaptiveLabelComponent.SyncedScale();
 	private AdaptiveLabelComponent.SyncedScale scaler1 = new AdaptiveLabelComponent.SyncedScale();
+
+	private void drawStatusEffect() {
+		if(gridBonus != null && gridMalus != null) {
+			Collection<StatusEffectInstance> collection = this.client.player.getStatusEffects();
+			drawEffects(collection.stream().filter(v -> v.getEffectType().isBeneficial()).collect(Collectors.toList()), gridBonus, activeBonus);
+			drawEffects(collection.stream().filter(v -> !v.getEffectType().isBeneficial()).collect(Collectors.toList()), gridMalus, activeMalus);
+		}
+	}
+
+	private void drawEffects(Collection<StatusEffectInstance> effects, FreeRowGridLayout grid, Map<StatusEffect, EffectComponent> tracker) {
+		var d1 = effects.stream().map(StatusEffectInstance::getEffectType).toList();
+		var it = tracker.entrySet().iterator();
+		while(it.hasNext()) {
+			var a = it.next();
+			if(!d1.contains(a.getKey())) {
+				a.getValue().remove();
+				it.remove();
+			}
+		}
+		for(var eff : effects) {
+			if(!tracker.containsKey(eff.getEffectType())) {
+				var d = new EffectComponent(eff);
+				d.sizing(Sizing.fixed(22));
+				d.margins(Insets.of(1));
+				tracker.put(eff.getEffectType(), d);
+				grid.child(d);
+			}
+
+			//	grid.removeChild();
+		}
+		if(grid.children().isEmpty())
+			grid.verticalSizing(Sizing.fixed(24));
+		else
+			grid.verticalSizing(Sizing.content());
+	}
 
 	private void fillStats(FlowLayout parent) {
 		scaler.clear();
@@ -86,8 +133,6 @@ public class PlayerInventoryGui extends PlayerBasedGui<CustomPlayerInventory.Van
 		}
 
 		var pdata = player.getComponent(com.diamssword.greenresurgence.systems.Components.PLAYER_DATA);
-
-
 		statLabel(c1, c2, "health", pdata.healthManager.getHealthAmount() * 5f, pdata.healthManager.getMaxHealthAmount() * 5f);
 		statLabel(c1, c2, "shield", pdata.healthManager.getShieldAmount() * 5f, pdata.healthManager.getMaxShieldAmount() * 5f);
 		statLabel(c1, c2, "hunger", "full");
@@ -157,8 +202,25 @@ public class PlayerInventoryGui extends PlayerBasedGui<CustomPlayerInventory.Van
 	}
 
 	@Override
+	protected void updateLayout(FlowLayout rootComponent) {
+		super.updateLayout(rootComponent);
+		if(rightPane != null) {
+			var w = rightPane.horizontalSizing().get().value;
+			var cols = Math.floor(w / 24f);
+			System.out.println(cols);
+			if(gridMalus != null)
+				gridMalus.setColumns((int) cols);
+			if(gridBonus != null)
+				gridBonus.setColumns((int) cols);
+			drawStatusEffect();
+		}
+
+	}
+
+	@Override
 	protected void handledScreenTick() {
 		super.handledScreenTick();
+		drawStatusEffect();
 		if(statsPanel != null && client.world.getTime() % 20 == 0)
 			fillStats(statsPanel);
 		if(hasShiftDown() != isShift) {

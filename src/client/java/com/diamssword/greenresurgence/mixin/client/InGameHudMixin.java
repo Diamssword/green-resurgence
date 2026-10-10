@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.mixin.client;
 
+import com.diamssword.greenresurgence.gui.playerContainers.PlayerInventoryGui;
 import com.diamssword.greenresurgence.render.environment.EnvironementAreas;
 import com.diamssword.greenresurgence.render.environment.vignettes.VignetteItemsRegistry;
 import net.minecraft.client.MinecraftClient;
@@ -22,6 +23,13 @@ public class InGameHudMixin {
 		EnvironementAreas.getCurrentFogModifier().ifPresent(f -> f.vignetteRender(context, MinecraftClient.getInstance().cameraEntity));
 		if(VignetteItemsRegistry.equipped != null)
 			VignetteItemsRegistry.equipped.render(context, MinecraftClient.getInstance().cameraEntity);
+	}
+
+	@Inject(method = "renderStatusEffectOverlay", at = @At("HEAD"), cancellable = true)
+	private void cancelEffects(DrawContext context, CallbackInfo ci) {
+		if(MinecraftClient.getInstance().currentScreen instanceof PlayerInventoryGui)
+			ci.cancel();
+
 	}
 
 	@Inject(method = "renderExperienceBar", at = @At("HEAD"), cancellable = true)

@@ -5,6 +5,20 @@
     <children>
         <flow-layout direction="vertical">
             <children>
+             <freerowgrid columns="5" id="bonusLayout">
+                    <children/>
+                </freerowgrid>
+                 <freerowgrid columns="5" id="malusLayout">
+                    <children/>
+                </freerowgrid>
+            </children>
+            <horizontal-alignment>right</horizontal-alignment>
+            <positioning type="relative">100,4</positioning>
+        </flow-layout>
+
+        <flow-layout direction="vertical">
+            <children>
+
                 <flow-layout direction="vertical">
                     <children>
                          <flow-layout direction="horizontal" id="statsPanel">
@@ -46,7 +60,7 @@
         </flow-layout>
 
     </children>
-
+<padding><left>20</left></padding>
     <horizontal-alignment>left</horizontal-alignment>
     <vertical-alignment>center</vertical-alignment>
 </flow-layout>
