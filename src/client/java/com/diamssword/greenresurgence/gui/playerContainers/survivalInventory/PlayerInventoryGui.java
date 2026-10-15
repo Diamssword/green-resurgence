@@ -1,22 +1,15 @@
-package com.diamssword.greenresurgence.gui.playerContainers;
+package com.diamssword.greenresurgence.gui.playerContainers.survivalInventory;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.gui.components.AdaptiveLabelComponent;
 import com.diamssword.greenresurgence.gui.components.EffectComponent;
 import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
-import com.diamssword.greenresurgence.gui.components.RButtonComponent;
-import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
-import com.diamssword.greenresurgence.network.Channels;
-import com.diamssword.greenresurgence.network.PosesPackets;
-import com.diamssword.greenresurgence.systems.character.PosesManager;
+import com.diamssword.greenresurgence.gui.playerContainers.PlayerBasedGui;
 import com.diamssword.greenresurgence.utils.ColorUtils;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
-import io.wispforest.owo.ui.core.HorizontalAlignment;
-import io.wispforest.owo.ui.core.Insets;
-import io.wispforest.owo.ui.core.Sizing;
-import io.wispforest.owo.ui.core.VerticalAlignment;
+import io.wispforest.owo.ui.core.*;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -27,18 +20,15 @@ import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class PlayerInventoryGui extends PlayerBasedGui<CustomPlayerInventory.VanillaPlayerInvMokup> {
 
-	private FlowLayout statsPanel;
-	private Map<PosesManager.EmoteDef, RButtonComponent> emotesBts = new HashMap<>();
-	private boolean isShift = false;
 	private FreeRowGridLayout gridBonus;
 	private FreeRowGridLayout gridMalus;
 	private final Map<StatusEffect, EffectComponent> activeBonus = new HashMap<>();
 	private final Map<StatusEffect, EffectComponent> activeMalus = new HashMap<>();
+	private static DynamicPanels panels = new DynamicPanels();
 
 	public PlayerInventoryGui(CustomPlayerInventory.VanillaPlayerInvMokup handler, PlayerInventory inv, Text title) {
 		super(handler, "survival/player_stats", true);
@@ -48,8 +38,11 @@ public class PlayerInventoryGui extends PlayerBasedGui<CustomPlayerInventory.Van
 	@Override
 	protected void build(FlowLayout rootComponent) {
 		super.build(rootComponent);
+		panels.init(rootComponent, this);
 		gridBonus = rootComponent.childById(FreeRowGridLayout.class, "bonusLayout");
 		gridMalus = rootComponent.childById(FreeRowGridLayout.class, "malusLayout");
+		rootComponent.child(panels.getControlPanel().positioning(Positioning.relative(0, 100)));
+
 		var offHandFlow = rootComponent.childById(FlowLayout.class, "flowOffhand");
 		var extraSLay = rootComponent.childById(FlowLayout.class, "extraSlotsLayout");
 		if(extraSLay != null)
@@ -58,12 +51,6 @@ public class PlayerInventoryGui extends PlayerBasedGui<CustomPlayerInventory.Van
 		if(offHandFlow != null) {
 			offHandFlow.horizontalSizing(Sizing.fixed(48));
 		}
-		statsPanel = rootComponent.childById(FlowLayout.class, "statsPanel");
-		if(statsPanel != null)
-			fillStats(statsPanel);
-		var emotes = rootComponent.childById(FlowLayout.class, "emoteLayout");
-		if(emotes != null)
-			setupEmotePanel(emotes);
 	}
 
 	private AdaptiveLabelComponent.SyncedScale scaler = new AdaptiveLabelComponent.SyncedScale();
@@ -159,47 +146,6 @@ public class PlayerInventoryGui extends PlayerBasedGui<CustomPlayerInventory.Van
 		panel2.child(new AdaptiveLabelComponent(scaler1, ColorUtils.whiteTextTranslated(GreenResurgence.ID + ".gui.survival_inventory." + text + "." + value)).verticalTextAlignment(VerticalAlignment.CENTER).lineHeight(8).sizing(Sizing.fill(100), Sizing.fixed(8)).margins(Insets.right(1)));
 	}
 
-	private void setupEmotePanel(FlowLayout emotes) {
-		Function<PosesManager.EmoteDef, RButtonComponent> btGen = s -> {
-			var d = new RButtonComponent(Text.literal(""), (z) -> {
-				var em = s.poseID;
-				if(hasShiftDown()) {
-					var al = s.getAlt();
-					if(al.isPresent())
-						em = al.get().poseID;
-				}
-				Channels.MAIN.clientHandle().send(new PosesPackets.EmoteRequest(em, false));
-				this.close();
-			});
-			d.renderer(HoloPanels.button());
-			d.sizing(Sizing.fixed(28));
-			d.tooltip(Text.translatable(GreenResurgence.ID + ".emotes." + s.poseID));
-			d.icon("emotes/" + s.poseID);
-			return d;
-		};
-		for(int i = 0; i < PosesManager.emotes.size(); i += 3) {
-			var grid = Containers.grid(Sizing.fill(100), Sizing.content(), 1, 3);
-			grid.horizontalAlignment(HorizontalAlignment.CENTER);
-			grid.padding(Insets.top(2));
-			var emote = PosesManager.emotes.get(i);
-			var bt = btGen.apply(emote);
-			emotesBts.put(emote, bt);
-			grid.child(bt, 0, 0);
-			if(i + 1 < PosesManager.emotes.size()) {
-				var emote1 = PosesManager.emotes.get(i + 1);
-				var bt1 = btGen.apply(emote1);
-				emotesBts.put(emote1, bt1);
-				grid.child(bt1, 0, 1);
-			}
-			if(i + 2 < PosesManager.emotes.size()) {
-				var emote1 = PosesManager.emotes.get(i + 2);
-				var bt1 = btGen.apply(emote1);
-				emotesBts.put(emote1, bt1);
-				grid.child(bt1, 0, 2);
-			}
-			emotes.child(grid);
-		}
-	}
 
 	@Override
 	protected void updateLayout(FlowLayout rootComponent) {
@@ -207,7 +153,6 @@ public class PlayerInventoryGui extends PlayerBasedGui<CustomPlayerInventory.Van
 		if(rightPane != null) {
 			var w = rightPane.horizontalSizing().get().value;
 			var cols = Math.floor(w / 24f);
-			System.out.println(cols);
 			if(gridMalus != null)
 				gridMalus.setColumns((int) cols);
 			if(gridBonus != null)
@@ -221,21 +166,8 @@ public class PlayerInventoryGui extends PlayerBasedGui<CustomPlayerInventory.Van
 	protected void handledScreenTick() {
 		super.handledScreenTick();
 		drawStatusEffect();
-		if(statsPanel != null && client.world.getTime() % 20 == 0)
-			fillStats(statsPanel);
-		if(hasShiftDown() != isShift) {
-			emotesBts.forEach((k, v) -> {
-				var em = k;
-				if(hasShiftDown()) {
-					var em1 = k.getAlt();
-					if(em1.isPresent())
-						em = em1.get();
-				}
-				v.tooltip(Text.translatable(GreenResurgence.ID + ".emotes." + em.poseID));
-				v.icon("emotes/" + em.poseID);
-			});
-			isShift = hasShiftDown();
-		}
+		panels.tick();
+
 	}
 
 

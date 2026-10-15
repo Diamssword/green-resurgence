@@ -19,6 +19,7 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.item.Item;
 
 public class GreenResurgenceClient implements ClientModInitializer {
+	public static final com.diamssword.greenresurgence.ClientProfile HOLO_CONFIG = com.diamssword.greenresurgence.ClientProfile.createAndLoad();
 	public static Item[] MARKER_ITEMS = {
 			MBlocks.SHADOW_BLOCk.asItem(),
 			MBlocks.ITEM_BLOCK.asItem(),

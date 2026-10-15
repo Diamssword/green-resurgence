@@ -4,40 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2280433-581a-4b82-ab53-687b6ee5ff53" name="Changes" comment="BodyEditorGui and reworking player inventory aspect">
+    <list default="true" id="d2280433-581a-4b82-ab53-687b6ee5ff53" name="Changes" comment="Custom texture for player inventory">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/ClientEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/ClientEvents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/GreenResurgenceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/GreenResurgenceClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/ScreenHandlers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/ScreenHandlers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/components/ComponentsRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/components/ComponentsRegister.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/components/FreeRowGridLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/components/FreeRowGridLayout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/components/SubScreenLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/components/SubScreenLayout.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/PlayerBasedGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/PlayerBasedGui.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/PlayerInventoryCustomization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/PlayerInventoryCustomization.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/PlayerInventoryGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/PlayerInventoryGui.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/inventoryPanel/CharacterStatsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/inventoryPanel/CharacterStatsPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/PlayerInventoryCustomization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/survivalInventory/PlayerInventoryBackgrounds.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/PlayerInventoryGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/survivalInventory/PlayerInventoryGui.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/inventoryPanel/CharacterStatsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/survivalInventory/inventoryPanel/CharacterStatsPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/inventoryPanel/PlayerCraftPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/survivalInventory/inventoryPanel/PlayerCraftPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/inventoryPanel/SimpleSubPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/survivalInventory/inventoryPanel/SimpleSubPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/inventoryPanel/SubPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/gui/playerContainers/survivalInventory/inventoryPanel/SubPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/mixin/client/InGameHudMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/java/com/diamssword/greenresurgence/mixin/client/InGameHudMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/diamssword/greenresurgence/MItems.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival/inventory_left_pane.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival/player_inventory.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival/player_inventory.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival/player_stats.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival/player_stats.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/backpack/backpack_2x3.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/backpack/backpack_2x3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/backpack/backpack_2x4.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/backpack/backpack_2x4.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/backpack/backpack_2x5.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/backpack/backpack_2x5.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/backpack/backpack_3x3.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/backpack/backpack_3x3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/backpack/backpack_3x4.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/backpack/backpack_3x4.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/backpack/backpack_3x5.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/backpack/backpack_3x5.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/backpack/backpack_3x6.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/backpack/backpack_3x6.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/belt/belt_5x1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/belt/belt_6x1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/belt/belt_7x1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/belt/belt_8x1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/belt/belt_9x1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/quiver.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/quiver.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/sacoche_side_right/sacoche_side_r1x1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/sacoche_side_right/sacoche_side_r_1x2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/sacoche_side_right/sacoche_side_r_1x3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/sacoche_side_right/sacoche_side_r_2x2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/sacoche_side_right/sacoche_side_r_2x3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/satchel/satchel_1x1.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/satchel/satchel_1x1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/satchel/satchel_1x2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/satchel/satchel_1x3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/satchel/satchel_2x2.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/satchel/satchel_2x2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/gui/player_inventory/satchel/satchel_2x3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival/subpanel/craft.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival/subpanel/craft.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival/subpanel/stats.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival/subpanel/stats.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,56 +161,56 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.(1)Minecraft Client .executor": "Debug",
-    "Application.Data Generation.executor": "Debug",
-    "Application.Minecraft Client (1).executor": "Debug",
-    "Application.Minecraft Client.executor": "Debug",
-    "Application.Minecraft Server.executor": "Debug",
-    "Gradle.Download Sources.executor": "Run",
-    "Gradle.Load Gradle Dependencies.executor": "Run",
-    "Gradle.green-resurgence [:net.fabricmc.devlaunchinjector.Main.main()].executor": "Debug",
-    "Gradle.green-resurgence [build].executor": "Run",
-    "Gradle.green-resurgence [clean].executor": "Run",
-    "Gradle.green-resurgence [configureLaunch].executor": "Run",
-    "Gradle.green-resurgence [downloadAssets].executor": "Run",
-    "Gradle.green-resurgence [genCommonSources].executor": "Run",
-    "Gradle.green-resurgence [genSourcesWithCfr].executor": "Run",
-    "Gradle.green-resurgence [genSources].executor": "Run",
-    "Gradle.green-resurgence [migrateMappings] (1).executor": "Run",
-    "Gradle.green-resurgence [migrateMappings].executor": "Run",
-    "Gradle.green-resurgence [runClient].executor": "Run",
-    "OverrideImplement.combined": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/diamssword/Dev/Git/green-resurgence/src/main/resources/assets/green_resurgence/owo_ui/survival",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.7468355",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.(1)Minecraft Client .executor&quot;: &quot;Debug&quot;,
+    &quot;Application.Data Generation.executor&quot;: &quot;Debug&quot;,
+    &quot;Application.Minecraft Client (1).executor&quot;: &quot;Debug&quot;,
+    &quot;Application.Minecraft Client.executor&quot;: &quot;Debug&quot;,
+    &quot;Application.Minecraft Server.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Load Gradle Dependencies.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [:net.fabricmc.devlaunchinjector.Main.main()].executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.green-resurgence [build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [configureLaunch].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [downloadAssets].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [genCommonSources].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [genSourcesWithCfr].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [genSources].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [migrateMappings] (1).executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [migrateMappings].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.green-resurgence [runClient].executor&quot;: &quot;Run&quot;,
+    &quot;OverrideImplement.combined&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/diamssword/Dev/Git/green-resurgence/src/main/resources/assets/green_resurgence/owo_ui/survival/subpanel&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.7468355&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.diamssword.greenresurgence.gui.faction" />
       <recent name="com.diamssword.greenresurgence" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui" />
+      <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival/subpanel" />
       <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/survival" />
+      <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui" />
       <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/owo_ui/faction" />
       <recent name="$PROJECT_DIR$/src/main/resources/data/green_resurgence/tags/blocks" />
-      <recent name="$PROJECT_DIR$/src/main/devResources/models/blockstates" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/assets/green_resurgence/textures/entity" />
@@ -242,11 +229,11 @@
       <recent name="com.diamssword.greenresurgence.systems.base" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.inventoryPanel" />
+      <recent name="com.diamssword.greenresurgence" />
       <recent name="com.diamssword.greenresurgence.gui.character_sheet" />
       <recent name="com.diamssword.greenresurgence.gui" />
       <recent name="com.diamssword.greenresurgence.render.blockEntityRenderer" />
-      <recent name="com.diamssword.greenresurgence.gui.playerContainers" />
-      <recent name="com.diamssword.greenresurgence.items" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -471,15 +458,8 @@
     <MESSAGE value="Small enhancement of the DeployableLadder" />
     <MESSAGE value="Yet another iteration on the small font text" />
     <MESSAGE value="BodyEditorGui and reworking player inventory aspect" />
-    <option name="LAST_COMMIT_MESSAGE" value="BodyEditorGui and reworking player inventory aspect" />
-  </component>
-  <component name="XDebuggerManager">
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="&#10;&#9;&#9;&#9;return ActionResult.CONSUME;" />
-        <watch expression="n id=&quot;subpanels&quot; source=&quot;survival/empty&quot;&gt;&#10;" />
-      </configuration>
-    </watches-manager>
+    <MESSAGE value="Custom texture for player inventory" />
+    <option name="LAST_COMMIT_MESSAGE" value="Custom texture for player inventory" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

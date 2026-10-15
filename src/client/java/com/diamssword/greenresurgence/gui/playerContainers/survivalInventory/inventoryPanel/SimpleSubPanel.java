@@ -1,4 +1,4 @@
-package com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel;
+package com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.inventoryPanel;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import net.minecraft.text.MutableText;

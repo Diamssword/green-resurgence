@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence;
 import com.diamssword.greenresurgence.containers.Containers;
 import com.diamssword.greenresurgence.gui.*;
 import com.diamssword.greenresurgence.gui.playerContainers.*;
+import com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.PlayerInventoryGui;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 
 public class ScreenHandlers {

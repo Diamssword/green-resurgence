@@ -33,8 +33,8 @@ public class FreeRowGridLayout extends BaseParentComponent {
 
 	public void setColumns(int columns) {
 		this.columns = Math.max(1, columns);
-		if(this.hasParent())
-			this.parent().onChildMutated(this);
+		this.updateLayout();
+
 	}
 
 	@Override

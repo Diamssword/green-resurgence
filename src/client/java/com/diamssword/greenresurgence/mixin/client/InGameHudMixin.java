@@ -1,6 +1,6 @@
 package com.diamssword.greenresurgence.mixin.client;
 
-import com.diamssword.greenresurgence.gui.playerContainers.PlayerInventoryGui;
+import com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.PlayerInventoryGui;
 import com.diamssword.greenresurgence.render.environment.EnvironementAreas;
 import com.diamssword.greenresurgence.render.environment.vignettes.VignetteItemsRegistry;
 import net.minecraft.client.MinecraftClient;

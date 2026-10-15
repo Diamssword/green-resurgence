@@ -1,0 +1,19 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+<components>
+ <flow-layout direction="vertical">
+                    <children>
+                        <scroll direction="vertical">
+                            <freerowgrid columns="5" id="emoteGrid">
+                                <sizing><horizontal method="fill">100</horizontal></sizing>
+                                <horizontal-alignment>center</horizontal-alignment>
+                                <verical-alignment>center</verical-alignment>
+                            </freerowgrid>
+                            <margins><all>2</all></margins>
+                            <sizing><vertical method="fill">100</vertical><horizontal method="fill">100</horizontal></sizing>
+                        </scroll>
+                    </children>
+                      <surface><hdp/></surface>
+ </flow-layout>
+</components>
+</owo-ui>

@@ -3,29 +3,7 @@
     <components>
         <flow-layout direction="horizontal">
             <children>
-                <flow-layout direction="horizontal" id="leftMenu">
-                    <children>
-                        <flow-layout direction="vertical" id="subPanelButtons">
-                            <children>
-                            </children>
-                            <sizing>
-                                <horizontal method="fixed">20</horizontal>
-                            </sizing>
-                        </flow-layout>
-                        <flow-layout direction="vertical" id="layoutSubPanels">
-                            <children>
-                                <subscreen id="subpanels" source="survival/empty">
-                                    <sizing><horizontal method="fixed">0</horizontal></sizing>
-                                </subscreen>
-                            </children>
 
-                        </flow-layout>
-                    </children>
-                    <sizing>
-                        <vertical method="fill">80</vertical>
-                    </sizing>
-                    <positioning type="relative">0,50</positioning>
-                </flow-layout>
 
                 <flow-layout direction="vertical" id="maingrid">
 

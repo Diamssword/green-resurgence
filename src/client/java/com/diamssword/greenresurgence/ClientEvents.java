@@ -5,7 +5,7 @@ import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.entities.NPCEntity;
 import com.diamssword.greenresurgence.event.AttackBlockCallback;
 import com.diamssword.greenresurgence.events.PlaceBlockCallback;
-import com.diamssword.greenresurgence.gui.playerContainers.PlayerInventoryGui;
+import com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.PlayerInventoryGui;
 import com.diamssword.greenresurgence.network.AdventureInteract;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.CurrentZonePacket;

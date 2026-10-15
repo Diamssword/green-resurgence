@@ -42,7 +42,7 @@ public class SubScreenLayout extends FlowLayout {
 
 	public void setLayout(BaseUIModelScreen.DataSource source) {
 		var providedModel = source.get();
-		if (providedModel == null) {
+		if(providedModel == null) {
 			source.reportError();
 		}
 		this.model = providedModel;
@@ -55,13 +55,21 @@ public class SubScreenLayout extends FlowLayout {
 			this.child(this.uiAdapter.rootComponent);
 			this.uiAdapter.rootComponent.mount(this, this.x, this.y);
 			this.updateLayout();
-		} catch (Exception error) {
+		} catch(Exception error) {
 			Owo.LOGGER.warn("Could not initialize sub screen", error);
 			UIErrorToast.report(error);
 		}
 	}
 
+	@Override
+	public FlowLayout clearChildren() {
+		uiAdapter = null;
+		return super.clearChildren();
+	}
+
 	public FlowLayout getRoot() {
+		if(uiAdapter == null)
+			return null;
 		return uiAdapter.rootComponent;
 	}
 

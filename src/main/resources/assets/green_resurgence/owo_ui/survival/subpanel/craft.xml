@@ -7,32 +7,36 @@
             <children>
                 <scroll direction="vertical" id="craftlist_body">
                     <flow-layout id="recipeMenu" direction="vertical">
-
                         <children>
                         </children>
                         <padding><all>5</all><top>9</top></padding>
                         <horizontal-alignment>center</horizontal-alignment>
                     </flow-layout>
-
+                    <surface>
+                        <hdp></hdp>
+                    </surface>
                     <sizing><vertical method="fixed">70</vertical><horizontal method="fill">100</horizontal></sizing>
                 </scroll>
-                <separator>
-                    <sizing><horizontal method="fill">100</horizontal><vertical method="fixed">1</vertical></sizing>
-                </separator>
+
                 <scroll direction="horizontal">
                     <flow-layout id="recipeProgress" direction="horizontal">
                         <children>
                         </children>
 
-                        <horizontal-alignment>center</horizontal-alignment>
+                        <vertical-alignment>center</vertical-alignment>
+                        <sizing><vertical method="fill">100</vertical></sizing>
+                        <margins><horizontal>2</horizontal></margins>
                     </flow-layout>
-
-                    <margins><vertical>2</vertical></margins>
+                    <surface>
+                        <hdp_outline></hdp_outline>
+                        <hdp_solid></hdp_solid>
+                    </surface>
+                    <margins><all>2</all></margins>
                     <sizing><vertical method="fixed">20</vertical><horizontal method="fill">100</horizontal></sizing>
                 </scroll>
             </children>
             <surface>
-                <gpanel/>
+                <hdp_outline></hdp_outline>
             </surface>
              <sizing><vertical method="fill">100</vertical><horizontal method="fill">100</horizontal></sizing>
         </flow-layout>

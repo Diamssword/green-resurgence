@@ -23,7 +23,7 @@
                                 </flow-layout>
 
                             </children>
-                            <sizing><horizontal method="fill">100</horizontal><vertical method="fixed">60</vertical></sizing>
+                            <sizing><horizontal method="fill">100</horizontal><vertical method="fixed">64</vertical></sizing>
                             <surface><hdp/></surface>
                         </flow-layout>
 

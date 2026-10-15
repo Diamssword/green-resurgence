@@ -33,6 +33,7 @@ public class ComponentsRegister {
 		UIParsing.registerFactory("search-box", (e) -> new SearchBoxComponent(Sizing.content()));
 		UIParsing.registerFactory("freerowgrid", FreeRowGridLayout::parse);
 		UIParsing.registerFactory("bentity", BetterEntityComponent::parse);
+		UIParsing.registerFactory("alabel", element -> new AdaptiveLabelComponent(Text.empty()));
 
 
 	}

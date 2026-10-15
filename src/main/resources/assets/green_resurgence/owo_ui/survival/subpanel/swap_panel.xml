@@ -1,0 +1,34 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+<components>
+<flow-layout direction="vertical">
+    <children>
+        <scroll direction="vertical" id="scroll1">
+            <flow-layout direction="vertical" id="mainFlow">
+                <children>
+                    <alabel>
+                        <text>Pick the panel to display</text>
+                         <sizing><horizontal method="fill">100</horizontal></sizing>
+                    </alabel>
+                         <freerowgrid columns="2" id="listPanel">
+                             <children/>
+                            <sizing><horizontal method="fill">100</horizontal></sizing>
+
+                         </freerowgrid>
+
+                </children>
+                <horizontal-alignment>center</horizontal-alignment>
+                <sizing><horizontal method="fill">100</horizontal><vertical method="fill">100</vertical></sizing>
+            </flow-layout>
+            <padding><all>2</all></padding>
+            <surface>
+                <hdp_outline></hdp_outline>
+                <hdp></hdp>
+            </surface>
+            <sizing><vertical method="fill">100</vertical><horizontal method="fill">100</horizontal></sizing>
+        </scroll>
+    </children>
+    <sizing><vertical method="fill">100</vertical><horizontal method="fill">100</horizontal></sizing>
+</flow-layout>
+</components>
+</owo-ui>

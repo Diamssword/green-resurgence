@@ -1,11 +1,11 @@
-package com.diamssword.greenresurgence.gui.playerContainers;
+package com.diamssword.greenresurgence.gui.playerContainers.survivalInventory;
 
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.AbstractMultiInvScreenHandler;
 import com.diamssword.greenresurgence.gui.components.InventoryComponent;
-import com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel.CharacterStatsPanel;
-import com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel.PlayerCraftPanel;
-import com.diamssword.greenresurgence.gui.playerContainers.inventoryPanel.SubPanel;
+import com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.inventoryPanel.CharacterStatsPanel;
+import com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.inventoryPanel.PlayerCraftPanel;
+import com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.inventoryPanel.SubPanel;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Positioning;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PlayerInventoryCustomization {
+public class PlayerInventoryBackgrounds {
 	public static List<SubPanel> subpanels = new ArrayList<>();
 
 
