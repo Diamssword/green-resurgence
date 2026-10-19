@@ -18,6 +18,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.BiConsumer;
 
 public class ContainerSubPanel extends InstancedSubPanel {
 
@@ -125,9 +127,9 @@ public class ContainerSubPanel extends InstancedSubPanel {
 				var c = new DynamicPanels.PanelConfig(0, 0, 0, 0, panel);
 				c.setSettings(settings);
 				if(index < 0)
-					panels.add(DynamicPanels.buildPanel(c, gui));
+					panels.add(DynamicPanels.buildPanel(Optional.empty(), c, gui));
 				else
-					panels.set(index, DynamicPanels.buildPanel(c, gui));
+					panels.set(index, DynamicPanels.buildPanel(Optional.empty(), c, gui));
 			}
 
 
@@ -169,7 +171,7 @@ public class ContainerSubPanel extends InstancedSubPanel {
 		}
 
 		@Override
-		public void mount(double mouseX, double mouseY, SubScreenLayout scr, DynamicPanels instance, DynamicPanels.PanelConfig config) {
+		public void mount(double mouseX, double mouseY, SubScreenLayout scr, BiConsumer<SubScreenLayout, DynamicPanels.PanelConfig> recreateFn, DynamicPanels.PanelConfig config, boolean hasParent) {
 
 		}
 

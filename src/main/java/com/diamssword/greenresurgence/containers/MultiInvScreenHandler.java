@@ -7,6 +7,8 @@ import com.diamssword.greenresurgence.entities.BackpackEntity;
 import com.diamssword.greenresurgence.items.helpers.AbstractBackpackItem;
 import com.diamssword.greenresurgence.systems.Components;
 import io.wispforest.owo.client.screens.SyncedProperty;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -33,6 +35,7 @@ public abstract class MultiInvScreenHandler extends AbstractMultiInvScreenHandle
 	 * This constructor gets called on the client when the server wants it to open the screenHandler,
 	 * The client will call the other constructor with an empty Inventory and the screenHandler will automatically sync this empty inventory with the inventory on the server.
 	 */
+	@Environment(EnvType.CLIENT)
 	public MultiInvScreenHandler(int syncId, PlayerInventory playerInventory) {
 		super(null, syncId);
 		props = this.createProperty(GridContainerSyncer.class, new GridContainerSyncer());

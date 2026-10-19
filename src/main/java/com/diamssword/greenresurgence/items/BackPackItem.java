@@ -23,6 +23,11 @@ public class BackPackItem extends AbstractBackpackItem implements GeoItem {
 	}
 
 	@Override
+	public String getGuiTexture() {
+		return "backpack";
+	}
+
+	@Override
 	public int inventoryWidth(ItemStack stack) {
 		return w;
 	}
@@ -45,6 +50,7 @@ public class BackPackItem extends AbstractBackpackItem implements GeoItem {
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 	}
+
 
 	@Override
 	public AnimatableInstanceCache getAnimatableInstanceCache() {

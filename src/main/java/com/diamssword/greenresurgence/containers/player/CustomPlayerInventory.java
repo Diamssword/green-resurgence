@@ -86,17 +86,20 @@ public class CustomPlayerInventory implements ICharacterStored {
 		var b = getBackPack();
 		if(b != null) {
 			var dim = invDimsFor(0);
-			res.add(new PlayerGrid("backpack", b, dim.getLeft(), dim.getRight()));
+			var rules = getBags().getStack(0).getItem() instanceof AbstractBackpackItem be ? be.getContainerRules() : null;
+			res.add(new PlayerGrid("backpack", b, dim.getLeft(), dim.getRight()).setRules(rules));
 		}
 		b = getSatchelLeft();
 		if(b != null) {
 			var dim = invDimsFor(1);
-			res.add(new PlayerGrid("satchelLeft", b, dim.getLeft(), dim.getRight()));
+			var rules = getBags().getStack(1).getItem() instanceof AbstractBackpackItem be ? be.getContainerRules() : null;
+			res.add(new PlayerGrid("satchelLeft", b, dim.getLeft(), dim.getRight()).setRules(rules));
 		}
 		b = getSatchelRight();
 		if(b != null) {
 			var dim = invDimsFor(2);
-			res.add(new PlayerGrid("satchelRight", b, dim.getLeft(), dim.getRight()));
+			var rules = getBags().getStack(2).getItem() instanceof AbstractBackpackItem be ? be.getContainerRules() : null;
+			res.add(new PlayerGrid("satchelRight", b, dim.getLeft(), dim.getRight()).setRules(rules));
 		}
 		return res;
 	}
@@ -112,17 +115,20 @@ public class CustomPlayerInventory implements ICharacterStored {
 		var b = getBackPack();
 		if(b != null) {
 			var dim = invDimsFor(0);
-			res.add(new PlayerGrid("backpack", b, dim.getLeft(), dim.getRight()));
+			var rules = getBags().getStack(0).getItem() instanceof AbstractBackpackItem be ? be.getContainerRules() : null;
+			res.add(new PlayerGrid("backpack", b, dim.getLeft(), dim.getRight()).setRules(rules));
 		}
 		b = getSatchelLeft();
 		if(b != null) {
 			var dim = invDimsFor(1);
-			res.add(new PlayerGrid("satchelLeft", b, dim.getLeft(), dim.getRight()));
+			var rules = getBags().getStack(1).getItem() instanceof AbstractBackpackItem be ? be.getContainerRules() : null;
+			res.add(new PlayerGrid("satchelLeft", b, dim.getLeft(), dim.getRight()).setRules(rules));
 		}
 		b = getSatchelRight();
 		if(b != null) {
 			var dim = invDimsFor(2);
-			res.add(new PlayerGrid("satchelRight", b, dim.getLeft(), dim.getRight()));
+			var rules = getBags().getStack(2).getItem() instanceof AbstractBackpackItem be ? be.getContainerRules() : null;
+			res.add(new PlayerGrid("satchelRight", b, dim.getLeft(), dim.getRight()).setRules(rules));
 		}
 		if(!pickingOnly)
 			res.add(new ArmorGrid("armor", getArmor(), 1, 4));
@@ -140,14 +146,20 @@ public class CustomPlayerInventory implements ICharacterStored {
 		this.getNonVanillaContainers().forEach(c -> {
 			for(int j = 0; j < c.getInventory().size(); j++) {
 				var s = c.getInventory().getStack(j);
-
 				if(s != null && !s.isEmpty()) {
 					if(s.getItem() instanceof AbstractBackpackItem bi) {
+
 						if(!bi.bagInventoryTick(s, parent, j)) {c.getInventory().setStack(j, ItemStack.EMPTY);}
 					} else {s.inventoryTick(parent.getWorld(), parent, 41 + j, false);}
 				}
 			}
 		});
+		for(int i = 0; i < getPlayer().getInventory().size(); i++) {
+			var st = getPlayer().getInventory().getStack(i);
+			if(st.getItem() instanceof AbstractBackpackItem bi) {
+				if(!bi.bagInventoryTick(st, getPlayer(), i)) {getPlayer().getInventory().setStack(i, ItemStack.EMPTY);}
+			}
+		}
 		for(int j = 0; j < bags.size(); j++) {
 			var s = bags.getStack(j);
 			if(s != null && !s.isEmpty()) {

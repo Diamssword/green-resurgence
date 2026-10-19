@@ -18,6 +18,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.collection.DefaultedList;
 import org.jetbrains.annotations.Contract;
 
 public class PlayerInventoryData implements ComponentV3, ServerTickingComponent, ClientTickingComponent, AutoSyncedComponent {
@@ -26,8 +27,7 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 	private final CustomPlayerInventory inventory = new CustomPlayerInventory();
 	public final PlayerEntity player;
 
-
-	private ItemStack backpackStack = ItemStack.EMPTY;
+	private DefaultedList<ItemStack> bags = DefaultedList.ofSize(3, ItemStack.EMPTY);
 
 	public PlayerInventoryData(PlayerEntity e) {
 		this.player = e;
@@ -52,11 +52,25 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 	}
 
 	public ItemStack getBackpackStack() {
-		return backpackStack;
+		return bags.get(0);
+	}
+
+	public ItemStack getLeftSatchel() {
+		return bags.get(1);
+	}
+
+	public ItemStack getRightSatchel() {
+		return bags.get(2);
+	}
+
+	public ItemStack getBag(int index) {
+		if(index < bags.size())
+			return bags.get(index);
+		return ItemStack.EMPTY;
 	}
 
 	public void setBackpackStack(ItemStack stack) {
-		backpackStack = stack;
+		bags.set(0, stack);
 	}
 
 	@Override
@@ -69,11 +83,16 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 	public void serverTick() {
 		crafterProvider.tick(player);
 		inventory.updateItems();
-		var bak1 = inventory.getBags().getStack(0);
-		if(bak1.getItem() != backpackStack.getItem()) {
-			backpackStack = bak1.copy();
-			player.syncComponent(Components.PLAYER_INVENTORY);
+		var bl = false;
+		for(int i = 0; i < 3; i++) {
+			var i1 = inventory.getBags().getStack(i);
+			if(bags.get(i).getItem() != i1.getItem()) {
+				bags.set(i, i1.copy());
+				bl = true;
+			}
 		}
+		if(bl)
+			player.syncComponent(Components.PLAYER_INVENTORY);
 		if(inventory.InventoryScreenNeedRefresh) {
 			CustomPlayerInventory.openInventoryScreen(player);
 			inventory.InventoryScreenNeedRefresh = false;
@@ -92,8 +111,11 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 			});
 			tag.put("pendingcrafts", pendingCrafts);
 		}
-
-		tag.put("backpack", backpackStack.writeNbt(new NbtCompound()));
+		var ls = new NbtList();
+		this.bags.forEach(i -> {
+			ls.add(i.writeNbt(new NbtCompound()));
+		});
+		tag.put("bags", ls);
 		buf.writeNbt(tag);
 	}
 
@@ -109,9 +131,12 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 					r.ifPresent(recipe -> crafterProvider.addPending(new PendingCraft(recipe)));
 				});
 			}
-			if(tag.contains("backpack")) {
-
-				backpackStack = ItemStack.fromNbt(tag.getCompound("backpack"));
+			if(tag.contains("bags")) {
+				var ls = tag.getList("bags", NbtElement.COMPOUND_TYPE);
+				for(int i = 0; i < ls.size(); i++) {
+					if(i < bags.size())
+						bags.set(i, ItemStack.fromNbt(ls.getCompound(i)));
+				}
 			}
 		}
 	}

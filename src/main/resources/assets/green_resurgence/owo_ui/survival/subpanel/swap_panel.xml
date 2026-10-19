@@ -6,9 +6,10 @@
         <scroll direction="vertical" id="scroll1">
             <flow-layout direction="vertical" id="mainFlow">
                 <children>
-                    <alabel>
+                    <alabel id="editLabel">
                         <text>Pick the panel to display</text>
                          <sizing><horizontal method="fill">100</horizontal></sizing>
+                        <horizontal-text-alignment>center</horizontal-text-alignment>
                     </alabel>
                          <freerowgrid columns="2" id="listPanel">
                              <children/>
@@ -18,7 +19,7 @@
 
                 </children>
                 <horizontal-alignment>center</horizontal-alignment>
-                <sizing><horizontal method="fill">100</horizontal><vertical method="fill">100</vertical></sizing>
+                <sizing><horizontal method="fill">100</horizontal></sizing>
             </flow-layout>
             <padding><all>2</all></padding>
             <surface>

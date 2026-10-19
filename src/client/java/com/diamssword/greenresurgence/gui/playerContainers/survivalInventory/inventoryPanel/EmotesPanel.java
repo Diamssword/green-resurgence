@@ -58,8 +58,13 @@ public class EmotesPanel extends InstancedSubPanel {
 		}
 
 		@Override
+		public int minWidth() {
+			return 36;
+		}
+
+		@Override
 		public int minHeight() {
-			return 30;
+			return 36;
 		}
 
 		@Override

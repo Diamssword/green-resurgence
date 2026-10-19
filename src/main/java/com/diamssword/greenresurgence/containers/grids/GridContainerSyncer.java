@@ -27,7 +27,7 @@ public class GridContainerSyncer {
 
 	static {
 		registerGridSerializer(GridContainer.class, "basic", GridContainer::new);
-		registerGridSerializer(PlayerGrid.class, "player", PlayerGrid::new);
+		registerGridSerializer(PlayerGrid.class, "player", PlayerGrid::unserializeWithRules);
 		registerGridSerializer(ArmorGrid.class, "playerArmor", ArmorGrid::new);
 		registerGridSerializer(OffHandGrid.class, "playerOffhand", OffHandGrid::new);
 		registerGridSerializer(BagsGrid.class, "bagSlots", BagsGrid::new);

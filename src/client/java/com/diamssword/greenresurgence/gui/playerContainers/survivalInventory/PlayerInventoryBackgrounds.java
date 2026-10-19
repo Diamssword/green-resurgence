@@ -6,12 +6,17 @@ import com.diamssword.greenresurgence.gui.components.InventoryComponent;
 import com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.inventoryPanel.CharacterStatsPanel;
 import com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.inventoryPanel.PlayerCraftPanel;
 import com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.inventoryPanel.SubPanel;
+import com.diamssword.greenresurgence.items.helpers.AbstractBackpackItem;
+import com.diamssword.greenresurgence.systems.Components;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Positioning;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.core.Surface;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,8 +64,11 @@ public class PlayerInventoryBackgrounds {
 			return add(new InventoryBGSettings(width, height, padding));
 		}
 
-		public Identifier getTexturePath(InventoryBGSettings settings) {
-			return GreenResurgence.asRessource("textures/gui/player_inventory/" + folderName + "/" + folderName + "_" + settings.height + "x" + settings.width + ".png");
+		public Identifier getTexturePath(InventoryBGSettings settings, @Nullable Item container) {
+			var type = folderName;
+			if(container instanceof AbstractBackpackItem bp)
+				type = bp.getGuiTexture();
+			return GreenResurgence.asRessource("textures/gui/player_inventory/" + folderName + "/" + type + "_" + settings.height + "x" + settings.width + ".png");
 		}
 
 		public InventoryBGSettings getFor(int size) {
@@ -108,7 +116,17 @@ public class PlayerInventoryBackgrounds {
 					if(inv.hasParent()) {
 						//	inv.margins(Insets.horizontal(10));
 						inv.parent().allowOverflow(true);
-						inv.parent().surface(createBgRenderer(bg.getTexturePath(settings), bg.textureWidth, bg.textureHeight, bg.revert));
+						Item item = null;
+						int slot = switch(key) {
+							case "backpack" -> 0;
+							case "satchelLeft" -> 1;
+							case "satchelRight" -> 2;
+							default -> -1;
+						};
+						if(slot > -1)
+							item = Components.PLAYER_INVENTORY.get(MinecraftClient.getInstance().player).getBag(slot).getItem();
+
+						inv.parent().surface(createBgRenderer(bg.getTexturePath(settings, item), bg.textureWidth, bg.textureHeight, bg.revert));
 
 					}
 					//inv.surface();

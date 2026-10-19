@@ -8,6 +8,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
@@ -44,12 +45,18 @@ public abstract class AbstractBackpackItem extends Item {
 			tooltip.add(Text.translatable("gui.green_resurgence.generic.empty").formatted(Formatting.LIGHT_PURPLE));
 	}
 
+	public abstract String getGuiTexture();
+
 	public abstract int inventoryWidth(ItemStack stack);
 
 	public abstract int inventoryHeight(ItemStack stack);
 
 	public int inventorySize(ItemStack stack) {
 		return this.inventoryWidth(stack) * this.inventoryHeight(stack);
+	}
+
+	public IGridContainerRule getContainerRules() {
+		return IGridContainerRule.DEFAULT;
 	}
 
 	public Inventory getInventory(ItemStack stack) {
@@ -88,4 +95,22 @@ public abstract class AbstractBackpackItem extends Item {
 		return true;
 	}
 
+	public static interface IGridContainerRule {
+		public static IGridContainerRule DEFAULT = new IGridContainerRule() {
+
+			@Override
+			public Slot createSlotFor(Inventory inventory, int index, int x, int y) {
+				return new Slot(inventory, index, x, y);
+			}
+
+			@Override
+			public int getQuickSlotPriority(ItemStack item) {
+				return 1;
+			}
+		};
+
+		public Slot createSlotFor(Inventory inventory, int index, int x, int y);
+
+		public int getQuickSlotPriority(ItemStack item);
+	}
 }

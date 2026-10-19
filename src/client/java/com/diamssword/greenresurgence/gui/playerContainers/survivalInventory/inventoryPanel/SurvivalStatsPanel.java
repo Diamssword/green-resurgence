@@ -24,7 +24,7 @@ public class SurvivalStatsPanel extends InstancedSubPanel {
 
 	@Override
 	public int preferredWidth() {
-		return 95;
+		return 100;
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class SurvivalStatsPanel extends InstancedSubPanel {
 
 		@Override
 		public int minWidth() {
-			return 95;
+			return 100;
 		}
 
 		@Override

@@ -13,6 +13,11 @@ public class SatchelItem extends AbstractBackpackItem {
 	}
 
 	@Override
+	public String getGuiTexture() {
+		return "satchel";
+	}
+
+	@Override
 	public int inventoryWidth(ItemStack stack) {
 		return w;
 	}

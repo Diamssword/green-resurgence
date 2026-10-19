@@ -20,10 +20,7 @@ import net.minecraft.util.Pair;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DynamicPanels {
 	public static String DEFAULT_PANEL = "stats";
@@ -34,6 +31,7 @@ public class DynamicPanels {
 		subpanels.put("craft", new PlayerCraftPanel());
 		subpanels.put("survival_stats", new SurvivalStatsPanel());
 		subpanels.put("emotes", new EmotesPanel());
+		subpanels.put("quickaccess", new QuickAccessSubPanel());
 	}
 
 	public static class PanelConfig {
@@ -302,15 +300,15 @@ public class DynamicPanels {
 	}
 
 	protected Pair<DraggableResizable<SubScreenLayout>, SubPanel.SubPanelInstance> createComponent(PanelConfig config) {
-		var subscreen = buildPanel(config, gui);
+		var subscreen = buildPanel(Optional.empty(), config, gui);
 
 		var d = new DraggableResizable<>(Sizing.fixed(config.width), Sizing.fixed(config.height), subscreen.getLeft());
-		d.minSize(24, 24);
+		d.minSize(Math.max(24, subscreen.getRight().minWidth()), Math.max(24, subscreen.getRight().minHeight()));
 		d.positioning(Positioning.absolute(config.x, config.y));
 
 		d.addListener((c, a, x, y) -> {
 			if(a == DraggableResizable.Action.RIGHT_CLICK) {
-				panels.get(c).handleEditRightClick(x, y, c.child(), this, config);
+				panels.get(c).handleEditRightClick(x, y, c.child(), this::recreateWindow, config, false);
 
 			} else if(a == DraggableResizable.Action.DELETE) {
 				panels.remove(c);
@@ -336,7 +334,7 @@ public class DynamicPanels {
 		}
 	}
 
-	public static Pair<SubScreenLayout, SubPanel.SubPanelInstance> buildPanel(PanelConfig config, PlayerBasedGui<?> gui) {
+	public static Pair<SubScreenLayout, SubPanel.SubPanelInstance> buildPanel(Optional<SubScreenLayout> layout, PanelConfig config, PlayerBasedGui<?> gui) {
 		var pn = subpanels.get(config.panel == null ? DEFAULT_PANEL : config.panel);
 		if(pn == null)
 			pn = subpanels.get(DEFAULT_PANEL);
@@ -346,7 +344,9 @@ public class DynamicPanels {
 			sets.decode(config);
 		}
 		SubPanel finalPn = pn;
-		var s = new SubScreenLayout(Sizing.fill(100), Sizing.fill(100), FlowLayout.Algorithm.VERTICAL, finalPn.guiLocation()) {
+
+
+		SubScreenLayout s = new SubScreenLayout(Sizing.fill(100), Sizing.fill(100), FlowLayout.Algorithm.VERTICAL, finalPn.guiLocation()) {
 			@Override
 			public void inflate(Size space) {
 				super.inflate(space);
@@ -354,8 +354,11 @@ public class DynamicPanels {
 					inst.onResize(this.getRoot(), gui);
 			}
 		};
+		if(layout.isPresent()) {
+			s = layout.get();
+			s.setLayout(finalPn.guiLocation());
+		}
 		s.zIndex(300);
-		s.setLayout(pn.guiLocation());
 		if(s.getRoot() != null)
 			inst.build(s.getRoot(), gui);
 

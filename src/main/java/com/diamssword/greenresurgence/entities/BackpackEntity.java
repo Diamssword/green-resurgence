@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.entities;
 import com.diamssword.greenresurgence.MEntities;
 import com.diamssword.greenresurgence.containers.GenericContainer;
 import com.diamssword.greenresurgence.containers.grids.GridContainer;
+import com.diamssword.greenresurgence.containers.grids.IGridContainer;
 import com.diamssword.greenresurgence.items.helpers.AbstractBackpackItem;
 import com.diamssword.greenresurgence.systems.Components;
 import net.minecraft.entity.Entity;
@@ -22,6 +23,7 @@ import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -339,6 +341,14 @@ public class BackpackEntity extends Entity implements Ownable, NamedScreenHandle
 							for(var i = 0; i < inv.size(); i++) {player.dropItem(inv.getStack(i), false);}
 						}
 					}
+				}
+
+				@Override
+				protected Slot createSlot(IGridContainer container, int index, int x, int y) {
+					if(container.getName().equals("container")) {
+						return ab.getContainerRules().createSlotFor(container.getInventory(), index, x, y);
+					}
+					return super.createSlot(container, index, x, y);
 				}
 			};
 		}

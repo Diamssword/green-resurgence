@@ -118,5 +118,10 @@
   "message.green_resurgence.dice_roll.roll": "%s rolls a 100-sided die:",
   "message.green_resurgence.guild.zone.enter": "You enter %s",
   "message.green_resurgence.guild.zone.leave": "You leave %s",
-  "message.green_resurgence.loot.error.experience": "You don't have enough expertise to collect this."
+  "message.green_resurgence.loot.error.experience": "You don't have enough expertise to collect this.",
+  "gui.green_resurgence.subpanels.quickAccess.mode.0": "Dock:Top",
+  "gui.green_resurgence.subpanels.quickAccess.mode.1": "Dock:Bottom",
+  "gui.green_resurgence.subpanels.quickAccess.mode.2": "Dock:Left",
+  "gui.green_resurgence.subpanels.quickAccess.mode.3": "Dock:Right",
+  "gui.green_resurgence.subpanels.quickAccess.mode.4": "Dock:Around"
 }

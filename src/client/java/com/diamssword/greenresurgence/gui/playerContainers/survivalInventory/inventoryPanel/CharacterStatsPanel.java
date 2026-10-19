@@ -22,6 +22,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.BiConsumer;
+
 public class CharacterStatsPanel extends InstancedSubPanel {
 
 
@@ -67,11 +69,6 @@ public class CharacterStatsPanel extends InstancedSubPanel {
 				}
 			} else if(scroll != null)
 				scroll.verticalSizing(Sizing.fill(100));
-		}
-
-		private void expand(ScrollContainer<FlowLayout> scroll, Size v, FlowLayout root, int topH) {
-			scroll.verticalSizing(Sizing.fixed(v.height() - (topH + root.gap() + root.padding().get().vertical())));
-			root.onChildMutated(scroll);
 		}
 
 		@Override
@@ -155,8 +152,8 @@ public class CharacterStatsPanel extends InstancedSubPanel {
 		}
 
 		@Override
-		public void mount(double mouseX, double mouseY, SubScreenLayout scr, DynamicPanels instance, DynamicPanels.PanelConfig config) {
-			var g = SubPanelSettings.basePanel(scr, instance, config);
+		public void mount(double mouseX, double mouseY, SubScreenLayout scr, BiConsumer<SubScreenLayout, DynamicPanels.PanelConfig> recreateFn, DynamicPanels.PanelConfig config, boolean hasParnet) {
+			var g = SubPanelSettings.basePanel(scr, recreateFn, config, hasParnet);
 			g.setColumns(1);
 			var b = Components.checkbox(Text.literal("Model")).checked(showPlayer);
 			b.onChanged(c -> {
