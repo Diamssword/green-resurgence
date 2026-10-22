@@ -171,15 +171,15 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 			for(Pair<String, LayerDef[]> value : layerBts) {
 				var bt = new RButtonComponent(Text.empty(), (o) -> {
 					for(var d : bts) {
-						d.setActivated(false);
+						d.activated(false);
 					}
-					o.setActivated(true);
+					o.activated(true);
 					currentLayer = value;
 					txt1.text(Text.translatable(GreenResurgence.ID + ".wardrobe.collection." + currentLayer.getLeft()));
 					loadCloths(wardLay, playerComp, lastSearch);
 				});
 				if(value.getLeft().equals("all"))
-					bt.setActivated(true);
+					bt.activated(true);
 				bt.icon(value.getLeft()).sizing(Sizing.fixed(20)).tooltip(Text.translatable(GreenResurgence.ID + ".wardrobe.layerbt." + value.getLeft())).margins(Insets.of(2, 0, 2, 0));
 				flow.child(bt);
 				bts.add(bt);

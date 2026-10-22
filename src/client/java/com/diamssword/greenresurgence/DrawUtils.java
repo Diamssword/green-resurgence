@@ -12,7 +12,7 @@ import org.joml.Matrix4f;
 
 public class DrawUtils {
 	public static void drawTexture(DrawContext ctx,
-	                               Identifier texture, float x, float y, float width, float height, float u, float v, float regionWidth, float regionHeight, int textureWidth, int textureHeight
+								   Identifier texture, float x, float y, float width, float height, float u, float v, float regionWidth, float regionHeight, int textureWidth, int textureHeight
 	) {
 		drawTexturedQuad(ctx, texture, x, x + width, y, y + height, 0, (u + 0.0F) / (float) textureWidth,
 				(u + regionWidth) / (float) textureWidth,
@@ -31,6 +31,59 @@ public class DrawUtils {
 		bufferBuilder.vertex(matrix4f, x2, y2, (float) z).texture(u2, v2).next();
 		bufferBuilder.vertex(matrix4f, x2, y1, (float) z).texture(u2, v1).next();
 		BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+	}
+
+	public static void drawTexturedQuadWithColor(
+			DrawContext context,
+			Identifier texture,
+			float x, float y, float width, float height,
+			float u, float v, float regionWidth, float regionHeight,
+			float textureWidth, float textureHeight,
+			int r,
+			int g,
+			int b,
+			int a
+	) {
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
+		RenderSystem.setShaderTexture(0, texture);
+
+		var matrices = context.getMatrices();
+		var matrix = matrices.peek().getPositionMatrix();
+
+		var buffer = Tessellator.getInstance().getBuffer();
+		buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
+
+
+		buffer.vertex(matrix, x, y + height, 0)
+				.texture((float) u / textureWidth, (float) (v + regionHeight) / textureHeight)
+				.color(r, g, b, a).next();
+
+		buffer.vertex(matrix, x + width, y + height, 0)
+				.texture((float) (u + regionWidth) / textureWidth, (float) (v + regionHeight) / textureHeight)
+				.color(r, g, b, a).next();
+
+		buffer.vertex(matrix, x + width, y, 0)
+				.texture((float) (u + regionWidth) / textureWidth, (float) v / textureHeight)
+				.color(r, g, b, a).next();
+
+		buffer.vertex(matrix, x, y, 0)
+				.texture((float) u / textureWidth, (float) v / textureHeight)
+				.color(r, g, b, a).next();
+
+		Tessellator.getInstance().draw();
+	}
+
+	public static void drawTexturedQuadWithAlpha(
+			DrawContext context,
+			Identifier texture,
+			float x, float y, float width, float height,
+			float u, float v, float regionWidth, float regionHeight,
+			float textureWidth, float textureHeight,
+			float alpha
+	) {
+		drawTexturedQuadWithColor(context, texture, x, y, width, height, u, v, regionWidth, regionHeight, textureWidth, textureHeight, 255, 255, 255, Math.round(Math.max(0f, Math.min(1f, alpha)) * 255f));
 	}
 
 	public static void renderHotbarItem(MinecraftClient client, OwoUIDrawContext context, int x, int y, float delta, PlayerEntity player, ItemStack stack, int seed) {

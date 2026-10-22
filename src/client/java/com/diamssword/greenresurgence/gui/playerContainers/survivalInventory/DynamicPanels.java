@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.gui.playerContainers.survivalInventory;
 import com.diamssword.greenresurgence.GreenResurgenceClient;
 import com.diamssword.greenresurgence.gui.components.AdaptiveLabelComponent;
 import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
+import com.diamssword.greenresurgence.gui.components.RButtonComponent;
 import com.diamssword.greenresurgence.gui.components.SubScreenLayout;
 import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
 import com.diamssword.greenresurgence.gui.playerContainers.PlayerBasedGui;
@@ -21,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class DynamicPanels {
 	public static String DEFAULT_PANEL = "stats";
@@ -209,13 +211,13 @@ public class DynamicPanels {
 	public FlowLayout getControlPanel() {
 		var c = Containers.horizontalFlow(Sizing.content(), Sizing.fixed(22));
 		c.allowOverflow(true);
-		var btPlus = Components.button(Text.literal("+"), b -> {
+		var btPlus = HoloPanels.button(Components.button(Text.literal("+"), b -> {
 			newWindowPopup(c);
-		}).renderer(HoloPanels.button()).sizing(Sizing.fixed(22)).tooltip(Text.literal("Create a new Panel"));
+		})).sizing(Sizing.fixed(22)).tooltip(Text.literal("Create a new Panel"));
 		var txtA = Text.literal("Edit Panels");
 		var txtB = Text.literal("Click again to exit edit mode\nGrab a panel to move it\nDrag the side of a panel to resize it\nRight click a panel to change the content\nClick a panel and press the key [del] or [backspace] to remove it");
 
-		c.child(Components.button(Text.literal("E"), (b) -> {
+		c.child(HoloPanels.button(Components.button(Text.literal("E"), (b) -> {
 			editMode = !editMode;
 			editMode(editMode);
 			b.tooltip(editMode ? txtB : txtA);
@@ -224,13 +226,19 @@ public class DynamicPanels {
 			else
 				c.clearChildren().child(b);
 
-		}).renderer(HoloPanels.button()).tooltip(editMode ? txtB : txtA).sizing(Sizing.fixed(22)));
+		})).tooltip(editMode ? txtB : txtA).sizing(Sizing.fixed(22)));
 		if(editMode)
 			c.child(btPlus);
 		return c;
 	}
 
 	private FlowLayout activePopup;
+
+	public static RButtonComponent makPanelButton(SubPanel panel, Consumer<RButtonComponent> onPress) {
+		var b = HoloPanels.button(new RButtonComponent(Text.literal(""), onPress).icon(panel.guiIcon()));
+		b.tooltip(panel.guiName()).sizing(Sizing.fixed(20));
+		return b;
+	}
 
 	private void newWindowPopup(ParentComponent parent) {
 		if(activePopup != null) {
@@ -245,11 +253,11 @@ public class DynamicPanels {
 			c.child(new AdaptiveLabelComponent(Text.literal("Pick the panel to display")).horizontalSizing(Sizing.fill(100)).margins(Insets.of(2)));
 			var grid = new FreeRowGridLayout(Sizing.fill(100), Sizing.fill(100), Math.min(8, subpanels.size()));
 			subpanels.forEach((k, v) -> {
-				grid.child(Components.button(Text.literal(v.guiName().getString().substring(0, 2)), (b) -> {
+				grid.child(makPanelButton(v, (b) -> {
 					root.removeChild(c);
 					activePopup = null;
 					createWindow(parent.x(), parent.y() - v.preferredHeight(), v.preferredWidth(), v.preferredHeight(), k);
-				}).renderer(HoloPanels.button()).tooltip(v.guiName()));
+				}));
 			});
 			c.positioning(Positioning.absolute(parent.width(), parent.y() - root.y() - h));
 			c.child(grid).surface(HoloPanels.panel(true, false).and(HoloPanels.outline()));

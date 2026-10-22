@@ -24,9 +24,9 @@ public interface OwOSurfaceMixin {
 		for(var child : children) {
 			surface = switch(child.getNodeName()) {
 				case "hdp_outline" -> surface.and(HoloPanels.outline());
-				case "hdp_panel" -> surface.and(HoloPanels.crtLines(0));
+				case "hdp_panel" -> surface.and(HoloPanels.crtLines(0, HoloPanels.defaultOpacity));
 				case "hdp_solid" -> surface.and(HoloPanels.panel(child.getAttribute("alt").equalsIgnoreCase("true"), child.getAttribute("opaque").equalsIgnoreCase("true")));
-				case "hdp" -> surface.and(HoloPanels.outline()).and(HoloPanels.crtLines(1));
+				case "hdp" -> surface.and(HoloPanels.outline()).and(HoloPanels.crtLines(1, HoloPanels.defaultOpacity));
 				case "gpanel" -> surface.and(child.getAttribute("white").equalsIgnoreCase("true") ? Panels.PANEL_WHITE : Panels.PANEL);
 				case "craft" -> {
 					var search = false;

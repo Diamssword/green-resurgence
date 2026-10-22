@@ -186,9 +186,8 @@ public class PlayerInventoryBackgrounds {
 			float centerX = component.x() + component.width() / 2f;
 			float centerY = component.y() + component.height() / 2f;
 
-			float x = centerX - width / 2f;
-			float y = centerY - height / 2f;
-
+			int x = (int) (centerX - width / 2f);
+			int y = (int) (centerY - height / 2f);
 			int u = revert ? width : 0;
 			int textureWidth = revert ? -width : width;
 

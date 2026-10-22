@@ -61,10 +61,10 @@ public interface SubPanel {
 			if(grid != null) {
 				grid.setColumns(cols);
 				DynamicPanels.subpanels.forEach((k, v) -> {
-					grid.child(Components.button(Text.literal(v.guiName().getString().substring(0, 2)), (b) -> {
+					grid.child(DynamicPanels.makPanelButton(v, (b) -> {
 						config.setPanel(k);
 						recreateFn.accept(scr, config);
-					}).renderer(HoloPanels.button()).tooltip(v.guiName()));
+					}));
 				});
 				if(grid.parent() instanceof FlowLayout fl) {
 					fl.child(Components.button(Text.translatable("gui.green_resurgence.generic.back"), b -> {

@@ -34,9 +34,16 @@ public class MItems implements ItemRegistryContainer {
 	public static final Item REMOVABLE_LADDER = new DeployableLadder(new OwoItemSettings().group(GROUP));
 	public static final ClaimBlockPlacerItem CLAIM_PLACER = new ClaimBlockPlacerItem(new OwoItemSettings().group(GROUP));
 
-	public static final Item BACKPACK = new BackPackItem(new OwoItemSettings().group(GROUP), 5, 2);
 
+	/*public static final Item MODULAR_HEAD = new ModularArmorItem(ArmorMaterials.CHAIN, ArmorItem.Type.HELMET, new OwoItemSettings().group(GROUP));
+	public static final Item MODULAR_CHEST = new ModularArmorItem(ArmorMaterials.CHAIN, ArmorItem.Type.CHESTPLATE, new OwoItemSettings().group(GROUP));
+	public static final Item MODULAR_LEG = new ModularArmorItem(ArmorMaterials.CHAIN, ArmorItem.Type.LEGGINGS, new OwoItemSettings().group(GROUP));
+	public static final Item MODULAR_BOOT = new ModularArmorItem(ArmorMaterials.CHAIN, ArmorItem.Type.BOOTS, new OwoItemSettings().group(GROUP));
+
+	 */
+	public static final Item BACKPACK = new BackPackItem(new OwoItemSettings().group(GROUP), 5, 2);
 	public static final Item SATCHEL = new SatchelItem(new OwoItemSettings().group(GROUP), 2, 2);
+	public static final Item SATCHEL_MEDIC = new MedicalSatchelItem(new OwoItemSettings().group(GROUP), 2, 3);
 
 	public static final EntityPlacerItem CADDIE = new EntityPlacerItem((u, p) -> new CaddieEntity(MEntities.CADDIE, u.getWorld(), p.x, p.y, p.z), new OwoItemSettings().maxCount(1).group(GROUP));
 	public static final EntityPlacerItem BIKE = new EntityPlacerItem((u, p) -> new BikeEntity(MEntities.BIKE, u.getWorld(), p.x, p.y, p.z), new OwoItemSettings().maxCount(1).group(GROUP));

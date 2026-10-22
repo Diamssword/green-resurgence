@@ -1,8 +1,10 @@
 package com.diamssword.greenresurgence.gui.components.hud;
 
 import com.diamssword.greenresurgence.DrawUtils;
-import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
 import com.diamssword.greenresurgence.systems.Components;
+import com.diamssword.greenresurgence.utils.ColorUtils;
+import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.component.TextureComponent;
@@ -11,6 +13,10 @@ import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.parsing.UIParsing;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
@@ -21,9 +27,6 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 	private static final float SHIELD_TRANSPARENCY = 0.6f;
 	private static final int HEART_COUNT = 20;
 	private static final float HEART_SCALE = 0.8f;
-	private static final int SHIELD_T_W = 192;
-	private static final int SHIELD_T_H = 64;
-	private static final Identifier SHIELD_TEXTURE = GreenResurgence.asRessource("textures/gui/hud/shield.png");
 	private boolean hidden;
 	private int hideTimer = 200;
 	public boolean blink = false;
@@ -35,6 +38,7 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 	public float fillingShield = 1f;
 	public float goal = 1f;
 	public float goalShield = 1f;
+	private HoloPanels.RenderSurface shieldRender = HoloPanels.crtCircle(1);
 	private HeartType type = HeartType.NORMAL;
 
 	protected HealthIconComponent(Identifier texture, int u, int v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
@@ -115,6 +119,17 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 			this.fillingShield = Math.max(goalShield, fillingShield - 0.1f);
 	}
 
+	public static double[] fillingToAngles(float filling) {
+		filling = Math.max(0f, Math.min(1f, filling));
+
+		if(filling >= 1f) {
+			return new double[]{0, 360};
+		}
+
+		double halfAngle = filling * 180.0;
+		return new double[]{180.0 - halfAngle, 180.0 + halfAngle};
+	}
+
 	@Override
 	public void draw(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
 		RenderSystem.enableDepthTest();
@@ -124,31 +139,23 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 			RenderSystem.enableBlend();
 			RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
 		}
-
+		if(this.blend)
+			RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, Math.min((this.hideTimer / 100f) * SHIELD_TRANSPARENCY, SHIELD_TRANSPARENCY));
+		shieldRender.draw(context, this);
 		var matrices = context.getMatrices();
 		matrices.push();
+		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		matrices.translate(x, y, 0);
 		var cl = MinecraftClient.getInstance();
 		if(cl.player != null) {
-			if(this.blend)
-				RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, Math.min((this.hideTimer / 100f) * SHIELD_TRANSPARENCY, SHIELD_TRANSPARENCY));
-			drawShield(context, shieldblink, 64f, fillingShield);
-			if(this.blend)
-				RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, this.hideTimer / 100f);
-			DrawUtils.drawTexture(
-					context,
-					SHIELD_TEXTURE,
-					0, 0,
-					width, height,
-					0, 0,
-					SHIELD_T_H, SHIELD_T_H,           // UV size
-					SHIELD_T_W, SHIELD_T_H
-			);
+
+
 			float a = (int) (this.width * HEART_SCALE);
-			matrices.translate((width - a) / 2f, (width - a) / 2f, 0);
+			matrices.push();
+
+			matrices.translate((width - a) / 2f, ((width - a) / 2f) + 1, 0);
 			drawGauge(context, getU(type, blink), 9f, filling, a, a);
-			context.drawTexture(this.texture,
-					0,
+			DrawUtils.drawTexturedQuadWithAlpha(context, this.texture, 0,
 					0,
 					(int) a,
 					(int) a,
@@ -156,15 +163,29 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 					this.v,
 					this.regionWidth,
 					this.regionHeight,
-					this.textureWidth, this.textureHeight
-			);
+					this.textureWidth, this.textureHeight, this.hideTimer / 100f);
+
+			matrices.pop();
+			if(this.blend)
+				RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, Math.min((this.hideTimer / 100f) * SHIELD_TRANSPARENCY, SHIELD_TRANSPARENCY));
+			var color = ColorUtils.whithAlpha(HoloPanels.defaultColor, (int) ((this.hideTimer / 100f) * 0xFF));
+			if(shieldblink)
+				color = ColorUtils.lighten(color, 0.2f);
+			drawCircleFill(context, width / 2, height / 2, (width / 2f) - 0.99, fillingShield, color);
+
+			if(this.blend)
+				RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, this.hideTimer / 100f);
+
+			drawCircleOutline(context, width / 2, height / 2, 0, 360, 40, width / 2f, 1.8, ColorUtils.whithAlpha(HoloPanels.defaultColor, 0xAF));
 		}
+
+
+		matrices.pop();
+
 		if(this.blend) {
 			RenderSystem.disableBlend();
 			RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1f);
 		}
-
-		matrices.pop();
 	}
 
 	private float getU(HeartType type, boolean blinking) {
@@ -173,25 +194,64 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 		return (type.textureIndex * 2 + i) * d;
 	}
 
-	private void drawShield(DrawContext ctx, boolean blink, float pxSpace, float fill) {
-		float ipx = SHIELD_T_H / pxSpace;
-		int ih = (int) (height / pxSpace);
-		fill = MathHelper.clamp(fill, 0.0f, 1.0f);
-		var rh = SHIELD_T_H - (ipx * 2);
-		float uvHeight = (rh * fill);
+	public void drawCircleFill(OwoUIDrawContext context, int centerX, int centerY,
+							   double radius, float filling, int color) {
+		filling = Math.max(0f, Math.min(1f, filling));
+		if(radius <= 0 || filling <= 0) return;
 
-		float uvYOffset = (SHIELD_T_H - (ipx)) - uvHeight;
-		int drawHeightVisible = (int) ((height - (ih * 2)) * fill);
-		int yOffset = (height - (ih)) - (drawHeightVisible);
-		DrawUtils.drawTexture(
-				ctx,
-				SHIELD_TEXTURE,
-				0, yOffset,
-				width, drawHeightVisible,
-				SHIELD_T_H * (blink ? 2 : 1), uvYOffset,
-				SHIELD_T_H, uvHeight,           // UV size
-				SHIELD_T_W, SHIELD_T_H
-		);
+		int yBottom = (int) Math.ceil(centerY + radius);
+		int yTop = (int) Math.ceil(centerY + radius - 2 * radius * filling);
+
+		for(int y = yTop; y < yBottom; y++) {
+			double dy = (y + 0.5) - centerY;
+			double halfWidth = Math.sqrt(Math.max(0, radius * radius - dy * dy));
+
+			int x1 = (int) Math.ceil(centerX - halfWidth);
+			int x2 = (int) Math.ceil(centerX + halfWidth);
+
+			if(x1 < x2) {
+				context.fill(x1, y, x2, y + 1, color);
+			}
+		}
+	}
+
+
+	public void drawCircleOutline(OwoUIDrawContext context, int centerX, int centerY, double angleFrom, double angleTo,
+								  int segments, double radius, double thickness, int color) {
+		Preconditions.checkArgument(angleFrom < angleTo, "angleFrom must be less than angleTo");
+		Preconditions.checkArgument(segments > 0, "segments must be greater than 0");
+		Preconditions.checkArgument(thickness > 0 && thickness <= radius,
+				"thickness must be positive and no greater than radius");
+
+		var buffer = Tessellator.getInstance().getBuffer();
+		var matrix = context.getMatrices().peek().getPositionMatrix();
+
+		double angleStep = Math.toRadians(angleTo - angleFrom) / segments;
+		double innerRadius = radius - thickness;
+
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+
+		buffer.begin(VertexFormat.DrawMode.TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
+
+		for(int i = 0; i <= segments; i++) {
+			double theta = Math.toRadians(angleFrom) + i * angleStep;
+			double cos = Math.cos(theta);
+			double sin = Math.sin(theta);
+
+			buffer.vertex(matrix,
+					(float) (centerX - cos * radius),
+					(float) (centerY - sin * radius),
+					0).color(color).next();
+
+			buffer.vertex(matrix,
+					(float) (centerX - cos * innerRadius),
+					(float) (centerY - sin * innerRadius),
+					0).color(color).next();
+		}
+
+		Tessellator.getInstance().draw();
 	}
 
 	private void drawGauge(DrawContext ctx, float uIndex, float pxSpace, float fill, float width, float height) {
@@ -204,14 +264,14 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 		float uvYOffset = (regionHeight - (ipx)) - uvHeight;
 		float drawHeightVisible = ((height - (ih * 2f)) * fill);
 		float yOffset = ((height - ih) - drawHeightVisible);
-		DrawUtils.drawTexture(
+		DrawUtils.drawTexturedQuadWithAlpha(
 				ctx,
 				this.texture,
 				0, yOffset,
 				width, drawHeightVisible,
 				uIndex, uvYOffset,
 				regionWidth, uvHeight,           // UV size
-				this.textureWidth, this.textureHeight
+				this.textureWidth, this.textureHeight, this.hideTimer / 100f
 		);
 	}
 

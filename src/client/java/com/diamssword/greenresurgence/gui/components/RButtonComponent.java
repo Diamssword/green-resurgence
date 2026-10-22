@@ -31,21 +31,34 @@ public class RButtonComponent extends ButtonComponent {
 	public static final Identifier HOVERED_TEXTURE = new Identifier("owo", "button/resurgence_hovered");
 	public static final Identifier DISABLED_TEXTURE = new Identifier("owo", "button/resurgence_disabled");
 	protected boolean textShadow = true;
-	protected int color = 0xffbb7d25;
+	protected int textColor = 0xffbb7d25;
+	protected int hoveredTextColor = 0xffffffff;
 	private boolean activated = false;
 	private Identifier icon;
+	public static ButtonComponent.Renderer DEFAULT_RENDERER = (context, button, delta) -> {
+		RenderSystem.enableDepthTest();
+
+		var texture = button.active ? (button.isHovered() ? HOVERED_TEXTURE : ACTIVE_TEXTURE) : DISABLED_TEXTURE;
+		if(button instanceof RButtonComponent bt) {
+			texture = bt.active ? bt.hovered || bt.activated ? HOVERED_TEXTURE : ACTIVE_TEXTURE : DISABLED_TEXTURE;
+		}
+		NinePatchTexture.draw(texture, (OwoUIDrawContext) context, button.getX(), button.getY(), button.width(), button.height());
+	};
 
 	public RButtonComponent(Text message, Consumer<RButtonComponent> onPress) {
 		super(message, button -> onPress.accept((RButtonComponent) button));
 		this.sizing(Sizing.content());
-		this.renderer = null;
+		this.renderer = DEFAULT_RENDERER;
 	}
 
-	public RButtonComponent setActivated(boolean actived) {
+	public RButtonComponent activated(boolean actived) {
 		this.activated = actived;
 		return this;
 	}
 
+	public boolean activated() {
+		return activated;
+	}
 
 	@Override
 	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -55,15 +68,11 @@ public class RButtonComponent extends ButtonComponent {
 	@Override
 	public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
 
-		RenderSystem.enableDepthTest();
 		if(renderer != null)
 			renderer.draw((OwoUIDrawContext) context, this, delta);
-		else {
-			var texture = this.active ? this.hovered || this.activated ? HOVERED_TEXTURE : ACTIVE_TEXTURE : DISABLED_TEXTURE;
-			NinePatchTexture.draw(texture, (OwoUIDrawContext) context, this.getX(), this.getY(), this.width, this.height);
-		}
+
 		var textRenderer = MinecraftClient.getInstance().textRenderer;
-		int color = this.hovered || this.activated ? 0xffffffff : this.color;
+		int color = this.hovered || this.activated ? hoveredTextColor : this.textColor;
 		var text = textRenderer.trimToWidth(this.getMessage(), this.width - 5);
 		if(icon != null) {
 			var h = (int) (this.height * 0.70f);
@@ -102,8 +111,23 @@ public class RButtonComponent extends ButtonComponent {
 		return this;
 	}
 
+	public int textColor() {
+		return this.textColor;
+
+	}
+
+	public int hoveredTextColor() {
+		return this.hoveredTextColor;
+
+	}
+
+	public RButtonComponent hoveredTextColor(int color) {
+		this.hoveredTextColor = color;
+		return this;
+	}
+
 	public RButtonComponent textColor(int color) {
-		this.color = color;
+		this.textColor = color;
 		return this;
 	}
 
@@ -151,6 +175,6 @@ public class RButtonComponent extends ButtonComponent {
 
 	public static void drawTexture(DrawContext ctx, Identifier texture, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight, int color) {
 		var col = Color.ofArgb(color);
-		drawTexturedQuad(ctx, texture, x, x + width, y, y + height, 0, (u + 0.0F) / (float) textureWidth, (u + (float) width) / (float) textureWidth, (v + 0.0F) / (float) textureHeight, (v + (float) width) / (float) textureHeight, col.red(), col.green(), col.blue(), col.alpha());
+		drawTexturedQuad(ctx, texture, x, x + width, y, y + height, 0, (u + 0.0F) / (float) textureWidth, (u + (float) width) / (float) textureWidth, (v + 0.0F) / (float) textureHeight, (v + (float) height) / (float) textureHeight, col.red(), col.green(), col.blue(), col.alpha());
 	}
 }

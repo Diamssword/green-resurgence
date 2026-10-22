@@ -55,7 +55,7 @@
                                                            texture="orange.png">
                                                 </inventory>
                                             </children>
-                                             <padding><right>4</right><left>6</left></padding>
+                                             <padding><right>4</right><left>4</left></padding>
                                             <z-index>1</z-index>
                                             <allow-overflow>true</allow-overflow>
                                         </flow-layout>
@@ -72,7 +72,7 @@
                                                    <inventory id="satchelRight" name="disabled" width="1" height="3"
                                                               texture="orange.png"/>
                                             </children>
-                                             <padding><right>4</right><left>6</left></padding>
+                                             <padding><right>4</right><left>4</left></padding>
                                             <z-index>1</z-index>
                                         <allow-overflow>true</allow-overflow>
                                         </flow-layout>

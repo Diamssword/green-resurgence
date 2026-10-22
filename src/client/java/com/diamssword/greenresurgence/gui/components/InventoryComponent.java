@@ -66,7 +66,7 @@ public class InventoryComponent extends BaseComponent implements IHideableCompon
 	public void setSize(int width, int height) {
 		this.regionWidth = width * 18;
 		this.slotWidth = width;
-		this.regionHeight = (getInventoryName() != null ? 10 : 1) + height * 18;
+		this.regionHeight = (getInventoryName() != null ? 10 : 0) + height * 18;
 		this.visibleArea = AnimatableProperty.of(PositionedRectangle.of(0, 0, this.regionWidth, this.regionHeight));
 		this.applySizing();
 		if(this.parent != null)
@@ -143,14 +143,14 @@ public class InventoryComponent extends BaseComponent implements IHideableCompon
 		}
 
 		context.drawTexture(SLOT_TEXTURE,
-				visibleArea.x() - 1,
+				visibleArea.x(),
 				visibleArea.y() + (name != null ? 9 : 0),
 				rightEdge - visibleArea.x(),
-				bottomEdge - visibleArea.y() - (name != null ? 10 : 1),
+				bottomEdge - visibleArea.y() - (name != null ? 10 : 0),
 				visibleArea.x(),
 				visibleArea.y(),
 				rightEdge - visibleArea.x(),
-				bottomEdge - visibleArea.y() - (name != null ? 10 : 1),
+				bottomEdge - visibleArea.y() - (name != null ? 10 : 0),
 				18, 18
 		);
 		icons.forEach((k, v) -> {

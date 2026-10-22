@@ -9,8 +9,10 @@ import com.google.gson.JsonObject;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
+import io.wispforest.owo.ui.core.HorizontalAlignment;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
+import io.wispforest.owo.ui.core.VerticalAlignment;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
@@ -75,11 +77,19 @@ public class QuickAccessSubPanel extends InstancedSubPanel {
 
 			var flow1 = Containers.verticalFlow(Sizing.fill(100), Sizing.fill(100));
 			var flowBar = Containers.horizontalFlow(Sizing.content(), Sizing.fill(100));
-			var scr1 = Containers.horizontalScroll(Sizing.fill(100), Sizing.fixed(BUTTON_SIZE + 1), flowBar);
+			if(settings.mode == 0)
+				flowBar.verticalAlignment(VerticalAlignment.BOTTOM);
+			else
+				flowBar.verticalAlignment(VerticalAlignment.TOP);
+			var scr1 = Containers.horizontalScroll(Sizing.fill(100), Sizing.fixed(BUTTON_SIZE + 1), flowBar).margins(Insets.horizontal(2));
 			if(settings.mode == 2 || settings.mode == 3) {
 				flow1 = Containers.horizontalFlow(Sizing.fill(100), Sizing.fill(100));
 				flowBar = Containers.verticalFlow(Sizing.fill(100), Sizing.content());
-				scr1 = Containers.verticalScroll(Sizing.fixed(BUTTON_SIZE + 1), Sizing.fill(100), flowBar);
+				scr1 = Containers.verticalScroll(Sizing.fixed(BUTTON_SIZE + 1), Sizing.fill(100), flowBar).margins(Insets.vertical(2));
+				if(settings.mode == 2)
+					flowBar.horizontalAlignment(HorizontalAlignment.RIGHT);
+				else
+					flowBar.horizontalAlignment(HorizontalAlignment.LEFT);
 			}
 			flow1.id("container");
 			flowBar.id("dock").margins(Insets.of(settings.mode == 1 ? -1 : 0, settings.mode == 0 ? -1 : 0, settings.mode == 3 ? -1 : 0, settings.mode == 2 ? -1 : 0));
@@ -91,19 +101,31 @@ public class QuickAccessSubPanel extends InstancedSubPanel {
 			root.onChildMutated(subScreen);
 			if(settings.mode == 1 || settings.mode == 3)
 				flow1.child(scr1);
-			updateButtons(flowBar, gui);
+			updateButtons(flowBar, gui, settings.panel);
 		}
 
-		private void updateButtons(FlowLayout container, PlayerBasedGui<?> gui) {
+		private void updateButtons(FlowLayout container, PlayerBasedGui<?> gui, String selected) {
 			container.clearChildren();
 
-			DynamicPanels.subpanels.forEach((k, v) -> container.child(Components.button(Text.literal(v.guiName().getString().substring(0, 2)), b -> {
-				settings.panel = k;
-				settings.settings = "";
-				settings.save();
-				createComponent(Optional.of(subScreen), k, "", gui);
-
-			}).renderer(HoloPanels.button()).tooltip(v.guiName()).sizing(Sizing.fixed(BUTTON_SIZE - 2))));
+			DynamicPanels.subpanels.forEach((k, v) ->
+			{
+				if(!k.equals("quickaccess")) {
+					var b1 = DynamicPanels.makPanelButton(v, b -> {
+						settings.panel = k;
+						settings.settings = "";
+						settings.save();
+						createComponent(Optional.of(subScreen), k, "", gui);
+						updateButtons(container, gui, k);
+					}).activated(selected.equals(k)).sizing(Sizing.fixed(BUTTON_SIZE - 2));
+					if(selected.equals(k)) {
+						if(settings.mode == 0 || settings.mode == 1)
+							b1.verticalSizing(Sizing.fixed(22));
+						else
+							b1.horizontalSizing(Sizing.fixed(22));
+					}
+					container.child(b1);
+				}
+			});
 
 		}
 

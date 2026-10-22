@@ -209,7 +209,7 @@ public abstract class MultiInvHandledScreen<T extends AbstractMultiInvScreenHand
 		var comp = invsComps.get(inventory);
 		if(comp != null) {
 			var b = comp.getInventoryName() != null;
-			return new Pair<>(s.x + comp.x() - this.x, s.y + comp.y() - this.y + (b ? 10 : 1));
+			return new Pair<>(s.x + comp.x() - this.x + 1, s.y + comp.y() - this.y + (b ? 10 : 1));
 		}
 		return new Pair<>(0, 0);
 

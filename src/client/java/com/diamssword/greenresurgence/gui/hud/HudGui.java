@@ -3,17 +3,18 @@ package com.diamssword.greenresurgence.gui.hud;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
 import com.diamssword.greenresurgence.gui.components.hud.*;
+import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
 import com.diamssword.greenresurgence.systems.Components;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.LabelComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
+import io.wispforest.owo.ui.core.Color;
 import io.wispforest.owo.ui.core.Component;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Arm;
 import net.minecraft.util.collection.DefaultedList;
@@ -25,7 +26,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class HudGui extends BaseUIModelScreen<FlowLayout> {
-	public static final int blueColor = 0xff54ceed;
 	private FlowLayout root;
 	private final List<Runnable> tickers = new ArrayList<>();
 
@@ -61,11 +61,22 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 	protected void build(FlowLayout rootComponent) {
 		this.root = rootComponent;
 		tickers.clear();
+		attachWithTicker(IconComponent.class, "infectionIcon", (c) -> {
+			c.color(HoloPanels.highlightColor);
+			var man = this.client.player.getComponent(Components.PLAYER_DATA).healthManager;
+			c.hidden(man.getContaminationAmount() <= 0);
+
+		});
 		attachWithTicker(LabelComponent.class, "infectionText", (l) -> {
 			if(this.client.player != null) {
 				var man = this.client.player.getComponent(Components.PLAYER_DATA).healthManager;
-				int scale = (int) ((man.getContaminationAmount() / man.getMaxContaminationAmount()) * 100);
-				l.text(Text.literal(scale + "%"));
+				l.color(Color.ofArgb(HoloPanels.highlightColor));
+				if(man.getContaminationAmount() <= 0)
+					l.text(Text.literal(""));
+				else {
+					int scale = (int) ((man.getContaminationAmount() / man.getMaxContaminationAmount()) * 100);
+					l.text(Text.literal(scale + "%"));
+				}
 			}
 		});
 		attachWithTicker(HealthIconComponent.class, "health", (h) -> {
@@ -147,12 +158,14 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 		});
 		attachWithTicker(IconComponent.class, "armorIcon", (h) -> {
 			var arm = client.player.getArmor();
+			h.color(HoloPanels.highlightColor);
 			h.hidden(hideBars() || arm <= 0);
 		});
 		attachWithTicker(LabelComponent.class, "armorText", (h) -> {
 			var arm = client.player.getArmor();
+			h.color(Color.ofArgb(HoloPanels.highlightColor));
 			if(!hideBars() && arm > 0) {
-				h.text(Text.literal(arm + "").setStyle(Style.EMPTY.withColor(blueColor)));
+				h.text(Text.literal(arm + ""));
 			} else
 				h.text(Text.literal(""));
 		});

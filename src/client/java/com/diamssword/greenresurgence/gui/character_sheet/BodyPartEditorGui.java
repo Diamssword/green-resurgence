@@ -442,9 +442,9 @@ public class BodyPartEditorGui extends BaseUIModelScreen<FlowLayout> {
 			for(BodyLayerInfo value : layerBts) {
 				var bt = new RButtonComponent(Text.empty(), (o) -> {
 					for(var d : bts) {
-						d.setActivated(false);
+						d.activated(false);
 					}
-					o.setActivated(true);
+					o.activated(true);
 					currentLayer = value.id();
 					CharactersApi.bodyParts().getBodyLayer(currentLayer).ifPresent(l -> {
 						if(l.multi())

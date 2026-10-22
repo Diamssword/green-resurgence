@@ -9,6 +9,21 @@ public class ColorUtils {
 	public static int ORANGE = 0xbb7d25;
 	public static int WHITE = 0xe5e5e5;
 
+	public static int lighten(int argb, float amount) {
+		amount = Math.max(0f, Math.min(1f, amount));
+
+		int a = (argb >>> 24) & 0xFF;
+		int r = (argb >>> 16) & 0xFF;
+		int g = (argb >>> 8) & 0xFF;
+		int b = argb & 0xFF;
+
+		r = Math.round(r + (255 - r) * amount);
+		g = Math.round(g + (255 - g) * amount);
+		b = Math.round(b + (255 - b) * amount);
+
+		return (a << 24) | (r << 16) | (g << 8) | b;
+	}
+
 	public static int whithAlpha(int rgb, int alpha) {
 		return (alpha << 24) | rgb;
 	}
