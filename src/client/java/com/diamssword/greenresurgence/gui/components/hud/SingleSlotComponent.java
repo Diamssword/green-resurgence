@@ -2,6 +2,8 @@ package com.diamssword.greenresurgence.gui.components.hud;
 
 import com.diamssword.greenresurgence.DrawUtils;
 import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
+import com.diamssword.greenresurgence.gui.components.panels.HoloStyle;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.base.BaseComponent;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
@@ -27,6 +29,7 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
 	protected static final Identifier textureAtt = GreenResurgence.asRessource("textures/gui/hud/attack.png");
 	private boolean hidden;
 	private int hideTimer = 200;
+	private HoloStyle style = HoloPanels.getCurrentStyle();
 
 	protected SingleSlotComponent(Identifier texture) {
 		super();
@@ -79,25 +82,22 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
 
 	@Override
 	public void draw(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
-		if(hidden || hideTimer <= 0)
+		if(hidden || (hideTimer <= 0 && !indicatorMode))
 			return;
 		RenderSystem.enableDepthTest();
 
-		if(this.blend) {
+		if(this.blend && !indicatorMode) {
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
-			RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, this.hideTimer / 100f);
+			RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, Math.min(100, this.hideTimer) / 100f);
 		}
 
 		var matrices = context.getMatrices();
 
 		var mc = MinecraftClient.getInstance();
 		if(!indicatorMode) {
-			matrices.push();
-			matrices.translate(x, y, 0);
-			context.drawTexture(this.texture, 0, 0, 22, 22, 0, 22, 22, 22, textureSize, textureSize);
+			drawSlot(context, this.x, this.y, style.getSecondaryColor().background(), style.getMainColor().solid(), style.getSecondaryColor().border(), true, true);
 
-			matrices.pop();
 			matrices.push();
 			matrices.translate(x, y, 0);
 			DrawUtils.renderHotbarItem(mc, context, 3, 3, delta, mc.player, stack, 42);
@@ -123,6 +123,38 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
 
 	}
 
+	private static HoloPanels.RenderSurface panel = HoloPanels.crtLines(1, 70);
+
+	public static void drawSlot(OwoUIDrawContext context, int x, int y, int bgColor, int sideColor, int outerColor, boolean leftRounded, boolean rightRounded) {
+		//	panel = HoloPanels.crtLines(1, 70);
+		panel.draw(context, x + 2, y + 2, 18, 18);
+		context.fill(x + 3, y + 3, x + 19, y + 19, bgColor);
+		//first ring
+		context.fill(x + 2, y + 2, x + 20, y + 3, sideColor);
+		context.fill(x + 2, y + 19, x + 20, y + 20, sideColor);
+		context.fill(x + 2, y + 3, x + 3, y + 19, sideColor);
+		context.fill(x + 19, y + 3, x + 20, y + 19, sideColor);
+		//second ring
+		context.fill(x + (leftRounded ? 2 : 1), y + 1, x + (rightRounded ? 20 : 21), y + 2, sideColor);
+		context.fill(x + (leftRounded ? 2 : 1), y + 20, x + (rightRounded ? 20 : 21), y + 21, sideColor);
+		context.fill(x + 1, y + 2, x + 2, y + 20, sideColor);
+		context.fill(x + 20, y + 2, x + 21, y + 20, sideColor);
+		//outer ring
+		context.fill(x + (leftRounded ? 2 : 1), y, x + (rightRounded ? 20 : 21), y + 1, outerColor);
+		context.fill(x + (leftRounded ? 2 : 1), y + 21, x + (rightRounded ? 20 : 21), y + 22, outerColor);
+		if(rightRounded) {
+			context.fill(x + 20, y + 20, x + 21, y + 21, outerColor);
+			context.fill(x + 20, y + 1, x + 21, y + 2, outerColor);
+			context.fill(x + 21, y + 2, x + 22, y + 20, outerColor);
+		}
+		if(leftRounded) {
+			context.fill(x + 1, y + 1, x + 2, y + 2, outerColor);
+			context.fill(x + 1, y + 20, x + 2, y + 21, outerColor);
+			context.fill(x, y + 2, x + 1, y + 20, outerColor);
+		}
+
+	}
+
 	public ItemStack getStack() {
 		return stack;
 	}
@@ -133,6 +165,7 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
 			hideTimer = 110;
 		this.stack = stack;
 		hideTimer = MinecraftClient.getInstance().player.isCreative() ? 200 : Math.max(hideTimer - 1, 0);
+
 	}
 
 	public boolean isIndicatorMode() {

@@ -50,6 +50,8 @@ public class QuickAccessSubPanel extends InstancedSubPanel {
 					subScreen.verticalSizing(Sizing.fixed(root.height() - (BUTTON_SIZE + 1)));
 				else
 					subScreen.horizontalSizing(Sizing.fixed(root.width() - (BUTTON_SIZE + 1)));
+				if(subInstance != null)
+					subInstance.onResize(subScreen, gui);
 			}
 		}
 

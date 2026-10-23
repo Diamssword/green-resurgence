@@ -1,6 +1,8 @@
 package com.diamssword.greenresurgence.gui.components.hud;
 
 import com.diamssword.greenresurgence.DrawUtils;
+import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
+import com.diamssword.greenresurgence.gui.components.panels.HoloStyle;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.base.BaseComponent;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
@@ -26,6 +28,7 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(size, ItemStack.EMPTY);
 	protected boolean blend = false;
 	protected final Identifier texture;
+	private HoloStyle style = HoloPanels.getCurrentStyle();
 	private boolean hidden;
 
 	protected HotBarComponent(Identifier texture) {
@@ -86,7 +89,7 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 		if(this.blend) {
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
-			RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, this.hideTimer / 100f);
+			RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, Math.min(100, this.hideTimer) / 100f);
 			RenderSystem.enableDepthTest();
 		}
 
@@ -94,12 +97,18 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 		matrices.push();
 		matrices.translate(x, y, 0);
 		var mc = MinecraftClient.getInstance();
-		context.drawTexture(this.texture, 1, 1, 1, 22, 0, 0, 1, 22, textureSize, textureSize);
-		for(int i = 0; i < size; i++) {
-			context.drawTexture(this.texture, 2 + (20 * i), 1, 20, 22, 1, 0, 20, 22, textureSize, textureSize);
+		//	context.drawTexture(this.texture, 1, 1, 1, 22, 0, 0, 1, 22, textureSize, textureSize);
+		SingleSlotComponent.drawSlot(context, 1, 1, style.getSecondaryColor().background(), style.getMainColor().solid(), style.getSecondaryColor().border(), true, false);
+		if(size > 2) {
+			for(int i = 0; i < size - 2; i++) {
+				SingleSlotComponent.drawSlot(context, 21 + (i * 20), 1, style.getSecondaryColor().background(), style.getMainColor().solid(), style.getSecondaryColor().border(), false, false);
+				//context.drawTexture(this.texture, 2 + (20 * i), 1, 20, 22, 1, 0, 20, 22, textureSize, textureSize);
+			}
 		}
-		context.drawTexture(this.texture, 2 + (20 * size), 1, 1, 22, 21, 0, 1, 22, textureSize, textureSize);
-		context.drawTexture(this.texture, 20 * selected, 0, 24, 24, 22, 0, 24, 24, textureSize, textureSize);
+		SingleSlotComponent.drawSlot(context, 21 + ((size - 2) * 20), 1, style.getSecondaryColor().background(), style.getMainColor().solid(), style.getSecondaryColor().border(), false, true);
+		//	context.drawTexture(this.texture, 2 + (20 * size), 1, 1, 22, 21, 0, 1, 22, textureSize, textureSize);
+		drawHiglight(context, 20 * selected, 0, style.getSecondaryColor().border(), style.getHightlightColor().border(), style.getHightlightColor().background());
+		//context.drawTexture(this.texture, 20 * selected, 0, 24, 24, 22, 0, 24, 24, textureSize, textureSize);
 
 
 		matrices.pop();
@@ -118,6 +127,22 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 		}
 	}
 
+	public static void drawHiglight(OwoUIDrawContext context, int x, int y, int insideColor, int borderColor, int centerColor) {
+		if(insideColor != 0) {
+			context.fill(x + 1, y + 1, x + 23, y + 4, insideColor);
+			context.fill(x + 1, y + 4, x + 4, y + 20, insideColor);
+			context.fill(x + 1, y + 20, x + 23, y + 23, insideColor);
+			context.fill(x + 20, y + 4, x + 23, y + 20, insideColor);
+		}
+		if(borderColor != 0) {
+			context.fill(x, y, x + 24, y + 1, borderColor);
+			context.fill(x, y + 1, x + 1, y + 23, borderColor);
+			context.fill(x, y + 23, x + 24, y + 24, borderColor);
+			context.fill(x + 23, y + 1, x + 24, y + 23, borderColor);
+		}
+		if(centerColor != 0)
+			context.fill(x + 4, y + 4, x + 20, y + 20, centerColor);
+	}
 
 	public List<ItemStack> getStacks() {
 		return stacks;
@@ -147,7 +172,7 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 	public void setSelected(int selected) {
 		var s = Math.min(selected, size - 1);
 		if(this.selected != s)
-			hideTimer = 110;
+			hideTimer = 210;
 		this.selected = s;
 	}
 
@@ -165,7 +190,7 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 		if(left == right) {
 			return true;
 		} else {
-			return left.getCount() == right.getCount();
+			return left.getItem() == right.getItem() && left.getCount() == right.getCount();
 		}
 	}
 

@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.gui.components.hud;
 
 import com.diamssword.greenresurgence.DrawUtils;
 import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
+import com.diamssword.greenresurgence.gui.components.panels.HoloStyle;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.utils.ColorUtils;
 import com.google.common.base.Preconditions;
@@ -40,9 +41,11 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 	public float goalShield = 1f;
 	private HoloPanels.RenderSurface shieldRender = HoloPanels.crtCircle(1);
 	private HeartType type = HeartType.NORMAL;
+	private HoloStyle style;
 
 	protected HealthIconComponent(Identifier texture, int u, int v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
 		super(texture, u, v, regionWidth, regionHeight, textureWidth, textureHeight);
+		this.style = HoloPanels.getCurrentStyle();
 	}
 
 	@Override
@@ -141,7 +144,7 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 		}
 		if(this.blend)
 			RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, Math.min((this.hideTimer / 100f) * SHIELD_TRANSPARENCY, SHIELD_TRANSPARENCY));
-		shieldRender.draw(context, this);
+		shieldRender.draw(context, this.x, this.y, this.width, this.height);
 		var matrices = context.getMatrices();
 		matrices.push();
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -168,15 +171,15 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 			matrices.pop();
 			if(this.blend)
 				RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, Math.min((this.hideTimer / 100f) * SHIELD_TRANSPARENCY, SHIELD_TRANSPARENCY));
-			var color = ColorUtils.whithAlpha(HoloPanels.defaultColor, (int) ((this.hideTimer / 100f) * 0xFF));
+			var color = style.getMainColor().solid();
 			if(shieldblink)
 				color = ColorUtils.lighten(color, 0.2f);
 			drawCircleFill(context, width / 2, height / 2, (width / 2f) - 0.99, fillingShield, color);
 
 			if(this.blend)
 				RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, this.hideTimer / 100f);
-
-			drawCircleOutline(context, width / 2, height / 2, 0, 360, 40, width / 2f, 1.8, ColorUtils.whithAlpha(HoloPanels.defaultColor, 0xAF));
+			//ColorUtils.whithAlpha(HoloPanels.defaultColor, 0xAF)
+			drawCircleOutline(context, width / 2, height / 2, 0, 360, 40, width / 2f, 1.8, style.getMainColor().border());
 		}
 
 

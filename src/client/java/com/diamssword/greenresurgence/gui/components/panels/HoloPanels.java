@@ -4,42 +4,44 @@ import com.diamssword.greenresurgence.gui.components.RButtonComponent;
 import com.diamssword.greenresurgence.utils.ColorUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.component.ButtonComponent;
-import io.wispforest.owo.ui.core.Component;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
 import io.wispforest.owo.ui.core.Surface;
 
 import java.util.Random;
 
 public class HoloPanels {
-	public static int defaultColor = ColorUtils.whithAlpha(ColorUtils.GREEN, 0xff);
-	public static int secondaryColor = ColorUtils.whithAlpha(ColorUtils.GRAY_GREEN, 0xff);
-	public static int highlightColor = ColorUtils.whithAlpha(ColorUtils.ORANGE, 0xff);
-	public static int textColor = ColorUtils.whithAlpha(ColorUtils.WHITE, 0xff);
-	public static int defaultOpacity = 0x70;
+
+	public static HoloStyle getCurrentStyle() {
+		return new HoloStyle(ColorUtils.GREEN, ColorUtils.GRAY_GREEN, ColorUtils.ORANGE, ColorUtils.WHITE, 0xA0, 0x70);
+	}
 
 	public static Surface outline() {
-		return Surface.outline(ColorUtils.whithAlpha(defaultColor, defaultOpacity));
+		return Surface.outline(getCurrentStyle().getMainColor().border());
 
 	}
 
 	public static Surface panel(boolean secondary, boolean opaque) {
 
-		return Surface.flat(ColorUtils.whithAlpha(secondary ? secondaryColor : defaultColor, opaque ? 0xFF : defaultOpacity));
+		var style = HoloPanels.getCurrentStyle();
+		var c = secondary ? style.getSecondaryColor() : style.getMainColor();
+		return Surface.flat(opaque ? c.solid() : c.background());
 	}
 
 	public static <T extends ButtonComponent> T button(T button) {
+		var style = HoloPanels.getCurrentStyle();
 		button.renderer(HoloPanels.button());
 		if(button instanceof RButtonComponent rb)
-			rb.textColor(HoloPanels.textColor).hoveredTextColor(HoloPanels.textColor);
+			rb.textColor(style.getTextColor().solid()).hoveredTextColor(style.getTextColor().solid());
 		else
-			button.setMessage(button.getMessage().getWithStyle(button.getMessage().getStyle().withColor(HoloPanels.textColor)).get(0));
+			button.setMessage(button.getMessage().getWithStyle(button.getMessage().getStyle().withColor(style.getTextColor().solid())).get(0));
 		return button;
 	}
 
 	public static ButtonComponent.Renderer button() {
-		int color = ColorUtils.whithAlpha(highlightColor, defaultOpacity);
-		int hoveredColor = ColorUtils.whithAlpha(textColor, defaultOpacity);
-		int disabledColor = ColorUtils.whithAlpha(secondaryColor, defaultOpacity / 2);
+		var style = HoloPanels.getCurrentStyle();
+		int color = style.getHightlightColor().border();
+		int hoveredColor = style.getTextColor().border();
+		int disabledColor = style.getSecondaryColor().background();
 		return (context, button, delta) -> {
 			RenderSystem.enableDepthTest();
 			RenderSystem.enableBlend();
@@ -55,21 +57,30 @@ public class HoloPanels {
 		return Math.round(effectAlpha * (Math.max(0, Math.min(255, opacity)) / 255f));
 	}
 
-	public static Surface crtLines(int margin, int opacity) {
+	public static Surface crtLinesPanel(int margin, int opacity) {
+
+		var fn = crtLines(margin, opacity);
+		return (context, component) -> {
+			fn.draw(context, component.x(), component.y(), component.width(), component.height());
+		};
+	}
+
+	public static RenderSurface crtLines(int margin, int opacity) {
 		long startTime = System.currentTimeMillis();
 		Random random = new Random();
 		int[] glitchLine = {-1, -1, -1};
 		long[] glitchEnd = {0};
 		long[] nextGlitch = {startTime + 1000};
-		return (context, component) -> {
-			int baseColor = defaultColor;
+		int baseColor = getCurrentStyle().getMainColor().solid();
+		return (context, x1, y1, width1, height1) -> {
+
 			long now = System.currentTimeMillis();
 			double elapsed = now - startTime;
 
-			int x = component.x() + margin;
-			int y = component.y() + margin;
-			int width = component.width() - margin;
-			int height = component.height() - margin;
+			int x = x1 + margin;
+			int y = y1 + margin;
+			int width = width1 - margin;
+			int height = height1 - margin;
 
 			// Schedule the next glitch
 			if(now >= nextGlitch[0]) {
@@ -121,7 +132,7 @@ public class HoloPanels {
 				// Moving band
 				int alpha = scaleAlpha(Math.round(strength * 255), opacity);
 
-				int color = (alpha << 24) | (defaultColor & 0x00FFFFFF);
+				int color = (alpha << 24) | (baseColor & 0x00FFFFFF);
 
 				context.fill(
 						x,
@@ -142,14 +153,14 @@ public class HoloPanels {
 		long[] glitchEnd = {0};
 		long[] nextGlitch = {startTime + 1000};
 
-		return (context, component) -> {
-			int baseColor = defaultColor;
+		int baseColor = getCurrentStyle().getMainColor().solid();
+		return (context, x, y1, width, height) -> {
 			long now = System.currentTimeMillis();
 			double elapsed = now - startTime;
 
-			int centerX = component.x() + component.width() / 2;
-			int centerY = component.y() + component.height() / 2;
-			double r = (component.width() / 2f) - margin;
+			int centerX = x + width / 2;
+			int centerY = y1 + height / 2;
+			double r = (width / 2f) - margin;
 			if(r <= 0) return;
 			int yStart = (int) Math.ceil(centerY - r);
 			int yEnd = (int) Math.floor(centerY + r);
@@ -225,6 +236,6 @@ public class HoloPanels {
 
 
 	public static interface RenderSurface {
-		void draw(OwoUIDrawContext context, Component component);
+		void draw(OwoUIDrawContext context, int x, int y, int width, int height);
 	}
 }

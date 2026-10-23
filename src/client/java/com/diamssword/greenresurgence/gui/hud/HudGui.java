@@ -62,7 +62,7 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 		this.root = rootComponent;
 		tickers.clear();
 		attachWithTicker(IconComponent.class, "infectionIcon", (c) -> {
-			c.color(HoloPanels.highlightColor);
+			c.color(HoloPanels.getCurrentStyle().getHightlightColor().solid());
 			var man = this.client.player.getComponent(Components.PLAYER_DATA).healthManager;
 			c.hidden(man.getContaminationAmount() <= 0);
 
@@ -70,7 +70,7 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 		attachWithTicker(LabelComponent.class, "infectionText", (l) -> {
 			if(this.client.player != null) {
 				var man = this.client.player.getComponent(Components.PLAYER_DATA).healthManager;
-				l.color(Color.ofArgb(HoloPanels.highlightColor));
+				l.color(Color.ofArgb(HoloPanels.getCurrentStyle().getHightlightColor().solid()));
 				if(man.getContaminationAmount() <= 0)
 					l.text(Text.literal(""));
 				else {
@@ -158,12 +158,12 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 		});
 		attachWithTicker(IconComponent.class, "armorIcon", (h) -> {
 			var arm = client.player.getArmor();
-			h.color(HoloPanels.highlightColor);
+			h.color(HoloPanels.getCurrentStyle().getHightlightColor().solid());
 			h.hidden(hideBars() || arm <= 0);
 		});
 		attachWithTicker(LabelComponent.class, "armorText", (h) -> {
 			var arm = client.player.getArmor();
-			h.color(Color.ofArgb(HoloPanels.highlightColor));
+			h.color(Color.ofArgb(HoloPanels.getCurrentStyle().getHightlightColor().solid()));
 			if(!hideBars() && arm > 0) {
 				h.text(Text.literal(arm + ""));
 			} else

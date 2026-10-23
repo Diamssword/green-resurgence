@@ -25,7 +25,7 @@ public class ColorUtils {
 	}
 
 	public static int whithAlpha(int rgb, int alpha) {
-		return (alpha << 24) | rgb;
+		return (rgb & 0x00FFFFFF) | ((alpha & 0xFF) << 24);
 	}
 
 	public static MutableText whiteText(String text) {

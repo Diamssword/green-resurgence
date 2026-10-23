@@ -366,7 +366,7 @@ public class DynamicPanels {
 			s = layout.get();
 			s.setLayout(finalPn.guiLocation());
 		}
-		s.zIndex(300);
+		//s.zIndex(300);
 		if(s.getRoot() != null)
 			inst.build(s.getRoot(), gui);
 

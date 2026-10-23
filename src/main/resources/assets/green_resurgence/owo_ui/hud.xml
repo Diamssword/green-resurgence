@@ -33,31 +33,6 @@
                                     <gap>2</gap>
                                     <horizontal-alignment>center</horizontal-alignment>
                                 </flow-layout>
-                                <flow-layout direction="vertical">
-                                    <children>
-                                        <hudicon id="armorIcon" texture="green_resurgence:hud/icons.png"
-                                                 texture-width="32" texture-height="32" region-height="9"
-                                                 region-width="9">
-                                            <sizing>
-                                                <vertical method="fixed">12</vertical>
-                                                <horizontal
-                                                        method="fixed">12
-                                                </horizontal>
-                                            </sizing>
-                                            <blend>true</blend>
-                                        </hudicon>
-                                        <label id="armorText">
-                                            <color>#54ceed</color>
-                                            <shadow>true</shadow>
-                                            <text>20</text>
-                                        </label>
-                                    </children>
-                                    <padding>
-                                        <left>2</left>
-                                    </padding>
-                                    <gap>2</gap>
-                                    <horizontal-alignment>center</horizontal-alignment>
-                                </flow-layout>
 
                             </children>
                             <vertical-alignment>top</vertical-alignment>
