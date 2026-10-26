@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.gui.components.hud;
 
 import com.diamssword.greenresurgence.DrawUtils;
 import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
+import com.diamssword.greenresurgence.gui.components.panels.HoloRenders;
 import com.diamssword.greenresurgence.gui.components.panels.HoloStyle;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.utils.ColorUtils;
@@ -39,7 +40,7 @@ public class HealthIconComponent extends TextureComponent implements IHideableCo
 	public float fillingShield = 1f;
 	public float goal = 1f;
 	public float goalShield = 1f;
-	private HoloPanels.RenderSurface shieldRender = HoloPanels.crtCircle(1);
+	private HoloRenders.RenderSurface shieldRender = HoloRenders.crtCircle(1);
 	private HeartType type = HeartType.NORMAL;
 	private HoloStyle style;
 

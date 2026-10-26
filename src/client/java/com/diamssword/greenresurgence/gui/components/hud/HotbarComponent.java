@@ -11,32 +11,28 @@ import io.wispforest.owo.ui.parsing.UIModel;
 import io.wispforest.owo.ui.parsing.UIParsing;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import org.w3c.dom.Element;
 
 import java.util.List;
 import java.util.Map;
 
-public class HotBarComponent extends BaseComponent implements IHideableComponent {
+public class HotbarComponent extends BaseComponent implements IHideableComponent {
 
-	private final int textureSize = 46;
 	private int selected = 1;
 	private int size = 5;
 	private int hideTimer = 200;
 
 	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(size, ItemStack.EMPTY);
 	protected boolean blend = false;
-	protected final Identifier texture;
 	private HoloStyle style = HoloPanels.getCurrentStyle();
 	private boolean hidden;
 
-	protected HotBarComponent(Identifier texture) {
+	protected HotbarComponent() {
 		super();
-		this.texture = texture;
 	}
 
-	public HotBarComponent blend(boolean blend) {
+	public HotbarComponent blend(boolean blend) {
 		this.blend = blend;
 		return this;
 	}
@@ -98,14 +94,14 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 		matrices.translate(x, y, 0);
 		var mc = MinecraftClient.getInstance();
 		//	context.drawTexture(this.texture, 1, 1, 1, 22, 0, 0, 1, 22, textureSize, textureSize);
-		SingleSlotComponent.drawSlot(context, 1, 1, style.getSecondaryColor().background(), style.getMainColor().solid(), style.getSecondaryColor().border(), true, false);
+		SingleSlotComponent.drawSlot(context, 1, 1, style.getSecondaryColor().background(), style.getMainColor().solid(), style.getMainColor().border(), style.getSecondaryColor().border(), true, false);
 		if(size > 2) {
 			for(int i = 0; i < size - 2; i++) {
-				SingleSlotComponent.drawSlot(context, 21 + (i * 20), 1, style.getSecondaryColor().background(), style.getMainColor().solid(), style.getSecondaryColor().border(), false, false);
+				SingleSlotComponent.drawSlot(context, 21 + (i * 20), 1, style.getSecondaryColor().background(), style.getMainColor().solid(), style.getMainColor().border(), style.getSecondaryColor().border(), false, false);
 				//context.drawTexture(this.texture, 2 + (20 * i), 1, 20, 22, 1, 0, 20, 22, textureSize, textureSize);
 			}
 		}
-		SingleSlotComponent.drawSlot(context, 21 + ((size - 2) * 20), 1, style.getSecondaryColor().background(), style.getMainColor().solid(), style.getSecondaryColor().border(), false, true);
+		SingleSlotComponent.drawSlot(context, 21 + ((size - 2) * 20), 1, style.getSecondaryColor().background(), style.getMainColor().solid(), style.getMainColor().border(), style.getSecondaryColor().border(), false, true);
 		//	context.drawTexture(this.texture, 2 + (20 * size), 1, 1, 22, 21, 0, 1, 22, textureSize, textureSize);
 		drawHiglight(context, 20 * selected, 0, style.getSecondaryColor().border(), style.getHightlightColor().border(), style.getHightlightColor().background());
 		//context.drawTexture(this.texture, 20 * selected, 0, 24, 24, 22, 0, 24, 24, textureSize, textureSize);
@@ -207,9 +203,7 @@ public class HotBarComponent extends BaseComponent implements IHideableComponent
 
 	}
 
-	public static HotBarComponent parse(Element element) {
-		UIParsing.expectAttributes(element, "texture");
-		var textureId = UIParsing.parseIdentifier(element.getAttributeNode("texture"));
-		return new HotBarComponent(new Identifier(textureId.getNamespace(), "textures/gui/" + textureId.getPath()));
+	public static HotbarComponent parse(Element element) {
+		return new HotbarComponent();
 	}
 }

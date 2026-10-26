@@ -22,7 +22,6 @@
                                             <blend>true</blend>
                                         </hudicon>
                                         <label id="infectionText">
-                                            <color>#54ceed</color>
                                             <shadow>true</shadow>
                                             <text>0%</text>
                                         </label>
@@ -49,22 +48,18 @@
                         <!-- Centre -->
                         <flow-layout direction="vertical">
                             <children>
-                                 <hudbar id="stamina" texture="green_resurgence:hud/stamina.png" reversed="true"
-                                         texture-width="256" texture-height="64" region-width="256"
-                                         region-height="10">
+                                 <holobar id="stamina" color="#E0D0C36C" inverted="false">
                                             <sizing>
                                                 <vertical method="fixed">5</vertical>
+                                                <horizontal method="fill">50</horizontal>
                                             </sizing>
-                                            <blend>true</blend>
-                                        </hudbar>
-                                 <hudbar id="air" texture="green_resurgence:hud/air.png" reversed="true"
-                                         texture-width="256" texture-height="64" region-width="256"
-                                         region-height="10">
+                                 </holobar>
+                                <holobar id="air" color="#E042A7C2" inverted="false">
                                             <sizing>
                                                 <vertical method="fixed">5</vertical>
+                                                <horizontal method="fill">50</horizontal>
                                             </sizing>
-                                            <blend>true</blend>
-                                 </hudbar>
+                                 </holobar>
                             </children>
                             <gap>2</gap>
                             <margins><top>10</top></margins>
@@ -125,7 +120,12 @@
                         <!-- Bas Centre -->
                         <flow-layout direction="vertical">
                             <children>
-
+                                  <holobar id="mountJump" color="#E0D0C36C" inverted="false">
+                                            <sizing>
+                                                <vertical method="fixed">5</vertical>
+                                                <horizontal method="fill">50</horizontal>
+                                            </sizing>
+                                 </holobar>
                                 <heldtooltip id="heldtooltip">
                                     <sizing>
                                         <horizontal method="fill">100</horizontal>
@@ -133,14 +133,14 @@
                                 </heldtooltip>
                                 <flow-layout direction="horizontal">
                                     <children>
-                                        <offhandslot id="offhandleft" texture="green_resurgence:hud/hotbar.png">
+                                        <offhandslot id="offhandleft">
                                             <blend>true</blend>
                                         </offhandslot>
-                                        <hotbar id="hotbar" texture="green_resurgence:hud/hotbar.png">
+                                        <hotbar id="hotbar">
                                             <blend>true</blend>
                                             <size>10</size>
                                         </hotbar>
-                                        <offhandslot id="offhandright" texture="green_resurgence:hud/hotbar.png">
+                                        <offhandslot id="offhandright">
                                             <blend>true</blend>
                                         </offhandslot>
                                     </children>
@@ -170,20 +170,32 @@
                         <!-- Bas Droite -->
                         <flow-layout direction="vertical">
                             <children>
-                                <hudbar id="mountHealth" texture="green_resurgence:hud/mount.png" reversed="false"
-                                        texture-width="82" texture-height="18" region-width="82" region-height="9">
-                                    <sizing>
-                                        <horizontal method="fixed">82</horizontal>
-                                    </sizing>
-                                    <blend>true</blend>
-                                </hudbar>
-                                <hudbar id="mountJump" texture="green_resurgence:hud/jump.png" reversed="false"
-                                        texture-width="82" texture-height="18" region-width="82" region-height="7">
-                                    <sizing>
-                                        <horizontal method="fixed">82</horizontal>
-                                    </sizing>
-                                    <blend>true</blend>
-                                </hudbar>
+                                <flow-layout direction="horizontal">
+                                    <children>
+                                        <hudicon id="mountIcon" texture="green_resurgence:hud/icons.png"
+                                                 texture-width="32" texture-height="32" region-height="9"
+                                                 region-width="9" u="0" v="10">
+                                            <sizing>
+                                                <vertical method="fixed">12</vertical>
+                                                <horizontal
+                                                        method="fixed">12
+                                                </horizontal>
+                                            </sizing>
+                                            <blend>true</blend>
+                                        </hudicon>
+                                         <label id="mountText">
+                                            <shadow>true</shadow>
+                                            <text>x20</text>
+                                             <margins><left>1</left></margins>
+                                        </label>
+                                    </children>
+                                    <padding><all>2</all></padding>
+                                    <surface><hdp></hdp></surface>
+                                    <vertical-alignment>center</vertical-alignment>
+                                    <margins><right>5</right><bottom>3</bottom></margins>
+                                </flow-layout>
+
+
                             </children>
                             <padding>
                                 <bottom>5</bottom>

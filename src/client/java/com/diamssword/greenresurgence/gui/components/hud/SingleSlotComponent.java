@@ -3,6 +3,7 @@ package com.diamssword.greenresurgence.gui.components.hud;
 import com.diamssword.greenresurgence.DrawUtils;
 import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
+import com.diamssword.greenresurgence.gui.components.panels.HoloRenders;
 import com.diamssword.greenresurgence.gui.components.panels.HoloStyle;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.base.BaseComponent;
@@ -20,10 +21,8 @@ import java.util.Map;
 
 public class SingleSlotComponent extends BaseComponent implements IHideableComponent {
 
-	private final int textureSize = 46;
 	private ItemStack stack = ItemStack.EMPTY;
 	protected boolean blend = false;
-	protected final Identifier texture;
 
 	protected boolean indicatorMode = false;
 	protected static final Identifier textureAtt = GreenResurgence.asRessource("textures/gui/hud/attack.png");
@@ -31,9 +30,8 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
 	private int hideTimer = 200;
 	private HoloStyle style = HoloPanels.getCurrentStyle();
 
-	protected SingleSlotComponent(Identifier texture) {
+	protected SingleSlotComponent() {
 		super();
-		this.texture = texture;
 	}
 
 	public SingleSlotComponent blend(boolean blend) {
@@ -96,7 +94,7 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
 
 		var mc = MinecraftClient.getInstance();
 		if(!indicatorMode) {
-			drawSlot(context, this.x, this.y, style.getSecondaryColor().background(), style.getMainColor().solid(), style.getSecondaryColor().border(), true, true);
+			drawSlot(context, this.x, this.y, style.getSecondaryColor().background(), style.getMainColor().solid(), style.getMainColor().border(), style.getSecondaryColor().border(), true, true);
 
 			matrices.push();
 			matrices.translate(x, y, 0);
@@ -123,17 +121,17 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
 
 	}
 
-	private static HoloPanels.RenderSurface panel = HoloPanels.crtLines(1, 70);
+	private static HoloRenders.RenderSurface panel = HoloRenders.crtLines(1, 70);
 
-	public static void drawSlot(OwoUIDrawContext context, int x, int y, int bgColor, int sideColor, int outerColor, boolean leftRounded, boolean rightRounded) {
+	public static void drawSlot(OwoUIDrawContext context, int x, int y, int bgColor, int sideColor, int innerRingColor, int outerColor, boolean leftRounded, boolean rightRounded) {
 		//	panel = HoloPanels.crtLines(1, 70);
 		panel.draw(context, x + 2, y + 2, 18, 18);
 		context.fill(x + 3, y + 3, x + 19, y + 19, bgColor);
 		//first ring
-		context.fill(x + 2, y + 2, x + 20, y + 3, sideColor);
-		context.fill(x + 2, y + 19, x + 20, y + 20, sideColor);
-		context.fill(x + 2, y + 3, x + 3, y + 19, sideColor);
-		context.fill(x + 19, y + 3, x + 20, y + 19, sideColor);
+		context.fill(x + 2, y + 2, x + 20, y + 3, innerRingColor);
+		context.fill(x + 2, y + 19, x + 20, y + 20, innerRingColor);
+		context.fill(x + 2, y + 3, x + 3, y + 19, innerRingColor);
+		context.fill(x + 19, y + 3, x + 20, y + 19, innerRingColor);
 		//second ring
 		context.fill(x + (leftRounded ? 2 : 1), y + 1, x + (rightRounded ? 20 : 21), y + 2, sideColor);
 		context.fill(x + (leftRounded ? 2 : 1), y + 20, x + (rightRounded ? 20 : 21), y + 21, sideColor);
@@ -161,7 +159,7 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
 
 	public void setStacks(ItemStack stack) {
 
-		if(!HotBarComponent.areEqual(stack, this.stack))
+		if(!HotbarComponent.areEqual(stack, this.stack))
 			hideTimer = 110;
 		this.stack = stack;
 		hideTimer = MinecraftClient.getInstance().player.isCreative() ? 200 : Math.max(hideTimer - 1, 0);
@@ -184,8 +182,6 @@ public class SingleSlotComponent extends BaseComponent implements IHideableCompo
 	}
 
 	public static SingleSlotComponent parse(Element element) {
-		UIParsing.expectAttributes(element, "texture");
-		var textureId = UIParsing.parseIdentifier(element.getAttributeNode("texture"));
-		return new SingleSlotComponent(new Identifier(textureId.getNamespace(), "textures/gui/" + textureId.getPath()));
+		return new SingleSlotComponent();
 	}
 }

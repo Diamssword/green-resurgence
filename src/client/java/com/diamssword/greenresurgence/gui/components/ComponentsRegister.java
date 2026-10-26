@@ -22,9 +22,10 @@ public class ComponentsRegister {
 		}));
 		UIParsing.registerFactory("recipedisplay", a -> new RecipDisplayComponent(Sizing.fill(100)));
 		UIParsing.registerFactory("hudbar", BarComponent::parse);
+		UIParsing.registerFactory("holobar", HoloBarComponent::parse);
 		UIParsing.registerFactory("healthbar", HealthBarComponent::parse);
 		UIParsing.registerFactory("healthicon", HealthIconComponent::parse);
-		UIParsing.registerFactory("hotbar", HotBarComponent::parse);
+		UIParsing.registerFactory("hotbar", HotbarComponent::parse);
 		UIParsing.registerFactory("heldtooltip", (e) -> new ItemTooltipComponent());
 		UIParsing.registerFactory("hudicon", IconComponent::parse);
 		UIParsing.registerFactory("offhandslot", SingleSlotComponent::parse);

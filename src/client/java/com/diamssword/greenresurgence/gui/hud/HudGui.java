@@ -10,6 +10,8 @@ import io.wispforest.owo.ui.component.LabelComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Color;
 import io.wispforest.owo.ui.core.Component;
+import io.wispforest.owo.ui.core.Sizing;
+import io.wispforest.owo.ui.core.Surface;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -28,6 +30,7 @@ import java.util.function.Consumer;
 public class HudGui extends BaseUIModelScreen<FlowLayout> {
 	private FlowLayout root;
 	private final List<Runnable> tickers = new ArrayList<>();
+	private Surface savedMountSurface;
 
 	protected HudGui() {
 		super(FlowLayout.class, DataSource.asset(GreenResurgence.asRessource("hud")));
@@ -61,6 +64,9 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 	protected void build(FlowLayout rootComponent) {
 		this.root = rootComponent;
 		tickers.clear();
+		var m = rootComponent.childById(HoloBarComponent.class, "mountJump");
+		if(m != null)
+			m.barDrawer(HoloBarComponent.getHorseBarDrawer(0xE023458A, 0xE0C78C46));
 		attachWithTicker(IconComponent.class, "infectionIcon", (c) -> {
 			c.color(HoloPanels.getCurrentStyle().getHightlightColor().solid());
 			var man = this.client.player.getComponent(Components.PLAYER_DATA).healthManager;
@@ -86,39 +92,52 @@ public class HudGui extends BaseUIModelScreen<FlowLayout> {
 			}
 			h.hidden(hideBars());
 		});
-		attachWithTicker(BarComponent.class, "mountHealth", (h) -> {
+		attachWithTicker(IconComponent.class, "mountIcon", (c) -> {
+			c.color(HoloPanels.getCurrentStyle().getHightlightColor().solid());
 			var rid = getRiddenEntity();
-			if(rid != null) {
-				var p = rid.getHealth() / rid.getMaxHealth();
-				h.setFillPercent(p);
-			}
-			h.hidden(rid == null);
+			c.hidden(rid == null);
+
 		});
-		attachWithTicker(BarComponent.class, "mountJump", h -> {
+		attachWithTicker(LabelComponent.class, "mountText", (l) -> {
+			var rid = getRiddenEntity();
+			l.color(Color.ofArgb(HoloPanels.getCurrentStyle().getHightlightColor().solid()));
+			if(l.hasParent()) {
+				if(rid != null) {
+					l.parent().sizing(Sizing.content());
+					l.text(Text.literal("x" + (int) Math.floor(rid.getHealth())));
+					if(savedMountSurface != null)
+						l.parent().surface(savedMountSurface);
+				} else {
+					if(savedMountSurface == null)
+						savedMountSurface = l.parent().surface();
+					l.parent().surface(Surface.BLANK);
+					l.parent().sizing(Sizing.fixed(0));
+				}
+			}
+
+		});
+		attachWithTicker(HoloBarComponent.class, "mountJump", h -> {
 			h.setFillPercent(this.client.player.getMountJumpStrength());
 			h.hidden(this.client.player.getJumpingMount() == null);
 		});
-		attachWithTicker(BarComponent.class, "air", (h) -> {
+		attachWithTicker(HoloBarComponent.class, "air", (h) -> {
 			var p = this.client.player.getAir() / (float) this.client.player.getMaxAir();
 			h.setFillPercent(p);
 			h.hidden(hideBars() || p >= 1);
 		});
-		attachWithTicker(BarComponent.class, "stamina", (h) -> {
+		attachWithTicker(HoloBarComponent.class, "stamina", (h) -> {
 			var dt = this.client.player.getComponent(Components.PLAYER_DATA);
 			var p = dt.healthManager.getEnergyAmount() / dt.healthManager.getMaxEnergyAmount();
+			//System.out.println(p);
 			h.animateFillPercent((float) p);
 			h.tick();
-			h.hidden(hideBars() || p >= 1);
-		});
-		attachWithTicker(IconComponent.class, "airIcon", (h) -> {
-			var p = this.client.player.getAir() / (float) this.client.player.getMaxAir();
 			h.hidden(hideBars() || p >= 1);
 		});
 		attachWithTicker(ItemTooltipComponent.class, "heldtooltip", h -> {
 			h.tick();
 			h.hidden(this.client.interactionManager.getCurrentGameMode() == GameMode.SPECTATOR);
 		});
-		attachWithTicker(HotBarComponent.class, "hotbar", (h) -> {
+		attachWithTicker(HotbarComponent.class, "hotbar", (h) -> {
 			h.hidden(this.client.interactionManager.getCurrentGameMode() == GameMode.SPECTATOR);
 			var max = CustomPlayerInventory.getHotbarSlotCount(this.client.player);
 			var ls = DefaultedList.ofSize(max, ItemStack.EMPTY);
