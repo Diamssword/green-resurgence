@@ -12,24 +12,24 @@ import software.bernie.geckolib.GeckoLibException;
 import software.bernie.geckolib.animatable.client.RenderProvider;
 
 public class ModularArmorLayerRenderer implements ArmorRenderer {
-    private final Identifier texture;
+	private final Identifier texture;
 
-    public ModularArmorLayerRenderer(Identifier texture) {
-        this.texture = texture;
-    }
+	public ModularArmorLayerRenderer(Identifier texture) {
+		this.texture = texture;
+	}
 
-    @Override
-    public void render(MatrixStack matrices,VertexConsumerProvider vertexConsumers,ItemStack stack,LivingEntity entity,EquipmentSlot slot,int light,BipedEntityModel<LivingEntity> model) {
+	@Override
+	public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, ItemStack stack, LivingEntity entity, EquipmentSlot slot, int light, BipedEntityModel<LivingEntity> model) {
 
-        var model1=RenderProvider.of(stack).getGenericArmorModel(entity,stack, slot, model);
-        try {
-            if(model1 !=null)
-                ArmorRenderer.renderPart(matrices, vertexConsumers, light, stack, model1, texture);
+		var model1 = RenderProvider.of(stack).getGenericArmorModel(entity, stack, slot, model);
+		try {
+			if(model1 != null) {
+				ArmorRenderer.renderPart(matrices, vertexConsumers, light, stack, model1, texture);
+			}
 
-        }catch (GeckoLibException ex)
-        {
-            ex.printStackTrace();
+		} catch(GeckoLibException ex) {
+			ex.printStackTrace();
 
-        }
-    }
+		}
+	}
 }

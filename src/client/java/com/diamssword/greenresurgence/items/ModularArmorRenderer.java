@@ -12,7 +12,6 @@ import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib.GeckoLibException;
@@ -22,9 +21,6 @@ import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.Animation;
 import software.bernie.geckolib.model.DefaultedGeoModel;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public final class ModularArmorRenderer extends GeoArmorRenderer<ModularArmorItem> {
 	private static final ModularArmorGeoModel<ModularArmorItem> FALLBACKMODEL = new ModularArmorGeoModel<>(GreenResurgence.asRessource("default"), true);
@@ -37,8 +33,6 @@ public final class ModularArmorRenderer extends GeoArmorRenderer<ModularArmorIte
 
 	public static RenderProvider RendererProvider() {
 		return new RenderProvider() {
-			private final Map<PlayerEntity, ModularArmorRenderer> cachedRenders = new HashMap<>();
-			private final Map<PlayerEntity, String> cachedIds = new HashMap<>();
 			private GeckoToolEquipmentRenderer<?> itemRendered;
 
 			@Override
@@ -67,6 +61,7 @@ public final class ModularArmorRenderer extends GeoArmorRenderer<ModularArmorIte
 
 	@Override
 	public void actuallyRender(MatrixStack poseStack, ModularArmorItem animatable, BakedGeoModel model, RenderLayer renderType, VertexConsumerProvider bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+
 		if(leftArm != null && rightArm != null && this.currentEntity instanceof ClientPlayerEntity pl) {
 			if(pl.getModel().equals("slim")) {
 				this.leftArm.setScaleX(0.8f);
@@ -76,65 +71,12 @@ public final class ModularArmorRenderer extends GeoArmorRenderer<ModularArmorIte
 				this.leftArm.setPosX(this.leftArm.getPosX() - 0.25f);
 			this.rightArm.setPosX(this.rightArm.getPosX() + 0.1f);
 		}
-
-		super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+		//allow for translucent textures
+		var buffer1 = bufferSource.getBuffer(RenderLayer.getEntityTranslucent(this.getTextureLocation(animatable)));
+		super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer1, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
-	/*
-		protected void applyBaseTransformations(BipedEntityModel<?> baseModel) {
-			if(this.head != null) {
-				ModelPart headPart = baseModel.head;
 
-				RenderUtils.matchModelPartRot(headPart, this.head);
-				this.head.updatePosition(headPart.pivotX, -headPart.pivotY, headPart.pivotZ);
-			}
-
-			if(this.body != null) {
-				ModelPart bodyPart = baseModel.body;
-
-				RenderUtils.matchModelPartRot(bodyPart, this.body);
-				this.body.updatePosition(bodyPart.pivotX, -bodyPart.pivotY, bodyPart.pivotZ);
-			}
-
-			if(this.rightArm != null) {
-				ModelPart rightArmPart = baseModel.rightArm;
-
-				RenderUtils.matchModelPartRot(rightArmPart, this.rightArm);
-				this.rightArm.updatePosition(rightArmPart.pivotX + 5, 2 - rightArmPart.pivotY, rightArmPart.pivotZ);
-			}
-
-			if(this.leftArm != null) {
-				ModelPart leftArmPart = baseModel.leftArm;
-
-				RenderUtils.matchModelPartRot(leftArmPart, this.leftArm);
-				this.leftArm.updatePosition(leftArmPart.pivotX - 5f, 2f - leftArmPart.pivotY, leftArmPart.pivotZ);
-			}
-
-			if(this.rightLeg != null) {
-				ModelPart rightLegPart = baseModel.rightLeg;
-
-				RenderUtils.matchModelPartRot(rightLegPart, this.rightLeg);
-				this.rightLeg.updatePosition(rightLegPart.pivotX + 2, 12 - rightLegPart.pivotY, rightLegPart.pivotZ);
-
-				if(this.rightBoot != null) {
-					RenderUtils.matchModelPartRot(rightLegPart, this.rightBoot);
-					this.rightBoot.updatePosition(rightLegPart.pivotX + 2, 12 - rightLegPart.pivotY, rightLegPart.pivotZ);
-				}
-			}
-
-			if(this.leftLeg != null) {
-				ModelPart leftLegPart = baseModel.leftLeg;
-
-				RenderUtils.matchModelPartRot(leftLegPart, this.leftLeg);
-				this.leftLeg.updatePosition(leftLegPart.pivotX - 2, 12 - leftLegPart.pivotY, leftLegPart.pivotZ);
-
-				if(this.leftBoot != null) {
-					RenderUtils.matchModelPartRot(leftLegPart, this.leftBoot);
-					this.leftBoot.updatePosition(leftLegPart.pivotX - 2, 12 - leftLegPart.pivotY, leftLegPart.pivotZ);
-				}
-			}
-		}
-		*/
 	public static class ModularArmorGeoModel<T extends GeoAnimatable> extends DefaultedGeoModel<T> {
 		public ModularArmorGeoModel(Identifier assetSubpath) {
 			this(assetSubpath, false);
