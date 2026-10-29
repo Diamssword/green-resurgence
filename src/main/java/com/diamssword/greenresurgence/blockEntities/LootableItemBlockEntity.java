@@ -97,6 +97,8 @@ public class LootableItemBlockEntity extends ItemBlockEntity implements IAdvance
 
 	@Override
 	public ItemStack getItem() {
+		if(this.selectedIndex < 0)
+			this.selectedIndex = selectASlot();
 		if(this.isOff || selectedIndex < 0 || selectedIndex >= this.items.size()) {return ItemStack.EMPTY;}
 		return this.items.get(selectedIndex);
 	}

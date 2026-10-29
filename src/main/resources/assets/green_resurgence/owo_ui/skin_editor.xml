@@ -112,10 +112,11 @@
                 </flow-layout>
                 <flow-layout direction="horizontal" id="ndLayout">
                     <children>
-                        <flow-layout direction="vertical" id="playerLayout">
+                        <flow-layout direction="horizontal" id="playerLayout">
                             <children/>
-                            <sizing>
-                                <horizontal method="fill">70</horizontal>
+                            <vertical-alignment>center</vertical-alignment>
+                               <sizing>
+                                <horizontal method="fill">65</horizontal>
                                 <vertical method="fill">80</vertical>
                             </sizing>
                         </flow-layout>

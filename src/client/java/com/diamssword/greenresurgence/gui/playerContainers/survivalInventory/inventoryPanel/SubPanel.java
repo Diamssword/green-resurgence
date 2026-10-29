@@ -1,5 +1,6 @@
 package com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.inventoryPanel;
 
+import com.diamssword.greenresurgence.containers.player.HoloPanelConfig;
 import com.diamssword.greenresurgence.gui.components.AdaptiveLabelComponent;
 import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
 import com.diamssword.greenresurgence.gui.components.SubScreenLayout;
@@ -11,6 +12,7 @@ import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
@@ -46,7 +48,7 @@ public interface SubPanel {
 			return 50;
 		}
 
-		default void handleEditRightClick(double mouseX, double mouseY, SubScreenLayout scr, BiConsumer<SubScreenLayout, DynamicPanels.PanelConfig> recreateFn, DynamicPanels.PanelConfig config, boolean hasParent) {
+		default void handleEditRightClick(double mouseX, double mouseY, SubScreenLayout scr, BiConsumer<SubScreenLayout, HoloPanelConfig> recreateFn, HoloPanelConfig config, boolean hasParent) {
 			var sets = getSettings();
 			if(!hasParent && (sets == null || !sets.needPanel()))
 				baseSwapPanel(scr, recreateFn, config);
@@ -54,7 +56,7 @@ public interface SubPanel {
 				sets.mount(mouseX, mouseY, scr, recreateFn, config, hasParent);
 		}
 
-		public static void baseSwapPanel(SubScreenLayout scr, BiConsumer<SubScreenLayout, DynamicPanels.PanelConfig> recreateFn, DynamicPanels.PanelConfig config) {
+		public static void baseSwapPanel(SubScreenLayout scr, BiConsumer<SubScreenLayout, HoloPanelConfig> recreateFn, HoloPanelConfig config) {
 			scr.setLayout("survival/subpanel/swap_panel");
 			var cols = Math.max(1, (int) Math.floor((scr.width() - 2) / 22f));
 			var grid = scr.getRoot().childById(FreeRowGridLayout.class, "listPanel");
@@ -85,17 +87,17 @@ public interface SubPanel {
 	}
 
 	public interface SubPanelSettings {
-		public void decode(DynamicPanels.PanelConfig config);
+		public void decode(HoloPanelConfig config);
 
-		public void mount(double mouseX, double mouseY, SubScreenLayout scr, BiConsumer<SubScreenLayout, DynamicPanels.PanelConfig> recreateFn, DynamicPanels.PanelConfig config, boolean hasParent);
+		public void mount(double mouseX, double mouseY, SubScreenLayout scr, BiConsumer<SubScreenLayout, HoloPanelConfig> recreateFn, HoloPanelConfig config, boolean hasParent);
 
 		public default boolean needPanel() {
 			return true;
 		}
 
-		public String encode();
+		public NbtCompound encode(NbtCompound encode);
 
-		public static FreeRowGridLayout basePanel(SubScreenLayout scr, BiConsumer<SubScreenLayout, DynamicPanels.PanelConfig> recreateFn, DynamicPanels.PanelConfig config, boolean hasParent) {
+		public static FreeRowGridLayout basePanel(SubScreenLayout scr, BiConsumer<SubScreenLayout, HoloPanelConfig> recreateFn, HoloPanelConfig config, boolean hasParent) {
 			scr.setLayout("survival/subpanel/swap_panel");
 
 			var flow = scr.getRoot().childById(FlowLayout.class, "mainFlow");

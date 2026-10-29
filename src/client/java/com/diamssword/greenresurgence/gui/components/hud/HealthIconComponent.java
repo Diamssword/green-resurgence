@@ -1,9 +1,9 @@
 package com.diamssword.greenresurgence.gui.components.hud;
 
 import com.diamssword.greenresurgence.DrawUtils;
+import com.diamssword.greenresurgence.containers.player.HoloStyle;
 import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
 import com.diamssword.greenresurgence.gui.components.panels.HoloRenders;
-import com.diamssword.greenresurgence.gui.components.panels.HoloStyle;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.utils.ColorUtils;
 import com.google.common.base.Preconditions;

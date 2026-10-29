@@ -17,6 +17,7 @@ import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.SlimSliderComponent;
 import io.wispforest.owo.ui.component.TextBoxComponent;
+import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.container.ScrollContainer;
 import io.wispforest.owo.ui.core.Insets;
@@ -190,7 +191,7 @@ public class BodyPartEditorGui extends BaseUIModelScreen<FlowLayout> {
 				var converted = convertList(dictionary.id(), list);
 				if(layerInfo.splited()) {
 					var state = splittedState.computeIfAbsent(currentLayer, s -> new HashMap<>()).getOrDefault(selectedLayerIndex, false);
-					layout.child(Components.checkbox(Text.literal("Splitted")).checked(state).onChanged(b -> {
+					layout.child(Components.checkbox(Text.translatable(GreenResurgence.ID + ".body_editor.splittedbt")).checked(state).onChanged(b -> {
 						splittedState.computeIfAbsent(currentLayer, s -> new HashMap<>()).put(selectedLayerIndex, b);
 						if(!b) {
 							var l = getLayerPair(selectedLayerIndex);
@@ -211,12 +212,12 @@ public class BodyPartEditorGui extends BaseUIModelScreen<FlowLayout> {
 					}));
 					layout.child(new SeparatorComponent(Sizing.fill(100), Sizing.fixed(2)).margins(Insets.vertical(2)));
 					if(state)
-						layout.child(Components.label(Text.literal("Left")));
+						layout.child(Components.label(Text.translatable(GreenResurgence.ID + ".body_editor.leftbt")));
 					generateCat(layout, converted, "  ", state ? "left" : null);
 
 					if(state) {
 						layout.child(new SeparatorComponent(Sizing.fill(100), Sizing.fixed(2)).margins(Insets.vertical(2)));
-						layout.child(Components.label(Text.literal("Right")));
+						layout.child(Components.label(Text.translatable(GreenResurgence.ID + ".body_editor.rightbt")));
 						generateCat(layout, converted, "  ", "right");
 					}
 
@@ -390,15 +391,20 @@ public class BodyPartEditorGui extends BaseUIModelScreen<FlowLayout> {
 		var search = rootComponent.childById(TextBoxComponent.class, "search");
 		var flow = rootComponent.childById(FreeRowGridLayout.class, "layerLayout");
 		var multiLay = rootComponent.childById(FlowLayout.class, "multiLayersLayout");
-		var playerLay = rootComponent.childById(FlowLayout.class, "playerLayout");
+		var ndLayout = rootComponent.childById(FlowLayout.class, "playerLayout");
+		var playerLay = Containers.verticalFlow(Sizing.fill(100), Sizing.fill(100));
+		var sliderV = Components.slimSlider(SlimSliderComponent.Axis.VERTICAL);
 		var slider = Components.slimSlider(SlimSliderComponent.Axis.HORIZONTAL);
 		rootComponent.childById(ButtonComponent.class, "confirmBT").onPress(b -> {
 			exportSkin();
 			this.close();
 		});
 		playerComp = new LayeredPlayerComponent(Sizing.fill(100));
+
+		ndLayout.child(sliderV.sizing(Sizing.fixed(8), Sizing.fill(60)));
+		ndLayout.child(playerLay);
 		playerLay.child(playerComp.scaleToFit(true).transform(m -> m.multiply(RotationAxis.NEGATIVE_X.rotationDegrees(40))).lookAtCursor(false).verticalSizing(Sizing.fill(90)));
-		playerLay.child(slider.margins(Insets.left(5)).sizing(Sizing.fill(90), Sizing.fill(10)));
+		playerLay.child(slider.margins(Insets.left(5)).sizing(Sizing.fill(90), Sizing.fixed(10)));
 		var player = playerComp.entity();
 		var dt = ComponentManager.getPlayerDatas(player);
 		dt.getAppearence().clonePlayerAppearance(MinecraftClient.getInstance().player);
@@ -432,6 +438,10 @@ public class BodyPartEditorGui extends BaseUIModelScreen<FlowLayout> {
 			}).tooltip(ar);
 			bt.setMessage(v);
 		}
+		sliderV.value(0.5);
+		sliderV.onChanged().subscribe(v -> {
+			playerComp.xOffsetFactor((float) (1f - (v * 2f)));
+		});
 		slider.value(0.5);
 		slider.onChanged().subscribe(v -> {
 			playerComp.rotation((int) (-180 + (v * 360f)));
@@ -456,7 +466,7 @@ public class BodyPartEditorGui extends BaseUIModelScreen<FlowLayout> {
 					selectedLayerIndex = 0;
 					loadCloths(partsLayout, lastSearch);
 				});
-				bt.icon("body/" + value.id() + ".png").sizing(Sizing.fixed(20)).tooltip(Text.translatable(GreenResurgence.ID + ".body_editor.layerbt." + value.id())).margins(Insets.of(2, 0, 2, 0));
+				bt.icon("body/" + value.id()).sizing(Sizing.fixed(20)).tooltip(Text.translatable(GreenResurgence.ID + ".body_editor.layerbt." + value.id())).margins(Insets.of(2, 0, 2, 0));
 				flow.child(bt);
 				bts.add(bt);
 
@@ -505,7 +515,7 @@ public class BodyPartEditorGui extends BaseUIModelScreen<FlowLayout> {
 					selectedLayerIndex = finalI;
 					loadCloths(partsLayout, lastSearch);
 				}
-			}).tooltip(Text.literal("Shift+Click to delete "));
+			}).tooltip(Text.translatable(GreenResurgence.ID + ".body_editor.layer_bt.tooltip"));
 			container.child(b.sizing(Sizing.fixed(20)));
 		}
 		if(count < 20) {

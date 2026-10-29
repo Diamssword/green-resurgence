@@ -1,11 +1,17 @@
 package com.diamssword.greenresurgence.systems.character;
 
+import com.diamssword.greenresurgence.GreenResurgence;
 import com.diamssword.greenresurgence.containers.player.CustomPlayerInventory;
+import com.diamssword.greenresurgence.containers.player.HoloPanelConfig;
+import com.diamssword.greenresurgence.containers.player.HoloStyle;
+import com.diamssword.greenresurgence.network.Channels;
+import com.diamssword.greenresurgence.network.InventoryPackets;
 import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.crafting.ComposedIdentifier;
 import com.diamssword.greenresurgence.systems.crafting.PendingCraft;
 import com.diamssword.greenresurgence.systems.crafting.Recipes;
 import com.diamssword.greenresurgence.systems.crafting.TimedCraftingProvider;
+import com.diamssword.greenresurgence.utils.ColorUtils;
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ClientTickingComponent;
@@ -20,13 +26,15 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.collection.DefaultedList;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerInventoryData implements ComponentV3, ServerTickingComponent, ClientTickingComponent, AutoSyncedComponent {
 
 	private TimedCraftingProvider crafterProvider = new TimedCraftingProvider();
 	private final CustomPlayerInventory inventory = new CustomPlayerInventory();
 	public final PlayerEntity player;
-
+	private HoloStyle holoStyle = new HoloStyle(ColorUtils.GREEN, ColorUtils.GRAY_GREEN, ColorUtils.ORANGE, ColorUtils.WHITE, 0xA0, 0x70);
+	private HoloPanelConfig[] panels = new HoloPanelConfig[0];
 	private DefaultedList<ItemStack> bags = DefaultedList.ofSize(3, ItemStack.EMPTY);
 
 	public PlayerInventoryData(PlayerEntity e) {
@@ -73,6 +81,19 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 		bags.set(0, stack);
 	}
 
+	public void syncHoloPanels(HoloPanelConfig[] panels) {
+		this.panels = panels;
+		if(GreenResurgence.clientHelper.isClient()) {
+			var ls = new NbtList();
+			for(HoloPanelConfig panel : this.panels) {
+				ls.add(panel.toNBT());
+			}
+			var c = new NbtCompound();
+			c.put("ls", ls);
+			Channels.MAIN.clientHandle().send(new InventoryPackets.SyncHoloPanels(c));
+		}
+	}
+
 	@Override
 	public void clientTick() {
 		crafterProvider.tickClient(player);
@@ -99,6 +120,10 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 		}
 	}
 
+	public HoloStyle getHoloStyle() {
+		return holoStyle;
+	}
+
 	@Contract(mutates = "param1")
 	@Override
 	public void writeSyncPacket(PacketByteBuf buf, ServerPlayerEntity recipient) {
@@ -110,6 +135,12 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 				pendingCrafts.add(NbtString.of(c.recipe.getId().toString()));
 			});
 			tag.put("pendingcrafts", pendingCrafts);
+			tag.put("holoStyle", holoStyle.toNBT());
+			var ls = new NbtList();
+			for(HoloPanelConfig panel : this.panels) {
+				ls.add(panel.toNBT());
+			}
+			tag.put("holoPanels", ls);
 		}
 		var ls = new NbtList();
 		this.bags.forEach(i -> {
@@ -131,6 +162,16 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 					r.ifPresent(recipe -> crafterProvider.addPending(new PendingCraft(recipe)));
 				});
 			}
+			if(tag.contains("holoStyle")) {
+				this.holoStyle = HoloStyle.fromNBT(tag.getCompound("holoStyle"));
+			}
+			if(tag.contains("holoPanels")) {
+				var ls = tag.getList("holoPanels", NbtElement.COMPOUND_TYPE);
+				this.panels = new HoloPanelConfig[ls.size()];
+				for(int i = 0; i < ls.size(); i++) {
+					this.panels[i] = HoloPanelConfig.fromNBT(ls.getCompound(i));
+				}
+			}
 			if(tag.contains("bags")) {
 				var ls = tag.getList("bags", NbtElement.COMPOUND_TYPE);
 				for(int i = 0; i < ls.size(); i++) {
@@ -142,20 +183,42 @@ public class PlayerInventoryData implements ComponentV3, ServerTickingComponent,
 	}
 
 	@Override
-	public void readFromNbt(NbtCompound tag) {
+	public void readFromNbt(@NotNull NbtCompound tag) {
 		inventory.fromNBT(tag, player);
 		if(tag.contains("crafter")) {
 			crafterProvider = new TimedCraftingProvider(tag.getCompound("crafter"));
 			if(!player.getWorld().isClient)
 				crafterProvider.onNewRecipeQueued(() -> player.syncComponent(Components.PLAYER_INVENTORY));
 		}
-
+		if(tag.contains("holoStyle"))
+			holoStyle = HoloStyle.fromNBT(tag.getCompound("holoStyle"));
+		if(tag.contains("holoPanels")) {
+			var ls = tag.getList("holoPanels", NbtElement.COMPOUND_TYPE);
+			this.panels = new HoloPanelConfig[ls.size()];
+			for(int i = 0; i < ls.size(); i++) {
+				this.panels[i] = HoloPanelConfig.fromNBT(ls.getCompound(i));
+			}
+		}
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound tag) {
 		tag.put("crafter", crafterProvider.toNBT());
+		tag.put("holoStyle", holoStyle.toNBT());
+		var ls = new NbtList();
+		for(HoloPanelConfig panel : this.panels) {
+			ls.add(panel.toNBT());
+		}
+		tag.put("holoPanels", ls);
 		inventory.toNBT(tag);
 
+	}
+
+	public void setHoloPanels(HoloPanelConfig[] cfg) {
+		this.panels = cfg;
+	}
+
+	public HoloPanelConfig[] getHoloPanels() {
+		return panels;
 	}
 }

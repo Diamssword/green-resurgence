@@ -29,6 +29,8 @@ public class PlayerComponent extends BaseComponent {
 	protected final VertexConsumerProvider.Immediate entityBuffers;
 	protected final PlayerEntity entity;
 
+	protected double zoom = 0;
+	protected float xOffsetFactor;
 	protected float mouseRotation = 0;
 	protected float scale = 1;
 	protected boolean lookAtCursor = false;
@@ -65,6 +67,22 @@ public class PlayerComponent extends BaseComponent {
 	}
 
 	@Override
+	public boolean onMouseScroll(double mouseX, double mouseY, double amount) {
+		this.zoom += amount * 5;
+		this.zoom = Math.min(100, Math.max(0, this.zoom));
+		return true;
+	}
+
+	public float xOffsetFactor() {
+		return xOffsetFactor;
+	}
+
+	public PlayerComponent xOffsetFactor(float factor) {
+		this.xOffsetFactor = factor;
+		return this;
+	}
+
+	@Override
 	protected int determineHorizontalContentSize(Sizing sizing) {
 		return this.height;
 	}
@@ -85,13 +103,15 @@ public class PlayerComponent extends BaseComponent {
 		matrices.push();
 
 		matrices.translate(x + this.width / 2f, y + this.height * 0.6f, 100);
-		matrices.scale(75 * this.scale * this.width / 64f, -75 * this.scale * this.height / 64f, 75 * this.scale);
+		var val = 75 * this.scale * Math.max(this.width, this.height) / 64f;
+		val = val + (float) zoom;
+		matrices.scale(val, -val, 75 * this.scale);
 
-		matrices.translate(0, entity.getHeight() / -2f, 0);
+		matrices.translate(0, (entity.getHeight() / -2f) + xOffsetFactor, 0);
 
 		this.transform.accept(matrices);
 
-		if (this.lookAtCursor) {
+		if(this.lookAtCursor) {
 			float xRotation = (float) Math.toDegrees(Math.atan((mouseY - this.y - this.height / 2f) / 40f));
 			float yRotation = (float) Math.toDegrees(Math.atan((mouseX - this.x - this.width / 2f) / 40f));
 			this.entity.prevHeadYaw = -yRotation;
@@ -99,7 +119,7 @@ public class PlayerComponent extends BaseComponent {
 			this.entity.prevPitch = xRotation * .65f;
 
 			// We make sure the xRotation never becomes 0, as the lighting otherwise becomes very unhappy
-			if (xRotation == 0) xRotation = .1f;
+			if(xRotation == 0) xRotation = .1f;
 			matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(xRotation * .15f));
 			matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(yRotation * .15f));
 		} else {
@@ -126,7 +146,7 @@ public class PlayerComponent extends BaseComponent {
 
 	@Override
 	public boolean onMouseDrag(double mouseX, double mouseY, double deltaX, double deltaY, int button) {
-		if (this.allowMouseRotation && button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+		if(this.allowMouseRotation && button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
 			this.mouseRotation += deltaX;
 
 			super.onMouseDrag(mouseX, mouseY, deltaX, deltaY, button);
@@ -175,7 +195,7 @@ public class PlayerComponent extends BaseComponent {
 	public PlayerComponent scaleToFit(boolean scaleToFit) {
 		this.scaleToFit = scaleToFit;
 
-		if (scaleToFit) {
+		if(scaleToFit) {
 			float xScale = .6f / entity.getWidth();
 			float yScale = .6f / entity.getHeight();
 

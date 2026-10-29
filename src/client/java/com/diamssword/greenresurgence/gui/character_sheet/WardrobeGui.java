@@ -124,6 +124,7 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 		var txt1 = rootComponent.childById(LabelComponent.class, "title_right");
 		var playerComp = rootComponent.childById(PlayerComponent.class, "player");
 		var slider = rootComponent.childById(SlimSliderComponent.class, "slider");
+		var sliderV = rootComponent.childById(SlimSliderComponent.class, "sliderV");
 		var player = playerComp.entity();
 		var dt = ComponentManager.getPlayerDatas(player);
 		dt.getAppearence().clonePlayerAppearance(MinecraftClient.getInstance().player);
@@ -138,6 +139,10 @@ public class WardrobeGui extends BaseUIModelScreen<FlowLayout> {
 		slider.value(0.5);
 		slider.onChanged().subscribe(v -> {
 			playerComp.rotation((int) (-180 + (v * 360f)));
+		});
+		sliderV.value(0.5);
+		sliderV.onChanged().subscribe(v -> {
+			playerComp.xOffsetFactor((float) (1f - (v * 2f)));
 		});
 		if(!shouldShowOutifits) {
 			var c = rootComponent.childById(FlowLayout.class, "outfits");

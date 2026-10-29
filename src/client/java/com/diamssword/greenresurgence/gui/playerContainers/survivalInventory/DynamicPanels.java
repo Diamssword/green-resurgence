@@ -1,6 +1,7 @@
 package com.diamssword.greenresurgence.gui.playerContainers.survivalInventory;
 
-import com.diamssword.greenresurgence.GreenResurgenceClient;
+import com.diamssword.greenresurgence.GreenResurgence;
+import com.diamssword.greenresurgence.containers.player.HoloPanelConfig;
 import com.diamssword.greenresurgence.gui.components.AdaptiveLabelComponent;
 import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
 import com.diamssword.greenresurgence.gui.components.RButtonComponent;
@@ -8,17 +9,14 @@ import com.diamssword.greenresurgence.gui.components.SubScreenLayout;
 import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
 import com.diamssword.greenresurgence.gui.playerContainers.PlayerBasedGui;
 import com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.inventoryPanel.*;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.*;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
 import java.util.*;
@@ -36,112 +34,20 @@ public class DynamicPanels {
 		subpanels.put("quickaccess", new QuickAccessSubPanel());
 	}
 
-	public static class PanelConfig {
-		private String panel;
-		public int x;
-		private int width;
-		private int height;
-		private int y;
-		private boolean dirty = false;
-		private String settings;
-
-		public String getPanel() {
-			return panel;
-		}
-
-		public void setPanel(String panel) {
-			this.panel = panel;
-		}
-
-		@Nullable
-		public String getSettings() {
-			return settings;
-		}
-
-		public void setSettings(String settings) {
-			this.settings = settings;
-			this.dirty = true;
-		}
-
-		public static PanelConfig fromJson(JsonObject ob) {
-			int x = 0;
-			int y = 0;
-			int w = 100;
-			int h = 100;
-			String p = DEFAULT_PANEL;
-			if(ob.has("x"))
-				x = ob.get("x").getAsInt();
-			if(ob.has("y"))
-				y = ob.get("y").getAsInt();
-			if(ob.has("w"))
-				w = ob.get("w").getAsInt();
-			if(ob.has("h"))
-				h = ob.get("h").getAsInt();
-			if(ob.has("p"))
-				p = ob.get("p").getAsString();
-			var cf = new PanelConfig(x, y, w, h, p);
-			if(ob.has("s"))
-				cf.setSettings(ob.get("s").getAsString());
-			return cf;
-		}
-
-		public JsonObject toJson() {
-			var ob = new JsonObject();
-			ob.addProperty("x", x);
-			ob.addProperty("y", y);
-			ob.addProperty("w", width);
-			ob.addProperty("h", height);
-			ob.addProperty("p", panel);
-			if(getSettings() != null)
-				ob.addProperty("s", getSettings());
-			return ob;
-		}
-
-		public PanelConfig(int x, int y, int width, int height, String panel) {
-			this.x = x;
-			this.y = y;
-			this.width = width;
-			this.height = height;
-			this.panel = panel;
-			this.dirty = true;
-		}
-
-		public PanelConfig scaledForNewRatio(Vector2i oldSize, Vector2i newSize) {
-
-			var x = (int) Math.round((this.x / (double) oldSize.x) * newSize.x);
-			var width = (int) Math.round((this.width / (double) oldSize.x) * newSize.x);
-			var y = (int) Math.round((this.y / (double) oldSize.y) * newSize.y);
-			var height = (int) Math.round((this.height / (double) oldSize.y) * newSize.y);
-			return new PanelConfig(x, y, width, height, panel);
-		}
-
-		public void attach(DraggableResizable<?> component) {
-			component.dragObservable.observe(p -> {
-				this.x = p.x;
-				this.y = p.y;
-				this.width = p.z;
-				this.height = p.w;
-				dirty = true;
-			});
-		}
-	}
-
 	PlayerInventoryGui gui;
 	private FlowLayout root;
 	private int saveIn = -1;
 	private boolean editMode = false;
 	private boolean firsTick = false;
-	private final List<PanelConfig> config = new ArrayList<>();
+	private final List<HoloPanelConfig> config = new ArrayList<>();
 	private Vector2i lastParentSize;
 	private final Map<DraggableResizable<SubScreenLayout>, SubPanel.SubPanelInstance> panels = new HashMap<>();
 
 	public DynamicPanels() {
 		try {
-			var arr = new GsonBuilder().create().fromJson(GreenResurgenceClient.HOLO_CONFIG.holos().survivalPanels, JsonArray.class);
-			arr.forEach(a -> {
-				config.add(PanelConfig.fromJson(a.getAsJsonObject()));
-			});
-			lastParentSize = new Vector2i(Math.max(0, GreenResurgenceClient.HOLO_CONFIG.holos().lastGuiSizeW), Math.max(0, GreenResurgenceClient.HOLO_CONFIG.holos().lastGuiSizeH));
+			config.addAll(Arrays.asList(com.diamssword.greenresurgence.systems.Components.PLAYER_INVENTORY.get(MinecraftClient.getInstance().player).getHoloPanels()));
+			var settings = GreenResurgence.CONFIG.clientOptions.holoSettings;
+			lastParentSize = new Vector2i(Math.max(0, settings.lastGuiSizeW()), Math.max(0, settings.lastGuiSizeH()));
 		} catch(JsonSyntaxException e) {
 			e.printStackTrace();
 		}
@@ -150,20 +56,22 @@ public class DynamicPanels {
 	private void checkScaling() {
 		var odlS = lastParentSize;
 		lastParentSize = new Vector2i(root.width(), root.height());
+		var settings = GreenResurgence.CONFIG.clientOptions.holoSettings;
 		if(odlS != null && odlS.length() > 0 && (odlS.x != lastParentSize.x || odlS.y != lastParentSize.y)) {
-			var ls = new ArrayList<PanelConfig>();
+			var ls = new ArrayList<HoloPanelConfig>();
 			config.forEach(s -> ls.add(s.scaledForNewRatio(odlS, lastParentSize)));
 			config.clear();
 			config.addAll(ls);
 			panels.keySet().forEach(p -> root.removeChild(p));
 			init(root, gui);
-			GreenResurgenceClient.HOLO_CONFIG.holos().lastGuiSizeW = lastParentSize.x;
-			GreenResurgenceClient.HOLO_CONFIG.holos().lastGuiSizeH = lastParentSize.y;
-			GreenResurgenceClient.HOLO_CONFIG.save();
+
+			settings.lastGuiSizeW(lastParentSize.x);
+			settings.lastGuiSizeH(lastParentSize.y);
+			GreenResurgence.CONFIG.save();
 		} else if(odlS == null || odlS.length() == 0) {
-			GreenResurgenceClient.HOLO_CONFIG.holos().lastGuiSizeW = lastParentSize.x;
-			GreenResurgenceClient.HOLO_CONFIG.holos().lastGuiSizeH = lastParentSize.y;
-			GreenResurgenceClient.HOLO_CONFIG.save();
+			settings.lastGuiSizeW(lastParentSize.x);
+			settings.lastGuiSizeH(lastParentSize.y);
+			GreenResurgence.CONFIG.save();
 		}
 	}
 
@@ -184,6 +92,23 @@ public class DynamicPanels {
 
 	}
 
+	private void save(boolean checkDirty) {
+		boolean flg = false;
+		if(checkDirty) {
+			for(var c : config) {
+				if(c.isDirty()) {
+					flg = true;
+					break;
+				}
+			}
+		} else flg = true;
+		if(flg) {
+			var pl = com.diamssword.greenresurgence.systems.Components.PLAYER_INVENTORY.get(MinecraftClient.getInstance().player);
+			pl.syncHoloPanels(config.toArray(new HoloPanelConfig[0]));
+
+		}
+	}
+
 	public void tick() {
 		if(firsTick) {
 			checkScaling();
@@ -191,9 +116,8 @@ public class DynamicPanels {
 		}
 		panels.values().forEach(SubPanel.SubPanelInstance::panelTick);
 		config.forEach(c -> {
-			if(c.dirty) {
+			if(c.isDirty()) {
 				saveIn = 5;
-				c.dirty = false;
 			}
 		});
 
@@ -201,11 +125,12 @@ public class DynamicPanels {
 			saveIn--;
 		if(saveIn == 0) {
 			saveIn = -1;
-			var ar = new JsonArray();
-			config.forEach(c -> ar.add(c.toJson()));
-			GreenResurgenceClient.HOLO_CONFIG.holos().survivalPanels = ar.toString();
-			GreenResurgenceClient.HOLO_CONFIG.save();
+			save(false);
 		}
+	}
+
+	public void onClose() {
+		save(true);
 	}
 
 	public FlowLayout getControlPanel() {
@@ -270,7 +195,7 @@ public class DynamicPanels {
 	 * the config object is not added to the config list
 	 *
 	 */
-	public void instantiateWindow(PanelConfig config) {
+	public void instantiateWindow(HoloPanelConfig config) {
 		if(this.root != null) {
 			var c = createComponent(config);
 			c.getLeft().editMode(editMode);
@@ -291,7 +216,7 @@ public class DynamicPanels {
 	 */
 	public void createWindow(int x, int y, int width, int height, String panel) {
 		if(this.root != null) {
-			var cfg = new PanelConfig(x, y, width, height, panel);
+			var cfg = new HoloPanelConfig(x, y, width, height, panel);
 			config.add(cfg);
 			saveIn = 10;
 			var c = createComponent(cfg);
@@ -307,12 +232,12 @@ public class DynamicPanels {
 
 	}
 
-	protected Pair<DraggableResizable<SubScreenLayout>, SubPanel.SubPanelInstance> createComponent(PanelConfig config) {
+	protected Pair<DraggableResizable<SubScreenLayout>, SubPanel.SubPanelInstance> createComponent(HoloPanelConfig config) {
 		var subscreen = buildPanel(Optional.empty(), config, gui);
 
-		var d = new DraggableResizable<>(Sizing.fixed(config.width), Sizing.fixed(config.height), subscreen.getLeft());
+		var d = new DraggableResizable<>(Sizing.fixed(config.getWidth()), Sizing.fixed(config.getHeight()), subscreen.getLeft());
 		d.minSize(Math.max(24, subscreen.getRight().minWidth()), Math.max(24, subscreen.getRight().minHeight()));
-		d.positioning(Positioning.absolute(config.x, config.y));
+		d.positioning(Positioning.absolute(config.getX(), config.getY()));
 
 		d.addListener((c, a, x, y) -> {
 			if(a == DraggableResizable.Action.RIGHT_CLICK) {
@@ -325,7 +250,9 @@ public class DynamicPanels {
 				root.removeChild(c);
 			}
 		});
-		config.attach(d);
+		d.dragObservable.observe(c -> {
+			config.onChange(c.x, c.y, c.z, c.w);
+		});
 		return new Pair<>(d, subscreen.getRight());
 
 	}
@@ -334,7 +261,7 @@ public class DynamicPanels {
 	 * remove a panel form the root and the panel list then re-instentiate a window with the config
 	 * does not remove the config from the list
 	 */
-	public void recreateWindow(SubScreenLayout subscreen, PanelConfig config) {
+	public void recreateWindow(SubScreenLayout subscreen, HoloPanelConfig config) {
 		if(subscreen.hasParent()) {
 			panels.remove(subscreen.parent());
 			root.removeChild(subscreen.parent());
@@ -342,8 +269,8 @@ public class DynamicPanels {
 		}
 	}
 
-	public static Pair<SubScreenLayout, SubPanel.SubPanelInstance> buildPanel(Optional<SubScreenLayout> layout, PanelConfig config, PlayerBasedGui<?> gui) {
-		var pn = subpanels.get(config.panel == null ? DEFAULT_PANEL : config.panel);
+	public static Pair<SubScreenLayout, SubPanel.SubPanelInstance> buildPanel(Optional<SubScreenLayout> layout, HoloPanelConfig config, PlayerBasedGui<?> gui) {
+		var pn = subpanels.get(config.getPanel() == null ? DEFAULT_PANEL : config.getPanel());
 		if(pn == null)
 			pn = subpanels.get(DEFAULT_PANEL);
 		var inst = pn.instantiate();

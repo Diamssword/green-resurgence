@@ -5,6 +5,7 @@ import com.diamssword.greenresurgence.blockEntities.LootedBlockEntity;
 import com.diamssword.greenresurgence.entities.NPCEntity;
 import com.diamssword.greenresurgence.event.AttackBlockCallback;
 import com.diamssword.greenresurgence.events.PlaceBlockCallback;
+import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
 import com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.PlayerInventoryGui;
 import com.diamssword.greenresurgence.network.AdventureInteract;
 import com.diamssword.greenresurgence.network.Channels;
@@ -15,6 +16,7 @@ import com.diamssword.greenresurgence.render.AdventureBlockHighlight;
 import com.diamssword.greenresurgence.render.BoxRenderers;
 import com.diamssword.greenresurgence.render.WireRenderer;
 import com.diamssword.greenresurgence.render.entities.NPCEntityRenderer;
+import com.diamssword.greenresurgence.systems.Components;
 import com.diamssword.greenresurgence.systems.faction.BaseInteractions;
 import com.diamssword.greenresurgence.systems.faction.perimeter.components.FactionZone;
 import com.diamssword.greenresurgence.systems.lootables.IAdvancedLootableBlock;
@@ -53,7 +55,10 @@ public class ClientEvents {
 			if(c.world != null) {
 				NPCEntityRenderer rend = (NPCEntityRenderer) c.getEntityRenderDispatcher().getRenderer(new NPCEntity(MEntities.NPC, c.world));
 				rend.initClothLayers();
+
 			}
+			if(c.player != null)
+				HoloPanels.inventory = Components.PLAYER_INVENTORY.get(c.player);
 		});
 		ClientTickEvents.START_CLIENT_TICK.register(mc -> {
 

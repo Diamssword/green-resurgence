@@ -1,15 +1,21 @@
 package com.diamssword.greenresurgence.gui.components.panels;
 
+import com.diamssword.greenresurgence.containers.player.HoloStyle;
 import com.diamssword.greenresurgence.gui.components.RButtonComponent;
-import com.diamssword.greenresurgence.utils.ColorUtils;
+import com.diamssword.greenresurgence.systems.character.PlayerInventoryData;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.core.Surface;
+import net.minecraft.nbt.NbtCompound;
 
 public class HoloPanels {
+	public static PlayerInventoryData inventory;
+
 
 	public static HoloStyle getCurrentStyle() {
-		return new HoloStyle(ColorUtils.GREEN, ColorUtils.GRAY_GREEN, ColorUtils.ORANGE, ColorUtils.WHITE, 0xA0, 0x70);
+		if(inventory != null)
+			return inventory.getHoloStyle();
+		return HoloStyle.fromNBT(new NbtCompound());
 	}
 
 	public static Surface outline() {

@@ -1,8 +1,8 @@
 package com.diamssword.greenresurgence.gui.components.hud;
 
 import com.diamssword.greenresurgence.DrawUtils;
+import com.diamssword.greenresurgence.containers.player.HoloStyle;
 import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
-import com.diamssword.greenresurgence.gui.components.panels.HoloStyle;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.base.BaseComponent;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;

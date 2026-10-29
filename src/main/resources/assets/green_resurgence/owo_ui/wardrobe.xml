@@ -112,6 +112,12 @@
                 </flow-layout>
                 <flow-layout direction="horizontal" id="ndLayout">
                     <children>
+                         <slim-slider direction="vertical" id="sliderV">
+                                    <sizing>
+                                        <horizontal method="fixed">8</horizontal>
+                                        <vertical method="fill">60</vertical>
+                                    </sizing>
+                                </slim-slider>
                         <flow-layout direction="vertical">
                             <children>
                                 <player id="player">
@@ -133,7 +139,7 @@
                                 </slim-slider>
                             </children>
                             <sizing>
-                                <horizontal method="fill">70</horizontal>
+                                <horizontal method="fill">68</horizontal>
                                 <vertical method="fill">80</vertical>
                             </sizing>
                         </flow-layout>

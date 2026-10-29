@@ -1,6 +1,7 @@
-package com.diamssword.greenresurgence.gui.components.panels;
+package com.diamssword.greenresurgence.containers.player;
 
 import com.diamssword.greenresurgence.utils.ColorUtils;
+import net.minecraft.nbt.NbtCompound;
 
 public class HoloStyle {
 	private final int bgAlpha;
@@ -17,6 +18,36 @@ public class HoloStyle {
 		this.secondaryColor = secondaryColor;
 		this.highlightColor = highlightColor;
 		this.textColor = textColor;
+	}
+
+	public NbtCompound toNBT() {
+		var t = new NbtCompound();
+		t.putInt("bgAlpha", bgAlpha);
+		t.putInt("baseAlpha", baseAlpha);
+		t.putInt("mainColor", mainColor);
+		t.putInt("secondaryColor", secondaryColor);
+		t.putInt("highlightColor", highlightColor);
+		t.putInt("textColor", textColor);
+		return t;
+	}
+
+	private static int getNbtColorOr(NbtCompound tag, String key, int defaut) {
+		if(tag.contains(key)) {
+			var v = tag.getInt(key);
+			if(v > 0)
+				return v;
+		}
+		return defaut;
+	}
+
+	public static HoloStyle fromNBT(NbtCompound tag) {
+		var bgAlpha = getNbtColorOr(tag, "bgAlpha", 0x70);
+		var baseAlpha = getNbtColorOr(tag, "baseAlpha", 0xA0);
+		var mainColor = getNbtColorOr(tag, "mainColor", ColorUtils.GREEN);
+		var secondaryColor = getNbtColorOr(tag, "secondaryColor", ColorUtils.GRAY_GREEN);
+		var highlightColor = getNbtColorOr(tag, "highlightColor", ColorUtils.ORANGE);
+		var textColor = getNbtColorOr(tag, "textColor", ColorUtils.WHITE);
+		return new HoloStyle(mainColor, secondaryColor, highlightColor, textColor, baseAlpha, bgAlpha);
 	}
 
 	public int getBaseAlphaAlpha() {

@@ -1,11 +1,10 @@
 package com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.inventoryPanel;
 
+import com.diamssword.greenresurgence.containers.player.HoloPanelConfig;
 import com.diamssword.greenresurgence.gui.components.SubScreenLayout;
 import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
 import com.diamssword.greenresurgence.gui.playerContainers.PlayerBasedGui;
 import com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.DynamicPanels;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
@@ -13,6 +12,7 @@ import io.wispforest.owo.ui.core.HorizontalAlignment;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.core.VerticalAlignment;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +31,6 @@ public class QuickAccessSubPanel extends InstancedSubPanel {
 		Settings settings = new Settings();
 		SubScreenLayout subScreen;
 		SubPanelInstance subInstance;
-		int offset = 0;
 
 		@Override
 		public void panelTick() {
@@ -56,16 +55,16 @@ public class QuickAccessSubPanel extends InstancedSubPanel {
 		}
 
 		@Override
-		public void handleEditRightClick(double mouseX, double mouseY, SubScreenLayout scr, BiConsumer<SubScreenLayout, DynamicPanels.PanelConfig> recreateFn, DynamicPanels.PanelConfig config, boolean hasParent) {
+		public void handleEditRightClick(double mouseX, double mouseY, SubScreenLayout scr, BiConsumer<SubScreenLayout, HoloPanelConfig> recreateFn, HoloPanelConfig config, boolean hasParent) {
 			if(subScreen != null && mouseX >= subScreen.x() - scr.x() && mouseY >= subScreen.y() - scr.y() && mouseX <= subScreen.x() - scr.x() + subScreen.width() && mouseY <= subScreen.y() - scr.y() + subScreen.height()) {
 
-				BiConsumer<SubScreenLayout, DynamicPanels.PanelConfig> f = (a, b) -> {
+				BiConsumer<SubScreenLayout, HoloPanelConfig> f = (a, b) -> {
 					settings.panel = b.getPanel();
-					settings.settings = b.getSettings() != null ? b.getSettings() : "";
+					settings.settings = b.getSettings() != null ? b.getSettings() : new NbtCompound();
 					settings.save();
 					createComponent(Optional.of(a), settings.panel, settings.settings, gui);
 				};
-				var cfg = new DynamicPanels.PanelConfig(0, 0, 0, 0, settings.panel);
+				var cfg = new HoloPanelConfig(0, 0, 0, 0, settings.panel);
 				cfg.setSettings(settings.settings);
 				subInstance.handleEditRightClick(mouseX, mouseY, subScreen, f, cfg, true);
 			} else
@@ -114,9 +113,9 @@ public class QuickAccessSubPanel extends InstancedSubPanel {
 				if(!k.equals("quickaccess")) {
 					var b1 = DynamicPanels.makPanelButton(v, b -> {
 						settings.panel = k;
-						settings.settings = "";
+						settings.settings = new NbtCompound();
 						settings.save();
-						createComponent(Optional.of(subScreen), k, "", gui);
+						createComponent(Optional.of(subScreen), k, new NbtCompound(), gui);
 						updateButtons(container, gui, k);
 					}).activated(selected.equals(k)).sizing(Sizing.fixed(BUTTON_SIZE - 2));
 					if(selected.equals(k)) {
@@ -131,9 +130,9 @@ public class QuickAccessSubPanel extends InstancedSubPanel {
 
 		}
 
-		protected void createComponent(Optional<SubScreenLayout> layout, String panel, String settings, PlayerBasedGui<?> gui) {
+		protected void createComponent(Optional<SubScreenLayout> layout, String panel, NbtCompound settings, PlayerBasedGui<?> gui) {
 
-			var c = new DynamicPanels.PanelConfig(0, 0, 0, 0, panel);
+			var c = new HoloPanelConfig(0, 0, 0, 0, panel);
 			c.setSettings(settings);
 			var b = DynamicPanels.buildPanel(layout, c, gui);
 			subInstance = b.getRight();
@@ -146,35 +145,33 @@ public class QuickAccessSubPanel extends InstancedSubPanel {
 
 	static class Settings implements SubPanelSettings {
 		public String panel = DynamicPanels.DEFAULT_PANEL;
-		public String settings = "";
+		public NbtCompound settings = new NbtCompound();
 		public int mode = 0;
 
-		DynamicPanels.PanelConfig config;
+		HoloPanelConfig config;
 
 		public void save() {
-			config.setSettings(encode());
+			encode(config.getOrCreateSettings());
+			config.markDirty();
 		}
 
 		@Override
-		public void decode(DynamicPanels.PanelConfig config) {
+		public void decode(HoloPanelConfig config) {
 			this.config = config;
 			var s = config.getSettings();
 			if(s != null) {
-				var ob = new GsonBuilder().create().fromJson(s, JsonObject.class);
-				if(ob != null) {
-					if(ob.has("p"))
-						panel = ob.get("p").getAsString();
-					if(ob.has("s"))
-						settings = ob.get("s").getAsString();
-					if(ob.has("m"))
-						mode = ob.get("m").getAsInt();
-				}
+				if(s.contains("p"))
+					panel = s.getString("p");
+				if(s.contains("s"))
+					settings = s.getCompound("s");
+				if(s.contains("m"))
+					mode = s.getInt("m");
 			}
 
 		}
 
 		@Override
-		public void mount(double mouseX, double mouseY, SubScreenLayout scr, BiConsumer<SubScreenLayout, DynamicPanels.PanelConfig> recreateFn, DynamicPanels.PanelConfig config, boolean hasParent) {
+		public void mount(double mouseX, double mouseY, SubScreenLayout scr, BiConsumer<SubScreenLayout, HoloPanelConfig> recreateFn, HoloPanelConfig config, boolean hasParent) {
 			var g = SubPanelSettings.basePanel(scr, recreateFn, config, hasParent);
 			g.setColumns(1);
 			var b = Components.button(Text.translatable("gui.green_resurgence.subpanels.quickAccess.mode." + mode), (d -> {
@@ -193,12 +190,12 @@ public class QuickAccessSubPanel extends InstancedSubPanel {
 		}
 
 		@Override
-		public String encode() {
-			var ob = new JsonObject();
-			ob.addProperty("p", panel);
-			ob.addProperty("s", settings);
-			ob.addProperty("m", mode);
-			return ob.toString();
+		public NbtCompound encode(NbtCompound encode) {
+			encode.putString("p", panel);
+			encode.put("s", settings);
+			encode.putInt("m", mode);
+			return encode;
 		}
+
 	}
 }

@@ -23,6 +23,14 @@ public class ConfigModel {
 		public int __ = 0;
 		@Nest
 		public Renders renders = new Renders();
+		@Nest
+		public HoloSettings holoSettings = new HoloSettings();
+
+	}
+
+	public static class HoloSettings {
+		public int lastGuiSizeW;
+		public int lastGuiSizeH;
 	}
 
 	public static class Renders {

@@ -45,15 +45,17 @@ public class LayeredPlayerComponent extends PlayerComponent {
 		});
 	}
 
+
 	@Override
 	public void draw(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
 		var matrices = context.getMatrices();
 		matrices.push();
 
 		matrices.translate(x + this.width / 2f, y + this.height * 0.6f, 100);
-		matrices.scale(75 * this.scale * this.width / 64f, -75 * this.scale * this.height / 64f, 75 * this.scale);
-
-		matrices.translate(0, entity.getHeight() / -2f, 0);
+		var val = 75 * this.scale * Math.max(this.width, this.height) / 64f;
+		val = val + (float) zoom;
+		matrices.scale(val, -val, 75 * this.scale);
+		matrices.translate(0, (entity.getHeight() / -2f) + xOffsetFactor, 0);
 
 		this.transform.accept(matrices);
 

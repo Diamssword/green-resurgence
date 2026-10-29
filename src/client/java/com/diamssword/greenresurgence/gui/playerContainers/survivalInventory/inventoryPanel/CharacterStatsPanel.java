@@ -2,6 +2,7 @@ package com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.in
 
 import com.diamssword.characters.api.CharactersApi;
 import com.diamssword.characters.api.ComponentManager;
+import com.diamssword.greenresurgence.containers.player.HoloPanelConfig;
 import com.diamssword.greenresurgence.gui.PlayerStatsGui;
 import com.diamssword.greenresurgence.gui.components.AdaptiveLabelComponent;
 import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
@@ -9,7 +10,6 @@ import com.diamssword.greenresurgence.gui.components.PlayerComponent;
 import com.diamssword.greenresurgence.gui.components.SubScreenLayout;
 import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
 import com.diamssword.greenresurgence.gui.playerContainers.PlayerBasedGui;
-import com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.DynamicPanels;
 import com.diamssword.greenresurgence.network.Channels;
 import com.diamssword.greenresurgence.network.StatsPackets;
 import com.diamssword.greenresurgence.utils.ColorUtils;
@@ -19,6 +19,7 @@ import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.container.ScrollContainer;
 import io.wispforest.owo.ui.core.*;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
@@ -137,50 +138,58 @@ public class CharacterStatsPanel extends InstancedSubPanel {
 		public boolean showList = true;
 		public boolean showCard = true;
 
+		private boolean getBl(NbtCompound tag, String key) {
+			if(tag.contains(key))
+				return tag.getBoolean(key);
+			return true;
+		}
+
 		@Override
-		public void decode(DynamicPanels.PanelConfig config) {
+		public void decode(HoloPanelConfig config) {
 			var s = config.getSettings();
 			if(s != null) {
-				var splitted = s.split(",");
-				if(splitted.length > 0)
-					showPlayer = !"false".equals(splitted[0]);
-				if(splitted.length > 1)
-					showList = !"false".equals(splitted[1]);
-				if(splitted.length > 2)
-					showCard = !"false".equals(splitted[2]);
+				showPlayer = getBl(s, "sp");
+				showList = getBl(s, "sl");
+				showCard = getBl(s, "sc");
 			}
 		}
 
 		@Override
-		public void mount(double mouseX, double mouseY, SubScreenLayout scr, BiConsumer<SubScreenLayout, DynamicPanels.PanelConfig> recreateFn, DynamicPanels.PanelConfig config, boolean hasParnet) {
+		public void mount(double mouseX, double mouseY, SubScreenLayout scr, BiConsumer<SubScreenLayout, HoloPanelConfig> recreateFn, HoloPanelConfig config, boolean hasParnet) {
 			var g = SubPanelSettings.basePanel(scr, recreateFn, config, hasParnet);
 			g.setColumns(1);
 			var b = Components.checkbox(Text.literal("Model")).checked(showPlayer);
 			b.onChanged(c -> {
 				showPlayer = c;
-				config.setSettings(encode());
+				encode(config.getOrCreateSettings());
+				config.markDirty();
 			});
 			b.tooltip(Text.literal("Show Player Model"));
 			g.child(b);
 			var b1 = Components.checkbox(Text.literal("Card")).checked(showCard);
 			b1.onChanged(c -> {
 				showCard = c;
-				config.setSettings(encode());
+				encode(config.getOrCreateSettings());
+				config.markDirty();
 			});
 			b1.tooltip(Text.literal("Show Info Card"));
 			g.child(b1);
 			var b2 = Components.checkbox(Text.literal("List")).checked(showList);
 			b2.onChanged(c -> {
 				showList = c;
-				config.setSettings(encode());
+				encode(config.getOrCreateSettings());
+				config.markDirty();
 			});
 			b2.tooltip(Text.literal("Show Dice List"));
 			g.child(b2);
 		}
 
 		@Override
-		public String encode() {
-			return showPlayer + "," + showList + ',' + showCard;
+		public NbtCompound encode(NbtCompound encode) {
+			encode.putBoolean("sp", showPlayer);
+			encode.putBoolean("sc", showCard);
+			encode.putBoolean("sl", showList);
+			return encode;
 		}
 	}
 }

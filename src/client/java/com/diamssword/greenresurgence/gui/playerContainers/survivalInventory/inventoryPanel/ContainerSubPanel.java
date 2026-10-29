@@ -1,17 +1,18 @@
 package com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.inventoryPanel;
 
+import com.diamssword.greenresurgence.containers.player.HoloPanelConfig;
 import com.diamssword.greenresurgence.gui.components.FreeRowGridLayout;
 import com.diamssword.greenresurgence.gui.components.SubScreenLayout;
 import com.diamssword.greenresurgence.gui.components.panels.HoloPanels;
 import com.diamssword.greenresurgence.gui.playerContainers.PlayerBasedGui;
 import com.diamssword.greenresurgence.gui.playerContainers.survivalInventory.DynamicPanels;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
 import org.jetbrains.annotations.Nullable;
@@ -124,8 +125,8 @@ public class ContainerSubPanel extends InstancedSubPanel {
 				else
 					panels.set(index, p);
 			} else {
-				var c = new DynamicPanels.PanelConfig(0, 0, 0, 0, panel);
-				c.setSettings(settings);
+				var c = new HoloPanelConfig(0, 0, 0, 0, panel);
+				//	c.setSettings(settings);
 				if(index < 0)
 					panels.add(DynamicPanels.buildPanel(Optional.empty(), c, gui));
 				else
@@ -140,15 +141,15 @@ public class ContainerSubPanel extends InstancedSubPanel {
 	static class Settings implements SubPanelSettings {
 		int mode = 0;
 		List<Pair<String, String>> configs = new ArrayList<>();
-		DynamicPanels.PanelConfig config;
+		HoloPanelConfig config;
 
 		public void save() {
-			config.setSettings(encode());
+			//config.setSettings(encode());
 		}
 
 		@Override
-		public void decode(DynamicPanels.PanelConfig config) {
-			this.config = config;
+		public void decode(HoloPanelConfig config) {
+		/*	this.config = config;
 			var s = config.getSettings();
 			configs.clear();
 			if(s != null) {
@@ -167,15 +168,19 @@ public class ContainerSubPanel extends InstancedSubPanel {
 					});
 				}
 			}
+*/
+		}
+
+		@Override
+		public void mount(double mouseX, double mouseY, SubScreenLayout scr, BiConsumer<SubScreenLayout, HoloPanelConfig> recreateFn, HoloPanelConfig config, boolean hasParent) {
 
 		}
 
 		@Override
-		public void mount(double mouseX, double mouseY, SubScreenLayout scr, BiConsumer<SubScreenLayout, DynamicPanels.PanelConfig> recreateFn, DynamicPanels.PanelConfig config, boolean hasParent) {
-
+		public NbtCompound encode(NbtCompound encode) {
+			return encode;
 		}
 
-		@Override
 		public String encode() {
 			var ob = new JsonObject();
 			ob.addProperty("mode", mode);
